@@ -6,10 +6,12 @@ import { VisualVerseServices } from "./components/VisualVerseServices";
 import { VisualVerseAudiences } from "./components/VisualVerseAudiences";
 import { VisualVersePortfolio } from "./components/VisualVersePortfolio";
 import { VisualVerseWhyUs } from "./components/VisualVerseWhyUs";
+import { VisualVerseMarquee, VisualVerseWhereWeServe, VisualVerseFaq, VisualVerseCTA, VisualVerseFooter } from "./components/VisualVerseClosingSections";
 import "./styles.css";
 import "./showcases.css";
 import "./portfolio.css";
 import "./why-us.css";
+import "./closing-sections.css";
 
 const mount = document.getElementById("vv-react-nav-root");
 if (mount) {
@@ -63,4 +65,22 @@ if (whyMount) {
       <VisualVerseWhyUs />
     </StrictMode>,
   );
+}
+
+const closingSections = [
+  ["vv-marquee-root", VisualVerseMarquee],
+  ["vv-location-root", VisualVerseWhereWeServe],
+  ["vv-faq-root", VisualVerseFaq],
+  ["vv-cta-root", VisualVerseCTA],
+  ["vv-footer-root", VisualVerseFooter],
+] as const;
+for (const [id, Component] of closingSections) {
+  const element = document.getElementById(id);
+  if (element) {
+    createRoot(element).render(
+      <StrictMode>
+        <Component />
+      </StrictMode>,
+    );
+  }
 }
