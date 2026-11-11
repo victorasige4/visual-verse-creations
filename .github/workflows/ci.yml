@@ -2,7 +2,7 @@ name: Validate React + Tailwind migration
 
 on:
   push:
-    branches: [main, feat/react-aceternity-island-navbar, dev/visual-verse-next-batch, feat/visual-verse-site-cleanup-v2]
+    branches: [main, feat/react-aceternity-island-navbar, dev/visual-verse-next-batch, feat/visual-verse-site-cleanup-v2, fix/why-visual-verse-brand-colors]
   pull_request:
     branches: [main]
 
