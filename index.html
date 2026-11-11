@@ -204,6 +204,72 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
 @media(max-width:400px){.vv-hero-actions .vv-pill-button{font-size:11px;gap:8px;padding-left:12px}.vv-hero-actions .vv-pill-disc{width:27px;height:27px;flex-basis:27px}.vv-audience-grid{grid-template-columns:1fr}.vv-audience-grid article{min-height:0}.vv-audience-grid h3{margin-top:22px}}
 @media(prefers-reduced-motion:reduce){.vv-scroll-wheel{animation:none;transform:translateX(-50%);opacity:1}.vv-custom-cursor{display:none!important}.vv-pill-button::before,.vv-pill-button,.vv-pill-disc,.vv-pill-disc svg,.vv-nav-link{transition:none!important}}
 
+
+/* November 11 — Who We Are / Potadot-inspired editorial rhythm.
+   Preserves the existing brand, service animation, navigation and sections. */
+.vv-hero-copy{position:relative}
+.vv-scroll-cue{
+  left:auto;right:8%;bottom:24%;padding:8px 0;
+  gap:12px;min-height:48px;white-space:nowrap;
+}
+.vv-scroll-cue::before{
+  content:"";display:block;flex:0 0 clamp(22px,3.2vw,52px);
+  height:1px;background:linear-gradient(90deg,transparent,#9fbfbc);
+}
+.vv-scroll-mouse{flex-shrink:0}
+.vv-about-story{
+  display:grid;grid-template-columns:minmax(200px,.78fr) minmax(0,1.52fr);
+  align-items:start;column-gap:clamp(48px,7vw,130px);
+  padding-top:clamp(110px,12vw,185px);padding-bottom:clamp(116px,12vw,180px);
+  min-height:680px;max-width:1480px;
+  border-top:1px solid #dfebe9;
+}
+.vv-about-aside{display:flex;flex-direction:column;align-items:flex-start;position:relative;min-height:460px}
+.vv-about-index,.vv-about-overline,.vv-about-aside-note{
+  display:inline-flex;align-items:center;gap:9px;line-height:1.5;
+  color:#567b82;font-size:10px;font-weight:750;letter-spacing:.19em;
+}
+.vv-about-index-dot{display:block;width:6px;height:6px;background:var(--vv-aqua);border-radius:50%;box-shadow:0 0 0 5px rgba(46,196,182,.11)}
+.vv-about-orbit-art{width:min(27vw,270px);height:270px;position:relative;margin-top:clamp(90px,12vw,170px);opacity:.95}
+.vv-about-orbit-ring{position:absolute;left:50%;top:50%;border:1px solid rgba(46,196,182,.20);border-radius:50%;transform:translate(-50%,-50%)}
+.vv-about-orbit-ring-one{width:100%;height:100%}
+.vv-about-orbit-ring-two{width:66%;height:66%;border-style:dashed}
+.vv-about-orbit-core{position:absolute;left:50%;top:50%;width:65px;height:65px;background:radial-gradient(circle at 32% 24%,#6ae6d8,#27b8b0 62%,#003f5c);border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 18px 40px rgba(0,63,92,.12)}
+.vv-about-orbit-spark{position:absolute;width:8px;height:8px;background:#2ec4b6;border-radius:50%}
+.vv-about-spark-one{top:19%;left:10%}.vv-about-spark-two{right:2%;top:55%;width:5px;height:5px}.vv-about-spark-three{bottom:16%;left:27%;width:4px;height:4px}
+.vv-about-aside-note{margin-top:auto;letter-spacing:.14em;color:#668b90}
+.vv-about-aside-note span{color:var(--vv-aqua);font-size:16px}
+.vv-about-main{max-width:860px;padding-top:4px}
+.vv-about-overline{gap:14px;margin-bottom:clamp(46px,5vw,70px)}
+.vv-about-overline-line{height:1px;width:26px;background:var(--vv-aqua)}
+.vv-about-headline{margin:0;color:#21383e;font-family:var(--vv-typeface);font-weight:var(--vv-fw-extra);font-size:clamp(35px,3.75vw,58px);letter-spacing:-.065em;line-height:1.13;text-wrap:pretty}
+.vv-about-highlight{color:#29a897}
+.vv-about-description{margin:35px 0 30px;max-width:645px;color:#55747e;font-size:clamp(15px,1.15vw,18px);line-height:1.8;font-weight:var(--vv-fw-regular)}
+.vv-about-more{display:inline-flex;align-items:center;gap:18px;text-decoration:none;color:#27454c;font-size:14px;font-weight:var(--vv-fw-bold);padding:12px 0 10px;border-bottom:1px solid rgba(0,63,92,.35);transition:color .25s,border-color .25s,gap .25s}
+.vv-about-more-icon{display:inline-grid;place-items:center;width:27px;height:27px;border:1px solid rgba(0,63,92,.15);border-radius:50%;font-size:17px;transition:background .25s,color .25s,transform .25s}
+.vv-about-more:hover{color:#049d95;border-color:var(--vv-aqua);gap:24px}
+.vv-about-more:hover .vv-about-more-icon{background:var(--vv-aqua);color:var(--vv-deep);transform:rotate(45deg)}
+@media(min-width:1181px) and (max-height:790px){.vv-scroll-cue{bottom:24%}}
+@media(max-width:1024px){
+  .vv-about-story{grid-template-columns:minmax(145px,.55fr) minmax(0,1.45fr);gap:40px;min-height:0;padding-top:105px;padding-bottom:100px}
+  .vv-about-headline{font-size:clamp(34px,4.35vw,48px)}
+  .vv-about-orbit-art{width:180px;height:180px;margin-top:120px}
+  .vv-about-aside{min-height:380px}
+}
+@media(max-width:760px){
+  .vv-scroll-cue{position:relative;left:auto;right:auto;bottom:auto;min-height:48px;margin:4px 0 8px 0;gap:10px;padding:8px 0;width:max-content}
+  .vv-scroll-cue::before{flex-basis:35px}
+  .vv-about-story{display:block;min-height:0;padding-top:78px;padding-bottom:88px}
+  .vv-about-aside{min-height:0;margin-bottom:25px}
+  .vv-about-orbit-art,.vv-about-aside-note{display:none}
+  .vv-about-overline{margin:0 0 28px;font-size:9px}
+  .vv-about-headline{font-size:clamp(32px,8.1vw,48px);line-height:1.14;letter-spacing:-.055em}
+  .vv-about-description{margin:23px 0 20px;line-height:1.75;font-size:15px}
+  .vv-about-more{font-size:13px;padding:9px 0}
+}
+@media(max-width:390px){.vv-about-headline{font-size:30px}.vv-about-story{padding-top:65px;padding-bottom:72px}}
+@media(prefers-reduced-motion:reduce){.vv-about-more,.vv-about-more-icon{transition:none!important}}
+
 </style></head><body>
 <header class="vv-header" id="siteHeader">
   <nav class="vv-navbar" aria-label="Main navigation">
@@ -236,9 +302,28 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
     <a href="#contact" class="vv-mobile-cta">Let's talk <span>↗</span></a>
   </div>
 </header>
-<main id="top"><section class="vv-hero"><div class="vv-hero-grid"><div class="vv-hero-copy"><div class="vv-hero-kicker"><span class="vv-kicker-dot"></span> YOUR VISION. OUR CREATIVE CANVAS.</div><div id="sceneCopy"><div class="vv-scene-eyebrow" id="eyebrow">01 / CREATIVE JOURNEYS</div><h1 class="vv-hero-title"><span id="headline">Moments that last</span><span class="vv-title-dot">.</span></h1><p class="vv-hero-description" id="description">From portraits and weddings to the little moments in between, we capture stories you will want to revisit.</p><div class="vv-current-service"><span>NOW SHOWING</span><strong id="serviceName">Photography</strong></div></div><div class="vv-hero-actions"><a href="#work" class="vv-primary-button vv-pill-button vv-pill-dark"><span class="vv-pill-label">Explore our work</span><span class="vv-pill-disc"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a href="#contact" class="vv-text-link vv-pill-button vv-pill-light"><span class="vv-pill-label">Start a project</span><span class="vv-pill-disc"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div><div class="vv-hero-controls" id="steps" aria-label="Choose a service"><button id="pauseSlide" class="vv-play-button" aria-label="Pause slideshow">Ⅱ</button></div></div>
-<div class="vv-hero-visual"><span id="artLabel" class="vv-visual-top">VISUALVERSE / PHOTOGRAPHY</span><div class="vv-visual-field"><div class="vv-orbit vv-orbit-one"></div><div class="vv-orbit vv-orbit-two"></div><canvas id="vvCanvas" class="vv-particle-canvas" role="img" aria-label="Animated dots forming icons for VisualVerse services"></canvas></div><div class="vv-visual-bottom"><span>IDEAS INTO IMPACT</span><span id="counter">01 / 06</span></div></div></div><a class="vv-scroll-cue" href="#about" aria-label="Scroll down to learn about Visual Verse"><span class="vv-scroll-mouse"><span class="vv-scroll-wheel"></span></span><span class="vv-scroll-label">SCROLL</span></a><div class="vv-hero-bottom"><span>AN INDEPENDENT CREATIVE MEDIA STUDIO</span><span class="vv-hero-bottom-line"></span><span>EXPLORE • DISCOVER • CREATE</span></div></section>
-<section class="vv-preview-section" id="about"><span class="vv-label">A LITTLE ABOUT US / 001</span><h2 class="vv-section-h">A creative home for ideas that deserve to be seen.</h2><p class="vv-lead">VisualVerse Creations brings together design, photography, film, branding, and digital thinking. We listen closely, create thoughtfully, and turn your vision into something people can see, feel, and remember.</p></section>
+<main id="top"><section class="vv-hero"><div class="vv-hero-grid"><div class="vv-hero-copy"><div class="vv-hero-kicker"><span class="vv-kicker-dot"></span> YOUR VISION. OUR CREATIVE CANVAS.</div><div id="sceneCopy"><div class="vv-scene-eyebrow" id="eyebrow">01 / CREATIVE JOURNEYS</div><h1 class="vv-hero-title"><span id="headline">Moments that last</span><span class="vv-title-dot">.</span></h1><p class="vv-hero-description" id="description">From portraits and weddings to the little moments in between, we capture stories you will want to revisit.</p><div class="vv-current-service"><span>NOW SHOWING</span><strong id="serviceName">Photography</strong></div></div><div class="vv-hero-actions"><a href="#work" class="vv-primary-button vv-pill-button vv-pill-dark"><span class="vv-pill-label">Explore our work</span><span class="vv-pill-disc"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a href="#contact" class="vv-text-link vv-pill-button vv-pill-light"><span class="vv-pill-label">Start a project</span><span class="vv-pill-disc"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div><div class="vv-hero-controls" id="steps" aria-label="Choose a service"><button id="pauseSlide" class="vv-play-button" aria-label="Pause slideshow">Ⅱ</button></div><a class="vv-scroll-cue" href="#about" aria-label="Scroll down to learn about Visual Verse"><span class="vv-scroll-mouse"><span class="vv-scroll-wheel"></span></span><span class="vv-scroll-label">SCROLL</span></a></div>
+<div class="vv-hero-visual"><span id="artLabel" class="vv-visual-top">VISUALVERSE / PHOTOGRAPHY</span><div class="vv-visual-field"><div class="vv-orbit vv-orbit-one"></div><div class="vv-orbit vv-orbit-two"></div><canvas id="vvCanvas" class="vv-particle-canvas" role="img" aria-label="Animated dots forming icons for VisualVerse services"></canvas></div><div class="vv-visual-bottom"><span>IDEAS INTO IMPACT</span><span id="counter">01 / 06</span></div></div></div><div class="vv-hero-bottom"><span>AN INDEPENDENT CREATIVE MEDIA STUDIO</span><span class="vv-hero-bottom-line"></span><span>EXPLORE • DISCOVER • CREATE</span></div></section>
+<section class="vv-preview-section vv-about-story" id="about" aria-labelledby="vv-about-title">
+  <div class="vv-about-aside">
+    <span class="vv-about-index"><span class="vv-about-index-dot" aria-hidden="true"></span> 01 / WHO WE ARE</span>
+    <div class="vv-about-orbit-art" aria-hidden="true">
+      <span class="vv-about-orbit-ring vv-about-orbit-ring-one"></span>
+      <span class="vv-about-orbit-ring vv-about-orbit-ring-two"></span>
+      <span class="vv-about-orbit-core"></span>
+      <span class="vv-about-orbit-spark vv-about-spark-one"></span>
+      <span class="vv-about-orbit-spark vv-about-spark-two"></span>
+      <span class="vv-about-orbit-spark vv-about-spark-three"></span>
+    </div>
+    <span class="vv-about-aside-note">INDEPENDENT CREATIVE STUDIO <span aria-hidden="true">↗</span></span>
+  </div>
+  <div class="vv-about-main">
+    <span class="vv-about-overline"><span class="vv-about-overline-line" aria-hidden="true"></span> THE STUDIO BEHIND THE STORY</span>
+    <h2 class="vv-about-headline" id="vv-about-title">Still piecing your brand story together across different creatives? <span class="vv-about-highlight">We bring it all together</span>—design, photography, film and digital experiences, <span class="vv-about-highlight">built around your vision.</span></h2>
+    <p class="vv-about-description">VisualVerse Creations is an independent creative media studio. We combine imagination with thoughtful strategy to give brands, businesses and people a clear, memorable visual voice—from the first conversation to the final frame.</p>
+    <a class="vv-about-more" href="#process" aria-label="Learn more about Visual Verse and our creative approach"><span>More about Visual Verse</span><span class="vv-about-more-icon" aria-hidden="true">↗</span></a>
+  </div>
+</section>
 <section class="vv-preview-section" id="services"><span class="vv-label">WHAT WE DO / 002</span><h2 class="vv-section-h">Many disciplines.<br/>One visual language.</h2><div class="vv-service-list"><a class="vv-service-row" id="service-photography" href="#contact"><small>01</small><strong>Photography</strong><span>Moments & portraits ↗</span></a><a class="vv-service-row" id="service-videography" href="#contact"><small>02</small><strong>Videography</strong><span>Films & motion ↗</span></a><a class="vv-service-row" id="service-branding" href="#contact"><small>03</small><strong>Branding</strong><span>Identity & strategy ↗</span></a><a class="vv-service-row" id="service-graphic-design" href="#contact"><small>04</small><strong>Graphic Design</strong><span>Visual communication ↗</span></a><a class="vv-service-row" id="service-web-ui-ux" href="#contact"><small>05</small><strong>Web & UI/UX</strong><span>Digital experiences ↗</span></a><a class="vv-service-row" id="service-social-media" href="#contact"><small>06</small><strong>Social Media</strong><span>Content & campaigns ↗</span></a></div></section>
 <section class="vv-preview-section vv-audiences" id="who-we-serve">
   <span class="vv-label">THE PEOPLE WE CREATE WITH / 003</span>
