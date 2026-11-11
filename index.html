@@ -510,6 +510,7 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
 @media(prefers-reduced-motion:reduce){.vv-mega-shell,.vv-mega-view,.vv-mega-card,.vv-mega-arrow{animation:none!important;transition:none!important}}
 
 </style></head><body>
+<div id="vv-react-nav-root"></div>
 <header class="vv-header" id="siteHeader">
   <nav class="vv-navbar" aria-label="Main navigation">
     <a href="#top" class="vv-logo" aria-label="Visual Verse Creations — Back to home"><img class="vv-brand-wordmark" src="./brand-wordmark.png" alt="Visual Verse Creations" width="280" height="70" decoding="async" /></a>
@@ -860,4 +861,5 @@ const burger=document.getElementById('burger'),mobile=document.getElementById('m
   if(reduced.matches)draw(0);
 })();
 </script>
+<script type="module" src="/src/main.tsx"></script>
 </body></html>
