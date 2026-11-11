@@ -60,7 +60,7 @@ export function CardContainer({
     cancelAnimationFrame(raf.current);
     raf.current = requestAnimationFrame(() => {
       if (bodyRef.current)
-        bodyRef.current.style.transform = \`rotateX(\${rotateX}deg) rotateY(\${rotateY}deg)\`;
+        bodyRef.current.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     });
   }
 
@@ -102,7 +102,7 @@ type CardItemProps = HTMLAttributes<HTMLElement> & {
 };
 
 function withUnit(value: number | string, unit: "px" | "deg") {
-  return typeof value === "number" ? \`\${value}\${unit}\` : value;
+  return typeof value === "number" ? `${value}${unit}` : value;
 }
 
 export function CardItem({
@@ -123,7 +123,7 @@ export function CardItem({
   const layerStyle: CSSProperties = {
     ...style,
     transform: enabled
-      ? \`translate3d(\${withUnit(translateX, "px")}, \${withUnit(translateY, "px")}, \${withUnit(translateZ, "px")}) rotateX(\${withUnit(rotateX, "deg")}) rotateY(\${withUnit(rotateY, "deg")}) rotateZ(\${withUnit(rotateZ, "deg")})\`
+      ? `translate3d(${withUnit(translateX, "px")}, ${withUnit(translateY, "px")}, ${withUnit(translateZ, "px")}) rotateX(${withUnit(rotateX, "deg")}) rotateY(${withUnit(rotateY, "deg")}) rotateZ(${withUnit(rotateZ, "deg")})`
       : "translate3d(0, 0, 0)",
   };
   return React.createElement(
