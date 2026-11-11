@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { VisualVerseProjectsPage } from "./components/VisualVerseProjectsPage";
 import "./styles.css";
 import "./portfolio.css";
+import "./closing-sections.css";
 
 const root = document.getElementById("vv-projects-page-root");
 if (root) {
