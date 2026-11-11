@@ -135,7 +135,7 @@ export function VisualVerseAudiences(){
             );
           })}
         </div>
-        <a href="#contact" className="vv-aud-discover">Let's create something together <span><ArrowUpRight size={18} aria-hidden={true}/></span></a>
+        <a href="/who-we-serve.html#industries" className="vv-aud-discover">Discover who we create with <span><ArrowUpRight size={18} aria-hidden={true}/></span></a>
       </div>
       <div className="vv-aud-display">
         <AnimatePresence mode="wait">
