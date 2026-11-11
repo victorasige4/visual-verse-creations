@@ -6,12 +6,17 @@ import { VisualVerseServices } from "./components/VisualVerseServices";
 import { VisualVerseAudiences } from "./components/VisualVerseAudiences";
 import { VisualVersePortfolio } from "./components/VisualVersePortfolio";
 import { VisualVerseWhyUs } from "./components/VisualVerseWhyUs";
+import { WhatsAppFloating } from "./components/VisualVersePolicies";
 import { VisualVerseMarquee, VisualVerseWhereWeServe, VisualVerseFaq, VisualVerseCTA, VisualVerseFooter } from "./components/VisualVerseClosingSections";
 import "./styles.css";
 import "./showcases.css";
 import "./portfolio.css";
 import "./why-us.css";
 import "./closing-sections.css";
+import "./nav-cleanup.css";
+import "./visual-workspaces.css";
+import "./policies.css";
+import "./site-cleanup.css";
 
 const mount = document.getElementById("vv-react-nav-root");
 if (mount) {
@@ -84,3 +89,8 @@ for (const [id, Component] of closingSections) {
     );
   }
 }
+
+const waRoot = document.createElement("div");
+waRoot.id = "vv-whatsapp-root";
+document.body.appendChild(waRoot);
+createRoot(waRoot).render(<WhatsAppFloating />);
