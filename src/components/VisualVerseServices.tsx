@@ -149,12 +149,16 @@ export function VisualVerseServices() {
   useEffect(()=>{
     const onHash=()=>{
       const i=services.findIndex(service=>"#service-"+service.id===window.location.hash);
-      if(i>=0)setActive(i);
+      if(i>=0){
+        setActive(i);
+        // Display:contents tabs do not have a physical box on mobile.
+        // Scroll the parent section into view for direct service links.
+        window.requestAnimationFrame(()=>document.getElementById("services")?.scrollIntoView({block:"start"}));
+      }
     };
     window.addEventListener("hashchange",onHash);
     return ()=>window.removeEventListener("hashchange",onHash);
   },[]);
-  const service=services[active];
   return (
     <div className="vv-svc-layout">
       <div className="vv-svc-heading">
@@ -174,7 +178,7 @@ export function VisualVerseServices() {
                 className="vv-svc-slice-tab"
                 type="button"
                 aria-expanded={selected}
-                aria-controls={"vv-service-panel-"+item.id}
+                aria-controls={selected ? "vv-service-panel-"+item.id : undefined}
                 aria-label={"Explore "+item.title}
                 onClick={()=>setActive(index)}
               >
