@@ -24,6 +24,9 @@ jobs:
       - name: Check homepage assets
         run: |
           test -f dist/index.html
+          test -f dist/projects.html
+          grep -q vv-portfolio-root dist/index.html
+          grep -q vv-projects-page-root dist/projects.html
           test -f dist/brand-wordmark.png
           test -f dist/brand-logo.png
           test -f dist/logo-mark.png
