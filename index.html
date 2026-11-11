@@ -462,6 +462,53 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
   .vv-hero .vv-aceternity-inspired-cubes{opacity:.76}
 }
 
+
+/* Visual Verse 2026 — Aceternity Navbar Menu-inspired expandable navigation.
+   Native adaptation keeps the existing static HTML site + TT Travels intact. */
+.vv-navbar{position:relative}
+.vv-nav-items .vv-mega-trigger{appearance:none;font:inherit;font-family:var(--vv-typeface);font-size:clamp(11px,.85vw,13px);font-weight:600;letter-spacing:-.015em}
+.vv-mega-trigger[aria-expanded="true"]{background:rgba(46,196,182,.12);color:var(--vv-navy)}
+.vv-mega-trigger[aria-expanded="true"] svg{transform:rotate(180deg)}
+.vv-mega-shell{
+  position:absolute;top:calc(100% + 8px);left:50%;width:min(930px,calc(100vw - 54px));
+  padding:10px;border:1px solid rgba(0,63,92,.095);border-radius:26px;
+  background:rgba(255,255,255,.97);-webkit-backdrop-filter:blur(24px) saturate(145%);
+  backdrop-filter:blur(24px) saturate(145%);
+  box-shadow:0 35px 100px rgba(0,40,52,.16),0 3px 12px rgba(0,63,92,.035);
+  z-index:120;visibility:hidden;opacity:0;pointer-events:none;
+  transform:translate(-50%,-10px) scale(.985);
+  transition:visibility .25s,opacity .25s,transform .32s cubic-bezier(.2,.8,.2,1);
+}
+.vv-mega-shell::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:16px}
+.vv-mega-shell.is-open{visibility:visible;opacity:1;pointer-events:auto;transform:translate(-50%,0) scale(1)}
+.vv-mega-view{display:none;grid-template-columns:minmax(215px,.72fr) minmax(0,1.58fr);gap:10px;min-height:343px}
+.vv-mega-view.is-active{display:grid;animation:vv-mega-enter .31s cubic-bezier(.2,.7,.2,1) both}
+@keyframes vv-mega-enter{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+.vv-mega-intro{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;padding:30px 25px;border-radius:20px;background:linear-gradient(155deg,#edf9f5,#ddf1ed 75%,#e8f8f6);isolation:isolate}
+.vv-mega-intro::before{content:"";position:absolute;right:-50px;top:-55px;width:160px;height:160px;border:1px solid rgba(0,63,92,.11);border-radius:50%}
+.vv-mega-kicker{font-size:10px;font-weight:700;letter-spacing:.17em;color:#277d80}
+.vv-mega-intro h2{font-size:clamp(23px,2.6vw,33px);letter-spacing:-.065em;line-height:1.13;font-weight:800;color:var(--vv-navy);margin:32px 0 15px}
+.vv-mega-intro h2 em{color:#168e88;font-style:normal}
+.vv-mega-intro p{font-size:12px;line-height:1.75;color:#466e75;margin:0 0 22px;max-width:265px}
+.vv-mega-all{position:relative;z-index:1;display:inline-flex;align-items:center;gap:16px;margin-top:auto;border-bottom:1px solid #66b5ae;padding:8px 0;text-decoration:none!important;font-size:12px!important;color:var(--vv-navy)!important;font-weight:800!important}
+.vv-mega-all:hover{gap:23px}
+.vv-mega-watermark{pointer-events:none;position:absolute;right:-17px;bottom:-95px;font-family:var(--vv-typeface);font-size:250px;line-height:1;font-weight:900;letter-spacing:-.2em;color:rgba(46,196,182,.08);z-index:-1}
+.vv-mega-content{padding:13px 11px 12px;display:flex;flex-direction:column}
+.vv-mega-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.vv-mega-card{display:flex;align-items:flex-start;gap:9px;min-height:98px;padding:16px 12px!important;border-radius:14px;opacity:1!important;text-decoration:none!important;transform:none!important;background:transparent;border:1px solid transparent;transition:background .2s,border-color .2s,transform .2s!important;color:var(--vv-navy)!important}
+.vv-mega-card:hover,.vv-mega-card:focus-visible{background:#eaf8f5!important;border-color:#b8e6df;transform:translateY(-2px)!important}
+.vv-mega-num{flex:0 0 auto;padding-top:3px;color:#2aa99d;font-size:10px;font-weight:800}
+.vv-mega-card-body{display:flex;flex-direction:column;gap:6px;flex:1;min-width:0}
+.vv-mega-card strong{font-size:14px;font-weight:750;letter-spacing:-.035em;line-height:1.15}
+.vv-mega-card small{font-size:11px;line-height:1.5;color:#64838a;font-weight:400}
+.vv-mega-arrow{font-size:15px;color:#219f96;transition:transform .2s}
+.vv-mega-card:hover .vv-mega-arrow{transform:translate(2px,-2px)}
+.vv-mega-audiences .vv-mega-card{min-height:132px;padding:25px 14px!important}
+.vv-mega-footnote{margin:auto 6px 8px;padding:15px 0 0;border-top:1px solid #dcece9;color:#62878c;font-size:10px;letter-spacing:.12em;font-weight:700;display:flex;justify-content:space-between}
+.vv-mega-footnote span{color:var(--vv-aqua);font-size:18px}
+@media(max-width:1180px){.vv-mega-shell{display:none!important}}
+@media(prefers-reduced-motion:reduce){.vv-mega-shell,.vv-mega-view,.vv-mega-card,.vv-mega-arrow{animation:none!important;transition:none!important}}
+
 </style></head><body>
 <header class="vv-header" id="siteHeader">
   <nav class="vv-navbar" aria-label="Main navigation">
@@ -469,11 +516,9 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
     <div class="vv-nav-items" id="desktopNav">
       <a class="vv-nav-link" href="#top" aria-current="page">Home</a>
       <a class="vv-nav-link" href="#about">About Us</a>
-      <div class="vv-nav-dropdown" id="servicesDropdown">
-        <button type="button" class="vv-nav-link vv-nav-trigger" id="servicesTrigger" aria-haspopup="true" aria-expanded="false" aria-controls="servicesMenu">Services <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <div class="vv-dropdown-panel" id="servicesMenu" role="menu" aria-label="Our services"><a href="#service-photography" role="menuitem"><span class="vv-dropdown-index">01</span>Photography<span class="vv-dropdown-arr">↗</span></a><a href="#service-videography" role="menuitem"><span class="vv-dropdown-index">02</span>Videography<span class="vv-dropdown-arr">↗</span></a><a href="#service-branding" role="menuitem"><span class="vv-dropdown-index">03</span>Branding<span class="vv-dropdown-arr">↗</span></a><a href="#service-graphic-design" role="menuitem"><span class="vv-dropdown-index">04</span>Graphic Design<span class="vv-dropdown-arr">↗</span></a><a href="#service-web-ui-ux" role="menuitem"><span class="vv-dropdown-index">05</span>Web & UI/UX<span class="vv-dropdown-arr">↗</span></a><a href="#service-social-media" role="menuitem"><span class="vv-dropdown-index">06</span>Social Media<span class="vv-dropdown-arr">↗</span></a></div>
-      </div>
-      <a class="vv-nav-link" href="#who-we-serve">Who we serve</a>
+
+      <button type="button" class="vv-nav-link vv-nav-trigger vv-mega-trigger" data-mega="services" id="servicesTrigger" aria-haspopup="true" aria-controls="vvMegaPanel" aria-expanded="false">Services <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button type="button" class="vv-nav-link vv-nav-trigger vv-mega-trigger" data-mega="audiences" id="audiencesTrigger" aria-haspopup="true" aria-controls="vvMegaPanel" aria-expanded="false">Who we serve <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <a class="vv-nav-link" href="#work">Projects</a>
       <a class="vv-nav-link" href="#contact">Contact</a>
     </div>
@@ -486,10 +531,30 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
       <button id="burger" class="vv-mobile-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile">☰</button>
     </div>
   </nav>
+
+  <!-- Animated mega-menu adapted for the site's current static HTML architecture. -->
+  <div class="vv-mega-shell" id="vvMegaPanel" aria-label="Explore Visual Verse" aria-hidden="true" inert>
+    <div class="vv-mega-view" data-menu="services" inert>
+      <div class="vv-mega-intro"><span class="vv-mega-kicker">OUR EXPERTISE / 01</span><h2>One studio.<br><em>Many ways to create.</em></h2><p>Design, imagery and digital thinking brought together for the moments and brands that matter.</p><a href="#services" class="vv-mega-all">Explore all services <span aria-hidden="true">↗</span></a><span class="vv-mega-watermark" aria-hidden="true">V</span></div>
+      <div class="vv-mega-content"><div class="vv-mega-grid vv-mega-services"><a class="vv-mega-card" href="#service-photography"><span class="vv-mega-num">01</span><span class="vv-mega-card-body"><strong>Photography</strong><small>Portraits, events and visual storytelling</small></span><span class="vv-mega-arrow" aria-hidden="true">↗</span></a>
+<a class="vv-mega-card" href="#service-videography"><span class="vv-mega-num">02</span><span class="vv-mega-card-body"><strong>Videography</strong><small>Films, motion and memorable moments</small></span><span class="vv-mega-arrow" aria-hidden="true">↗</span></a>
+<a class="vv-mega-card" href="#service-branding"><span class="vv-mega-num">03</span><span class="vv-mega-card-body"><strong>Branding</strong><small>Identities that feel unmistakably yours</small></span><span class="vv-mega-arrow" aria-hidden="true">↗</span></a>
+<a class="vv-mega-card" href="#service-graphic-design"><span class="vv-mega-num">04</span><span class="vv-mega-card-body"><strong>Graphic Design</strong><small>Campaigns and expressive visual systems</small></span><span class="vv-mega-arrow" aria-hidden="true">↗</span></a>
+<a class="vv-mega-card" href="#service-web-ui-ux"><span class="vv-mega-num">05</span><span class="vv-mega-card-body"><strong>Web & UI/UX</strong><small>Digital experiences made to connect</small></span><span class="vv-mega-arrow" aria-hidden="true">↗</span></a>
+<a class="vv-mega-card" href="#service-social-media"><span class="vv-mega-num">06</span><span class="vv-mega-card-body"><strong>Social Media</strong><small>Content and campaigns with purpose</small></span><span class="vv-mega-arrow" aria-hidden="true">↗</span></a></div></div>
+    </div>
+    <div class="vv-mega-view" data-menu="audiences" inert>
+      <div class="vv-mega-intro"><span class="vv-mega-kicker">WHO WE CREATE WITH / 02</span><h2>Creative work,<br><em>built around you.</em></h2><p>Whether you are launching, growing, or celebrating, we shape visuals around your story.</p><a href="#who-we-serve" class="vv-mega-all">Meet our audiences <span aria-hidden="true">↗</span></a><span class="vv-mega-watermark" aria-hidden="true">V</span></div>
+      <div class="vv-mega-content"><div class="vv-mega-grid vv-mega-audiences"><a class="vv-mega-card" href="#who-we-serve"><span class="vv-mega-num">01</span><span class="vv-mega-card-body"><strong>Growing brands</strong><small>Make your next chapter recognizable</small></span><span class="vv-mega-arrow" aria-hidden="true">↗</span></a>
+<a class="vv-mega-card" href="#who-we-serve"><span class="vv-mega-num">02</span><span class="vv-mega-card-body"><strong>Businesses & teams</strong><small>Make complex ideas feel clear</small></span><span class="vv-mega-arrow" aria-hidden="true">↗</span></a>
+<a class="vv-mega-card" href="#who-we-serve"><span class="vv-mega-num">03</span><span class="vv-mega-card-body"><strong>Creators & founders</strong><small>Bring a big idea into focus</small></span><span class="vv-mega-arrow" aria-hidden="true">↗</span></a>
+<a class="vv-mega-card" href="#who-we-serve"><span class="vv-mega-num">04</span><span class="vv-mega-card-body"><strong>People & events</strong><small>Keep the moments that matter</small></span><span class="vv-mega-arrow" aria-hidden="true">↗</span></a></div><div class="vv-mega-footnote">THE RIGHT CREATIVE PARTNER, AT EVERY STAGE <span aria-hidden="true">✳</span></div></div>
+    </div>
+  </div>
   <div id="mobile" class="vv-mobile-menu" hidden>
     <a href="#top">Home</a><a href="#about">About Us</a>
     <details class="vv-mobile-services"><summary>Services <span>⌄</span></summary><div><a href="#service-photography">Photography</a><a href="#service-videography">Videography</a><a href="#service-branding">Branding</a><a href="#service-graphic-design">Graphic Design</a><a href="#service-web-ui-ux">Web & UI/UX</a><a href="#service-social-media">Social Media</a></div></details>
-    <a href="#who-we-serve">Who we serve</a><a href="#work">Projects</a><a href="#contact">Contact</a>
+    <details class="vv-mobile-services vv-mobile-audiences"><summary>Who we serve <span>⌄</span></summary><div><a href="#who-we-serve">Growing brands</a><a href="#who-we-serve">Businesses & teams</a><a href="#who-we-serve">Creators & founders</a><a href="#who-we-serve">People & events</a></div></details><a href="#work">Projects</a><a href="#contact">Contact</a>
     <span class="vv-mobile-language"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.25" fill="none" stroke="currentColor" stroke-width="1.65"/><path d="M3.75 12h16.5M12 3.75c-2.25 2.5-3.4 5.3-3.4 8.25s1.15 5.75 3.4 8.25c2.25-2.5 3.4-5.3 3.4-8.25S14.25 6.25 12 3.75Z" fill="none" stroke="currentColor" stroke-width="1.4"/></svg> English (EN)</span>
     <a href="#contact" class="vv-mobile-cta">Let's talk <span>↗</span></a>
   </div>
@@ -587,28 +652,83 @@ const burger=document.getElementById('burger'),mobile=document.getElementById('m
 </script>
 <script>
 (() => {
-  const servicesBox = document.getElementById('servicesDropdown');
-  const servicesTrigger = document.getElementById('servicesTrigger');
+  /* Aceternity Navbar Menu-inspired animated mega menu, adapted to HTML/CSS/JS. */
+  const header = document.getElementById('siteHeader');
+  const megaPanel = document.getElementById('vvMegaPanel');
+  const megaTriggers = [...document.querySelectorAll('.vv-mega-trigger')];
+  const megaViews = [...megaPanel.querySelectorAll('.vv-mega-view')];
   const languageBox = document.getElementById('languagePicker');
   const languageToggle = languageBox.querySelector('.vv-language-toggle');
-  const closeServices = () => { servicesBox.classList.remove('is-open'); servicesTrigger.setAttribute('aria-expanded','false'); };
-  const closeLanguage = () => { languageBox.classList.remove('is-open'); languageToggle.setAttribute('aria-expanded','false'); };
-  servicesTrigger.addEventListener('click', (event) => {
-    event.stopPropagation(); const next = !servicesBox.classList.contains('is-open');
-    closeLanguage(); servicesBox.classList.toggle('is-open', next); servicesTrigger.setAttribute('aria-expanded', String(next));
+  const canHover = window.matchMedia('(hover:hover) and (pointer:fine)');
+  let activeMega = null, closeTimer = null;
+  function cancelMegaClose(){if(closeTimer){clearTimeout(closeTimer);closeTimer=null}}
+  function closeMega(){
+    cancelMegaClose();
+    activeMega=null;
+    megaPanel.classList.remove('is-open');
+    megaPanel.setAttribute('aria-hidden','true');
+    megaPanel.inert=true;
+    megaTriggers.forEach(button=>button.setAttribute('aria-expanded','false'));
+    megaViews.forEach(view=>{view.classList.remove('is-active');view.inert=true});
+  }
+  function closeLanguage(){
+    languageBox.classList.remove('is-open');
+    languageToggle.setAttribute('aria-expanded','false');
+  }
+  function openMega(key){
+    cancelMegaClose();closeLanguage();
+    activeMega=key;
+    megaPanel.classList.add('is-open');
+    megaPanel.setAttribute('aria-hidden','false');
+    megaPanel.inert=false;
+    megaTriggers.forEach(button=>button.setAttribute('aria-expanded',String(button.dataset.mega===key)));
+    megaViews.forEach(view=>{
+      const isActive=view.dataset.menu===key;
+      view.classList.toggle('is-active',isActive);
+      view.inert=!isActive;
+    });
+  }
+  function scheduleMegaClose(){cancelMegaClose();closeTimer=setTimeout(closeMega,180)}
+  megaTriggers.forEach(button=>{
+    button.addEventListener('pointerenter',()=>{if(canHover.matches)openMega(button.dataset.mega)});
+    button.addEventListener('focus',()=>openMega(button.dataset.mega));
+    button.addEventListener('click',event=>{
+      event.stopPropagation();
+      if(activeMega===button.dataset.mega)closeMega();else openMega(button.dataset.mega);
+    });
   });
-  servicesBox.querySelectorAll('.vv-dropdown-panel a').forEach(link => link.addEventListener('click', closeServices));
-  servicesBox.addEventListener('mouseenter', () => { if (matchMedia('(hover:hover)').matches) servicesTrigger.setAttribute('aria-expanded', 'true'); });
-  servicesBox.addEventListener('mouseleave', () => { if (!servicesBox.classList.contains('is-open')) servicesTrigger.setAttribute('aria-expanded', 'false'); });
-  languageToggle.addEventListener('click', (event) => {
-    event.stopPropagation(); const next = !languageBox.classList.contains('is-open');
-    closeServices(); languageBox.classList.toggle('is-open', next); languageToggle.setAttribute('aria-expanded', String(next));
+  header.addEventListener('pointerleave',()=>{if(canHover.matches)scheduleMegaClose()});
+  header.addEventListener('pointerenter',cancelMegaClose);
+  megaPanel.addEventListener('pointerenter',cancelMegaClose);
+  megaPanel.querySelectorAll('a').forEach(link=>link.addEventListener('click',closeMega));
+  document.querySelectorAll('.vv-nav-items > a, .vv-nav-right > a, .vv-logo').forEach(link=>{
+    link.addEventListener('pointerenter',()=>{if(canHover.matches)closeMega()});
+    link.addEventListener('focus',closeMega);
   });
-  document.addEventListener('click', (event) => { if (!servicesBox.contains(event.target)) closeServices(); if (!languageBox.contains(event.target)) closeLanguage(); });
-  document.addEventListener('keydown', (event) => { if (event.key === 'Escape') { closeServices(); closeLanguage(); } });
+  languageToggle.addEventListener('click',event=>{
+    event.stopPropagation();
+    const next=!languageBox.classList.contains('is-open');
+    closeMega();
+    languageBox.classList.toggle('is-open',next);
+    languageToggle.setAttribute('aria-expanded',String(next));
+  });
+  document.addEventListener('click',event=>{
+    if(!header.contains(event.target))closeMega();
+    if(!languageBox.contains(event.target))closeLanguage();
+  });
+  document.addEventListener('keydown',event=>{
+    if(event.key==='Escape'){
+      const current=megaTriggers.find(button=>button.dataset.mega===activeMega);
+      closeMega();closeLanguage();
+      if(current)current.focus({preventScroll:true});
+    }
+  });
+  header.addEventListener('focusout',event=>{
+    if(event.relatedTarget && !header.contains(event.relatedTarget))closeMega();
+  });
   const mobile = document.getElementById('mobile');
   document.querySelectorAll('#mobile a').forEach(link => link.addEventListener('click', () => {
-    const details = mobile.querySelector('details'); if (details) details.open = false;
+    mobile.querySelectorAll('details').forEach(details => { details.open = false; });
   }));
   const navLinks = [...document.querySelectorAll('.vv-nav-items > a')];
   const sections = [{id:'top',link:'#top'},{id:'about',link:'#about'},{id:'services',link:null},{id:'who-we-serve',link:'#who-we-serve'},{id:'work',link:'#work'},{id:'contact',link:'#contact'}];
