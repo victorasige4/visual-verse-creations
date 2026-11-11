@@ -588,6 +588,83 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
   .vv-hero-title .vv-word-selection{animation:none}
 }
 
+
+/* NEXT BATCH — Who We Are photo canvas, replacing the decorative orbit art.
+   Keep the existing editorial copy, responsive layout and hero unchanged. */
+.vv-story-band::after{
+  content:"";position:absolute;pointer-events:none;z-index:-1;
+  width:clamp(260px,38vw,660px);height:clamp(260px,38vw,660px);
+  right:clamp(-110px,-4vw,-20px);bottom:clamp(-160px,-8vw,-35px);
+  background:url("./logo-mark.png") center / contain no-repeat;
+  color:transparent;font-size:0;line-height:0;opacity:.025;
+}
+.vv-story-band .vv-about-story{
+  grid-template-columns:minmax(275px,.85fr) minmax(0,1.35fr);
+  align-items:center;
+  column-gap:clamp(38px,5.4vw,104px);
+}
+.vv-story-band .vv-about-aside{
+  min-width:0;min-height:0;
+  display:flex;flex-direction:column;align-items:flex-start;
+}
+.vv-about-pixel-root{
+  position:relative;
+  display:block;
+  overflow:hidden;
+  isolation:isolate;
+  width:100%;
+  max-width:460px;
+  height:clamp(390px,40vw,560px);
+  margin:22px 0 21px;
+  border-radius:22px;
+  border:1px solid rgba(0,63,92,.1);
+  background:#eaf5f0;
+  box-shadow:0 20px 60px rgba(0,63,92,.12),inset 0 1px rgba(255,255,255,.55);
+}
+.vv-about-pixel-root::after{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:4;
+  border-radius:inherit;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.24);
+}
+.vv-about-pixel-root .vv-about-static-fallback{
+  width:100%;height:100%;display:block;object-fit:cover;
+}
+.vv-about-pixel-root .vv-pixel-canvas{position:relative;width:100%;height:100%}
+.vv-about-pixel-root .vv-pixel-fallback{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:1;transition:opacity .3s ease;
+}
+.vv-about-pixel-root .vv-pixel-fallback.is-ready{opacity:0}
+.vv-about-pixel-root .vv-pixel-surface{
+  display:block;position:relative;z-index:2;width:100%;height:100%;
+  touch-action:pan-y;cursor:crosshair;
+}
+.vv-story-band .vv-about-aside-note{margin-top:0}
+@media(max-width:1024px){
+  .vv-story-band .vv-about-story{
+    grid-template-columns:minmax(240px,.77fr) minmax(0,1.25fr);
+    gap:clamp(26px,4vw,50px);
+    align-items:start;
+  }
+  .vv-about-pixel-root{height:clamp(370px,45vw,520px)}
+}
+@media(max-width:760px){
+  .vv-story-band .vv-about-story{display:block}
+  .vv-story-band .vv-about-aside{min-height:0;margin-bottom:clamp(34px,8vw,54px)}
+  .vv-about-pixel-root{
+    width:min(100%,440px);
+    height:clamp(355px,112vw,530px);
+    margin:22px 0 18px;border-radius:20px;
+  }
+  .vv-story-band::after{
+    width:66vw;height:66vw;
+    right:-10vw;bottom:-5vw;opacity:.025;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .vv-about-pixel-root .vv-pixel-fallback{transition:none}
+}
+
 </style></head><body>
 <div id="vv-react-nav-root"></div>
 <header class="vv-header" id="siteHeader">
@@ -651,13 +728,9 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
 <section class="vv-preview-section vv-about-story" id="about" aria-labelledby="vv-about-title">
   <div class="vv-about-aside">
     <span class="vv-about-index"><span class="vv-about-index-dot" aria-hidden="true"></span> 01 / WHO WE ARE</span>
-    <div class="vv-about-orbit-art" aria-hidden="true">
-      <span class="vv-about-orbit-ring vv-about-orbit-ring-one"></span>
-      <span class="vv-about-orbit-ring vv-about-orbit-ring-two"></span>
-      <span class="vv-about-orbit-core"></span>
-      <span class="vv-about-orbit-spark vv-about-spark-one"></span>
-      <span class="vv-about-orbit-spark vv-about-spark-two"></span>
-      <span class="vv-about-orbit-spark vv-about-spark-three"></span>
+    <div id="vv-about-pixel-root" class="vv-about-pixel-root">
+      <img class="vv-about-static-fallback" src="/about-photographer.webp" width="360" height="540"
+        alt="Photographer holding a camera and looking through its lens" loading="lazy" decoding="async" />
     </div>
     <span class="vv-about-aside-note">INDEPENDENT CREATIVE STUDIO <span aria-hidden="true">↗</span></span>
   </div>
@@ -669,20 +742,119 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
   </div>
 </section>
 </div><!-- /vv-story-band -->
-<section class="vv-preview-section" id="services"><span class="vv-label">WHAT WE DO / 002</span><h2 class="vv-section-h">Many disciplines.<br/>One visual language.</h2><div class="vv-service-list"><a class="vv-service-row" id="service-photography" href="#contact"><small>01</small><strong>Photography</strong><span>Moments & portraits ↗</span></a><a class="vv-service-row" id="service-videography" href="#contact"><small>02</small><strong>Videography</strong><span>Films & motion ↗</span></a><a class="vv-service-row" id="service-branding" href="#contact"><small>03</small><strong>Branding</strong><span>Identity & strategy ↗</span></a><a class="vv-service-row" id="service-graphic-design" href="#contact"><small>04</small><strong>Graphic Design</strong><span>Visual communication ↗</span></a><a class="vv-service-row" id="service-web-ui-ux" href="#contact"><small>05</small><strong>Web & UI/UX</strong><span>Digital experiences ↗</span></a><a class="vv-service-row" id="service-social-media" href="#contact"><small>06</small><strong>Social Media</strong><span>Content & campaigns ↗</span></a></div></section>
-<section class="vv-preview-section vv-audiences" id="who-we-serve">
-  <span class="vv-label">THE PEOPLE WE CREATE WITH / 003</span>
-  <div class="vv-audiences-heading"><h2 class="vv-section-h">Your world.<br/>Our creative perspective.</h2><p class="vv-lead">From the first big idea to the next chapter of growth, we bring thoughtful visuals to the people making things happen.</p></div>
-  <div class="vv-audience-grid">
-    <article><span>01 /</span><h3>Growing brands</h3><p>Memorable identities, campaigns and content built for where you're headed.</p></article>
-    <article><span>02 /</span><h3>Businesses & teams</h3><p>Digital experiences and visual communication that make your work stand out.</p></article>
-    <article><span>03 /</span><h3>Creators & founders</h3><p>A creative partner to give an ambitious idea the presence it deserves.</p></article>
-    <article><span>04 /</span><h3>People & events</h3><p>Photography and films that hold onto the moments worth remembering.</p></article>
+
+<section class="vv-preview-section" id="services">
+  <div id="vv-services-root">
+    <span class="vv-label">WHAT WE DO / 002</span>
+    <h2 class="vv-section-h">Six ways we bring ideas to life.</h2>
+    <p class="vv-lead">Photography, videography, branding, design, digital experiences and social storytelling.</p>
+    <div class="vv-service-list">
+      <a class="vv-service-row" id="service-photography" href="#contact"><small>01</small><strong>Photography</strong><span>Moments &amp; portraits ↗</span></a>
+      <a class="vv-service-row" id="service-videography" href="#contact"><small>02</small><strong>Videography</strong><span>Films &amp; motion ↗</span></a>
+      <a class="vv-service-row" id="service-branding" href="#contact"><small>03</small><strong>Branding</strong><span>Identity &amp; strategy ↗</span></a>
+      <a class="vv-service-row" id="service-graphic-design" href="#contact"><small>04</small><strong>Graphic Design</strong><span>Visual communication ↗</span></a>
+      <a class="vv-service-row" id="service-web-ui-ux" href="#contact"><small>05</small><strong>Web &amp; UI/UX</strong><span>Digital experiences ↗</span></a>
+      <a class="vv-service-row" id="service-social-media" href="#contact"><small>06</small><strong>Social Media</strong><span>Content &amp; campaigns ↗</span></a>
+    </div>
   </div>
 </section>
-<section class="vv-preview-section" id="work"><span class="vv-label">PORTFOLIO / 004</span><h2 class="vv-section-h">Selected work.<br/>More to come.</h2><p class="vv-lead">A space for projects that represent what we love creating. Real project visuals can be added here once they are selected and approved.</p><div class="vv-work-grid"><div class="vv-work-placeholder"><div><small>PROJECT PLACEHOLDER / 01</small><strong>Portraits & stories</strong></div><p>Your photography projects will live here.</p></div><div class="vv-work-placeholder"><div><small>PROJECT PLACEHOLDER / 02</small><strong>Brands & digital</strong></div><p>Your visual identities and web projects will live here.</p></div></div></section>
-<section class="vv-preview-section" id="process"><span class="vv-label">OUR APPROACH / 005</span><h2 class="vv-section-h">Thoughtful at every step.</h2><div class="vv-process"><article><strong>01. Discover</strong><p>We understand your goals, audience and the story behind your business.</p></article><article><strong>02. Create</strong><p>We shape the concept, craft the details and keep you involved.</p></article><article><strong>03. Deliver</strong><p>We refine and hand over work that's ready for the real world.</p></article></div></section>
-</main><footer class="vv-footer" id="contact"><div class="vv-footer-inner"><a class="vv-footer-brand" href="#top" aria-label="VisualVerse Creations — Back to top"><img src="./brand-logo.png" alt="VisualVerse Creations" width="300" height="78" decoding="async" /></a><span class="vv-label" style="color:#2ec4b6">LET'S MAKE SOMETHING MATTER / 006</span><div class="vv-footer-title">Have an idea?<br/>Let's make it real.</div><a href="mailto:hello@visualverse.com">Get in touch ↗</a><div class="vv-footer-end"><span>© VISUALVERSE CREATIONS — CONCEPT PREVIEW</span><a href="#top">BACK TO TOP ↑</a></div></div></footer>
+<section class="vv-preview-section vv-audiences" id="who-we-serve">
+  <div id="vv-audiences-root">
+    <span class="vv-label">THE PEOPLE WE CREATE WITH / 003</span>
+    <h2 class="vv-section-h">Every story has its people.</h2>
+    <p class="vv-lead">Creative work for growing brands, businesses, founders and important moments.</p>
+    <div class="vv-audience-grid">
+      <article><span>01 /</span><h3>Growing brands</h3><p>Memorable identities, campaigns and content.</p></article>
+      <article><span>02 /</span><h3>Businesses &amp; teams</h3><p>Digital experiences and visual communication.</p></article>
+      <article><span>03 /</span><h3>Creators &amp; founders</h3><p>Visual presence for ambitious ideas.</p></article>
+      <article><span>04 /</span><h3>People &amp; events</h3><p>Photography and films that hold onto the moments.</p></article>
+    </div>
+  </div>
+</section>
+<section class="vv-preview-section" id="work">
+<div id="vv-portfolio-root">
+<span class="vv-label">SELECTED DIRECTIONS / 004</span>
+<h2 class="vv-section-h">A glimpse of what we create.</h2>
+<p class="vv-lead">Explore four creative directions from Visual Verse: photography, branding, web and digital experiences, and campaigns and motion.</p>
+<div class="vv-work-grid">
+<div class="vv-work-placeholder"><div><small>PORTFOLIO COLLECTION / 01</small><strong>Photography &amp; visual stories</strong></div><p>Portraits, celebrations, and meaningful imagery.</p></div>
+<div class="vv-work-placeholder"><div><small>PORTFOLIO COLLECTION / 02</small><strong>Branding &amp; identity</strong></div><p>Identity systems, strategy, and expressive brand worlds.</p></div>
+<div class="vv-work-placeholder"><div><small>PORTFOLIO COLLECTION / 03</small><strong>Web &amp; UI/UX</strong></div><p>Thoughtful websites, interfaces, and digital experiences.</p></div>
+<div class="vv-work-placeholder"><div><small>PORTFOLIO COLLECTION / 04</small><strong>Campaigns &amp; motion</strong></div><p>Visual campaigns, social storytelling, and video.</p></div>
+</div>
+<a class="vv-preview-portfolio-link" href="/projects.html">Explore the projects collections ↗</a>
+</div>
+</section>
+<section class="vv-preview-section vv-why-section" id="process" aria-label="Why Visual Verse">
+  <div id="vv-why-root">
+    <div class="vv-why-fallback">
+      <span class="vv-label">WHY VISUAL VERSE / 005</span>
+      <h2 class="vv-section-h">Built around you,<br>thought through together.</h2>
+      <p>We listen first, create with intention, and bring together the right ideas to tell your story beautifully.</p>
+      <div class="vv-why-fallback-reasons">
+        <article><strong>01 · Made Around You</strong><p>Creative direction built around your story, goals, and audience.</p></article>
+        <article><strong>02 · Creative With Purpose</strong><p>Ideas shaped by strategy, craft, and meaningful design.</p></article>
+        <article><strong>03 · From Idea to Delivery</strong><p>Thoughtful collaboration from the first brief to the final details.</p></article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="creative-disciplines" class="vv-close-marquee-section" aria-label="Visual Verse creative disciplines">
+  <div id="vv-marquee-root">
+    <div class="vv-close-marquee vv-close-marquee-static" aria-label="Marketing, User Experience, Interaction Design, Logos, Brand Identity, Photography, Videography, Motion Graphics, Art Direction, Graphic Design, Web Design, UI Design, UX Research, Digital Campaigns, Content Strategy, Social Media, Visual Storytelling, Creative Strategy, Illustration, Video Editing">
+      <strong>Marketing · User Experience · Interaction Design · Logos · Branding · Photography · Videography · Motion Graphics</strong>
+    </div>
+  </div>
+</section>
+<section id="where-we-serve" class="vv-close-location-section" aria-label="Where Visual Verse serves in Kenya">
+  <div id="vv-location-root">
+    <div class="vv-close-location">
+      <span class="vv-close-eyebrow">WHERE WE SERVE / 006</span>
+      <h2>Based in Nairobi. Creating for Kenya.</h2>
+      <p>Remote creative collaborations across Kenya, and on-site work by arrangement.</p>
+      <p>Nairobi · Mombasa · Kisumu · Nakuru · Eldoret · Nyeri · Thika · Malindi</p>
+    </div>
+  </div>
+</section>
+<section id="faqs" class="vv-close-faq-section" aria-label="Frequently asked questions">
+  <div id="vv-faq-root">
+    <div class="vv-close-faq">
+      <div class="vv-close-faq-intro">
+        <h2>Straight answers before you start.</h2>
+        <p>We offer photography, videography, branding, design, digital experiences and marketing. Get in touch to discuss your project, location, scope or timeline.</p>
+      </div>
+      <div class="vv-close-faq-list"><p>For project enquiries, contact <a href="mailto:hello@visualverse.com">hello@visualverse.com</a>.</p></div>
+    </div>
+  </div>
+</section>
+<section id="contact" class="vv-close-cta-section" aria-label="Let's talk about your project">
+  <div id="vv-cta-root">
+    <div class="vv-close-cta">
+      <div class="vv-close-cta-content">
+        <span class="vv-close-cta-eyebrow">LET'S TALK / 008</span>
+        <h2>Have an idea worth bringing to life?</h2>
+        <a class="vv-close-cta-primary" href="mailto:hello@visualverse.com?subject=Start%20a%20Visual%20Verse%20Project">Let's talk ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="vv-close-footer-wrap" id="footer">
+  <div id="vv-footer-root">
+    <div class="vv-close-footer">
+      <div class="vv-close-footer-grid">
+        <div class="vv-close-footer-about">
+          <a href="/#top" class="vv-close-footer-brand"><img src="/brand-logo.png" alt="Visual Verse Creations" /></a>
+          <p>Thoughtful design. Lasting stories. Based in Nairobi, Kenya.</p>
+        </div>
+        <nav class="vv-close-footer-col" aria-label="Footer navigation"><h2>EXPLORE</h2><a href="/#top">Home</a><a href="/#about">About</a><a href="/#services">Services</a><a href="/projects.html">Projects</a></nav>
+        <nav class="vv-close-footer-col" aria-label="Footer creative services"><h2>OUR SERVICES</h2><a href="/#service-photography">Photography</a><a href="/#service-branding">Branding</a><a href="/#service-web-ui-ux">Web &amp; UI/UX</a></nav>
+        <div class="vv-close-footer-col"><h2>CONTACT</h2><a href="mailto:hello@visualverse.com">hello@visualverse.com</a><a href="/#contact">Start a project</a></div>
+      </div>
+    </div>
+  </div>
+</footer>
 <script>
 const scenes = [
  { eyebrow:'01 / CREATIVE JOURNEYS', title:'Moments that last',highlight:'last',category:'Photography',description:'From portraits and weddings to the little moments in between, we capture stories you will want to revisit.',shape:'camera' },

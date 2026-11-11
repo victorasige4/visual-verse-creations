@@ -389,6 +389,94 @@
   .vv-react-nav-ready .vv-hero .vv-hero-copy { padding-top: 118px; }
   .vv-react-nav-ready .vv-hero .vv-hero-grid { min-height: 0; }
 }
+
+/* STAGED COMPACT FLOATING ISLAND — about half the original 1240px desktop width.
+   Preserve legibility and all destinations via the always-available menu button. */
+.vv-island-header {
+  top: 12px;
+  width: min(620px, calc(100vw - 24px));
+}
+.vv-island-bar {
+  min-height: 56px;
+  gap: 7px;
+  padding: 6px 11px 6px 15px;
+  border-radius: 21px;
+  box-shadow: 0 12px 38px rgba(0, 43, 57, .13), 0 2px 8px rgba(0, 63, 92, .035);
+}
+.vv-island-brand { width: 130px; min-height: 38px; }
+.vv-island-brand img { max-height: 40px; }
+.vv-island-nav { gap: 2px; min-width: 0; }
+.vv-island-nav > :not(.vv-island-compact-link) { display: none; }
+.vv-island-nav .vv-island-compact-link {
+  display: inline-flex;
+  padding: 9px 9px;
+  font-size: 11px;
+}
+.vv-island-actions { gap: 6px; }
+.vv-island-language-btn {
+  gap: 3px;
+  font-size: 10px;
+  padding: 6px 2px;
+}
+.vv-island-language-btn svg:last-child { display: none; }
+.vv-island-cta {
+  gap: 8px;
+  padding: 5px 5px 5px 12px;
+  font-size: 11px;
+}
+.vv-island-cta-icon { width: 27px; height: 27px; }
+.vv-island-burger {
+  display: flex;
+  width: 35px;
+  height: 35px;
+  border-radius: 11px;
+}
+.vv-island-burger svg { width: 19px; height: 19px; }
+.vv-island-mega {
+  width: min(610px, calc(100vw - 32px));
+  top: calc(100% + 11px);
+  padding: 7px;
+  border-radius: 22px;
+}
+.vv-island-mega-layout {
+  grid-template-columns: minmax(190px, .82fr) minmax(0, 1.55fr);
+  gap: 8px;
+  min-height: 320px;
+}
+.vv-island-mega-intro { padding: 25px 20px 21px; }
+.vv-island-mega-intro h2 { font-size: clamp(23px, 2.4vw, 30px); margin: 24px 0 12px; }
+.vv-island-mega-cards { gap: 5px; padding: 8px 3px; }
+.vv-island-mega-card { min-height: 91px; gap: 8px; padding: 13px 9px; }
+.vv-island-card-text strong { font-size: 13px; }
+.vv-island-card-text small { font-size: 10px; }
+.vv-island-mobile-language {
+  display: flex; gap: 8px; align-items: center;
+  padding: 18px 4px 4px;
+  color: #62858b; font-size: 11px;
+}
+.vv-island-mobile-language svg { flex: 0 0 auto; }
+@media (min-width: 800px) {
+  /* Override the old breakpoint that hid the whole desktop nav at 1180px. */
+  .vv-island-nav { display: flex; }
+  .vv-island-cta { display: inline-flex; }
+  .vv-island-mega { display: block; }
+}
+@media (max-width: 799px) {
+  .vv-island-header { width: min(560px, calc(100vw - 22px)); top: 11px; }
+  .vv-island-bar { min-height: 56px; border-radius: 20px; padding: 7px 13px; }
+  .vv-island-brand { width: clamp(132px, 24vw, 170px); min-height: 38px; }
+  .vv-island-nav, .vv-island-cta, .vv-island-mega { display: none; }
+  .vv-island-burger { display: flex; }
+  .vv-island-mobile { max-height: calc(100svh - 92px); }
+}
+@media (max-width: 580px) {
+  .vv-island-header { width: calc(100vw - 20px); top: 10px; }
+  .vv-island-bar { min-height: 53px; padding: 6px 12px; }
+  .vv-island-brand { width: min(44vw, 156px); min-height: 38px; }
+  .vv-island-language { display: none; }
+  .vv-island-mobile { max-height: calc(100svh - 85px); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .vv-island-header *, .vv-island-header *::before, .vv-island-header *::after { transition: none !important; }
 }

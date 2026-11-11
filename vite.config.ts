@@ -26,6 +26,14 @@ function copyVisualVerseAssets(): Plugin {
 }
 
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      input: {
+        home: resolve(process.cwd(), "index.html"),
+        projects: resolve(process.cwd(), "projects.html"),
+      },
+    },
+  },
   plugins: [react(), tailwindcss(), copyVisualVerseAssets()],
   resolve: {
     alias: {
