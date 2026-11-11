@@ -123,6 +123,12 @@ export function VisualVerseWhyUs() {
               animate={{ scaleX: active / (reasons.length - 1) }}
               transition={reducedMotion ? { duration: 0 } : { duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             />
+            <motion.span
+              className="vv-why-rail-progress-mobile"
+              initial={false}
+              animate={{ scaleY: active / (reasons.length - 1) }}
+              transition={reducedMotion ? { duration: 0 } : { duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            />
           </div>
           {reasons.map((reason, index) => {
             const selected = index === active;
