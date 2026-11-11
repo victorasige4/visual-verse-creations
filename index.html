@@ -588,6 +588,83 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
   .vv-hero-title .vv-word-selection{animation:none}
 }
 
+
+/* NEXT BATCH — Who We Are photo canvas, replacing the decorative orbit art.
+   Keep the existing editorial copy, responsive layout and hero unchanged. */
+.vv-story-band::after{
+  content:"";position:absolute;pointer-events:none;z-index:-1;
+  width:clamp(260px,38vw,660px);height:clamp(260px,38vw,660px);
+  right:clamp(-110px,-4vw,-20px);bottom:clamp(-160px,-8vw,-35px);
+  background:url("./logo-mark.png") center / contain no-repeat;
+  color:transparent;font-size:0;line-height:0;opacity:.025;
+}
+.vv-story-band .vv-about-story{
+  grid-template-columns:minmax(275px,.85fr) minmax(0,1.35fr);
+  align-items:center;
+  column-gap:clamp(38px,5.4vw,104px);
+}
+.vv-story-band .vv-about-aside{
+  min-width:0;min-height:0;
+  display:flex;flex-direction:column;align-items:flex-start;
+}
+.vv-about-pixel-root{
+  position:relative;
+  display:block;
+  overflow:hidden;
+  isolation:isolate;
+  width:100%;
+  max-width:460px;
+  height:clamp(390px,40vw,560px);
+  margin:22px 0 21px;
+  border-radius:22px;
+  border:1px solid rgba(0,63,92,.1);
+  background:#eaf5f0;
+  box-shadow:0 20px 60px rgba(0,63,92,.12),inset 0 1px rgba(255,255,255,.55);
+}
+.vv-about-pixel-root::after{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:4;
+  border-radius:inherit;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.24);
+}
+.vv-about-pixel-root .vv-about-static-fallback{
+  width:100%;height:100%;display:block;object-fit:cover;
+}
+.vv-about-pixel-root .vv-pixel-canvas{position:relative;width:100%;height:100%}
+.vv-about-pixel-root .vv-pixel-fallback{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:1;transition:opacity .3s ease;
+}
+.vv-about-pixel-root .vv-pixel-fallback.is-ready{opacity:0}
+.vv-about-pixel-root .vv-pixel-surface{
+  display:block;position:relative;z-index:2;width:100%;height:100%;
+  touch-action:pan-y;cursor:crosshair;
+}
+.vv-story-band .vv-about-aside-note{margin-top:0}
+@media(max-width:1024px){
+  .vv-story-band .vv-about-story{
+    grid-template-columns:minmax(240px,.77fr) minmax(0,1.25fr);
+    gap:clamp(26px,4vw,50px);
+    align-items:start;
+  }
+  .vv-about-pixel-root{height:clamp(370px,45vw,520px)}
+}
+@media(max-width:760px){
+  .vv-story-band .vv-about-story{display:block}
+  .vv-story-band .vv-about-aside{min-height:0;margin-bottom:clamp(34px,8vw,54px)}
+  .vv-about-pixel-root{
+    width:min(100%,440px);
+    height:clamp(355px,112vw,530px);
+    margin:22px 0 18px;border-radius:20px;
+  }
+  .vv-story-band::after{
+    width:66vw;height:66vw;
+    right:-10vw;bottom:-5vw;opacity:.025;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .vv-about-pixel-root .vv-pixel-fallback{transition:none}
+}
+
 </style></head><body>
 <div id="vv-react-nav-root"></div>
 <header class="vv-header" id="siteHeader">
@@ -651,13 +728,9 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
 <section class="vv-preview-section vv-about-story" id="about" aria-labelledby="vv-about-title">
   <div class="vv-about-aside">
     <span class="vv-about-index"><span class="vv-about-index-dot" aria-hidden="true"></span> 01 / WHO WE ARE</span>
-    <div class="vv-about-orbit-art" aria-hidden="true">
-      <span class="vv-about-orbit-ring vv-about-orbit-ring-one"></span>
-      <span class="vv-about-orbit-ring vv-about-orbit-ring-two"></span>
-      <span class="vv-about-orbit-core"></span>
-      <span class="vv-about-orbit-spark vv-about-spark-one"></span>
-      <span class="vv-about-orbit-spark vv-about-spark-two"></span>
-      <span class="vv-about-orbit-spark vv-about-spark-three"></span>
+    <div id="vv-about-pixel-root" class="vv-about-pixel-root">
+      <img class="vv-about-static-fallback" src="/about-photographer.webp" width="360" height="540"
+        alt="Photographer holding a camera and looking through its lens" loading="lazy" decoding="async" />
     </div>
     <span class="vv-about-aside-note">INDEPENDENT CREATIVE STUDIO <span aria-hidden="true">↗</span></span>
   </div>
