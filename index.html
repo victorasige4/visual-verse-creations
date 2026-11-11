@@ -509,6 +509,39 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
 @media(max-width:1180px){.vv-mega-shell{display:none!important}}
 @media(prefers-reduced-motion:reduce){.vv-mega-shell,.vv-mega-view,.vv-mega-card,.vv-mega-arrow{animation:none!important;transition:none!important}}
 
+
+/* Service slideshow: sequential, visibly loading progress bars (01 → 06).
+   Progress, slide changes, manual selection and pause all share the same JS clock. */
+.vv-hero-controls .vv-scene-step{opacity:.54;transition:opacity .2s ease}
+.vv-hero-controls .vv-scene-step.is-current,
+.vv-hero-controls .vv-scene-step:hover{opacity:1}
+.vv-hero-controls .vv-scene-step.is-complete{opacity:.76}
+.vv-hero-controls .vv-step-line,
+.vv-hero-controls .vv-scene-step.is-current .vv-step-line{
+  position:relative;
+  display:block;
+  width:100%;
+  height:4px;
+  overflow:hidden;
+  border-radius:100px;
+  background:rgba(0,63,92,.17);
+  transition:none;
+}
+.vv-hero-controls .vv-step-line::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background:var(--vv-aqua);
+  transform:scaleX(var(--vv-progress,0));
+  transform-origin:left center;
+  will-change:transform;
+}
+.vv-hero-controls .vv-play-button[hidden]{display:none}
+@media(prefers-reduced-motion:reduce){
+  .vv-hero-controls .vv-step-line::after{transition:none;will-change:auto}
+}
+
 </style></head><body>
 <div id="vv-react-nav-root"></div>
 <header class="vv-header" id="siteHeader">
@@ -613,7 +646,10 @@ const scenes = [
  { eyebrow:'05 / DIGITAL EXPERIENCES', title:'Made to explore',category:'Web & UI/UX Design',description:'Websites and interfaces that look beautiful, feel intuitive, and help visitors find what matters.',shape:'web' },
  { eyebrow:'06 / IDEAS WITH REACH', title:'Stories worth sharing',category:'Social Media & Digital Marketing',description:'Purposeful content and campaigns that keep your brand visible and give your audience a reason to engage.',shape:'social' },
 ];
-let active=0,paused=false, dots=[],frames=[],timer=0;
+let active=0,paused=false,dots=[],frames=[];
+const SCENE_DURATION=6400; // The active line loads for exactly one service interval.
+let progressElapsed=0,lastProgressTime=0;
+
 const canvas=document.getElementById('vvCanvas'),g=canvas.getContext('2d');
 let w=500,h=500,dpr=1;const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const pointer={x:0,y:0,active:false};
@@ -644,10 +680,82 @@ function resize(){const rect=canvas.getBoundingClientRect();w=Math.max(1,rect.wi
 new ResizeObserver(resize).observe(canvas);resize();
 canvas.addEventListener('pointermove',e=>{const r=canvas.getBoundingClientRect();pointer.x=e.clientX-r.left;pointer.y=e.clientY-r.top;pointer.active=true});canvas.addEventListener('pointerleave',()=>pointer.active=false);
 function morph(n){active=n;const frame=frames[n];for(let i=0;i<dots.length;i++){const d=dots[i],p=frame[i];if(p){d.tx=p.x;d.ty=p.y;d.ta=1;d.fill=p.fill;if(reduced){d.x=d.tx;d.y=d.ty;d.a=d.ta}}else{d.tx=210+(Math.random()-.5)*330;d.ty=210+(Math.random()-.5)*330;d.ta=0;if(reduced)d.a=0}}}
-function show(n){const scene=scenes[n];const copy=document.getElementById('sceneCopy');copy.classList.remove('vv-copy-enter');void copy.offsetWidth;copy.classList.add('vv-copy-enter');document.getElementById('eyebrow').textContent=scene.eyebrow;document.getElementById('headline').textContent=scene.title;document.getElementById('description').textContent=scene.description;document.getElementById('serviceName').textContent=scene.category;document.getElementById('artLabel').textContent='VISUALVERSE / '+scene.category.toUpperCase();document.getElementById('counter').textContent=String(n+1).padStart(2,'0')+' / 06';document.getElementById('steps').querySelectorAll('.vv-scene-step').forEach((b,i)=>{b.classList.toggle('is-current',i===n);if(i===n)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current')});morph(n)}
-const steps=document.getElementById('steps');scenes.forEach((scene,i)=>{const b=document.createElement('button');b.className='vv-scene-step';b.title='Show '+scene.category;b.setAttribute('aria-label','Show '+scene.category);b.innerHTML=`<span class="vv-step-number">0${i+1}</span><span class="vv-step-line"></span>`;b.addEventListener('click',()=>{paused=true;updatePause();show(i)});steps.appendChild(b)});
-const pause=document.getElementById('pauseSlide');function updatePause(){pause.textContent=paused?'▶':'Ⅱ';pause.setAttribute('aria-label',paused?'Resume slideshow':'Pause slideshow')};pause.addEventListener('click',()=>{paused=!paused;updatePause()});
-show(0);if(!reduced)setInterval(()=>{if(!paused)show((active+1)%scenes.length)},6400);
+function paintProgress(){
+  document.querySelectorAll('#steps .vv-scene-step').forEach((button,i)=>{
+    const fill=i<active?1:i===active?(reduced?1:Math.min(1,progressElapsed/SCENE_DURATION)):0;
+    button.style.setProperty('--vv-progress',String(fill));
+  });
+}
+function show(n){
+  const scene=scenes[n];
+  const copy=document.getElementById('sceneCopy');
+  copy.classList.remove('vv-copy-enter');
+  void copy.offsetWidth;
+  copy.classList.add('vv-copy-enter');
+  document.getElementById('eyebrow').textContent=scene.eyebrow;
+  document.getElementById('headline').textContent=scene.title;
+  document.getElementById('description').textContent=scene.description;
+  document.getElementById('serviceName').textContent=scene.category;
+  document.getElementById('artLabel').textContent='VISUALVERSE / '+scene.category.toUpperCase();
+  document.getElementById('counter').textContent=String(n+1).padStart(2,'0')+' / 06';
+  document.getElementById('steps').querySelectorAll('.vv-scene-step').forEach((button,i)=>{
+    button.classList.toggle('is-current',i===n);
+    button.classList.toggle('is-complete',i<n);
+    if(i===n)button.setAttribute('aria-current','true');
+    else button.removeAttribute('aria-current');
+  });
+  morph(n);
+  progressElapsed=0;
+  lastProgressTime=0;
+  paintProgress();
+}
+const steps=document.getElementById('steps');
+scenes.forEach((scene,i)=>{
+  const button=document.createElement('button');
+  button.className='vv-scene-step';
+  button.title='Show '+scene.category;
+  button.setAttribute('aria-label','Show '+scene.category);
+  button.innerHTML=`<span class="vv-step-number">0${i+1}</span><span class="vv-step-line"></span>`;
+  // Selecting any service restarts its progress from the beginning.
+  button.addEventListener('click',()=>show(i));
+  steps.appendChild(button);
+});
+const pause=document.getElementById('pauseSlide');
+function updatePause(){
+  pause.textContent=paused?'▶':'Ⅱ';
+  pause.setAttribute('aria-label',paused?'Resume slideshow':'Pause slideshow');
+  pause.setAttribute('aria-pressed',String(paused));
+}
+pause.addEventListener('click',()=>{
+  paused=!paused;
+  lastProgressTime=0; // Never jump forward after a pause.
+  updatePause();
+});
+function tickProgress(now){
+  if(!paused&&!document.hidden){
+    if(lastProgressTime)progressElapsed+=Math.max(0,Math.min(100,now-lastProgressTime));
+    lastProgressTime=now;
+    if(progressElapsed>=SCENE_DURATION){
+      // Fill the line to 100% before advancing to the next service.
+      progressElapsed=SCENE_DURATION;
+      paintProgress();
+      show((active+1)%scenes.length);
+    }else{
+      paintProgress();
+    }
+  }else{
+    lastProgressTime=0; // Also freeze the loading bar in background tabs.
+  }
+  requestAnimationFrame(tickProgress);
+}
+show(0);
+updatePause();
+if(reduced){
+  // Reduced-motion users can switch services manually without a moving bar.
+  pause.hidden=true;
+}else{
+  requestAnimationFrame(tickProgress);
+}
 function animate(){g.clearRect(0,0,w,h);const scale=Math.min(w,h)/420,ox=(w-420*scale)/2,oy=(h-420*scale)/2;for(const p of dots){p.x+=(p.tx-p.x)*(reduced?.24:.065);p.y+=(p.ty-p.y)*(reduced?.24:.065);p.a+=(p.ta-p.a)*.09;if(p.a<.025)continue;let px=ox+p.x*scale,py=oy+p.y*scale;if(!reduced&&pointer.active){const dx=px-pointer.x,dy=py-pointer.y,dist=Math.hypot(dx,dy);if(dist<70&&dist>0){px+=dx/dist*(70-dist)/70*23;py+=dy/dist*(70-dist)/70*23}}g.globalAlpha=Math.max(0,Math.min(1,p.a));g.fillStyle=p.fill;g.beginPath();g.arc(px,py,p.size*scale,0,Math.PI*2);g.fill()}g.globalAlpha=1;requestAnimationFrame(animate)}animate();
 const burger=document.getElementById('burger'),mobile=document.getElementById('mobile');burger.addEventListener('click',()=>{const open=mobile.hidden;mobile.hidden=!open;burger.setAttribute('aria-expanded',String(open));burger.textContent=open?'×':'☰'});mobile.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mobile.hidden=true;burger.setAttribute('aria-expanded','false');burger.textContent='☰'}));
 </script>
