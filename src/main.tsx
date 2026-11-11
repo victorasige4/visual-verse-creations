@@ -4,8 +4,10 @@ import { VisualVerseNavbar } from "./components/VisualVerseNavbar";
 import { VisualVerseWhoWeAre } from "./components/VisualVerseWhoWeAre";
 import { VisualVerseServices } from "./components/VisualVerseServices";
 import { VisualVerseAudiences } from "./components/VisualVerseAudiences";
+import { VisualVersePortfolio } from "./components/VisualVersePortfolio";
 import "./styles.css";
 import "./showcases.css";
+import "./portfolio.css";
 
 const mount = document.getElementById("vv-react-nav-root");
 if (mount) {
@@ -39,6 +41,15 @@ if (audiencesMount) {
   createRoot(audiencesMount).render(
     <StrictMode>
       <VisualVerseAudiences />
+    </StrictMode>,
+  );
+}
+
+const portfolioMount = document.getElementById("vv-portfolio-root");
+if (portfolioMount) {
+  createRoot(portfolioMount).render(
+    <StrictMode>
+      <VisualVersePortfolio />
     </StrictMode>,
   );
 }
