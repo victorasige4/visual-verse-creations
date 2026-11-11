@@ -1061,8 +1061,14 @@ pause.addEventListener('click',()=>{
   lastProgressTime=0; // Never jump forward after a pause.
   updatePause();
 });
+let vvSlideshowVisible=true,vvLastProgressPaint=0;
+const vvProgressObserver=new IntersectionObserver(entries=>{
+  vvSlideshowVisible=Boolean(entries[0]?.isIntersecting);
+  if(!vvSlideshowVisible)lastProgressTime=0;
+},{rootMargin:'100px',threshold:0});
+vvProgressObserver.observe(document.querySelector('.vv-hero'));
 function tickProgress(now){
-  if(!paused&&!document.hidden){
+  if(!paused&&!document.hidden&&vvSlideshowVisible){
     if(lastProgressTime)progressElapsed+=Math.max(0,Math.min(100,now-lastProgressTime));
     lastProgressTime=now;
     if(progressElapsed>=SCENE_DURATION){
@@ -1070,11 +1076,12 @@ function tickProgress(now){
       progressElapsed=SCENE_DURATION;
       paintProgress();
       show((active+1)%scenes.length);
-    }else{
+    }else if(now-vvLastProgressPaint>38){
       paintProgress();
+      vvLastProgressPaint=now;
     }
   }else{
-    lastProgressTime=0; // Also freeze the loading bar in background tabs.
+    lastProgressTime=0; // Freeze the loading bar in offscreen and background tabs.
   }
   requestAnimationFrame(tickProgress);
 }
@@ -1092,8 +1099,9 @@ let vvParticleVisible=true,vvParticleFrame=0,vvParticleLast=0;
 const vvParticleFps=window.matchMedia('(pointer:coarse)').matches?24:30;
 function animateParticles(now){
  if(!vvParticleVisible||document.hidden){vvParticleFrame=0;return}
- vvParticleFrame=requestAnimationFrame(animateParticles);
- if(now-vvParticleLast<1000/vvParticleFps)return;
+ if(!reduced)vvParticleFrame=requestAnimationFrame(animateParticles);
+ else vvParticleFrame=0;
+ if(!reduced&&now-vvParticleLast<1000/vvParticleFps)return;
  vvParticleLast=now;
  g.clearRect(0,0,w,h);
  const scale=Math.min(w,h)/420,ox=(w-420*scale)/2,oy=(h-420*scale)/2;
@@ -1124,7 +1132,7 @@ const particleObserver=new IntersectionObserver(entries=>{
 },{rootMargin:'80px',threshold:0});
 particleObserver.observe(canvas);
 document.addEventListener('visibilitychange',()=>{document.hidden?stopParticles():startParticles()});
-if(reduced){g.clearRect(0,0,w,h);requestAnimationFrame(animateParticles)}
+if(reduced){for(const p of dots){p.x=p.tx;p.y=p.ty;p.a=p.ta;}requestAnimationFrame(animateParticles)}
 else startParticles();
 const burger=document.getElementById('burger'),mobile=document.getElementById('mobile');burger.addEventListener('click',()=>{const open=mobile.hidden;mobile.hidden=!open;burger.setAttribute('aria-expanded',String(open));burger.textContent=open?'×':'☰'});mobile.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mobile.hidden=true;burger.setAttribute('aria-expanded','false');burger.textContent='☰'}));
 </script>
