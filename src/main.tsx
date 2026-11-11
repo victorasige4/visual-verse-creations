@@ -5,9 +5,11 @@ import { VisualVerseWhoWeAre } from "./components/VisualVerseWhoWeAre";
 import { VisualVerseServices } from "./components/VisualVerseServices";
 import { VisualVerseAudiences } from "./components/VisualVerseAudiences";
 import { VisualVersePortfolio } from "./components/VisualVersePortfolio";
+import { VisualVerseWhyUs } from "./components/VisualVerseWhyUs";
 import "./styles.css";
 import "./showcases.css";
 import "./portfolio.css";
+import "./why-us.css";
 
 const mount = document.getElementById("vv-react-nav-root");
 if (mount) {
@@ -50,6 +52,15 @@ if (portfolioMount) {
   createRoot(portfolioMount).render(
     <StrictMode>
       <VisualVersePortfolio />
+    </StrictMode>,
+  );
+}
+
+const whyMount = document.getElementById("vv-why-root");
+if (whyMount) {
+  createRoot(whyMount).render(
+    <StrictMode>
+      <VisualVerseWhyUs />
     </StrictMode>,
   );
 }
