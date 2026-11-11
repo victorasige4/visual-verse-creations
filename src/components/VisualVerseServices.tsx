@@ -174,7 +174,7 @@ export function VisualVerseServices() {
                         <p className="vv-svc-panel-headline">{item.headline}</p>
                         <p className="vv-svc-panel-description">{item.description}</p>
                         <ul>{item.details.map(t=><li key={t}><Check size={14} aria-hidden={true}/>{t}</li>)}</ul>
-                        <a href="#contact" className="vv-svc-cta">Explore {item.title}<span><ArrowUpRight size={17} aria-hidden={true}/></span></a>
+                        <a href={"/services.html#details-"+item.id} className="vv-svc-cta">Explore {item.title}<span><ArrowUpRight size={17} aria-hidden={true}/></span></a>
                       </div>
                       <ServiceArtwork kind={item.kind}/>
                     </motion.div>
