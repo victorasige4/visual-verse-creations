@@ -31,6 +31,11 @@ export default defineConfig({
       input: {
         home: resolve(process.cwd(), "index.html"),
         projects: resolve(process.cwd(), "projects.html"),
+        about: resolve(process.cwd(), "about.html"),
+        services: resolve(process.cwd(), "services.html"),
+        audiences: resolve(process.cwd(), "who-we-serve.html"),
+        contact: resolve(process.cwd(), "contact.html"),
+        quote: resolve(process.cwd(), "request-quote.html"),
       },
     },
   },

@@ -1,3 +1,4 @@
+import { PolicyLinks } from "./VisualVersePolicies";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import {
@@ -31,177 +32,10 @@ export function VisualVerseMarquee() {
   );
 }
 
-const MAP_W = 900;
-const MAP_H = 585;
-/* Equirectangular diagram suited to the near-equatorial Kenya region. */
-function project([lon, lat]: LngLat) {
-  return { x: (lon - 29) / 16 * MAP_W, y: (9.5 - lat) / 16.6 * MAP_H };
-}
-function countryPath(points: LngLat[]) {
-  return points.map((point, i) => {
-    const xy = project(point);
-    return (i ? "L" : "M") + xy.x.toFixed(2) + " " + xy.y.toFixed(2);
-  }).join(" ") + "Z";
-}
-const labels: { name: string; coordinate: LngLat }[] = [
-  {name:"SOUTH SUDAN", coordinate:[32.2,7.4]},
-  {name:"ETHIOPIA", coordinate:[38.45,7.2]},
-  {name:"SOMALIA", coordinate:[43.0,2.7]},
-  {name:"UGANDA", coordinate:[31.4,1.8]},
-  {name:"TANZANIA", coordinate:[35.7,-5.4]},
-];
+export { VisualVerseKenyaMap as VisualVerseWhereWeServe } from "./VisualVerseKenyaMap";
 
-const cityCoordinates = kenyaCities.map(city => ({
-  ...city, point: project([city.lon, city.lat])
-}));
-const anchor = project([36.8219, -1.2921]);
-const CONTACT_EMAIL = "hello@visualverse.com"; // Existing site's contact address; verify before publishing.
-
-function MapConnection({ city, index, active }: {city: typeof cityCoordinates[number]; index: number; active: boolean}) {
-  if(city.key === "nairobi")return null;
-  const x1=anchor.x,y1=anchor.y,x2=city.point.x,y2=city.point.y;
-  const midX=(x1+x2)/2;
-  const controlY=Math.min(y1,y2)-Math.min(42,Math.abs(x1-x2)*.23)-6;
-  return (
-    <motion.path
-      d={"M"+x1+","+y1+" Q"+midX+","+controlY+" "+x2+","+y2}
-      fill="none"
-      stroke={active?"#21af9e":"#62cdbc"}
-      strokeWidth={active?2.1:1}
-      strokeOpacity={active?.83:.34}
-      strokeDasharray={active?"none":"5 7"}
-      initial={{pathLength:0,opacity:0}}
-      animate={{pathLength:1,opacity:1}}
-      transition={{duration:1.25,delay:index*.08,ease:"easeInOut"}}
-      className="vv-map-connection"
-    />
-  );
-}
-
-export function VisualVerseWhereWeServe() {
-  const [activeKey,setActiveKey]=useState("nairobi");
-  const [reduced,setReduced]=useState(false);
-  useEffect(()=>{
-    const m=window.matchMedia("(prefers-reduced-motion: reduce)");
-    const change=()=>setReduced(m.matches);
-    change();
-    m.addEventListener("change",change);
-    return ()=>m.removeEventListener("change",change);
-  },[]);
-  const selected=kenyaCities.find(city=>city.key===activeKey)??kenyaCities[0];
-  const polygons=useMemo(()=>mapRegions.map(region=>({...region,path:countryPath(region.polygon)})),[]);
-  return (
-    <div className="vv-close-location">
-      <div className="vv-close-location-heading">
-        <div>
-          <span className="vv-close-eyebrow"><span/> WHERE WE SERVE / 006</span>
-          <h2>Based in Nairobi.<br/>Creating for <em>Kenya.</em></h2>
-        </div>
-        <div className="vv-close-location-summary">
-          <p>Our creative home is in Nairobi. We collaborate with brands, businesses and people across Kenya through remote projects and on-site work by arrangement.</p>
-          <div className="vv-close-location-meta">
-            <span><MapPin size={15} aria-hidden="true"/> NAIROBI, KENYA</span>
-            <span><Globe2 size={15} aria-hidden="true"/> COUNTRYWIDE COLLABORATION</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="vv-close-map-card">
-        <div className="vv-close-map-top">
-          <span>KENYA / EAST AFRICA</span>
-          <div className="vv-close-map-legend" aria-label="Map legend">
-            <span><i className="vv-close-legend-kenya"/> KENYA</span>
-            <span><i className="vv-close-legend-neighbor"/> NEIGHBOURING COUNTRIES</span>
-          </div>
-        </div>
-        <div className="vv-close-map-stage">
-          <svg viewBox="0 0 900 585" role="img" aria-label="Dotted map of Kenya highlighted in aqua, neighboring Uganda, Tanzania, South Sudan, Ethiopia and Somalia in grey, and markers for eight Kenyan cities.">
-            <defs>
-              <pattern id="vv-map-neighbor-dots" width="8" height="8" patternUnits="userSpaceOnUse">
-                <circle cx="3.2" cy="3.2" r="1.12" fill="#b3c8c3" opacity=".75"/>
-              </pattern>
-              <pattern id="vv-map-kenya-dots" width="8" height="8" patternUnits="userSpaceOnUse">
-                <circle cx="3.2" cy="3.2" r="1.54" fill="#49bf9c"/>
-              </pattern>
-              <mask id="vv-map-kenya-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="900" height="585">
-                <motion.rect x="0" y="0" height="585" fill="white"
-                  initial={{width:reduced?900:0}}
-                  whileInView={{width:900}}
-                  viewport={{once:true,amount:.3}}
-                  transition={{duration:reduced?0:2.3,ease:[.22,1,.36,1]}}/>
-              </mask>
-              <linearGradient id="vv-map-route" x1="0" y1="0" x2="1" y2="0">
-                <stop stopColor="#2ec4b6" stopOpacity=".05"/>
-                <stop offset="1" stopColor="#1da895" stopOpacity=".85"/>
-              </linearGradient>
-            </defs>
-            <g className="vv-close-map-neighbours" aria-hidden="true">
-              {polygons.filter(region=>region.id!=="KEN").map(region=>(
-                <path key={region.id} d={region.path} fill="url(#vv-map-neighbor-dots)" stroke="#cadbd5" strokeWidth="1.1"/>
-              ))}
-              {labels.map(item=>{
-                const pos=project(item.coordinate);
-                return <text key={item.name} x={pos.x} y={pos.y} textAnchor="middle" className="vv-map-country-label">{item.name}</text>;
-              })}
-            </g>
-            {polygons.filter(region=>region.id==="KEN").map(region=>(
-              <g key={region.id}>
-                <path d={region.path} fill="url(#vv-map-kenya-dots)" mask="url(#vv-map-kenya-mask)"/>
-                <motion.path d={region.path} fill="none" stroke="#2ec4b6" strokeWidth="2.5"
-                  initial={{pathLength:reduced?1:0}}
-                  whileInView={{pathLength:1}}
-                  viewport={{once:true,amount:.3}}
-                  transition={{duration:reduced?0:2.4,ease:"easeInOut"}}/>
-              </g>
-            ))}
-            <text x={project([38.4,1.0]).x} y={project([38.4,1.0]).y} textAnchor="middle" className="vv-map-kenya-label">KENYA</text>
-            <g className="vv-close-map-connections" aria-hidden="true">
-              {cityCoordinates.map((city,index)=><MapConnection key={city.key} city={city} index={index} active={city.key===activeKey}/>)}
-            </g>
-            {cityCoordinates.map(city=>{
-              const chosen=activeKey===city.key;
-              return (
-                <g key={city.key} className={"vv-close-map-marker"+(chosen?" is-active":"")}
-                  transform={"translate("+city.point.x+" "+city.point.y+")"}
-                  onClick={()=>setActiveKey(city.key)} tabIndex={0} role="button"
-                  aria-label={"Highlight "+city.name} aria-pressed={chosen}
-                  onKeyDown={event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();setActiveKey(city.key);}}}>
-                  <circle r={chosen?18:12} fill="#2ec4b6" fillOpacity={chosen?.13:.08}/>
-                  <circle r={chosen?6.3:4.5} fill={chosen?"#003f5c":"#11998b"} stroke="white" strokeWidth="1.8"/>
-                  {chosen && <circle r="13" fill="none" stroke="#2ec4b6" strokeWidth="1.4" className={reduced?"":"vv-map-pulse"}/>}
-                  <text y={city.key==="mombasa"?-12:city.key==="nairobi"?-15:-11} x={city.key==="kisumu"?-11:city.key==="nyeri"?13:8}
-                    textAnchor={city.key==="kisumu"?"end":"start"} className="vv-map-city-label">{city.name}</text>
-                </g>
-              );
-            })}
-            <text x="770" y="546" textAnchor="middle" className="vv-map-ocean-label">INDIAN OCEAN</text>
-          </svg>
-        </div>
-        <div className="vv-close-map-bottom">
-          <div>
-            <span className="vv-close-map-local-label">EXPLORE A CITY</span>
-            <div className="vv-close-map-city-list" role="group" aria-label="Highlight a city in Kenya">
-              {kenyaCities.map(city=><button type="button" key={city.key}
-                aria-pressed={activeKey===city.key} onClick={()=>setActiveKey(city.key)}
-                className={activeKey===city.key?"is-active":""}>{city.name}</button>)}
-            </div>
-          </div>
-          <div className="vv-close-map-city-info" aria-live="polite">
-            <MapPin size={17} aria-hidden="true"/>
-            <div><strong>{selected.name}</strong><span>{selected.key==="nairobi"?"Visual Verse home base":"Remote collaboration · On-site by arrangement"}</span></div>
-          </div>
-        </div>
-      </div>
-      <div className="vv-close-location-facts">
-        <div><span>01 /</span><strong>Nairobi at heart</strong><p>Ideas, people and perspectives from our home city.</p></div>
-        <div><span>02 /</span><strong>Across Kenya</strong><p>Creative collaboration without unnecessary boundaries.</p></div>
-        <div><span>03 /</span><strong>Remote-ready</strong><p>Clear communication and practical project workflows.</p></div>
-        <div><span>04 /</span><strong>On location</strong><p>Photography and productions planned around your needs.</p></div>
-      </div>
-      <p className="vv-close-map-source">Illustrative geographic map based on simplified Natural Earth country outlines. Highlighted cities indicate potential collaboration locations, not physical branch offices.</p>
-    </div>
-  );
-}
+const CONTACT_EMAIL = "hello@visualverse.com";
+const CONTACT_PHONE = "+254794044598";
 
 const questions = [
   {
@@ -239,8 +73,8 @@ export function VisualVerseFaq() {
   return (
     <div className="vv-close-faq">
       <div className="vv-close-faq-intro">
-        <span className="vv-close-eyebrow"><span/> QUESTIONS & ANSWERS / 007</span>
-        <h2>Straight answers<br/>before you start.</h2>
+        <span className="vv-close-eyebrow"><span/> FAQs / 007</span>
+        <h2>Frequently Asked<br/>Questions.</h2>
         <p>Everything you might want to know before we make something together. Have another question? We would love to hear it.</p>
         <a className="vv-close-small-cta" href="#contact">Ask us anything <span><ArrowUpRight size={16} aria-hidden="true"/></span></a>
         <a href={"mailto:"+CONTACT_EMAIL+"?subject=Visual%20Verse%20Question"} className="vv-close-faq-mail"><Mail size={14} aria-hidden="true"/> Email a question</a>
@@ -290,6 +124,7 @@ export function VisualVerseCTA(){
         <div className="vv-close-cta-meta">
           <span><MapPin size={13} aria-hidden="true"/> NAIROBI, KENYA</span>
           <a href={"mailto:"+CONTACT_EMAIL}><Mail size={13} aria-hidden="true"/> {CONTACT_EMAIL}</a>
+          <a href={"tel:"+CONTACT_PHONE}><MapPin size={13} aria-hidden="true"/> +254 794 044 598</a>
         </div>
       </div>
       <span className="vv-close-cta-orbit" aria-hidden="true"/>
@@ -308,12 +143,12 @@ const serviceLinks=[
 ];
 const navigation=[
   {label:"Home",href:"/#top"},
-  {label:"Who we are",href:"/#about"},
-  {label:"What we do",href:"/#services"},
-  {label:"Who we create with",href:"/#who-we-serve"},
-  {label:"Our projects",href:"/projects.html"},
-  {label:"Why Visual Verse",href:"/#process"},
-  {label:"Where we serve",href:"/#where-we-serve"},
+  {label:"About",href:"/about.html"},
+  {label:"Services",href:"/services.html"},
+  {label:"Who We Serve",href:"/who-we-serve.html"},
+  {label:"Portfolio",href:"/projects.html"},
+  {label:"Contact",href:"/contact.html"},
+  {label:"Request a Quote",href:"/request-quote.html"},
   {label:"FAQs",href:"/#faqs"},
 ];
 
@@ -341,13 +176,14 @@ export function VisualVerseFooter(){
           <h2>LET'S CONNECT</h2>
           <p>Have a project or a question? Start the conversation.</p>
           <a className="vv-close-footer-email" href={"mailto:"+CONTACT_EMAIL}>{CONTACT_EMAIL} <ArrowUpRight size={15} aria-hidden="true"/></a>
+          <a className="vv-close-footer-email" href={"tel:"+CONTACT_PHONE}>+254 794 044 598 <ArrowUpRight size={15} aria-hidden="true"/></a>
           <a className="vv-close-footer-mini-cta" href="/#contact">Start a project <ArrowRight size={15} aria-hidden="true"/></a>
           <span className="vv-close-footer-availability"><CheckCircle2 size={14} aria-hidden="true"/> Available for project enquiries</span>
         </div>
       </div>
       <div className="vv-close-footer-bottom">
         <span>© {new Date().getFullYear()} VISUAL VERSE CREATIONS. ALL RIGHTS RESERVED.</span>
-        <span>DESIGNED WITH PURPOSE · MADE IN KENYA</span>
+        <PolicyLinks />
         <a href="/#top">BACK TO TOP <ArrowUp size={14} aria-hidden="true"/></a>
       </div>
     </div>

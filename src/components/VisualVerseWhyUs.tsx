@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { motion } from "motion/react";
+import { motion, useScroll, useMotionValueEvent } from "motion/react";
 import type { PointerEvent as ReactPointerEvent, FocusEvent as ReactFocusEvent } from "react";
 
 const reasons = [
@@ -33,6 +33,11 @@ export function VisualVerseWhyUs() {
   const [focusedSteps, setFocusedSteps] = useState(false);
   const [spotlight, setSpotlight] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  // The connecting line follows scroll in BOTH directions: no autoplay clock.
+  const { scrollYProgress } = useScroll({ target: shellRef, offset: ["start 85%", "end 15%"] });
+  useMotionValueEvent(scrollYProgress, "change", value => {
+    if (!hoveringSteps && !focusedSteps) setActive(Math.min(2, Math.floor(value * 3)));
+  });
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -56,13 +61,6 @@ export function VisualVerseWhyUs() {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    if (!inView || reducedMotion || hoveringSteps || focusedSteps) return;
-    const interval = window.setInterval(() => {
-      if (!document.hidden) setActive((current) => (current + 1) % reasons.length);
-    }, 4700);
-    return () => window.clearInterval(interval);
-  }, [inView, reducedMotion, hoveringSteps, focusedSteps]);
 
   function trackPointer(event: ReactPointerEvent<HTMLDivElement>) {
     if (reducedMotion || event.pointerType !== "mouse") return;
@@ -97,7 +95,7 @@ export function VisualVerseWhyUs() {
         >
           <div className="vv-why-intro-left">
             <span className="vv-why-kicker"><i aria-hidden="true" /> WHY VISUAL VERSE / 005</span>
-            <h2>Built around you,<br /><span>thought through together.</span></h2>
+            <h2>Creative sparks.<br /><span>Real impact.</span></h2>
           </div>
           <div className="vv-why-intro-right">
             <p>More than good-looking design. We listen first, create with intention, and bring together the right ideas to tell your story beautifully.</p>
@@ -120,13 +118,13 @@ export function VisualVerseWhyUs() {
             <motion.span
               className="vv-why-rail-progress"
               initial={false}
-              animate={{ scaleX: active / (reasons.length - 1) }}
+              style={{ scaleX: scrollYProgress }}
               transition={reducedMotion ? { duration: 0 } : { duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             />
             <motion.span
               className="vv-why-rail-progress-mobile"
               initial={false}
-              animate={{ scaleY: active / (reasons.length - 1) }}
+              style={{ scaleY: scrollYProgress }}
               transition={reducedMotion ? { duration: 0 } : { duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             />
           </div>

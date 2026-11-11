@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import {
   ArrowUpRight, Camera, Building2, Rocket, CalendarDays,
@@ -68,38 +68,28 @@ function AudienceArtwork({kind}:{kind:AudienceKind}) {
     </div>
   );
   if(kind==="creators")return (
-    <div className="vv-aud-art vv-aud-art-creators">
-      <div className="vv-aud-creator-image"><img src="/about-photographer.webp" alt="Photographer capturing a story through a camera" loading="lazy"/></div>
-      <div className="vv-aud-creator-plan">
-        <span>YOUR CREATIVE JOURNEY</span>
-        <strong>Make the idea real.</strong>
-        <div><Check size={14} aria-hidden={true}/> Concept</div>
-        <div><Check size={14} aria-hidden={true}/> Create</div>
-        <div><Check size={14} aria-hidden={true}/> Launch</div>
+    <div className="vv-aud-art vv-aud-art-creators vv-unique-founder" aria-label="Original illustration of a founder's creative workspace">
+      <div className="vv-founder-window"><span>IDEA / LAUNCH / GROW</span><i/><i/></div>
+      <div className="vv-founder-portrait">
+        <div className="vv-founder-person"><span className="vv-founder-head"/><span className="vv-founder-body"/></div>
+        <div className="vv-founder-laptop"><strong>YOUR BIG<br/>NEXT IDEA.</strong><span>VISUAL VERSE / STUDIO</span></div>
       </div>
-      <div className="vv-aud-creator-badge"><Rocket size={15} aria-hidden={true}/> BUILT TO BEGIN</div>
+      <div className="vv-founder-note"><Rocket size={15} aria-hidden="true"/><span>BUILD THE IDEA<br/>MAKE IT REAL.</span></div>
     </div>
   );
   return (
-    <div className="vv-aud-art vv-aud-art-events">
-      <div className="vv-aud-event-main">
-        <img src="/about-photographer.webp" alt="Creative photographer holding a camera, illustrating professional event photography" loading="lazy"/>
-        <div className="vv-aud-event-image-overlay"><Camera size={16} aria-hidden={true}/> THE MOMENT / 001</div>
-      </div>
-      <div className="vv-aud-event-ticket">
-        <span>WHAT MATTERS</span>
-        <strong>Moments.<br/>Remembered.</strong>
-        <div><CalendarDays size={20} aria-hidden={true}/><span>YOUR STORY<br/>OUR LENS</span></div>
-      </div>
-      <div className="vv-aud-event-caption"><UsersRound size={17} aria-hidden={true}/> People, places, stories.</div>
+    <div className="vv-aud-art vv-aud-art-events vv-unique-event" aria-label="Original illustration of a celebration and event photography moment">
+      <div className="vv-event-scene"><span className="vv-event-lights"/><span className="vv-event-bokeh"/><span className="vv-event-silhouettes"><i/><i/><i/><i/><i/></span></div>
+      <div className="vv-event-camera-frame"><Camera size={23} aria-hidden="true"/><strong>THE MOMENTS<br/>THAT MATTER.</strong><span>EVENTS / CELEBRATIONS / PEOPLE</span></div>
+      <span className="vv-event-ticket-small">STORIES WORTH KEEPING / 04</span>
     </div>
   );
 }
 
 export function VisualVerseAudiences(){
   const [active,setActive]=useState(0);
-  const [interacted,setInteracted]=useState(false);
-  const [hovering,setHovering]=useState(false);
+  const [visible,setVisible]=useState(false);
+  const rootRef=useRef<HTMLDivElement>(null);
   const [reduced,setReduced]=useState(false);
   useEffect(()=>{
     const media=window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -109,15 +99,22 @@ export function VisualVerseAudiences(){
     return ()=>media.removeEventListener("change",update);
   },[]);
   useEffect(()=>{
-    if(interacted||hovering||reduced)return;
+    const root=rootRef.current;
+    if(!root)return;
+    const observer=new IntersectionObserver(entries=>setVisible(Boolean(entries[0]?.isIntersecting)),{threshold:.12});
+    observer.observe(root);
+    return ()=>observer.disconnect();
+  },[]);
+  useEffect(()=>{
+    if(!visible||reduced)return;
     const timer=window.setInterval(()=>{
-      if(!document.hidden)setActive(a=>(a+1)%audiences.length);
+      if(!document.hidden)setActive(current=>(current+1)%audiences.length);
     },7300);
     return ()=>window.clearInterval(timer);
-  },[interacted,hovering,reduced]);
+  },[visible,reduced]);
   const current=audiences[active];
   return (
-    <div className="vv-aud-layout" onMouseEnter={()=>setHovering(true)} onMouseLeave={()=>setHovering(false)}>
+    <div className="vv-aud-layout" ref={rootRef}>
       <div className="vv-aud-selector">
         <span className="vv-label">THE PEOPLE WE CREATE WITH / 003</span>
         <h2 className="vv-section-h">Every story<br/>has its people.</h2>
@@ -126,14 +123,14 @@ export function VisualVerseAudiences(){
           {audiences.map((item,index)=>{
             const Icon=item.Icon, selected=active===index;
             return (
-              <button type="button" key={item.title} onClick={()=>{setActive(index);setInteracted(true)}}
+              <button type="button" key={item.title} onClick={()=>setActive(index)}
                 className={"vv-aud-option"+(selected?" is-selected":"")}
                 aria-pressed={selected}
               >
                 <span className="vv-aud-option-icon"><Icon size={20} strokeWidth={1.7} aria-hidden={true}/></span>
                 <span className="vv-aud-option-copy"><strong>{item.title}</strong><small>{item.subtitle}</small></span>
                 <span className="vv-aud-option-action">{selected?<span className="vv-aud-active-lines">≋</span>:<ChevronRight size={18} aria-hidden={true}/>}</span>
-                {selected&&!interacted&&!reduced&&!hovering&&<span className="vv-aud-option-progress" key={"progress-"+index} aria-hidden={true}/>}
+                {selected&&!reduced&&visible&&<span className="vv-aud-option-progress" key={"progress-"+index} aria-hidden={true}/>}
               </button>
             );
           })}

@@ -737,7 +737,7 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
   <div class="vv-about-main">
     <span class="vv-about-overline"><span class="vv-about-overline-line" aria-hidden="true"></span> THE STUDIO BEHIND THE STORY</span>
     <h2 class="vv-about-headline" id="vv-about-title">Still piecing your brand story together across different creatives? <span class="vv-about-highlight">We bring it all together</span>—design, photography, film and digital experiences, <span class="vv-about-highlight">built around your vision.</span></h2>
-    <p class="vv-about-description">VisualVerse Creations is an independent creative media studio. We combine imagination with thoughtful strategy to give brands, businesses and people a clear, memorable visual voice—from the first conversation to the final frame.</p>
+    <p class="vv-about-description">We’re the creative crew for big ideas, bold brands and moments worth replaying. From the first spark to the final frame, we bring design, photography, film and digital experiences together to make your story impossible to ignore.</p>
     <a class="vv-about-more" href="#process" aria-label="Learn more about Visual Verse and our creative approach"><span>More about Visual Verse</span><span class="vv-about-more-icon" aria-hidden="true">↗</span></a>
   </div>
 </section>
@@ -968,7 +968,7 @@ function makeShape(shape){
  return arr.sort((a,b)=>(a.x+a.y*.13)-(b.x+b.y*.13));
 }
 frames=scenes.map(s=>makeShape(s.shape));dots=Array.from({length:Math.max(...frames.map(f=>f.length))},()=>({x:210+(Math.random()-.5)*410,y:210+(Math.random()-.5)*410,tx:210,ty:210,a:0,ta:0,fill:'#003f5c',size:2.6+Math.random()*.8}));
-function resize(){const rect=canvas.getBoundingClientRect();w=Math.max(1,rect.width);h=Math.max(1,rect.height);dpr=Math.min(2,window.devicePixelRatio||1);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);g.setTransform(dpr,0,0,dpr,0,0)}
+function resize(){const rect=canvas.getBoundingClientRect();w=Math.max(1,rect.width);h=Math.max(1,rect.height);dpr=Math.min(window.matchMedia('(pointer:coarse)').matches?1:1.5,window.devicePixelRatio||1);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);g.setTransform(dpr,0,0,dpr,0,0)}
 new ResizeObserver(resize).observe(canvas);resize();
 canvas.addEventListener('pointermove',e=>{const r=canvas.getBoundingClientRect();pointer.x=e.clientX-r.left;pointer.y=e.clientY-r.top;pointer.active=true});canvas.addEventListener('pointerleave',()=>pointer.active=false);
 function morph(n){active=n;const frame=frames[n];for(let i=0;i<dots.length;i++){const d=dots[i],p=frame[i];if(p){d.tx=p.x;d.ty=p.y;d.ta=1;d.fill=p.fill;if(reduced){d.x=d.tx;d.y=d.ty;d.a=d.ta}}else{d.tx=210+(Math.random()-.5)*330;d.ty=210+(Math.random()-.5)*330;d.ta=0;if(reduced)d.a=0}}}
@@ -1061,8 +1061,14 @@ pause.addEventListener('click',()=>{
   lastProgressTime=0; // Never jump forward after a pause.
   updatePause();
 });
+let vvSlideshowVisible=true,vvLastProgressPaint=0;
+const vvProgressObserver=new IntersectionObserver(entries=>{
+  vvSlideshowVisible=Boolean(entries[0]?.isIntersecting);
+  if(!vvSlideshowVisible)lastProgressTime=0;
+},{rootMargin:'100px',threshold:0});
+vvProgressObserver.observe(document.querySelector('.vv-hero'));
 function tickProgress(now){
-  if(!paused&&!document.hidden){
+  if(!paused&&!document.hidden&&vvSlideshowVisible){
     if(lastProgressTime)progressElapsed+=Math.max(0,Math.min(100,now-lastProgressTime));
     lastProgressTime=now;
     if(progressElapsed>=SCENE_DURATION){
@@ -1070,11 +1076,12 @@ function tickProgress(now){
       progressElapsed=SCENE_DURATION;
       paintProgress();
       show((active+1)%scenes.length);
-    }else{
+    }else if(now-vvLastProgressPaint>38){
       paintProgress();
+      vvLastProgressPaint=now;
     }
   }else{
-    lastProgressTime=0; // Also freeze the loading bar in background tabs.
+    lastProgressTime=0; // Freeze the loading bar in offscreen and background tabs.
   }
   requestAnimationFrame(tickProgress);
 }
@@ -1086,7 +1093,47 @@ if(reduced){
 }else{
   requestAnimationFrame(tickProgress);
 }
-function animate(){g.clearRect(0,0,w,h);const scale=Math.min(w,h)/420,ox=(w-420*scale)/2,oy=(h-420*scale)/2;for(const p of dots){p.x+=(p.tx-p.x)*(reduced?.24:.065);p.y+=(p.ty-p.y)*(reduced?.24:.065);p.a+=(p.ta-p.a)*.09;if(p.a<.025)continue;let px=ox+p.x*scale,py=oy+p.y*scale;if(!reduced&&pointer.active){const dx=px-pointer.x,dy=py-pointer.y,dist=Math.hypot(dx,dy);if(dist<70&&dist>0){px+=dx/dist*(70-dist)/70*23;py+=dy/dist*(70-dist)/70*23}}g.globalAlpha=Math.max(0,Math.min(1,p.a));g.fillStyle=p.fill;g.beginPath();g.arc(px,py,p.size*scale,0,Math.PI*2);g.fill()}g.globalAlpha=1;requestAnimationFrame(animate)}animate();
+/* Performance: paint only while the hero is visible, cap refresh rate, and
+   suspend all particle work in background tabs. */
+let vvParticleVisible=true,vvParticleFrame=0,vvParticleLast=0;
+const vvParticleFps=window.matchMedia('(pointer:coarse)').matches?24:30;
+function animateParticles(now){
+ if(!vvParticleVisible||document.hidden){vvParticleFrame=0;return}
+ if(!reduced)vvParticleFrame=requestAnimationFrame(animateParticles);
+ else vvParticleFrame=0;
+ if(!reduced&&now-vvParticleLast<1000/vvParticleFps)return;
+ vvParticleLast=now;
+ g.clearRect(0,0,w,h);
+ const scale=Math.min(w,h)/420,ox=(w-420*scale)/2,oy=(h-420*scale)/2;
+ for(const p of dots){
+  p.x+=(p.tx-p.x)*(reduced?.24:.095);
+  p.y+=(p.ty-p.y)*(reduced?.24:.095);
+  p.a+=(p.ta-p.a)*.13;
+  if(p.a<.025)continue;
+  let px=ox+p.x*scale,py=oy+p.y*scale;
+  if(!reduced&&pointer.active){
+   const dx=px-pointer.x,dy=py-pointer.y,dist2=dx*dx+dy*dy;
+   if(dist2<4900&&dist2>0){
+    const dist=Math.sqrt(dist2),pull=(70-dist)/70*23;
+    px+=dx/dist*pull;py+=dy/dist*pull;
+   }
+  }
+  g.globalAlpha=Math.max(0,Math.min(1,p.a));
+  g.fillStyle=p.fill;
+  g.beginPath();g.arc(px,py,p.size*scale,0,Math.PI*2);g.fill();
+ }
+ g.globalAlpha=1;
+}
+function startParticles(){if(!vvParticleFrame&&vvParticleVisible&&!document.hidden&&!reduced)vvParticleFrame=requestAnimationFrame(animateParticles)}
+function stopParticles(){if(vvParticleFrame)cancelAnimationFrame(vvParticleFrame);vvParticleFrame=0}
+const particleObserver=new IntersectionObserver(entries=>{
+ vvParticleVisible=Boolean(entries[0]?.isIntersecting);
+ vvParticleVisible?startParticles():stopParticles();
+},{rootMargin:'80px',threshold:0});
+particleObserver.observe(canvas);
+document.addEventListener('visibilitychange',()=>{document.hidden?stopParticles():startParticles()});
+if(reduced){for(const p of dots){p.x=p.tx;p.y=p.ty;p.a=p.ta;}requestAnimationFrame(animateParticles)}
+else startParticles();
 const burger=document.getElementById('burger'),mobile=document.getElementById('mobile');burger.addEventListener('click',()=>{const open=mobile.hidden;mobile.hidden=!open;burger.setAttribute('aria-expanded',String(open));burger.textContent=open?'×':'☰'});mobile.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mobile.hidden=true;burger.setAttribute('aria-expanded','false');burger.textContent='☰'}));
 </script>
 <script>
@@ -1222,7 +1269,7 @@ const burger=document.getElementById('burger'),mobile=document.getElementById('m
   function resize(){
     const box=hero.getBoundingClientRect();
     width=Math.max(1,Math.round(box.width));height=Math.max(1,Math.round(box.height));
-    dpr=Math.min(window.devicePixelRatio||1,2);
+    dpr=Math.min(window.devicePixelRatio||1,coarse.matches?1:1.4);
     canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
     ctx.setTransform(dpr,0,0,dpr,0,0);
     const half=Math.max(32,Math.min(58,Math.floor(width/21)));
@@ -1269,7 +1316,7 @@ const burger=document.getElementById('burger'),mobile=document.getElementById('m
   function tick(now){
     if(!running)return;
     frame=requestAnimationFrame(tick);
-    if(now-lastDraw<(coarse.matches?42:30))return;
+    if(now-lastDraw<(coarse.matches?50:40))return;
     lastDraw=now;
     draw(now);
   }

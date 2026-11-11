@@ -1,0 +1,42 @@
+/* Visual Verse inner pages — shared navy/aqua typography and footer. */
+.vv-inner-page{background:#f9fcfa;color:#003f5c;min-height:100svh;font-family:var(--vv-island-font,"TT Travels",Arial,sans-serif)}
+.vv-inner-hero{padding:150px max(24px,calc((100vw - 1230px)/2)) 90px;background:linear-gradient(135deg,#f8fcfa,#e6f6f0);border-bottom:1px solid #d5e9e1}
+.vv-inner-hero-inner{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(250px,.75fr);align-items:center;gap:30px}
+.vv-inner-eyebrow{display:inline-flex;color:#24988e;font-weight:850;font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+.vv-inner-hero h1{font-size:clamp(48px,6.5vw,87px);letter-spacing:-.082em;line-height:1.05;margin:24px 0;color:#003f5c;font-weight:900}
+.vv-inner-hero h1 em{color:#139f95;font-style:normal}
+.vv-inner-hero p{color:#587880;font-size:clamp(14px,1.25vw,18px);max-width:590px;line-height:1.8}
+.vv-inner-hero-art{position:relative;min-height:300px;display:grid;place-items:center;background:radial-gradient(circle,#d1f4e9,transparent 75%)}
+.vv-inner-hero-art img{width:min(75%,280px);max-height:285px;object-fit:contain;filter:drop-shadow(10px 15px 14px rgba(0,63,92,.1))}
+.vv-inner-hero-art span{position:absolute;bottom:10px;color:#2d948c;font-size:9px;font-weight:850;letter-spacing:.17em}
+.vv-inner-hero-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:27px}
+.vv-inner-hero-actions a{display:inline-flex;gap:12px;align-items:center;text-decoration:none;color:#003f5c;font-size:12px;font-weight:850}
+.vv-inner-hero-actions a:first-child{background:#2ec4b6;padding:15px 18px;border-radius:50px}
+.vv-inner-section{padding:clamp(85px,9vw,135px) max(24px,calc((100vw - 1230px)/2))}
+.vv-inner-section h2{font-size:clamp(36px,4vw,60px);letter-spacing:-.065em;line-height:1.1;margin:19px 0 30px;color:#003f5c}
+.vv-inner-section p{color:#627f82;line-height:1.85;font-size:14px}
+.vv-inner-split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,85px);align-items:start}
+.vv-inner-about-img{min-height:380px;max-height:550px;overflow:hidden;border-radius:24px;box-shadow:0 22px 48px rgba(0,63,92,.14)}
+.vv-inner-about-img img{width:100%;height:100%;object-fit:cover;display:block}
+.vv-inner-values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:70px}
+.vv-inner-values article{padding:27px;border-radius:18px;background:white;border:1px solid #dcebe5}
+.vv-inner-values small{color:#29a99c;font-weight:900}
+.vv-inner-values h3{color:#003f5c;font-size:19px;letter-spacing:-.04em}
+.vv-inner-contact-links,.vv-inner-checks{display:grid;gap:18px;margin-top:35px}
+.vv-inner-contact-links a,.vv-inner-contact-links span,.vv-inner-checks span{color:#276873;display:flex;align-items:center;gap:12px;text-decoration:none;font-size:15px;font-weight:750}
+.vv-inner-contact-links svg,.vv-inner-checks svg{color:#209d91;width:19px}
+.vv-inner-contact-panel{background:linear-gradient(135deg,#003f5c,#07506a);border-radius:24px;padding:clamp(30px,5vw,60px);min-height:390px;color:white;display:flex;flex-direction:column;justify-content:space-between}
+.vv-inner-contact-panel>span{font-size:10px;color:#86d9c6;letter-spacing:.16em}
+.vv-inner-contact-panel h3{font-size:clamp(31px,3.5vw,48px);line-height:1.09;letter-spacing:-.06em}
+.vv-inner-contact-panel p{color:#bcdbdb}
+.vv-inner-contact-panel a{display:inline-flex;align-items:center;gap:10px;width:fit-content;color:#003f5c;background:#2ec4b6;padding:14px 17px;border-radius:50px;text-decoration:none;font-weight:850;font-size:12px}
+.vv-inner-form{border-radius:24px;padding:clamp(25px,4vw,43px);background:white;border:1px solid #d9eae3;box-shadow:0 20px 50px rgba(0,63,92,.08);display:grid;gap:17px}
+.vv-inner-form label{display:grid;gap:8px;font-size:12px;font-weight:850;color:#285b61}
+.vv-inner-form input,.vv-inner-form textarea,.vv-inner-form select{width:100%;padding:13px 15px;border:1px solid #ccdfd9;border-radius:10px;outline-offset:3px;background:#f9fdfa;color:#003f5c;font:inherit;font-size:13px}
+.vv-inner-form button{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:0;border-radius:50px;padding:14px 18px;background:#2ec4b6;color:#003f5c;cursor:pointer;font-size:13px;font-weight:900}
+.vv-inner-bottom{padding:85px max(24px,calc((100vw - 1230px)/2));background:#003f5c;color:white}
+.vv-inner-bottom>span{font-size:10px;letter-spacing:.13em;color:#7cddd0}
+.vv-inner-bottom h2{font-size:clamp(39px,5vw,66px);letter-spacing:-.07em;line-height:1.06}
+.vv-inner-bottom a{display:inline-flex;align-items:center;gap:10px;background:#2ec4b6;border-radius:50px;padding:16px 18px;text-decoration:none;color:#003f5c;font-weight:850}
+.vv-inner-page #services .vv-svc-layout,.vv-inner-page #who-we-serve .vv-aud-layout{max-width:1220px;margin:auto}
+@media(max-width:780px){.vv-inner-hero{padding-top:110px}.vv-inner-hero-inner,.vv-inner-split{grid-template-columns:1fr}.vv-inner-hero-art{min-height:180px}.vv-inner-hero-art img{max-height:180px;width:170px}.vv-inner-values{grid-template-columns:1fr}.vv-inner-about-img{min-height:300px;max-height:450px}}

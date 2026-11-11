@@ -1,0 +1,71 @@
+/* Six original creative-software-inspired mockups: no screenshot or duplicated
+   stock art; each service illustration has a distinct visual language. */
+.vv-ui-preview{position:relative;display:flex;flex-direction:column;width:100%;height:min(100%,370px);min-height:275px;border-radius:16px;overflow:hidden;box-shadow:10px 18px 35px rgba(0,46,61,.17);font-family:var(--vv-island-font,Arial,sans-serif)}
+.vv-ui-top{height:34px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:6px;padding:0 12px;font-size:9px}
+.vv-ui-top strong{font-size:9px;letter-spacing:.08em}.vv-ui-top span{letter-spacing:2px}
+.vv-ui-top small{font-size:10px;font-weight:850}
+.vv-ui-bottom{margin-top:auto;flex:0 0 auto;font-size:8px;letter-spacing:.07em;padding:8px 12px}
+.vv-ui-lightroom{background:#101c27;color:#d5e8ed;border:5px solid #182d3b}
+.vv-ui-lightroom .vv-ui-top{background:#152b3a}.vv-ui-lightroom .vv-ui-top small{color:#80b5dc}
+.vv-ui-editor{display:grid;grid-template-columns:34px minmax(0,1fr) 92px;gap:6px;padding:9px 7px;min-height:0;flex:1}
+.vv-ui-filmstrip{display:flex;flex-direction:column;gap:6px}.vv-ui-filmstrip span{background:#264356;border:1px solid #537188;border-radius:3px;padding:6px 0;text-align:center;font-size:8px}
+.vv-ui-photo{position:relative;overflow:hidden;border:2px solid #42617d;border-radius:4px;background:#163341}
+.vv-ui-photo img{width:100%;height:100%;object-fit:cover;object-position:center 32%}
+.vv-ui-photo>span{position:absolute;right:5px;bottom:7px;color:white;background:rgba(6,31,42,.6);border-radius:5px;padding:4px 6px;font-size:8px}
+.vv-ui-controls{background:#172e3a;border-radius:6px;padding:10px 8px;display:flex;flex-direction:column;gap:11px}
+.vv-ui-controls>strong{font-size:9px;color:#e9f5f2}.vv-ui-controls div{display:flex;flex-direction:column;gap:5px;position:relative}
+.vv-ui-controls small{font-size:8px;color:#a9c3ce}.vv-ui-controls i{height:3px;display:block;background:#2ec4b6;box-shadow:24px 0 0 #4d6974;border-radius:4px;max-width:70%}
+.vv-ui-premiere{background:#191826;color:#e5d4fb;border:5px solid #2a2740}
+.vv-ui-premiere .vv-ui-top{background:#25223a}.vv-ui-premiere .vv-ui-top small{color:#b9a1ff}
+.vv-ui-film-workspace{display:grid;grid-template-columns:minmax(0,3fr) minmax(45px,1fr);gap:6px;padding:7px;min-height:150px;flex:1}
+.vv-ui-film-monitor{display:flex;flex-direction:column;min-width:0}.vv-ui-film-scene{position:relative;flex:1;background:linear-gradient(165deg,#112a45 0%,#58617e 45%,#df8a70 100%);border-radius:5px;display:grid;place-items:center;overflow:hidden;color:rgba(255,255,255,.88)}
+.vv-ui-film-sun{position:absolute;width:85px;height:85px;top:18%;right:24%;border-radius:50%;background:radial-gradient(circle,#ffd8af,#f6a985);box-shadow:0 0 55px #ffc2a7}
+.vv-ui-film-hills{position:absolute;bottom:-16%;left:-18%;height:51%;width:140%;border-radius:50%;background:#0c3040;transform:rotate(-9deg)}
+.vv-ui-film-scene>svg{position:relative;z-index:2;background:rgba(19,33,42,.38);border-radius:50%;padding:10px;box-sizing:content-box}
+.vv-ui-film-monitor>span{font-size:7px;letter-spacing:.07em;margin-top:5px;color:#b4aad0}
+.vv-ui-film-bin{display:flex;flex-direction:column;gap:13px;padding:9px;background:#27263a;border-radius:5px;color:#9d94b1}
+.vv-ui-film-bin>*{font-size:8px}.vv-ui-film-bin span{border-bottom:1px solid #45425d;padding-bottom:6px}
+.vv-ui-video-tracks{height:91px;display:grid;gap:4px;padding:7px 9px;background:#201f32}
+.vv-ui-video-tracks div{display:flex;align-items:center;gap:3px;overflow:hidden}.vv-ui-video-tracks small{font-size:8px;color:#b5afc9;margin-right:3px}
+.vv-ui-video-tracks i{flex:1;height:17px;border-radius:2px;background:#6759aa;border:1px solid #8b81c3}
+.vv-ui-video-tracks div:nth-child(2) i{height:13px;background:#2b797c;border-color:#5fb4ae}
+.vv-ui-video-tracks div:nth-child(3) i{height:13px;background:#4b6a66;border-color:#69b5a6}
+.vv-ui-brand-kit{overflow:visible;background:radial-gradient(circle at 45% 40%,#e9faf4,#b4e4d8);box-shadow:none}
+.vv-ui-brand-paper{position:absolute;display:flex;flex-direction:column;justify-content:space-between;width:62%;height:79%;max-width:230px;border-radius:12px;padding:18px;box-shadow:12px 16px 28px rgba(0,63,92,.17)}
+.vv-ui-brand-behind{left:33%;top:6%;transform:rotate(12deg);background:#003f5c;color:#84ddcc}.vv-ui-brand-behind b{font-size:95px;letter-spacing:-.18em;opacity:.24}
+.vv-ui-brand-front{left:13%;top:15%;transform:rotate(-8deg);background:#f6fffa;color:#003f5c;border:1px solid #bce8dd}
+.vv-ui-brand-paper>span{font-size:9px;font-weight:850;letter-spacing:.1em}.vv-ui-brand-front img{width:42%;max-height:100px;object-fit:contain;align-self:center}
+.vv-ui-brand-front strong{font-size:clamp(20px,2.5vw,31px);line-height:1.03;letter-spacing:-.05em}.vv-ui-brand-swatches{position:absolute;right:1%;bottom:6%;display:flex;gap:5px;background:white;padding:7px;border-radius:8px;box-shadow:0 8px 19px rgba(0,63,92,.13)}
+.vv-ui-brand-swatches i{width:21px;height:32px;background:#003f5c;border-radius:4px}.vv-ui-brand-swatches i:nth-child(2){background:#2ec4b6}.vv-ui-brand-swatches i:nth-child(3){background:#dff8f2}
+.vv-ui-illustrator{background:#24252b;color:#f2e9e3;border:5px solid #333641}.vv-ui-illustrator .vv-ui-top{background:#313138}.vv-ui-illustrator .vv-ui-top small{color:#ffad57}
+.vv-ui-graphics-workspace{display:grid;grid-template-columns:27px 1fr 72px;gap:5px;min-height:0;flex:1;padding:6px}
+.vv-ui-tools{display:grid;align-content:start;gap:7px;padding:6px 3px;background:#383b44;border-radius:4px;text-align:center}.vv-ui-tools span{font-size:12px;color:#eee8e2}
+.vv-ui-artboard{position:relative;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;padding:16px 11px;background:#f2ddbe;color:#123e52}
+.vv-ui-artboard>small{font-size:8px;font-weight:900;letter-spacing:.16em;z-index:1}.vv-ui-artboard strong{font-size:clamp(21px,3vw,43px);line-height:.88;letter-spacing:-.08em;position:relative;z-index:1}
+.vv-ui-artboard em{color:#e26e49;font-style:normal}.vv-ui-artboard>span{font-size:8px;font-weight:850;z-index:1}
+.vv-ui-artboard-shape{position:absolute;right:-35px;bottom:5px;border-radius:50%;width:140px;height:140px;border:32px solid #e9a476;opacity:.67}
+.vv-ui-layers{display:flex;flex-direction:column;gap:8px;padding:8px 4px;background:#33343d}.vv-ui-layers>*{font-size:8px;white-space:nowrap;color:#c1b7b0}.vv-ui-layers small{color:#ffae6f}
+.vv-ui-webkit{overflow:visible;background:radial-gradient(circle,#d5f3ed,#a9d9d2);box-shadow:none}
+.vv-ui-web-desktop{position:absolute;left:1%;top:6%;width:91%;height:85%;border:6px solid #1e4a54;border-radius:12px;background:#f8fffb;box-shadow:12px 18px 28px rgba(0,63,92,.19);overflow:hidden}
+.vv-ui-web-bar{height:31px;display:flex;justify-content:space-between;align-items:center;padding:0 12px;font-size:9px;color:#289e93;background:#ddecdf}.vv-ui-web-bar span{color:#779d93}
+.vv-ui-web-screen{position:relative;height:calc(100% - 31px);display:flex;flex-direction:column;padding:17px 19px;overflow:hidden}
+.vv-ui-web-screen img{height:32px;width:32px;object-fit:contain}.vv-ui-web-screen small{font-size:8px;font-weight:900;color:#19998b;margin-top:15px;letter-spacing:.11em}
+.vv-ui-web-screen strong{font-size:clamp(19px,3vw,34px);line-height:1.05;letter-spacing:-.07em;color:#003f5c;margin-top:9px;z-index:2}
+.vv-ui-web-screen>span{width:max-content;background:#2ec4b6;color:#003f5c;border-radius:20px;font-size:8px;padding:9px 11px;margin-top:15px;z-index:2}
+.vv-ui-web-orbit{position:absolute;width:145px;height:145px;border:27px solid #b9eade;border-radius:50%;right:-18px;bottom:-43px}
+.vv-ui-web-phone{position:absolute;right:-5%;bottom:0;width:92px;height:183px;border-radius:18px;border:5px solid #003f5c;background:#f6fffa;padding:16px 9px;display:flex;flex-direction:column;gap:17px;box-shadow:8px 14px 22px rgba(0,63,92,.23)}
+.vv-ui-web-notch{width:27px;height:4px;border-radius:2px;background:#003f5c;margin:-10px auto 5px}
+.vv-ui-web-phone>span{font-size:8px;font-weight:900;color:#1b9286}.vv-ui-web-phone strong{font-size:17px;line-height:1.02;letter-spacing:-.06em;color:#003f5c}
+.vv-ui-mobile-pill{font-size:6px;font-weight:850;background:#2ec4b6;color:#003f5c;padding:7px 6px;border-radius:20px}
+.vv-ui-campaigns{overflow:visible;background:radial-gradient(circle,#d0f3e7,#a0e1d5);box-shadow:none}
+.vv-ui-social-feed{position:absolute;left:2%;top:4%;width:77%;height:90%;background:#fff;border:1px solid #d2e4dc;border-radius:15px;box-shadow:15px 18px 28px rgba(0,63,92,.14);padding:12px;display:flex;flex-direction:column}
+.vv-ui-social-top{display:flex;justify-content:space-between;font-size:9px;color:#0a555b;font-weight:900}.vv-ui-social-top span{color:#1b9d92}
+.vv-ui-social-feature{flex:1;position:relative;overflow:hidden;margin:10px 0;border-radius:9px;background:linear-gradient(140deg,#003f5c,#0e7c7e);display:flex;align-items:center;padding:12px}
+.vv-ui-social-feature>span{font-weight:900;font-size:clamp(19px,2.1vw,29px);line-height:1.03;letter-spacing:-.065em;color:#fff;z-index:2}
+.vv-ui-social-feature b{color:#2ec4b6}.vv-ui-social-feature i{position:absolute;right:-50px;bottom:-65px;width:170px;height:170px;border:34px solid rgba(46,196,182,.44);border-radius:50%}
+.vv-ui-social-channel{display:flex;flex-wrap:wrap;gap:4px}.vv-ui-social-channel span{font-size:7px;color:#17766f;padding:5px;background:#e8f7f0;border-radius:11px;font-weight:750}
+.vv-ui-social-float{position:absolute;right:-4%;bottom:3%;background:#f9fffa;border:1px solid #d0e6dd;border-radius:12px;width:41%;padding:11px;box-shadow:0 9px 26px rgba(0,63,92,.16);display:flex;flex-direction:column;gap:6px}
+.vv-ui-social-float>span{font-size:7px;color:#608e85;font-weight:800}.vv-ui-social-float strong{font-size:10px;color:#003f5c}
+.vv-ui-sparkline{display:flex;align-items:end;height:57px;gap:4px;margin-top:3px}.vv-ui-sparkline i{flex:1;border-radius:2px 2px 0 0;background:#2ec4b6}
+.vv-ui-social-float small{font-size:7px;color:#31978d}
+@media(max-width:620px){.vv-ui-preview{min-height:295px;max-width:400px;margin:auto}.vv-ui-editor{grid-template-columns:34px 1fr 76px}.vv-ui-film-workspace{min-height:157px}.vv-ui-controls{padding:8px 5px}.vv-ui-layers{width:63px}}
