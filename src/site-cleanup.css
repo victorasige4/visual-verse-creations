@@ -1,16 +1,5 @@
-/* Visual Verse cleanup — unique audience art, county map, navy CTA/Why Us,
-   lighter rendering and responsive polish. Loaded after existing themes. */
-.vv-why-shell{
-  background:radial-gradient(ellipse at 20% 38%,rgba(46,196,182,.12),transparent 38%),
-  radial-gradient(ellipse at 84% 70%,rgba(16,114,145,.20),transparent 42%),
-  linear-gradient(121deg,#002c47 0%,#003f5c 53%,#062c49 100%);
-}
-#process.vv-why-section{background:#003f5c}
-.vv-why-node{border-color:rgba(46,196,182,.44)}
-.vv-why-intro-right p,.vv-why-step-description{color:#b6d1d8}
-.vv-why-ambient-one{background:radial-gradient(circle,rgba(46,196,182,.32),transparent 70%)}
-.vv-why-ambient-two{background:radial-gradient(circle,rgba(60,140,211,.24),transparent 68%)}
-.vv-why-shell::after{background:radial-gradient(370px circle at var(--vv-why-x) var(--vv-why-y),rgba(46,196,182,.16),transparent 68%)}
+/* Visual Verse site cleanup: only shared sections, map, audiences and footer.
+   Why Visual Verse branding is owned by src/why-us.css. */
 .vv-close-cta{background:radial-gradient(circle at 86% 13%,rgba(46,196,182,.20),transparent 53%),linear-gradient(121deg,#003f5c 0%,#052e49 100%)}
 .vv-close-cta-orbit{border-color:#1b7f99}
 .vv-close-footer-wrap{background:#003449}

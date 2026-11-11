@@ -1,0 +1,10 @@
+# Clean aliases for Visual Verse's existing pages; rewrite to Vite-built HTML.
+/about               /about.html          200
+/services            /services.html       200
+/portfolio           /projects.html       200
+/projects            /projects.html       200
+/who-we-serve        /who-we-serve.html   200
+/contact             /contact.html        200
+/quote               /request-quote.html  200
+/lets-talk           /request-quote.html  200
+/request-quote       /request-quote.html  200

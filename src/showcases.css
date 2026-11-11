@@ -441,3 +441,7 @@
   .vv-svc-slice,.vv-aud-option,.vv-svc-cta,.vv-aud-discover{transition:none!important}
   .vv-aud-option-progress{animation:none!important}
 }
+
+/* Full audience category page link stays legible within the carousel footer. */
+.vv-aud-stage-bottom .vv-aud-stage-collection-link{display:inline-flex;align-items:center;gap:7px;color:inherit;text-decoration:none;font-size:inherit;font-weight:800;letter-spacing:inherit}
+.vv-aud-stage-bottom .vv-aud-stage-collection-link:hover{color:#119e94}
