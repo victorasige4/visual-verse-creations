@@ -318,6 +318,61 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
 }
 @media(prefers-reduced-motion:reduce){.vv-story-bridge .vv-scroll-cue{transition:none}}
 
+
+/* HERO ONLY — Aceternity Background Cubes Grid-inspired isometric visual.
+   Local Canvas 2D implementation: the source project is static HTML, not
+   React/shadcn/TypeScript; no third-party runtime is installed. */
+.vv-hero{isolation:isolate}
+.vv-hero .vv-aceternity-inspired-cubes{
+  position:absolute;z-index:0;inset:0;display:block;width:100%;height:100%;
+  pointer-events:none;user-select:none;opacity:.62;
+  -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.52) 0%,rgba(0,0,0,.78) 37%,rgba(0,0,0,.32) 67%,transparent 100%);
+  mask-image:linear-gradient(90deg,rgba(0,0,0,.52) 0%,rgba(0,0,0,.78) 37%,rgba(0,0,0,.32) 67%,transparent 100%);
+}
+.vv-hero .vv-hero-grid,.vv-hero .vv-hero-bottom{position:relative;z-index:1}
+.vv-hero .vv-hero-copy{position:relative}
+.vv-hero .vv-hero-copy::before{
+  content:"";position:absolute;z-index:-1;inset:-20px -20px -20px -25px;pointer-events:none;
+  background:linear-gradient(90deg,rgba(250,252,250,.88),rgba(250,252,250,.56) 75%,transparent);
+}
+@media(max-width:760px){
+  .vv-hero .vv-aceternity-inspired-cubes{opacity:.40;
+    -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.50) 38%,rgba(0,0,0,.06) 78%,transparent);
+    mask-image:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.50) 38%,rgba(0,0,0,.06) 78%,transparent);
+  }
+  .vv-hero .vv-hero-copy::before{inset:-15px -8px -10px; background:linear-gradient(180deg,rgba(250,252,250,.82),rgba(250,252,250,.56));}
+}
+/* Potadot-inspired editorial pauses between each section.
+   Preserve the intentionally tighter hero -> Who We Are bridge. */
+:where(#services,#who-we-serve,#work,#process){
+  position:relative;
+  padding-top:clamp(148px,12vw,210px);
+  padding-bottom:clamp(155px,12vw,215px);
+  scroll-margin-top:85px;
+}
+:where(#services,#who-we-serve,#work,#process)::before{
+  content:"";position:absolute;pointer-events:none;top:0;
+  left:max(5vw,20px);right:max(5vw,20px);height:1px;
+  background:linear-gradient(90deg,rgba(46,196,182,.65) 0%,rgba(0,63,92,.14) 42%,transparent 100%);
+}
+#about{scroll-margin-top:85px}
+:where(#services,#who-we-serve,#work,#process) .vv-section-h{margin-top:clamp(23px,3vw,38px);margin-bottom:clamp(35px,3.6vw,56px)}
+:where(#services,#who-we-serve,#work,#process) .vv-label{display:inline-block}
+#services .vv-service-list{margin-top:clamp(55px,5vw,85px)}
+#who-we-serve .vv-audience-grid{margin-top:clamp(42px,5vw,70px)}
+#work .vv-work-grid{margin-top:clamp(50px,5vw,72px)}
+#process .vv-process{margin-top:clamp(52px,5vw,78px)}
+@media(max-width:1024px){
+  :where(#services,#who-we-serve,#work,#process){padding-top:clamp(108px,10vw,145px);padding-bottom:clamp(110px,10vw,150px)}
+}
+@media(max-width:760px){
+  :where(#services,#who-we-serve,#work,#process){padding-top:88px;padding-bottom:98px;scroll-margin-top:74px}
+  :where(#services,#who-we-serve,#work,#process) .vv-section-h{margin-top:22px;margin-bottom:32px}
+  #services .vv-service-list{margin-top:42px}
+  #who-we-serve .vv-audience-grid,#work .vv-work-grid,#process .vv-process{margin-top:34px}
+}
+@media(max-width:390px){:where(#services,#who-we-serve,#work,#process){padding-top:77px;padding-bottom:86px}}
+
 </style></head><body>
 <header class="vv-header" id="siteHeader">
   <nav class="vv-navbar" aria-label="Main navigation">
@@ -350,7 +405,7 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
     <a href="#contact" class="vv-mobile-cta">Let's talk <span>↗</span></a>
   </div>
 </header>
-<main id="top"><section class="vv-hero"><div class="vv-hero-grid"><div class="vv-hero-copy"><div class="vv-hero-kicker"><span class="vv-kicker-dot"></span> YOUR VISION. OUR CREATIVE CANVAS.</div><div id="sceneCopy"><div class="vv-scene-eyebrow" id="eyebrow">01 / CREATIVE JOURNEYS</div><h1 class="vv-hero-title"><span id="headline">Moments that last</span><span class="vv-title-dot">.</span></h1><p class="vv-hero-description" id="description">From portraits and weddings to the little moments in between, we capture stories you will want to revisit.</p><div class="vv-current-service"><span>NOW SHOWING</span><strong id="serviceName">Photography</strong></div></div><div class="vv-hero-actions"><a href="#work" class="vv-primary-button vv-pill-button vv-pill-dark"><span class="vv-pill-label">Explore our work</span><span class="vv-pill-disc"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a href="#contact" class="vv-text-link vv-pill-button vv-pill-light"><span class="vv-pill-label">Start a project</span><span class="vv-pill-disc"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div><div class="vv-hero-controls" id="steps" aria-label="Choose a service"><button id="pauseSlide" class="vv-play-button" aria-label="Pause slideshow">Ⅱ</button></div></div>
+<main id="top"><section class="vv-hero"><canvas id="vvHeroCubes" class="vv-aceternity-inspired-cubes" aria-hidden="true"></canvas><div class="vv-hero-grid"><div class="vv-hero-copy"><div class="vv-hero-kicker"><span class="vv-kicker-dot"></span> YOUR VISION. OUR CREATIVE CANVAS.</div><div id="sceneCopy"><div class="vv-scene-eyebrow" id="eyebrow">01 / CREATIVE JOURNEYS</div><h1 class="vv-hero-title"><span id="headline">Moments that last</span><span class="vv-title-dot">.</span></h1><p class="vv-hero-description" id="description">From portraits and weddings to the little moments in between, we capture stories you will want to revisit.</p><div class="vv-current-service"><span>NOW SHOWING</span><strong id="serviceName">Photography</strong></div></div><div class="vv-hero-actions"><a href="#work" class="vv-primary-button vv-pill-button vv-pill-dark"><span class="vv-pill-label">Explore our work</span><span class="vv-pill-disc"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a href="#contact" class="vv-text-link vv-pill-button vv-pill-light"><span class="vv-pill-label">Start a project</span><span class="vv-pill-disc"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div><div class="vv-hero-controls" id="steps" aria-label="Choose a service"><button id="pauseSlide" class="vv-play-button" aria-label="Pause slideshow">Ⅱ</button></div></div>
 <div class="vv-hero-visual"><span id="artLabel" class="vv-visual-top">VISUALVERSE / PHOTOGRAPHY</span><div class="vv-visual-field"><div class="vv-orbit vv-orbit-one"></div><div class="vv-orbit vv-orbit-two"></div><canvas id="vvCanvas" class="vv-particle-canvas" role="img" aria-label="Animated dots forming icons for VisualVerse services"></canvas></div><div class="vv-visual-bottom"><span>IDEAS INTO IMPACT</span><span id="counter">01 / 06</span></div></div></div><div class="vv-hero-bottom"><span>AN INDEPENDENT CREATIVE MEDIA STUDIO</span><span class="vv-hero-bottom-line"></span><span>EXPLORE • DISCOVER • CREATE</span></div></section>
 <!-- The scroll cue bridges the hero and Who We Are, rather than floating in the hero artwork. -->
 <div class="vv-story-band">
@@ -492,6 +547,108 @@ const burger=document.getElementById('burger'),mobile=document.getElementById('m
   document.addEventListener('pointerleave',()=>{cursor.style.opacity='0';visible=false});
   window.addEventListener('blur',()=>{cursor.style.opacity='0';visible=false});
   function follow(){cx+=(tx-cx)*.2;cy+=(ty-cy)*.2;cursor.style.transform=`translate3d(${cx}px,${cy}px,0) translate(-50%,-50%)`;requestAnimationFrame(follow)}follow();
+})();
+</script>
+
+<script>
+/* Visual Verse / hero-only isometric cubes.
+   This is an adapted vanilla Canvas effect for our static site, not the
+   unmodified Aceternity React component. No external libraries required. */
+(function(){
+  const hero=document.querySelector('.vv-hero');
+  const canvas=document.getElementById('vvHeroCubes');
+  if(!hero||!canvas)return;
+  const ctx=canvas.getContext('2d',{alpha:true});
+  if(!ctx)return;
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+  const coarse=window.matchMedia('(pointer: coarse)');
+  let width=0,height=0,dpr=1,tiles=[],frame=0,running=false,visible=false,lastDraw=0;
+  let pointer={x:0,y:0,active:false,energy:0};
+  const color={top:'#d7f2eb',topLit:'#68d9cc',left:'#c0e8e3',right:'#98d7d1',edge:'rgba(0,63,92,.12)'};
+  function mix(hexA,hexB,t){
+    t=Math.max(0,Math.min(1,t));
+    const a=parseInt(hexA.slice(1),16),b=parseInt(hexB.slice(1),16);
+    const rgb=i=>(((a>>i)&255)*(1-t)+((b>>i)&255)*t)|0;
+    return 'rgb('+rgb(16)+','+rgb(8)+','+rgb(0)+')';
+  }
+  function resize(){
+    const box=hero.getBoundingClientRect();
+    width=Math.max(1,Math.round(box.width));height=Math.max(1,Math.round(box.height));
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    const half=Math.max(32,Math.min(58,Math.floor(width/21)));
+    const halfH=half*.47;
+    const rowGap=halfH;
+    const columnGap=half*2;
+    tiles=[];
+    for(let row=-2;row<Math.ceil(height/rowGap)+3;row++){
+      const y=row*rowGap;
+      for(let col=-2;col<Math.ceil(width/columnGap)+3;col++){
+        tiles.push({x:col*columnGap+(row%2?half:0),y,a:half,b:halfH});
+      }
+    }
+    if(reduced.matches)draw(0);
+  }
+  function poly(points,fill){
+    ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);
+    for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);
+    ctx.closePath();ctx.fillStyle=fill;ctx.fill();
+  }
+  function draw(now){
+    ctx.clearRect(0,0,width,height);
+    const sec=now/1000;
+    const pulseX=width*(.48+.19*Math.sin(sec*.21));
+    const pulseY=height*(.45+.24*Math.cos(sec*.18));
+    pointer.energy+=(Number(pointer.active)-pointer.energy)*.085;
+    for(const t of tiles){
+      const distPointer=Math.hypot(t.x-pointer.x,t.y-pointer.y);
+      const distIdle=Math.hypot(t.x-pulseX,t.y-pulseY);
+      const interactive=pointer.energy*Math.exp(-distPointer/230)*(.45+.55*Math.cos(distPointer*.026-sec*7));
+      const idle=reduced.matches?0:Math.max(0,Math.cos(distIdle*.018-sec*1.7))*Math.exp(-distIdle/305)*.20;
+      const wave=Math.min(1,Math.max(0,interactive+idle));
+      const lift=wave*23;
+      const depth=3+wave*13;
+      const x=t.x,y=t.y-lift,a=t.a,b=t.b;
+      const L=[x-a,y],T=[x,y-b],R=[x+a,y],B=[x,y+b];
+      poly([L,B,[B[0],B[1]+depth],[L[0],L[1]+depth]],mix(color.left,color.topLit,wave*.40));
+      poly([B,R,[R[0],R[1]+depth],[B[0],B[1]+depth]],mix(color.right,color.topLit,wave*.33));
+      poly([L,T,R,B],mix(color.top,color.topLit,wave*.95));
+      ctx.beginPath();ctx.moveTo(L[0],L[1]);ctx.lineTo(T[0],T[1]);ctx.lineTo(R[0],R[1]);
+      ctx.strokeStyle=color.edge;ctx.lineWidth=.55;ctx.stroke();
+    }
+  }
+  function tick(now){
+    if(!running)return;
+    frame=requestAnimationFrame(tick);
+    if(now-lastDraw<(coarse.matches?42:30))return;
+    lastDraw=now;
+    draw(now);
+  }
+  function start(){if(running||reduced.matches||!visible||document.hidden)return;running=true;frame=requestAnimationFrame(tick)}
+  function stop(){running=false;cancelAnimationFrame(frame)}
+  function handlePointer(ev){
+    const rect=hero.getBoundingClientRect();
+    pointer.x=ev.clientX-rect.left;pointer.y=ev.clientY-rect.top;
+    pointer.active=pointer.x>=0&&pointer.x<=rect.width&&pointer.y>=0&&pointer.y<=rect.height;
+  }
+  hero.addEventListener('pointermove',handlePointer,{passive:true});
+  hero.addEventListener('pointerleave',()=>{pointer.active=false},{passive:true});
+  window.addEventListener('blur',stop);
+  window.addEventListener('focus',start);
+  document.addEventListener('visibilitychange',()=>{document.hidden?stop():start()});
+  const observer=new IntersectionObserver(entries=>{
+    visible=!!entries[0]?.isIntersecting;
+    if(visible)start();else stop();
+  },{threshold:.01});
+  observer.observe(hero);
+  let resizeTimeout;
+  window.addEventListener('resize',()=>{clearTimeout(resizeTimeout);resizeTimeout=setTimeout(resize,120)},{passive:true});
+  if(typeof reduced.addEventListener==='function')reduced.addEventListener('change',()=>{
+    if(reduced.matches){stop();pointer.active=false;pointer.energy=0;draw(0)}else start();
+  });
+  resize();
+  if(reduced.matches)draw(0);
 })();
 </script>
 </body></html>
