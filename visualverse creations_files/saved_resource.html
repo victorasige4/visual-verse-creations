@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<!-- saved from url=(0194)https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&locale=en-US&deviceType=desktop&unsafeSkipTargetOriginCheck=true&backgroundMode=transparent#work -->
+<html lang="en-US" class="transparentSkybridgeBackground desktopSkybridge dark" data-theme="dark" style="color-scheme: dark; --safe-area-inset-top: 0px; --safe-area-inset-bottom: 0px; --safe-area-inset-left: 0px; --safe-area-inset-right: 0px;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>@layer sandbox-defaults{html,body,#root{margin:0;padding:0}}</style><meta name="viewport" content="width=device-width, initial-scale=1"><title>VisualVerse Creations — TT Travels Homepage Preview</title><meta name="description" content="VisualVerse Creations: photography, videography, branding, graphic design, UI/UX and social media marketing."><link rel="preconnect" href="https://fonts.googleapis.com/"><link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin=""><link href="./css2" rel="stylesheet"><style>
+/* VISUAL VERSE / TYPE SYSTEM — TT Travels is the single primary site font.
+   Connect licensed webfont files at ./assets/fonts/ when available.
+   Until then, locally installed TT Travels is used; Manrope is a safe fallback.
+   Font files are intentionally not bundled into this preview. */
+@font-face{font-family:'VisualVerse TT Travels';src:local('TT Travels Regular'),local('TTTravels-Regular'),url('./assets/fonts/TTTravels-Regular.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'VisualVerse TT Travels';src:local('TT Travels Medium'),local('TTTravels-Medium'),url('./assets/fonts/TTTravels-Medium.woff2') format('woff2');font-style:normal;font-weight:500;font-display:swap}
+@font-face{font-family:'VisualVerse TT Travels';src:local('TT Travels DemiBold'),local('TTTravels-DemiBold'),url('./assets/fonts/TTTravels-DemiBold.woff2') format('woff2');font-style:normal;font-weight:600;font-display:swap}
+@font-face{font-family:'VisualVerse TT Travels';src:local('TT Travels Bold'),local('TTTravels-Bold'),url('./assets/fonts/TTTravels-Bold.woff2') format('woff2');font-style:normal;font-weight:700;font-display:swap}
+@font-face{font-family:'VisualVerse TT Travels';src:local('TT Travels ExtraBold'),local('TTTravels-ExtraBold'),url('./assets/fonts/TTTravels-ExtraBold.woff2') format('woff2');font-style:normal;font-weight:800;font-display:swap}
+@font-face{font-family:'VisualVerse TT Travels';src:local('TT Travels Black'),local('TTTravels-Black'),url('./assets/fonts/TTTravels-Black.woff2') format('woff2');font-style:normal;font-weight:900;font-display:swap}
+/* VisualVerse refresh / Hero & navigation. Uses globally configured font-heading and font-body. */
+:root{--vv-navy:#003f5c;--vv-aqua:#2ec4b6;--vv-deep:#001f2f;--vv-paper:#fafcfa;--vv-mist:#e7f4f1;--vv-typeface:'VisualVerse TT Travels','TT Travels','TT Travels Next','Manrope',Arial,sans-serif;--vv-fw-regular:400;--vv-fw-medium:500;--vv-fw-demi:600;--vv-fw-bold:700;--vv-fw-extra:800}
+.vv-header,.vv-hero{font-family:var(--vv-typeface);color:var(--vv-navy)}
+.vv-header{position:sticky;top:0;z-index:80;background:rgba(250,252,250,.96);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,63,92,.09)}
+.vv-navbar{height:80px;max-width:1570px;margin:auto;padding:0 clamp(20px,4.4vw,80px);display:flex;align-items:center;justify-content:space-between;gap:32px}
+.vv-logo{color:var(--vv-navy);font-weight:900;font-size:24px;letter-spacing:-.085em;text-decoration:none;display:inline-flex;align-items:center;white-space:nowrap;gap:9px}
+.vv-logo-symbol{display:grid;place-items:center;width:33px;height:33px;background:var(--vv-navy);color:white;border-radius:50%;font-size:18px;letter-spacing:-.13em;padding-right:3px}
+.vv-logo em{color:var(--vv-aqua);font-style:normal}
+.vv-nav-items{display:flex;align-items:center;gap:clamp(15px,2.6vw,38px)}
+.vv-nav-items a{position:relative;text-decoration:none;color:var(--vv-navy);font-size:13px;font-weight:750;letter-spacing:.025em;opacity:.72}
+.vv-nav-items a:hover,.vv-nav-items a[aria-current="page"]{opacity:1}
+.vv-nav-items a[aria-current="page"]::after{content:"";position:absolute;bottom:-13px;left:0;right:0;height:2px;background:var(--vv-aqua)}
+.vv-talk{display:inline-flex;align-items:center;gap:26px;background:var(--vv-aqua);color:var(--vv-deep);border-radius:999px;padding:7px 8px 7px 21px;text-decoration:none;font-size:13px;font-weight:800;white-space:nowrap;box-shadow:0 8px 22px rgba(46,196,182,.14)}
+.vv-talk-arrow{width:33px;height:33px;display:grid;place-items:center;border-radius:50%;background:var(--vv-paper);font-size:17px}
+.vv-mobile-toggle{display:none;border:1px solid rgba(0,63,92,.2);background:none;border-radius:999px;min-width:44px;min-height:44px;color:var(--vv-navy);font-size:22px;cursor:pointer}
+.vv-mobile-menu{display:none}
+.vv-hero{background:var(--vv-paper);position:relative;min-height:calc(100svh - 80px);overflow:hidden;padding:0 clamp(18px,4.4vw,80px)}
+.vv-hero-grid{max-width:1510px;min-height:min(820px,calc(100svh - 138px));margin:auto;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(390px,.92fr);align-items:stretch}
+.vv-hero-copy{min-width:0;display:flex;flex-direction:column;justify-content:center;padding:clamp(36px,5vw,70px) 4vw clamp(32px,4vw,64px) 0}
+.vv-hero-kicker{font-size:11px;font-weight:850;letter-spacing:.16em;display:flex;align-items:center;gap:10px;margin-bottom:clamp(58px,7vh,94px)}
+.vv-kicker-dot{height:9px;width:9px;background:var(--vv-aqua);border-radius:50%;box-shadow:0 0 0 6px rgba(46,196,182,.12)}
+.vv-scene-eyebrow{font-size:12px;font-weight:850;letter-spacing:.17em;margin-bottom:18px;color:#3c8290}
+.vv-hero-title{font-family:var(--vv-typeface);font-size:clamp(55px,7vw,116px);line-height:.97;letter-spacing:-.09em;font-weight:850;max-width:850px;min-height:1.94em;text-wrap:balance;margin:0 0 25px;color:var(--vv-navy)}
+.vv-title-dot{color:var(--vv-aqua)}
+.vv-hero-description{max-width:470px;min-height:4.2em;font-size:clamp(16px,1.45vw,19px);line-height:1.65;color:#4e7280;margin:0 0 23px;letter-spacing:-.025em}
+.vv-current-service{display:flex;align-items:center;gap:13px;font-size:12px;margin-top:0;margin-bottom:35px}
+.vv-current-service span{font-size:10px;letter-spacing:.14em;font-weight:800;color:#66949c}
+.vv-current-service strong{font-size:13px;font-weight:850}
+.vv-hero-actions{display:flex;align-items:center;flex-wrap:wrap;gap:26px;margin-bottom:clamp(38px,5vh,64px)}
+.vv-primary-button{background:var(--vv-navy);color:white;text-decoration:none;display:inline-flex;align-items:center;gap:30px;padding:17px 22px;border-radius:999px;font-size:13px;font-weight:850;transition:transform .2s,background .2s}
+.vv-primary-button:hover{background:var(--vv-deep);transform:translateY(-2px)}
+.vv-text-link{color:var(--vv-navy);text-decoration:none;border-bottom:1px solid var(--vv-navy);font-weight:850;font-size:13px;padding-bottom:4px}
+.vv-text-link span{padding-left:7px}
+.vv-hero-controls{display:flex;align-items:center;gap:9px;max-width:450px}
+.vv-scene-step{display:flex;align-items:center;gap:5px;border:0;background:transparent;padding:4px 1px;cursor:pointer;min-height:28px;flex:1;min-width:0;opacity:.38;color:var(--vv-navy);transition:opacity .2s}
+.vv-scene-step.is-current,.vv-scene-step:hover{opacity:1}
+.vv-step-number{font-size:10px;font-weight:850}
+.vv-step-line{display:block;height:2px;background:var(--vv-navy);width:100%;border-radius:3px;transition:height .2s,background .2s}
+.vv-scene-step.is-current .vv-step-line{height:4px;background:var(--vv-aqua)}
+.vv-play-button{border:0;background:none;font-size:15px;cursor:pointer;color:var(--vv-navy);min-width:35px;min-height:32px}
+.vv-hero-visual{min-width:0;position:relative;align-self:center;display:flex;flex-direction:column;justify-content:space-between;height:min(665px,calc(100svh - 155px));min-height:450px;background:linear-gradient(145deg,#e9f8f4 0%,#f1faf7 50%,#deeff0 100%);border:1px solid #d8eeec;border-radius:26px;margin:24px 0;overflow:hidden;isolation:isolate}
+.vv-visual-top,.vv-visual-bottom{font-size:10px;letter-spacing:.15em;font-weight:800;color:#4b7d86;position:relative;z-index:4}
+.vv-visual-top{padding:27px 28px 0}
+.vv-visual-bottom{padding:0 28px 24px;display:flex;justify-content:space-between;gap:10px}
+.vv-visual-field{position:absolute;inset:5% 0 3%;display:grid;place-items:center}
+.vv-particle-canvas{position:relative;z-index:3;width:min(95%,535px);height:min(95%,535px);aspect-ratio:1;display:block;touch-action:pan-y}
+.vv-orbit{pointer-events:none;position:absolute;border:1px solid rgba(0,63,92,.07);border-radius:50%;aspect-ratio:1;width:82%;max-width:660px;z-index:1}
+.vv-orbit-two{width:60%;border-style:dashed;transform:rotate(18deg);opacity:.6}
+.vv-hero-bottom{max-width:1510px;display:flex;align-items:center;justify-content:space-between;gap:25px;margin:0 auto;padding:15px 0 25px;font-size:10px;letter-spacing:.17em;font-weight:850;color:#64848d}
+.vv-hero-bottom-line{height:1px;background:#d6e9e6;flex:1}
+@media(max-width:1040px){.vv-hero-grid{grid-template-columns:1fr 1fr;min-height:680px}.vv-hero-title{font-size:clamp(48px,6.4vw,70px)}.vv-hero-visual{min-height:480px}.vv-hero-kicker{margin-bottom:40px}}
+@media(max-width:760px){.vv-navbar{height:70px;padding:0 20px}.vv-header .vv-nav-items,.vv-header .vv-talk{display:none}.vv-mobile-toggle{display:block}.vv-mobile-menu{display:flex;flex-direction:column;gap:0;padding:0 20px 18px;background:var(--vv-paper);border-top:1px solid #e4efed}.vv-mobile-menu a{padding:13px 0;color:var(--vv-navy);font-size:15px;font-weight:700;text-decoration:none;border-bottom:1px solid #e4efed}.vv-hero{padding:0 19px}.vv-hero-grid{grid-template-columns:1fr;min-height:unset}.vv-hero-copy{padding:43px 4px 12px}.vv-hero-kicker{margin-bottom:40px;font-size:10px}.vv-hero-title{font-size:clamp(48px,12.5vw,78px);min-height:auto;margin-bottom:20px}.vv-hero-description{min-height:4.5em;font-size:16px}.vv-current-service{margin-bottom:26px}.vv-hero-actions{margin-bottom:27px}.vv-hero-visual{margin:17px 0;min-height:340px;height:min(100vw,480px);border-radius:21px}.vv-particle-canvas{width:min(95%,440px);height:min(95%,440px)}.vv-visual-top{padding:20px 19px 0}.vv-visual-bottom{padding:0 19px 18px}.vv-hero-bottom{font-size:9px;gap:14px}.vv-hero-bottom span:last-child{display:none}}
+@media(prefers-reduced-motion:reduce){.vv-header *,.vv-hero *{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important}}
+
+/* Keep changes to the service copy subtle and readable. */
+.vv-copy-enter{animation:vv-copy-in .5s cubic-bezier(.2,.7,.2,1)}
+@keyframes vv-copy-in{from{opacity:.1;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.vv-copy-enter{animation:none}}
+
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:#003f5c;background:#fafcfa;font-family:'Manrope',Arial,sans-serif;-webkit-font-smoothing:antialiased}button,a{font:inherit}button:focus-visible,a:focus-visible{outline:3px solid #119a92;outline-offset:4px}.vv-preview-section{padding:115px max(5vw,20px);max-width:1480px;margin:auto}.vv-label{font-weight:850;letter-spacing:.18em;font-size:11px;color:#24867f}.vv-section-h{font-size:clamp(40px,5.8vw,82px);line-height:1.07;letter-spacing:-.08em;font-weight:850;max-width:950px;margin:17px 0 28px}.vv-lead{font-size:clamp(17px,1.6vw,22px);line-height:1.7;max-width:900px;color:#516f7c}.vv-service-list{border-top:1px solid #a7cecd;margin-top:48px}.vv-service-row{display:flex;gap:25px;align-items:baseline;border-bottom:1px solid #a7cecd;padding:25px 0;text-decoration:none;color:inherit}.vv-service-row small{font-size:12px;font-weight:800;color:#409f9a}.vv-service-row strong{font-size:clamp(27px,3.4vw,48px);font-weight:850;letter-spacing:-.06em;flex:1}.vv-service-row span{font-size:14px;font-weight:600;color:#467a80}.vv-service-row:hover strong{color:#168d87}.vv-work-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:18px}.vv-work-placeholder{min-height:370px;background:#e7f4f1;border-radius:18px;border:1px solid #c5e6e0;display:flex;flex-direction:column;justify-content:space-between;padding:32px;overflow:hidden;position:relative}.vv-work-placeholder:before{content:'V';font-weight:900;font-size:clamp(200px,22vw,340px);line-height:.8;letter-spacing:-.14em;color:#caeae7;position:absolute;right:-20px;bottom:-20px}.vv-work-placeholder div{z-index:1}.vv-work-placeholder strong{display:block;font-size:28px;letter-spacing:-.05em}.vv-work-placeholder small{font-size:12px;font-weight:800;letter-spacing:.12em}.vv-work-placeholder p{z-index:1;font-size:14px;color:#517680}.vv-work-grid .vv-work-placeholder:nth-child(2){background:#e1ecef}.vv-work-grid .vv-work-placeholder:nth-child(2):before{color:#c5e0e5}.vv-process{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;margin-top:45px}.vv-process article{border-top:3px solid #2ec4b6;padding-top:20px}.vv-process article strong{font-size:25px;letter-spacing:-.05em}.vv-process article p{line-height:1.7;color:#5c7580}.vv-footer{background:#003f5c;color:white;padding:95px max(5vw,20px) 55px}.vv-footer-inner{max-width:1400px;margin:auto}.vv-footer-title{font-size:clamp(50px,7.3vw,105px);line-height:1;letter-spacing:-.08em;margin:15px 0 35px;font-weight:850}.vv-footer a{color:#2ec4b6;text-decoration:none;display:inline-block;border-bottom:2px solid currentColor;padding-bottom:9px;font-weight:850}.vv-footer-end{margin-top:110px;display:flex;justify-content:space-between;gap:10px;color:#b0d8dd;font-size:12px}.vv-footer-end a{border:0;padding:0;color:inherit;font-weight:600}
+@media(max-width:750px){.vv-preview-section{padding:72px 20px}.vv-work-grid,.vv-process{grid-template-columns:1fr}.vv-service-row{flex-wrap:wrap}.vv-service-row span{width:100%;padding-left:35px}.vv-work-placeholder{min-height:280px}.vv-footer-end{flex-wrap:wrap}}
+
+.vv-copy-enter{animation:vv-copy-in .48s cubic-bezier(.2,.7,.2,1)}@keyframes vv-copy-in{from{opacity:.1;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.vv-mobile-menu[hidden]{display:none}.vv-header{font-family:'Manrope',Arial,sans-serif}.vv-hero-title{min-height:1.9em}
+
+/* TYPOGRAPHY REFINEMENT / November 11, 2026
+   All sections share one TT Travels family. The original homepage, service
+   particle animation, content, colors, sections, responsiveness and JS remain. */
+html,body,.vv-header,.vv-hero,button,input,textarea,select{font-family:var(--vv-typeface)}
+body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
+/* Expressive display typography */
+.vv-hero-title{font-family:var(--vv-typeface);font-weight:var(--vv-fw-extra);letter-spacing:-.055em;line-height:1.03}
+.vv-section-h,.vv-footer-title{font-family:var(--vv-typeface);font-weight:var(--vv-fw-extra);letter-spacing:-.055em;line-height:1.06}
+.vv-logo{font-weight:var(--vv-fw-extra);letter-spacing:-.065em}
+.vv-work-placeholder:before{font-weight:var(--vv-fw-extra)}
+/* Clear section hierarchy */
+.vv-service-row strong{font-weight:var(--vv-fw-bold);letter-spacing:-.035em}
+.vv-work-placeholder strong,.vv-process article strong{font-weight:var(--vv-fw-bold);letter-spacing:-.03em}
+.vv-current-service strong{font-weight:var(--vv-fw-bold)}
+/* Navigation, calls-to-action, and concise information */
+.vv-nav-items a,.vv-mobile-menu a{font-weight:var(--vv-fw-demi)}
+.vv-talk,.vv-primary-button,.vv-text-link,.vv-footer a{font-weight:var(--vv-fw-bold)}
+.vv-label,.vv-hero-kicker,.vv-scene-eyebrow,.vv-current-service span,
+.vv-step-number,.vv-visual-top,.vv-visual-bottom,.vv-hero-bottom,
+.vv-service-row small,.vv-work-placeholder small{font-weight:var(--vv-fw-demi)}
+/* Readable body text and supporting descriptions */
+.vv-hero-description,.vv-lead,.vv-process article p,
+.vv-work-placeholder p,.vv-service-row span{font-weight:var(--vv-fw-regular);letter-spacing:-.008em}
+.vv-footer-end,.vv-footer-end a{font-weight:var(--vv-fw-medium)}
+@media(max-width:760px){.vv-hero-title{letter-spacing:-.05em}.vv-section-h,.vv-footer-title{letter-spacing:-.045em}}
+</style><style>html, body, #root {
+      margin-top: 0; margin-bottom: 0; padding-top: 0; padding-bottom: 0;
+      
+    }
+html,body,#root{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}html,body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Helvetica Neue,Arial,sans-serif!important}button,input,textarea,select{font-family:inherit}html{background-color:transparent}html.chatgptOled.dark,html.mobileSkybridge.dark{background-color:#000}@supports (font: -apple-system-body){html.mobileSkybridge{font:-apple-system-body}}html.desktopSkybridge.dark{background-color:#1e1e1e}html.transparentSkybridgeBackground,html.transparentSkybridgeBackground.dark{background-color:transparent}html.androidSkybridge,html.androidSkybridge body,html.androidSkybridge *{-webkit-tap-highlight-color:rgba(255,255,255,0)}html.androidSkybridge *::selection,html.androidSkybridge *::-moz-selection{background:#fff0;color:inherit}</style></head><body>
+<header class="vv-header"><nav class="vv-navbar" aria-label="Main navigation"><a href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#top" class="vv-logo"><span class="vv-logo-symbol">V</span><span>visual<em>verse</em>.</span></a><div class="vv-nav-items"><a href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#top" aria-current="page">Home</a><a href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#about">About</a><a href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#services">Services</a><a href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#work">Portfolio</a><a href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#contact">Contact</a></div><a href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#contact" class="vv-talk">Let's talk <span class="vv-talk-arrow">↗</span></a><button id="burger" class="vv-mobile-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile">☰</button></nav><div id="mobile" class="vv-mobile-menu" hidden=""><a href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#top">Home</a><a href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#about">About</a><a href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#services">Services</a><a href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#work">Portfolio</a><a href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#contact">Contact</a><a href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#contact">Let's talk ↗</a></div></header>
+<main id="top"><section class="vv-hero"><div class="vv-hero-grid"><div class="vv-hero-copy"><div class="vv-hero-kicker"><span class="vv-kicker-dot"></span> YOUR VISION. OUR CREATIVE CANVAS.</div><div id="sceneCopy" class="vv-copy-enter"><div class="vv-scene-eyebrow" id="eyebrow">02 / MOTION &amp; IMAGERY</div><h1 class="vv-hero-title"><span id="headline">Stories in motion</span><span class="vv-title-dot">.</span></h1><p class="vv-hero-description" id="description">Thoughtfully crafted films and moving images that give people something to see, feel, and remember.</p><div class="vv-current-service"><span>NOW SHOWING</span><strong id="serviceName">Videography</strong></div></div><div class="vv-hero-actions"><a href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#work" class="vv-primary-button">Explore our work <span>↗</span></a><a href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#contact" class="vv-text-link">Start a project <span>↗</span></a></div><div class="vv-hero-controls" id="steps" aria-label="Choose a service"><button id="pauseSlide" class="vv-play-button" aria-label="Pause slideshow">Ⅱ</button><button class="vv-scene-step" title="Show Photography" aria-label="Show Photography"><span class="vv-step-number">01</span><span class="vv-step-line"></span></button><button class="vv-scene-step is-current" title="Show Videography" aria-label="Show Videography" aria-current="true"><span class="vv-step-number">02</span><span class="vv-step-line"></span></button><button class="vv-scene-step" title="Show Branding" aria-label="Show Branding"><span class="vv-step-number">03</span><span class="vv-step-line"></span></button><button class="vv-scene-step" title="Show Graphic Design" aria-label="Show Graphic Design"><span class="vv-step-number">04</span><span class="vv-step-line"></span></button><button class="vv-scene-step" title="Show Web &amp; UI/UX Design" aria-label="Show Web &amp; UI/UX Design"><span class="vv-step-number">05</span><span class="vv-step-line"></span></button><button class="vv-scene-step" title="Show Social Media &amp; Digital Marketing" aria-label="Show Social Media &amp; Digital Marketing"><span class="vv-step-number">06</span><span class="vv-step-line"></span></button></div></div>
+<div class="vv-hero-visual"><span id="artLabel" class="vv-visual-top">VISUALVERSE / VIDEOGRAPHY</span><div class="vv-visual-field"><div class="vv-orbit vv-orbit-one"></div><div class="vv-orbit vv-orbit-two"></div><canvas id="vvCanvas" class="vv-particle-canvas" role="img" aria-label="Animated dots forming icons for VisualVerse services" width="448" height="448"></canvas></div><div class="vv-visual-bottom"><span>IDEAS INTO IMPACT</span><span id="counter">02 / 06</span></div></div></div><div class="vv-hero-bottom"><span>AN INDEPENDENT CREATIVE MEDIA STUDIO</span><span class="vv-hero-bottom-line"></span><span>EXPLORE • DISCOVER • CREATE</span></div></section>
+<section class="vv-preview-section" id="about"><span class="vv-label">A LITTLE ABOUT US / 001</span><h2 class="vv-section-h">A creative home for ideas that deserve to be seen.</h2><p class="vv-lead">VisualVerse Creations brings together design, photography, film, branding, and digital thinking. We listen closely, create thoughtfully, and turn your vision into something people can see, feel, and remember.</p></section>
+<section class="vv-preview-section" id="services"><span class="vv-label">WHAT WE DO / 002</span><h2 class="vv-section-h">Many disciplines.<br>One visual language.</h2><div class="vv-service-list"><a class="vv-service-row" href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#contact"><small>01</small><strong>Photography</strong><span>Moments &amp; portraits ↗</span></a><a class="vv-service-row" href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#contact"><small>02</small><strong>Videography</strong><span>Films &amp; motion ↗</span></a><a class="vv-service-row" href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#contact"><small>03</small><strong>Branding</strong><span>Identity &amp; strategy ↗</span></a><a class="vv-service-row" href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#contact"><small>04</small><strong>Graphic Design</strong><span>Visual communication ↗</span></a><a class="vv-service-row" href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#contact"><small>05</small><strong>Web &amp; UI/UX</strong><span>Digital experiences ↗</span></a><a class="vv-service-row" href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#contact"><small>06</small><strong>Social Media</strong><span>Content &amp; campaigns ↗</span></a></div></section>
+<section class="vv-preview-section" id="work"><span class="vv-label">PORTFOLIO / 003</span><h2 class="vv-section-h">Selected work.<br>More to come.</h2><p class="vv-lead">A space for projects that represent what we love creating. Real project visuals can be added here once they are selected and approved.</p><div class="vv-work-grid"><div class="vv-work-placeholder"><div><small>PROJECT PLACEHOLDER / 01</small><strong>Portraits &amp; stories</strong></div><p>Your photography projects will live here.</p></div><div class="vv-work-placeholder"><div><small>PROJECT PLACEHOLDER / 02</small><strong>Brands &amp; digital</strong></div><p>Your visual identities and web projects will live here.</p></div></div></section>
+<section class="vv-preview-section" id="process"><span class="vv-label">OUR APPROACH / 004</span><h2 class="vv-section-h">Thoughtful at every step.</h2><div class="vv-process"><article><strong>01. Discover</strong><p>We understand your goals, audience and the story behind your business.</p></article><article><strong>02. Create</strong><p>We shape the concept, craft the details and keep you involved.</p></article><article><strong>03. Deliver</strong><p>We refine and hand over work that's ready for the real world.</p></article></div></section>
+</main><footer class="vv-footer" id="contact"><div class="vv-footer-inner"><span class="vv-label" style="color:#2ec4b6">LET'S MAKE SOMETHING MATTER / 005</span><div class="vv-footer-title">Have an idea?<br>Let's make it real.</div><a href="mailto:hello@visualverse.com">Get in touch ↗</a><div class="vv-footer-end"><span>© VISUALVERSE CREATIONS — CONCEPT PREVIEW</span><a href="https://codex-inline-visualization-942f11e1e62a2667.web-sandbox.oaiusercontent.com/?app=skybridge&amp;locale=en-US&amp;deviceType=desktop&amp;unsafeSkipTargetOriginCheck=true&amp;backgroundMode=transparent#top">BACK TO TOP ↑</a></div></div></footer>
+<script>
+const scenes = [
+ { eyebrow:'01 / CREATIVE JOURNEYS', title:'Moments that last',category:'Photography',description:'From portraits and weddings to the little moments in between, we capture stories you will want to revisit.',shape:'camera' },
+ { eyebrow:'02 / MOTION & IMAGERY', title:'Stories in motion',category:'Videography',description:'Thoughtfully crafted films and moving images that give people something to see, feel, and remember.',shape:'film' },
+ { eyebrow:'03 / AN IDENTITY OF YOUR OWN', title:'Made to be known',category:'Branding',description:'A distinctive visual identity gives your business a recognizable voice in every place it shows up.',shape:'identity' },
+ { eyebrow:'04 / VISUAL LANGUAGE', title:'Designed to connect',category:'Graphic Design',description:'From everyday graphics to ambitious campaigns, we turn messages into clear, engaging visuals.',shape:'pen' },
+ { eyebrow:'05 / DIGITAL EXPERIENCES', title:'Made to explore',category:'Web & UI/UX Design',description:'Websites and interfaces that look beautiful, feel intuitive, and help visitors find what matters.',shape:'web' },
+ { eyebrow:'06 / IDEAS WITH REACH', title:'Stories worth sharing',category:'Social Media & Digital Marketing',description:'Purposeful content and campaigns that keep your brand visible and give your audience a reason to engage.',shape:'social' },
+];
+let active=0,paused=false, dots=[],frames=[],timer=0;
+const canvas=document.getElementById('vvCanvas'),g=canvas.getContext('2d');
+let w=500,h=500,dpr=1;const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const pointer={x:0,y:0,active:false};
+function makeShape(shape){
+ const off=document.createElement('canvas');off.width=420;off.height=420;const t=off.getContext('2d',{willReadFrequently:true});
+ const navy='#003f5c',aqua='#2ec4b6',pale='#93dcd6';t.lineJoin='round';t.lineCap='round';
+ const line=(color,width=24)=>{t.strokeStyle=color;t.lineWidth=width},round=(x,y,w,h,r)=>{t.beginPath();t.roundRect(x,y,w,h,r)};
+ if(shape==='camera'){
+ line(navy,26);round(73,131,274,188,28);t.stroke();t.fillStyle=aqua;round(109,97,86,45,12);t.fill();
+ t.fillStyle=pale;t.beginPath();t.arc(211,226,78,0,Math.PI*2);t.fill();line(navy,24);t.beginPath();t.arc(211,226,62,0,Math.PI*2);t.stroke();t.fillStyle=navy;t.beginPath();t.arc(212,226,27,0,Math.PI*2);t.fill();t.fillStyle=aqua;t.beginPath();t.arc(307,165,13,0,Math.PI*2);t.fill();
+ }else if(shape==='film'){
+ line(navy,26);round(82,147,258,185,18);t.stroke();t.fillStyle=pale;round(96,98,237,53,8);t.fill();line(navy,14);t.beginPath();t.moveTo(115,142);t.lineTo(145,103);t.moveTo(186,141);t.lineTo(215,102);t.moveTo(257,141);t.lineTo(287,102);t.stroke();t.fillStyle=aqua;t.beginPath();t.moveTo(181,182);t.lineTo(181,294);t.lineTo(273,238);t.closePath();t.fill();
+ }else if(shape==='identity'){
+ line(pale,18);t.beginPath();t.arc(210,211,146,0,Math.PI*2);t.stroke();t.fillStyle=navy;t.font='900 183px Arial';t.textAlign='center';t.textBaseline='middle';t.fillText('V',185,214);t.fillStyle=aqua;t.font='900 156px Arial';t.fillText('V',259,240);t.beginPath();t.arc(329,85,17,0,Math.PI*2);t.fill();
+ }else if(shape==='pen'){
+ line(navy,23);t.beginPath();t.moveTo(109,294);t.lineTo(243,159);t.lineTo(276,192);t.lineTo(143,326);t.closePath();t.stroke();t.fillStyle=aqua;t.beginPath();t.moveTo(278,127);t.lineTo(316,89);t.quadraticCurveTo(329,81,340,93);t.lineTo(360,113);t.quadraticCurveTo(368,124,357,136);t.lineTo(321,172);t.closePath();t.fill();line(navy,13);t.beginPath();t.moveTo(112,294);t.lineTo(90,352);t.lineTo(143,326);t.stroke();line(pale,9);t.beginPath();t.moveTo(97,197);t.lineTo(97,117);t.lineTo(189,117);t.moveTo(97,117);t.lineTo(97,75);t.moveTo(189,117);t.lineTo(233,117);t.stroke();t.fillStyle=aqua;[[97,75],[189,117],[233,117]].forEach(([x,y])=>{t.beginPath();t.arc(x,y,12,0,Math.PI*2);t.fill()});
+ }else if(shape==='web'){
+ line(navy,22);round(58,100,304,232,24);t.stroke();line(pale,14);t.beginPath();t.moveTo(68,160);t.lineTo(351,160);t.stroke();t.fillStyle=aqua;[98,131,164].forEach(x=>{t.beginPath();t.arc(x,133,8,0,Math.PI*2);t.fill()});t.fillStyle=pale;round(84,189,100,109,10);t.fill();t.fillStyle=aqua;round(208,188,126,23,8);t.fill();t.fillStyle=navy;round(208,235,109,13,6);t.fill();round(208,272,83,13,6);t.fill();
+ }else{
+ line(pale,15);t.beginPath();t.moveTo(209,202);t.lineTo(113,115);t.moveTo(209,202);t.lineTo(312,114);t.moveTo(209,202);t.lineTo(104,302);t.moveTo(209,202);t.lineTo(314,302);t.stroke();[[113,115,32,navy],[312,114,32,aqua],[104,302,32,aqua],[314,302,32,navy],[209,202,56,navy]].forEach(([x,y,r,col])=>{t.fillStyle=col;t.beginPath();t.arc(x,y,r,0,Math.PI*2);t.fill()});t.fillStyle=aqua;t.beginPath();t.arc(210,203,24,0,Math.PI*2);t.fill();
+ }
+ const image=t.getImageData(0,0,420,420).data;const arr=[];
+ for(let y=0;y<420;y+=8)for(let x=0;x<420;x+=8){const n=(y*420+x)*4;if(image[n+3]>115){const r=image[n],gr=image[n+1];arr.push({x,y,fill:gr>175&&r<135?aqua:(gr>175?pale:navy)})}}
+ return arr.sort((a,b)=>(a.x+a.y*.13)-(b.x+b.y*.13));
+}
+frames=scenes.map(s=>makeShape(s.shape));dots=Array.from({length:Math.max(...frames.map(f=>f.length))},()=>({x:210+(Math.random()-.5)*410,y:210+(Math.random()-.5)*410,tx:210,ty:210,a:0,ta:0,fill:'#003f5c',size:2.6+Math.random()*.8}));
+function resize(){const rect=canvas.getBoundingClientRect();w=Math.max(1,rect.width);h=Math.max(1,rect.height);dpr=Math.min(2,window.devicePixelRatio||1);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);g.setTransform(dpr,0,0,dpr,0,0)}
+new ResizeObserver(resize).observe(canvas);resize();
+canvas.addEventListener('pointermove',e=>{const r=canvas.getBoundingClientRect();pointer.x=e.clientX-r.left;pointer.y=e.clientY-r.top;pointer.active=true});canvas.addEventListener('pointerleave',()=>pointer.active=false);
+function morph(n){active=n;const frame=frames[n];for(let i=0;i<dots.length;i++){const d=dots[i],p=frame[i];if(p){d.tx=p.x;d.ty=p.y;d.ta=1;d.fill=p.fill;if(reduced){d.x=d.tx;d.y=d.ty;d.a=d.ta}}else{d.tx=210+(Math.random()-.5)*330;d.ty=210+(Math.random()-.5)*330;d.ta=0;if(reduced)d.a=0}}}
+function show(n){const scene=scenes[n];const copy=document.getElementById('sceneCopy');copy.classList.remove('vv-copy-enter');void copy.offsetWidth;copy.classList.add('vv-copy-enter');document.getElementById('eyebrow').textContent=scene.eyebrow;document.getElementById('headline').textContent=scene.title;document.getElementById('description').textContent=scene.description;document.getElementById('serviceName').textContent=scene.category;document.getElementById('artLabel').textContent='VISUALVERSE / '+scene.category.toUpperCase();document.getElementById('counter').textContent=String(n+1).padStart(2,'0')+' / 06';document.getElementById('steps').querySelectorAll('.vv-scene-step').forEach((b,i)=>{b.classList.toggle('is-current',i===n);if(i===n)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current')});morph(n)}
+const steps=document.getElementById('steps');scenes.forEach((scene,i)=>{const b=document.createElement('button');b.className='vv-scene-step';b.title='Show '+scene.category;b.setAttribute('aria-label','Show '+scene.category);b.innerHTML=`<span class="vv-step-number">0${i+1}</span><span class="vv-step-line"></span>`;b.addEventListener('click',()=>{paused=true;updatePause();show(i)});steps.appendChild(b)});
+const pause=document.getElementById('pauseSlide');function updatePause(){pause.textContent=paused?'▶':'Ⅱ';pause.setAttribute('aria-label',paused?'Resume slideshow':'Pause slideshow')};pause.addEventListener('click',()=>{paused=!paused;updatePause()});
+show(0);if(!reduced)setInterval(()=>{if(!paused)show((active+1)%scenes.length)},6400);
+function animate(){g.clearRect(0,0,w,h);const scale=Math.min(w,h)/420,ox=(w-420*scale)/2,oy=(h-420*scale)/2;for(const p of dots){p.x+=(p.tx-p.x)*(reduced?.24:.065);p.y+=(p.ty-p.y)*(reduced?.24:.065);p.a+=(p.ta-p.a)*.09;if(p.a<.025)continue;let px=ox+p.x*scale,py=oy+p.y*scale;if(!reduced&&pointer.active){const dx=px-pointer.x,dy=py-pointer.y,dist=Math.hypot(dx,dy);if(dist<70&&dist>0){px+=dx/dist*(70-dist)/70*23;py+=dy/dist*(70-dist)/70*23}}g.globalAlpha=Math.max(0,Math.min(1,p.a));g.fillStyle=p.fill;g.beginPath();g.arc(px,py,p.size*scale,0,Math.PI*2);g.fill()}g.globalAlpha=1;requestAnimationFrame(animate)}animate();
+const burger=document.getElementById('burger'),mobile=document.getElementById('mobile');burger.addEventListener('click',()=>{const open=mobile.hidden;mobile.hidden=!open;burger.setAttribute('aria-expanded',String(open));burger.textContent=open?'×':'☰'});mobile.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mobile.hidden=true;burger.setAttribute('aria-expanded','false');burger.textContent='☰'}));
+</script>
+<script>globalThis.__codexVisualizationInitialGlobals={"statePersistence":"none","stateModelContext":"none","visualizationStyleVariables":{"--accent":"rgb(59, 35, 102)","--accent-foreground":"rgb(120, 73, 209)","--background":"rgb(0, 0, 0)","--border":"rgba(237, 237, 237, 0.043)","--border-strong":"rgba(237, 237, 237, 0.094)","--card":"color-mix(in oklab, rgb(237, 237, 237) 5%, transparent)","--card-foreground":"rgb(237, 237, 237)","--corner-shape":"round","--control-spacing":"12px","--cursor-interaction":"pointer","--destructive":"rgb(226, 85, 7)","--font-mono":"ui-monospace, SFMono-Regular, \"SF Mono\", menlo, consolas, \"Liberation Mono\", monospace","--font-sans":"-apple-system-body, ui-sans-serif, -apple-system, system-ui, \"Segoe UI\", Helvetica, \"Apple Color Emoji\", Arial, sans-serif, \"Segoe UI Emoji\", \"Segoe UI Symbol\"","--font-size-base":"16px","--font-weight-normal":"400","--foreground":"rgb(237, 237, 237)","--input":"rgba(237, 237, 237, 0.094)","--muted":"color-mix(in srgb, rgb(237, 237, 237) 10%, transparent)","--muted-foreground":"rgba(237, 237, 237, 0.37)","--popover":"rgb(10, 10, 10)","--popover-foreground":"rgb(237, 237, 237)","--primary":"rgb(120, 73, 209)","--primary-foreground":"rgb(0, 0, 0)","--radius":"8px","--radius-2xl":"16px","--radius-lg":"8px","--radius-md":"6px","--radius-sm":"4px","--ring":"rgb(166, 125, 242)","--secondary":"rgba(237, 237, 237, 0.01)","--secondary-foreground":"rgb(237, 237, 237)","--blue":"rgb(2, 133, 255)","--orange":"rgb(251, 106, 34)","--green":"rgb(4, 184, 76)","--red":"rgb(250, 66, 62)","--purple":"rgb(146, 79, 247)","--yellow":"rgb(255, 195, 0)","--visualize-paint-gutter":"0px","--viz-series-1":"rgb(120, 73, 209)","--viz-series-2":"#f7d453","--viz-series-3":"#4fccc3","--viz-series-4":"#f38cc1","--viz-series-5":"#6ed687","--viz-series-6":"#f9984d"},"visualizationTheme":"dark"};</script>
+<style id="codex-visualization-host-theme">
+:root {}
+html[data-visualize-page-inline-inset] > body { padding-inline: var(--page-content-inline-inset); }
+</style>
+<script>
+(() => {
+  // Host colors are defaults; later authored styles can give the same names
+  // their own meaning (for example, --muted as a chart's label color).
+  const hostStyles = document.getElementById("codex-visualization-host-theme");
+  const hostStyle = hostStyles.sheet.cssRules[0].style;
+  // Typography, geometry and interaction cursors still follow the host.
+  const styleForProperty = (property) =>
+    /^--(?:font-|radius|corner-shape$|control-spacing$|cursor-interaction$|icon-size$|page-content-inline-inset$|page-header-clearance$|visualize-paint-gutter$)/.test(property)
+      ? document.documentElement.style
+      : hostStyle;
+  const initialGlobals =
+    globalThis.__codexVisualizationInitialGlobals ?? globalThis.openai;
+  delete globalThis.__codexVisualizationInitialGlobals;
+  if (initialGlobals?.statePersistence != null) {
+    globalThis.openai ??= {};
+    globalThis.openai.statePersistence = initialGlobals.statePersistence;
+    globalThis.openai.stateModelContext = initialGlobals.stateModelContext ?? "none";
+  }
+  if (!false) {
+    return;
+  }
+  let appliedProperties = [];
+  const applyHostStyleVariables = (styleVariables) => {
+    if (styleVariables == null || typeof styleVariables !== "object") {
+      return;
+    }
+    document.documentElement.toggleAttribute(
+      "data-visualize-page-inline-inset", typeof styleVariables["--page-content-inline-inset"] === "string",
+    );
+    document.documentElement.toggleAttribute(
+      "data-visualize-page-header", typeof styleVariables["--page-header-clearance"] === "string",
+    );
+    for (const property of appliedProperties) {
+      styleForProperty(property).removeProperty(property);
+    }
+    appliedProperties = [];
+    for (const [property, value] of Object.entries(styleVariables)) {
+      if (property.startsWith("--") && typeof value === "string") {
+        styleForProperty(property).setProperty(property, value);
+        appliedProperties.push(property);
+      }
+    }
+  };
+
+  const syncHostStyles = (globals) => {
+    applyHostStyleVariables(globals?.visualizationStyleVariables);
+    const sandboxDocument = globalThis.frameElement?.ownerDocument;
+    if (sandboxDocument != null && globals?.visualizationTheme != null) {
+      let colorSchemeMeta = sandboxDocument.querySelector(
+        'meta[name="color-scheme"]',
+      );
+      if (colorSchemeMeta == null) {
+        colorSchemeMeta = sandboxDocument.createElement("meta");
+        colorSchemeMeta.name = "color-scheme";
+        sandboxDocument.head.appendChild(colorSchemeMeta);
+      }
+      colorSchemeMeta.content = globals.visualizationTheme;
+      sandboxDocument.documentElement.style.colorScheme =
+        globals.visualizationTheme;
+      // Paint the host surface behind transparent saved visualization documents.
+      sandboxDocument.documentElement.style.backgroundColor =
+        hostStyle.getPropertyValue("--background");
+    }
+  };
+
+  syncHostStyles(initialGlobals);
+  globalThis.addEventListener("openai:set_globals", (event) => {
+    syncHostStyles(event.detail?.globals);
+  });
+})();
+</script>
+
+
+
+
+<script>
+(() => {
+  const reportEnvironmentError = (value) => {
+    const error = value instanceof Error ? value : new Error(String(value));
+    void globalThis.openai
+      .callTool(
+        "__codex_inline_visualization_error__",
+        {
+          message: error.message,
+          name: error.name,
+          stack: error.stack,
+        },
+      )
+      .catch(() => {});
+  };
+
+  globalThis.addEventListener("error", (event) => {
+    if (event.target?.localName === "script") {
+      // A script's own onerror may render a fallback or load an alternative.
+      // Let that handler run; failures it throws still reach the global error path.
+      const handlesError = typeof event.target.onerror === "function";
+      globalThis.queueMicrotask(() => {
+        if (!handlesError && !event.defaultPrevented) {
+          reportEnvironmentError("Visualization script could not be loaded");
+        }
+      });
+    } else if (event.target === globalThis) {
+      // The browser defers resize notifications to another frame; no script threw.
+      if (event.error == null && (
+        event.message === "ResizeObserver loop completed with undelivered notifications." ||
+        event.message === "ResizeObserver loop limit exceeded"
+      )) {
+        return;
+      }
+      reportEnvironmentError(event.error ?? event.message);
+    }
+  }, true);
+  globalThis.addEventListener("unhandledrejection", (event) => {
+    reportEnvironmentError(event.reason);
+  });
+})();
+</script>
+<script id="codex-visualization-variants">
+(() => {
+  let previousSnapshot = "[]";
+  let roots = [];
+  const report = () => {
+    roots = Array.from(
+      document.querySelectorAll(".viz-carousel[data-active-variant]"),
+    ).slice(0, 32);
+    const selectedVariants = roots.flatMap((root, carousel) => {
+      const variant = root.dataset.activeVariant;
+      const label = root.getAttribute("aria-label")?.slice(0, 256);
+      return variant ? [{
+        carousel,
+        ...(label == null ? {} : { label }),
+        variant: variant.slice(0, 256),
+      }] : [];
+    });
+    const snapshot = JSON.stringify(selectedVariants);
+    if (snapshot !== previousSnapshot) {
+      previousSnapshot = snapshot;
+      void globalThis.openai.callTool("__codex_visualization_annotations__", {
+        type: "variants",
+        selectedVariants,
+      }).catch(() => {});
+    }
+  };
+  const observer = new MutationObserver((records) => {
+    if (records.some((record) => record.type === "attributes") || roots.some((root) => !root.isConnected)) {
+      report();
+    }
+  });
+  observer.observe(document, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["data-active-variant"],
+  });
+  report();
+  globalThis.addEventListener("pagehide", () => observer.disconnect(), { once: true });
+})();
+</script>
+<script>
+(() => {
+  const selectorInRoot = (target, root) => {
+    const parts = [];
+    for (let element = target; element != null && parts.length < 64; element = element.parentElement) {
+      const id = element.id && globalThis.CSS?.escape?.(element.id);
+      if (id && id.length <= 256) {
+        const selector = ["#" + id, ...parts].join(" > ");
+        const matches = root.querySelectorAll(selector);
+        if (matches.length === 1 && matches[0] === target) {
+          return selector;
+        }
+      }
+      let index = 1;
+      for (let sibling = element.previousElementSibling; sibling != null; sibling = sibling.previousElementSibling) {
+        if (sibling.localName === element.localName) { index += 1; }
+      }
+      const tag = globalThis.CSS?.escape?.(element.localName) ?? element.localName;
+      parts.unshift(tag + ":nth-of-type(" + index + ")");
+      if (parts.join(" > ").length > 1024) { return null; }
+      if (element.parentElement == null) {
+        const selector = parts.join(" > ");
+        const matches = root.querySelectorAll(selector);
+        return matches.length === 1 && matches[0] === target ? selector : null;
+      }
+    }
+    return null;
+  };
+  const describeTarget = (element) => {
+    if (element == null || !element.isConnected) { return undefined; }
+    const tagName = element.localName.toLowerCase();
+    if (!/^[a-z][a-z0-9-]{0,63}$/.test(tagName)) { return undefined; }
+    const parts = [];
+    let current = element;
+    for (let depth = 0; depth < 16; depth += 1) {
+      const root = current.getRootNode();
+      const selector = selectorInRoot(current, root);
+      if (selector == null) { return undefined; }
+      parts.unshift(selector);
+      if (root === document) {
+        const selector = parts.length === 1 ? parts[0] : "shadow:" + parts.join(">>>");
+        if (selector.length > 1024) { return undefined; }
+        const label = (element.getAttribute("aria-label") || element.getAttribute("title") || "")
+          .replace(/[\u0000-\u001f\u007f-\u009f\u061c\u200e\u200f\u2028-\u202e\u2066-\u2069]/gu, " ")
+          .replace(/\s+/g, " ").trim().slice(0, 160);
+        return { selector, tagName, ...(label ? { label } : {}) };
+      }
+      if (!(root instanceof ShadowRoot) || root.mode !== "open") { return undefined; }
+      current = root.host;
+    }
+    return undefined;
+  };
+  let previousSnapshot = JSON.stringify({ isHovering: false });
+  const reportHover = (event, isHovering, isTouch = false, target) => {
+    const report = isTouch
+      ? { isHovering: false, pointerType: "touch" }
+      : { isHovering, ...(isHovering && target != null ? { target } : {}) };
+    const snapshot = JSON.stringify(report);
+    if (snapshot === previousSnapshot) {
+      return;
+    }
+    previousSnapshot = snapshot;
+    void globalThis.openai
+      .callTool(
+        "__codex_inline_visualization_hover__",
+        { ...report, eventTime: globalThis.performance.timeOrigin + event.timeStamp },
+      )
+      .catch(() => {});
+  };
+
+  let hoveredElement;
+  let isTouchHover = false;
+  let latestHover = null;
+  let latestResetTime = 0;
+  const handlePointerHover = (event) => {
+    const isTouch = event.pointerType === "touch";
+    const element = isTouch ? undefined : event.composedPath().find((element) => element instanceof Element);
+    latestHover = { event, element, isTouch };
+    if (event.type === "pointermove" && element === hoveredElement && isTouch === isTouchHover) {
+      return;
+    }
+    hoveredElement = element;
+    isTouchHover = isTouch;
+    reportHover(event, !isTouch, isTouch, isTouch ? undefined : describeTarget(element));
+  };
+  const clearHover = (event) => {
+    hoveredElement = undefined;
+    isTouchHover = false;
+    latestHover = null;
+    reportHover(event, false);
+  };
+  globalThis.addEventListener("openai:set_globals", (event) => {
+    const resetTime = event.detail?.globals?.visualizationHoverReset;
+    if (typeof resetTime !== "number" || !Number.isFinite(resetTime) || resetTime <= latestResetTime) {
+      return;
+    }
+    latestResetTime = resetTime;
+    const latest = latestHover;
+    hoveredElement = undefined;
+    isTouchHover = false;
+    latestHover = null;
+    previousSnapshot = JSON.stringify({ isHovering: false });
+    // A host-observed exit can arrive after the pointer has already reentered.
+    if (latest != null && globalThis.performance.timeOrigin + latest.event.timeStamp > resetTime) {
+      latestHover = latest;
+      hoveredElement = latest.element;
+      isTouchHover = latest.isTouch;
+      reportHover(latest.event, !latest.isTouch, latest.isTouch,
+        latest.isTouch ? undefined : describeTarget(latest.element));
+    }
+  });
+  globalThis.addEventListener("pointerover", handlePointerHover, { capture: true });
+  // Moves between descendants in one shadow root do not emit pointerover outside
+  // that root. The identity guard avoids selector work while a target is unchanged.
+  globalThis.addEventListener("pointermove", handlePointerHover, { capture: true });
+  globalThis.addEventListener(
+    "pointerout",
+    (event) => {
+      if (event.pointerType !== "touch" && event.relatedTarget == null) {
+        clearHover(event);
+      }
+    },
+    { capture: true },
+  );
+  globalThis.addEventListener("pagehide", clearHover);
+})();
+</script>
+<script>
+(() => {
+  const report = (method) => {
+    void globalThis.openai.callTool("__codex_inline_visualization_input__", { method }).catch(() => {});
+  };
+  globalThis.addEventListener("pointerdown", () => report("pointer"), { capture: true });
+  globalThis.addEventListener("keydown", (event) => {
+    if (!event.isComposing && event.key !== "Shift" && !event.altKey && !event.ctrlKey && !event.metaKey) {
+      report(["Tab","ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(event.key) ? "keyboard-navigation" : "keyboard");
+    }
+  }, { capture: true });
+})();
+</script>
+<script>
+(() => {
+  const bubbledClicks = new WeakSet();
+  const interactiveSelector = [
+    "button", "input", "select", "textarea", "label", "summary", "a[href]",
+    "audio[controls]", "video[controls]", "[onclick]", "[data-visualization-interactive]",
+    '[contenteditable]:not([contenteditable="false"])',
+    ...[
+      "button", "checkbox", "combobox", "gridcell", "link", "listbox",
+      "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio",
+      "scrollbar", "searchbox", "slider", "spinbutton", "switch", "tab",
+      "textbox", "treeitem",
+    ].map((role) => '[role~="' + role + '"]'),
+  ].join(",");
+
+  globalThis.addEventListener("click", (event) => bubbledClicks.add(event));
+  globalThis.addEventListener("click", (event) => {
+    // Capture the path before a control can remove itself. Custom delegated
+    // controls can opt in with data-visualization-interactive.
+    const elements = event.composedPath().filter((target) => target instanceof Element);
+    const control = elements.find((element) => element.matches(interactiveSelector));
+    const widgetControl = event.isTrusted && control != null &&
+      !control.matches('img, [role~="img"]') &&
+      !elements.some((element) => element.matches('a[href], [role~="link"]'));
+    const isInteractiveTarget = control != null || elements.some((element) =>
+      element.hasAttribute("tabindex") && element.tabIndex >= 0) ||
+      (elements[0] != null && getComputedStyle(elements[0]).cursor === "pointer");
+    // Use a task, not a microtask: native dispatch can run microtasks between
+    // listeners. Propagation flags are reset when dispatch finishes:
+    // https://dom.spec.whatwg.org/#concept-event-dispatch
+    globalThis.setTimeout(() => {
+      void globalThis.openai.callTool("__codex_inline_visualization_click__", {
+        ...(widgetControl ? {widgetControl: true} : {}),
+        isInteractive: isInteractiveTarget || event.defaultPrevented ||
+          (event.bubbles && !bubbledClicks.has(event)),
+      }).catch(() => {});
+    }, 0);
+  }, { capture: true });
+})();
+</script>
+<script>
+(() => {
+  globalThis.addEventListener("keydown", (event) => {
+    if (event.isComposing || event.altKey || event.ctrlKey || event.metaKey ||
+      event.shiftKey || !["ArrowLeft", "ArrowRight", "Escape"].includes(event.key)) {
+      return;
+    }
+    const target = event.composedPath().find((element) => element instanceof HTMLElement);
+    const editable = target?.closest("[contenteditable]");
+    const editing = target && (target.isContentEditable ||
+      (editable && editable.getAttribute("contenteditable") !== "false") ||
+      target.closest('input, textarea, select, [role="slider"], [role="spinbutton"], [role="combobox"], [role="listbox"], [role="grid"], [role="tree"], [role="tablist"], [role="menu"]'));
+    if (event.key !== "Escape" && editing) { return; }
+    // Let the widget handle the key before forwarding it across the sandbox.
+    globalThis.setTimeout(() => {
+      if (!event.defaultPrevented && globalThis.openai?.displayMode === "fullscreen") {
+        void globalThis.openai.callTool("__codex_inline_visualization_preview_key__", {
+          key: event.key,
+        }).catch(() => {});
+      }
+    }, 0);
+  });
+})();
+</script>
+
+
+
+
+
+
+
+<script>
+(() => {
+  const contentRange = document.createRange();
+  let waitingForStreamRoot = false ? document.querySelector("main") : null;
+  const markStreamReady = () => {
+    waitingForStreamRoot = null;
+    globalThis.removeEventListener("openai:set_globals", onStreamGlobals);
+    void globalThis.openai.callTool("__codex_inline_visualization_ready__", {}).catch(() => {});
+  };
+  const onStreamGlobals = (event) => {
+    const update = event.detail?.globals?.__appBlockStream;
+    if (update?.isFinal) {
+      markStreamReady();
+    } else if (update != null) {
+      scheduleHeightReport();
+    }
+  };
+  let previousMeasurement = null;
+  let heightReportTimer = null;
+  const reportHeight = () => {
+    const bodyChildren = Array.from(document.body.children).filter(
+      (element) =>
+        element.tagName !== "SCRIPT" &&
+        element.tagName !== "STYLE" &&
+        element.getAttribute("role") !== "tooltip",
+    );
+    const bodyStyle = globalThis.getComputedStyle(document.body);
+    const contentWidth = Math.max(
+      0,
+      Math.round(
+        globalThis.innerWidth -
+          parseFloat(bodyStyle.paddingLeft) -
+          parseFloat(bodyStyle.paddingRight),
+      ),
+    );
+    let contentHeight;
+    if (bodyChildren.length === 0) {
+      contentRange.selectNodeContents(document.body);
+      contentHeight = contentRange.getBoundingClientRect().height;
+    } else if (bodyChildren.length === 1) {
+      const [bodyChild] = bodyChildren;
+      const childRect = bodyChild.getBoundingClientRect();
+      // Child margins can collapse above the root without adding to its height.
+      // The host adds body padding separately.
+      contentHeight =
+        Math.max(bodyChild.scrollHeight, childRect.height) +
+        Math.max(
+          0,
+          childRect.top -
+            document.body.getBoundingClientRect().top -
+            parseFloat(bodyStyle.paddingTop),
+        );
+    } else {
+      const bodyTop = document.body.getBoundingClientRect().top;
+      contentHeight = Math.max(
+        ...bodyChildren.map(
+          (bodyChild) => bodyChild.getBoundingClientRect().bottom - bodyTop,
+        ),
+      );
+    }
+    // A short first line is drawable before the chart is tall enough for a graphical preview.
+    // Check before deduplicating height: text can arrive inside a fixed-height empty box.
+    if (waitingForStreamRoot != null && contentWidth > 0 && (
+      contentHeight >= 32 ||
+      (contentHeight > 0 && waitingForStreamRoot.innerText.trim() !== "")
+    )) {
+      markStreamReady();
+    }
+    const viewportHeight = globalThis.innerHeight;
+    const previous = previousMeasurement;
+    previousMeasurement = { contentHeight, contentWidth, viewportHeight };
+    if (
+      previous != null &&
+      contentWidth === previous.contentWidth &&
+      contentHeight - previous.contentHeight ===
+        viewportHeight - previous.viewportHeight
+    ) {
+      return;
+    }
+
+    void globalThis.openai
+      .callTool(
+        "__codex_inline_visualization_height__",
+        { height: contentHeight, width: contentWidth },
+      )
+      .catch(() => {});
+  };
+  const scheduleHeightReport = () => {
+    if (heightReportTimer != null) {
+      return;
+    }
+    // Offscreen frames can suspend animation callbacks while their content loads.
+    heightReportTimer = globalThis.setTimeout(() => {
+      heightReportTimer = null;
+      reportHeight();
+    }, 0);
+  };
+
+  const resizeObserver = new ResizeObserver(scheduleHeightReport);
+  const observeBodyChildren = () => {
+    for (const element of document.body.children) {
+      resizeObserver.observe(element);
+    }
+  };
+  resizeObserver.observe(document.body);
+  observeBodyChildren();
+  new MutationObserver(() => {
+    observeBodyChildren();
+    scheduleHeightReport();
+  }).observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["style", "class", "height", "width"],
+  });
+  globalThis.addEventListener("resize", scheduleHeightReport);
+  if (waitingForStreamRoot != null) {
+    globalThis.addEventListener("openai:set_globals", onStreamGlobals);
+    if (globalThis.openai?.__appBlockStream?.isFinal) {
+      markStreamReady();
+    }
+  }
+  reportHeight();
+})();
+</script>
+<style id="codex-visualization-document-scrollbar">html,body{scrollbar-width:none!important}html::-webkit-scrollbar,body::-webkit-scrollbar{display:none!important}</style>
+
+</body></html>
