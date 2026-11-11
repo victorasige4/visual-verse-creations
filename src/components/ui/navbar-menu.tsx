@@ -16,14 +16,15 @@ type MenuItemProps = {
   label: string;
   active: MenuId | null;
   setActive: (value: MenuId | null) => void;
+  compact?: boolean;
 };
 
-export function MenuItem({ item, label, active, setActive }: MenuItemProps) {
+export function MenuItem({ item, label, active, setActive, compact = false }: MenuItemProps) {
   const expanded = active === item;
   return (
     <button
       type="button"
-      className={cn("vv-island-link vv-island-menu-trigger", expanded && "is-active")}
+      className={cn("vv-island-link vv-island-menu-trigger", expanded && "is-active", compact && "vv-island-compact-link")}
       aria-expanded={expanded}
       aria-haspopup="true"
       aria-controls="vv-island-mega"
