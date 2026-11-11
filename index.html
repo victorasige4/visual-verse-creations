@@ -319,28 +319,17 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
 @media(prefers-reduced-motion:reduce){.vv-story-bridge .vv-scroll-cue{transition:none}}
 
 
-/* HERO ONLY — Aceternity Background Cubes Grid-inspired isometric visual.
-   Local Canvas 2D implementation: the source project is static HTML, not
-   React/shadcn/TypeScript; no third-party runtime is installed. */
-.vv-hero{isolation:isolate}
+/* HERO ONLY — remove the whitening layer and gradient masks hiding the isometric cubes. */
+.vv-hero{isolation:isolate;background:#e6f5ef}
 .vv-hero .vv-aceternity-inspired-cubes{
   position:absolute;z-index:0;inset:0;display:block;width:100%;height:100%;
-  pointer-events:none;user-select:none;opacity:.62;
-  -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.52) 0%,rgba(0,0,0,.78) 37%,rgba(0,0,0,.32) 67%,transparent 100%);
-  mask-image:linear-gradient(90deg,rgba(0,0,0,.52) 0%,rgba(0,0,0,.78) 37%,rgba(0,0,0,.32) 67%,transparent 100%);
+  pointer-events:none;user-select:none;opacity:.92;
 }
 .vv-hero .vv-hero-grid,.vv-hero .vv-hero-bottom{position:relative;z-index:1}
 .vv-hero .vv-hero-copy{position:relative}
-.vv-hero .vv-hero-copy::before{
-  content:"";position:absolute;z-index:-1;inset:-20px -20px -20px -25px;pointer-events:none;
-  background:linear-gradient(90deg,rgba(250,252,250,.88),rgba(250,252,250,.56) 75%,transparent);
-}
+.vv-hero .vv-hero-copy::before{content:none;display:none}
 @media(max-width:760px){
-  .vv-hero .vv-aceternity-inspired-cubes{opacity:.40;
-    -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.50) 38%,rgba(0,0,0,.06) 78%,transparent);
-    mask-image:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.50) 38%,rgba(0,0,0,.06) 78%,transparent);
-  }
-  .vv-hero .vv-hero-copy::before{inset:-15px -8px -10px; background:linear-gradient(180deg,rgba(250,252,250,.82),rgba(250,252,250,.56));}
+  .vv-hero .vv-aceternity-inspired-cubes{opacity:.81}
 }
 /* Potadot-inspired editorial pauses between each section.
    Preserve the intentionally tighter hero -> Who We Are bridge. */
@@ -372,6 +361,33 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
   #who-we-serve .vv-audience-grid,#work .vv-work-grid,#process .vv-process{margin-top:34px}
 }
 @media(max-width:390px){:where(#services,#who-we-serve,#work,#process){padding-top:77px;padding-bottom:86px}}
+
+
+/* NOV 11 — Real visible breathing room between sections.
+   A separate 3–5 cm-equivalent margin is used rather than just inside padding.
+   The scroll cue stays attached to the Who We Are section, below this gap. */
+:root{--vv-section-gap:clamp(118px,10.5vw,170px)}
+.vv-story-band{margin-top:var(--vv-section-gap)}
+.vv-preview-section#services,
+.vv-preview-section#who-we-serve,
+.vv-preview-section#work,
+.vv-preview-section#process{
+  margin-top:var(--vv-section-gap);
+  padding-top:clamp(55px,5.8vw,92px);
+  padding-bottom:clamp(70px,6.8vw,110px);
+}
+/* Previous lower-specificity :where() selectors affected internal spacing only. */
+.vv-footer{margin-top:var(--vv-section-gap)}
+@media(max-width:760px){
+  :root{--vv-section-gap:clamp(100px,25vw,118px)}
+  .vv-preview-section#services,
+  .vv-preview-section#who-we-serve,
+  .vv-preview-section#work,
+  .vv-preview-section#process{
+    padding-top:54px;
+    padding-bottom:68px;
+  }
+}
 
 </style></head><body>
 <header class="vv-header" id="siteHeader">
@@ -564,7 +580,7 @@ const burger=document.getElementById('burger'),mobile=document.getElementById('m
   const coarse=window.matchMedia('(pointer: coarse)');
   let width=0,height=0,dpr=1,tiles=[],frame=0,running=false,visible=false,lastDraw=0;
   let pointer={x:0,y:0,active:false,energy:0};
-  const color={top:'#d7f2eb',topLit:'#68d9cc',left:'#c0e8e3',right:'#98d7d1',edge:'rgba(0,63,92,.12)'};
+  const color={top:'#9ddbd2',topLit:'#20c6b5',left:'#78c0ba',right:'#5baab0',edge:'rgba(0,63,92,.26)'};
   function mix(hexA,hexB,t){
     t=Math.max(0,Math.min(1,t));
     const a=parseInt(hexA.slice(1),16),b=parseInt(hexB.slice(1),16);
