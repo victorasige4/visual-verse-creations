@@ -168,10 +168,10 @@ export function VisualVerseNavbar() {
             <a key={item.href} className={"vv-island-link" + (current === item.href ? " is-current" : "")}
               href={item.href} onMouseEnter={close} onFocus={close} onClick={onFollow}>{item.label}</a>
           ))}
-          <MenuItem item="services" label="Services" active={active} setActive={(value) => { setActive(value);setLanguageOpen(false); }} />
+          <MenuItem compact item="services" label="Services" active={active} setActive={(value) => { setActive(value);setLanguageOpen(false); }} />
           <MenuItem item="audiences" label="Who We Serve" active={active} setActive={(value) => { setActive(value);setLanguageOpen(false); }} />
           {finalLinks.map(item => (
-            <a key={item.href} className={"vv-island-link" + (current === item.href ? " is-current" : "")}
+            <a key={item.href} className={"vv-island-link" + (item.href === "#work" ? " vv-island-compact-link" : "") + (current === item.href ? " is-current" : "")}
               href={item.href} onMouseEnter={close} onFocus={close} onClick={onFollow}>{item.label}</a>
           ))}
         </nav>
@@ -220,6 +220,7 @@ export function VisualVerseNavbar() {
             <MobileDetails title="Who We Serve" items={audiences} onFollow={onFollow} />
             <a href="#work" onClick={onFollow}>Projects</a>
             <a href="#contact" onClick={onFollow}>Contact</a>
+            <span className="vv-island-mobile-language"><Globe2 size={15} aria-hidden="true" /> English (EN) · Kiswahili coming soon</span>
             <a className="vv-island-mobile-cta" href="#contact" onClick={onFollow}>Let's talk <ArrowUpRight size={18} /></a>
           </motion.nav>
         )}
