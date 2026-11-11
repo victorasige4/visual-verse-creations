@@ -699,6 +699,9 @@ let progressElapsed=0,lastProgressTime=0;
 const canvas=document.getElementById('vvCanvas'),g=canvas.getContext('2d');
 let w=500,h=500,dpr=1;const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const pointer={x:0,y:0,active:false};
+/* Exact Visual Verse favicon, already distributed with this site. */
+const vvBrandMark=new Image();
+vvBrandMark.decoding='async';
 function makeShape(shape){
  const off=document.createElement('canvas');off.width=420;off.height=420;const t=off.getContext('2d',{willReadFrequently:true});
  const navy='#003f5c',aqua='#2ec4b6',pale='#93dcd6';t.lineJoin='round';t.lineCap='round';
@@ -709,16 +712,87 @@ function makeShape(shape){
  }else if(shape==='film'){
  line(navy,26);round(82,147,258,185,18);t.stroke();t.fillStyle=pale;round(96,98,237,53,8);t.fill();line(navy,14);t.beginPath();t.moveTo(115,142);t.lineTo(145,103);t.moveTo(186,141);t.lineTo(215,102);t.moveTo(257,141);t.lineTo(287,102);t.stroke();t.fillStyle=aqua;t.beginPath();t.moveTo(181,182);t.lineTo(181,294);t.lineTo(273,238);t.closePath();t.fill();
  }else if(shape==='identity'){
- line(pale,18);t.beginPath();t.arc(210,211,146,0,Math.PI*2);t.stroke();t.fillStyle=navy;t.font='900 183px Arial';t.textAlign='center';t.textBaseline='middle';t.fillText('V',185,214);t.fillStyle=aqua;t.font='900 156px Arial';t.fillText('V',259,240);t.beginPath();t.arc(329,85,17,0,Math.PI*2);t.fill();
+  if(vvBrandMark.complete&&vvBrandMark.naturalWidth>0){
+   // Branding: sample the ORIGINAL logo-mark.png pixels for the dot morph.
+   // Aspect ratio and the navy/aqua gradients stay faithful to our favicon.
+   const side=298,px=(420-side)/2,py=(420-side)/2;
+   t.drawImage(vvBrandMark,px,py,side,side);
+  }else{
+   // Temporary geometric fallback until the real favicon finishes loading.
+   t.save();
+   t.translate(150,231);t.rotate(-.54);t.fillStyle=navy;round(-47,-131,94,262,45);t.fill();t.restore();
+   t.save();
+   t.translate(269,183);t.rotate(.51);t.fillStyle=aqua;round(-39,-102,78,204,38);t.fill();t.restore();
+   t.fillStyle=aqua;t.beginPath();t.arc(209,91,30,0,Math.PI*2);t.fill();
+  }
  }else if(shape==='pen'){
  line(navy,23);t.beginPath();t.moveTo(109,294);t.lineTo(243,159);t.lineTo(276,192);t.lineTo(143,326);t.closePath();t.stroke();t.fillStyle=aqua;t.beginPath();t.moveTo(278,127);t.lineTo(316,89);t.quadraticCurveTo(329,81,340,93);t.lineTo(360,113);t.quadraticCurveTo(368,124,357,136);t.lineTo(321,172);t.closePath();t.fill();line(navy,13);t.beginPath();t.moveTo(112,294);t.lineTo(90,352);t.lineTo(143,326);t.stroke();line(pale,9);t.beginPath();t.moveTo(97,197);t.lineTo(97,117);t.lineTo(189,117);t.moveTo(97,117);t.lineTo(97,75);t.moveTo(189,117);t.lineTo(233,117);t.stroke();t.fillStyle=aqua;[[97,75],[189,117],[233,117]].forEach(([x,y])=>{t.beginPath();t.arc(x,y,12,0,Math.PI*2);t.fill()});
  }else if(shape==='web'){
  line(navy,22);round(58,100,304,232,24);t.stroke();line(pale,14);t.beginPath();t.moveTo(68,160);t.lineTo(351,160);t.stroke();t.fillStyle=aqua;[98,131,164].forEach(x=>{t.beginPath();t.arc(x,133,8,0,Math.PI*2);t.fill()});t.fillStyle=pale;round(84,189,100,109,10);t.fill();t.fillStyle=aqua;round(208,188,126,23,8);t.fill();t.fillStyle=navy;round(208,235,109,13,6);t.fill();round(208,272,83,13,6);t.fill();
- }else{
- line(pale,15);t.beginPath();t.moveTo(209,202);t.lineTo(113,115);t.moveTo(209,202);t.lineTo(312,114);t.moveTo(209,202);t.lineTo(104,302);t.moveTo(209,202);t.lineTo(314,302);t.stroke();[[113,115,32,navy],[312,114,32,aqua],[104,302,32,aqua],[314,302,32,navy],[209,202,56,navy]].forEach(([x,y,r,col])=>{t.fillStyle=col;t.beginPath();t.arc(x,y,r,0,Math.PI*2);t.fill()});t.fillStyle=aqua;t.beginPath();t.arc(210,203,24,0,Math.PI*2);t.fill();
+ }else if(shape==='social'){
+  // Distinct Instagram, X, Facebook, LinkedIn, YouTube and TikTok symbols,
+  // connected through a central distribution hub. Drawn before point sampling.
+  const nodes={
+    instagram:[101,118],x:[212,91],facebook:[321,118],
+    linkedin:[101,312],youtube:[211,337],tiktok:[321,306]
+  };
+  const hub=[211,216];
+  const path=(color,width,draw)=>{
+    t.strokeStyle=color;t.lineWidth=width;t.beginPath();draw();t.stroke();
+  };
+  // Keep the network visibly connected but behind the platform icons.
+  Object.values(nodes).forEach(([x,y])=>{
+    path(pale,8,()=>{t.moveTo(hub[0],hub[1]);t.lineTo(x,y)});
+  });
+  t.fillStyle=aqua;t.beginPath();t.arc(hub[0],hub[1],20,0,Math.PI*2);t.fill();
+  t.fillStyle=navy;t.beginPath();t.arc(hub[0],hub[1],9,0,Math.PI*2);t.fill();
+  const badge=(x,y)=>{
+    t.fillStyle='#ffffff';round(x-43,y-43,86,86,22);t.fill();
+    path(pale,6,()=>round(x-43,y-43,86,86,22));
+  };
+  const [igx,igy]=nodes.instagram;badge(igx,igy);
+  // Instagram: rounded camera shell, lens and top-right flash dot.
+  path(navy,8,()=>round(igx-24,igy-24,48,48,14));
+  path(aqua,7,()=>t.arc(igx,igy,13,0,Math.PI*2));
+  t.fillStyle=aqua;t.beginPath();t.arc(igx+16,igy-17,5,0,Math.PI*2);t.fill();
+
+  const [xx,xy]=nodes.x;badge(xx,xy);
+  // X: recognisable crossed asymmetric strokes.
+  path(navy,9,()=>{t.moveTo(xx-18,xy-25);t.lineTo(xx+19,xy+24)});
+  path(aqua,8,()=>{t.moveTo(xx+18,xy-25);t.lineTo(xx-18,xy+24)});
+  path(navy,4,()=>{t.moveTo(xx-6,xy-25);t.lineTo(xx+6,xy-25)});
+
+  const [fx,fy]=nodes.facebook;badge(fx,fy);
+  // Facebook: the recognisable lower-case f glyph.
+  t.fillStyle=navy;t.font='900 66px Arial';
+  t.textAlign='center';t.textBaseline='middle';t.fillText('f',fx+1,fy+8);
+
+  const [lx,ly]=nodes.linkedin;badge(lx,ly);
+  // LinkedIn: two-character in lockup, with heavy dot and stem.
+  t.fillStyle=navy;t.font='900 43px Arial';
+  t.textAlign='center';t.textBaseline='middle';t.fillText('in',lx,ly+5);
+
+  const [yx,yy]=nodes.youtube;badge(yx,yy);
+  // YouTube: wide rounded video capsule with central play triangle.
+  t.fillStyle=navy;round(yx-31,yy-21,62,42,14);t.fill();
+  t.fillStyle='#ffffff';t.beginPath();
+  t.moveTo(yx-7,yy-12);t.lineTo(yx-7,yy+12);t.lineTo(yx+14,yy);t.closePath();t.fill();
+
+  const [tx,ty]=nodes.tiktok;badge(tx,ty);
+  // TikTok: rising musical note, flag and circular note head.
+  path(navy,9,()=>{
+    t.moveTo(tx+4,ty-27);t.lineTo(tx+4,ty+13);
+    t.bezierCurveTo(tx+4,ty+25,tx-4,ty+29,tx-16,ty+26);
+    t.bezierCurveTo(tx-30,ty+20,tx-24,ty+3,tx-11,ty+3);
+  });
+  path(aqua,7,()=>{
+    t.moveTo(tx+4,ty-27);
+    t.quadraticCurveTo(tx+11,ty-12,tx+26,ty-12);
+  });
+
  }
  const image=t.getImageData(0,0,420,420).data;const arr=[];
- for(let y=0;y<420;y+=8)for(let x=0;x<420;x+=8){const n=(y*420+x)*4;if(image[n+3]>115){const r=image[n],gr=image[n+1];arr.push({x,y,fill:gr>175&&r<135?aqua:(gr>175?pale:navy)})}}
+ for(let y=0;y<420;y+=8)for(let x=0;x<420;x+=8){const n=(y*420+x)*4;if(image[n+3]>115){const r=image[n],gr=image[n+1];arr.push({x,y,fill:shape==='identity'&&vvBrandMark.complete&&vvBrandMark.naturalWidth>0?`rgb(${r},${gr},${image[n+2]})`:(gr>175&&r<135?aqua:(gr>175?pale:navy))})}}
  return arr.sort((a,b)=>(a.x+a.y*.13)-(b.x+b.y*.13));
 }
 frames=scenes.map(s=>makeShape(s.shape));dots=Array.from({length:Math.max(...frames.map(f=>f.length))},()=>({x:210+(Math.random()-.5)*410,y:210+(Math.random()-.5)*410,tx:210,ty:210,a:0,ta:0,fill:'#003f5c',size:2.6+Math.random()*.8}));
@@ -726,6 +800,20 @@ function resize(){const rect=canvas.getBoundingClientRect();w=Math.max(1,rect.wi
 new ResizeObserver(resize).observe(canvas);resize();
 canvas.addEventListener('pointermove',e=>{const r=canvas.getBoundingClientRect();pointer.x=e.clientX-r.left;pointer.y=e.clientY-r.top;pointer.active=true});canvas.addEventListener('pointerleave',()=>pointer.active=false);
 function morph(n){active=n;const frame=frames[n];for(let i=0;i<dots.length;i++){const d=dots[i],p=frame[i];if(p){d.tx=p.x;d.ty=p.y;d.ta=1;d.fill=p.fill;if(reduced){d.x=d.tx;d.y=d.ty;d.a=d.ta}}else{d.tx=210+(Math.random()-.5)*330;d.ty=210+(Math.random()-.5)*330;d.ta=0;if(reduced)d.a=0}}}
+/* Rebuild scene 03 once the exact logo-mark image is available. */
+vvBrandMark.addEventListener('load',()=>{
+  const updated=makeShape('identity');
+  frames[2]=updated;
+  while(dots.length<updated.length){
+    dots.push({
+      x:210+(Math.random()-.5)*410,y:210+(Math.random()-.5)*410,
+      tx:210,ty:210,a:0,ta:0,fill:'#003f5c',size:2.6+Math.random()*.8
+    });
+  }
+  if(active===2)morph(2);
+},{once:true});
+vvBrandMark.src='./logo-mark.png';
+
 function paintProgress(){
   document.querySelectorAll('#steps .vv-scene-step').forEach((button,i)=>{
     const fill=i<active?1:i===active?(reduced?1:Math.min(1,progressElapsed/SCENE_DURATION)):0;
