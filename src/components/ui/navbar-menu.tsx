@@ -30,7 +30,9 @@ export function MenuItem({ item, label, active, setActive }: MenuItemProps) {
       onPointerEnter={(event) => {
         if (event.pointerType === "mouse") setActive(item);
       }}
-      onFocus={() => setActive(item)}
+      onFocus={(event) => {
+        if (event.currentTarget.matches(":focus-visible")) setActive(item);
+      }}
       onClick={() => setActive(expanded ? null : item)}
     >
       <span>{label}</span>
