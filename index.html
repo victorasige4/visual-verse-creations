@@ -270,6 +270,54 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
 @media(max-width:390px){.vv-about-headline{font-size:30px}.vv-about-story{padding-top:65px;padding-bottom:72px}}
 @media(prefers-reduced-motion:reduce){.vv-about-more,.vv-about-more-icon{transition:none!important}}
 
+
+/* Nov 11 / Hero-to-studio transition refinement: reduce dead space, keep existing animation. */
+@media (min-width:761px){
+  .vv-hero{min-height:0}
+  .vv-hero-grid{min-height:clamp(600px,calc(100svh - 205px),725px)}
+  .vv-hero-visual{height:min(620px,calc(100svh - 205px));min-height:440px;margin:18px 0}
+  .vv-hero-copy{padding-top:clamp(22px,3vw,45px);padding-bottom:clamp(20px,3.5vw,45px)}
+  .vv-hero-kicker{margin-bottom:clamp(30px,4vh,58px)}
+  .vv-hero-actions{margin-bottom:clamp(26px,3.5vh,42px)}
+  .vv-hero-bottom{padding:8px 0 16px}
+}
+.vv-story-band{position:relative;isolation:isolate;overflow:hidden;background:linear-gradient(112deg,#ecf8f5 0%,#f5fbf9 46%,#edf8f5 100%);border-top:1px solid #d5eeea;border-bottom:1px solid #e0f0ed}
+.vv-story-band::before{content:"";position:absolute;z-index:-1;pointer-events:none;left:-110px;top:80px;width:min(34vw,380px);height:min(34vw,380px);background:radial-gradient(circle at 8px 8px,rgba(46,196,182,.24) 1.2px,transparent 1.7px) 0 0/25px 25px;mask-image:radial-gradient(circle,black,transparent 74%);opacity:.7}
+.vv-story-band::after{content:"V";position:absolute;z-index:-1;pointer-events:none;right:-.04em;bottom:-.22em;color:var(--vv-navy);opacity:.025;font:900 clamp(260px,42vw,730px)/1 var(--vv-typeface);letter-spacing:-.13em}
+.vv-story-bridge{width:100%;max-width:1480px;height:85px;margin:auto;padding:0 max(5vw,20px);display:flex;align-items:center;justify-content:center;gap:clamp(14px,3vw,38px)}
+.vv-story-bridge-rule{display:block;height:1px;max-width:320px;flex:1;background:linear-gradient(90deg,transparent,#a9d6d1 55%,transparent)}
+.vv-story-bridge .vv-scroll-cue{position:relative!important;left:auto!important;right:auto!important;bottom:auto!important;display:inline-flex!important;align-items:center;justify-content:center;min-height:47px;margin:0!important;padding:8px 17px;border:1px solid #d4ebe6;border-radius:100px;background:rgba(255,255,255,.86);box-shadow:0 6px 22px rgba(0,63,92,.04);white-space:nowrap;letter-spacing:.14em;color:#315d65;gap:10px;transition:transform .25s,background .25s,border-color .25s}
+.vv-story-bridge .vv-scroll-cue::before{display:none!important}
+.vv-story-bridge .vv-scroll-cue:hover{background:#fff;border-color:var(--vv-aqua);transform:translateY(3px)}
+.vv-story-bridge .vv-scroll-mouse{width:18px;height:29px;border-color:#83b9b3}
+.vv-story-band .vv-about-story{position:relative;z-index:1;min-height:0;padding-top:clamp(36px,4.5vw,68px);padding-bottom:clamp(65px,8vw,110px);border-top:0}
+.vv-story-band .vv-about-aside{min-height:360px}
+.vv-story-band .vv-about-orbit-art{width:min(23vw,220px);height:220px;margin-top:clamp(28px,4vw,65px)}
+.vv-story-band .vv-about-overline{margin-bottom:clamp(24px,3vw,43px)}
+.vv-story-band .vv-about-headline{font-size:clamp(35px,3.55vw,56px);line-height:1.12}
+.vv-story-band .vv-about-description{margin-top:25px}
+@media(max-width:1024px){
+  .vv-story-band .vv-about-story{padding-top:52px;padding-bottom:80px}
+  .vv-story-band .vv-about-aside{min-height:315px}
+  .vv-story-band .vv-about-orbit-art{width:170px;height:170px;margin-top:54px}
+}
+@media(max-width:760px){
+  .vv-hero{min-height:0}
+  .vv-hero-copy{padding-top:30px;padding-bottom:10px}
+  .vv-hero-kicker{margin-bottom:28px}
+  .vv-hero-bottom{padding:6px 0 13px}
+  .vv-story-bridge{height:78px;gap:10px;padding:0 18px}
+  .vv-story-bridge-rule{max-width:120px}
+  .vv-story-bridge .vv-scroll-cue{font-size:9px;min-height:44px;padding:7px 13px;gap:9px}
+  .vv-story-band .vv-about-story{padding-top:30px;padding-bottom:64px}
+  .vv-story-band .vv-about-aside{min-height:0;margin-bottom:23px}
+  .vv-story-band .vv-about-orbit-art{display:none}
+  .vv-story-band .vv-about-overline{margin-bottom:25px}
+  .vv-story-band .vv-about-headline{font-size:clamp(31px,8vw,44px)}
+  .vv-story-band::after{font-size:62vw;right:-.1em;bottom:-.09em}
+}
+@media(prefers-reduced-motion:reduce){.vv-story-bridge .vv-scroll-cue{transition:none}}
+
 </style></head><body>
 <header class="vv-header" id="siteHeader">
   <nav class="vv-navbar" aria-label="Main navigation">
@@ -302,8 +350,15 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
     <a href="#contact" class="vv-mobile-cta">Let's talk <span>↗</span></a>
   </div>
 </header>
-<main id="top"><section class="vv-hero"><div class="vv-hero-grid"><div class="vv-hero-copy"><div class="vv-hero-kicker"><span class="vv-kicker-dot"></span> YOUR VISION. OUR CREATIVE CANVAS.</div><div id="sceneCopy"><div class="vv-scene-eyebrow" id="eyebrow">01 / CREATIVE JOURNEYS</div><h1 class="vv-hero-title"><span id="headline">Moments that last</span><span class="vv-title-dot">.</span></h1><p class="vv-hero-description" id="description">From portraits and weddings to the little moments in between, we capture stories you will want to revisit.</p><div class="vv-current-service"><span>NOW SHOWING</span><strong id="serviceName">Photography</strong></div></div><div class="vv-hero-actions"><a href="#work" class="vv-primary-button vv-pill-button vv-pill-dark"><span class="vv-pill-label">Explore our work</span><span class="vv-pill-disc"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a href="#contact" class="vv-text-link vv-pill-button vv-pill-light"><span class="vv-pill-label">Start a project</span><span class="vv-pill-disc"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div><div class="vv-hero-controls" id="steps" aria-label="Choose a service"><button id="pauseSlide" class="vv-play-button" aria-label="Pause slideshow">Ⅱ</button></div><a class="vv-scroll-cue" href="#about" aria-label="Scroll down to learn about Visual Verse"><span class="vv-scroll-mouse"><span class="vv-scroll-wheel"></span></span><span class="vv-scroll-label">SCROLL</span></a></div>
+<main id="top"><section class="vv-hero"><div class="vv-hero-grid"><div class="vv-hero-copy"><div class="vv-hero-kicker"><span class="vv-kicker-dot"></span> YOUR VISION. OUR CREATIVE CANVAS.</div><div id="sceneCopy"><div class="vv-scene-eyebrow" id="eyebrow">01 / CREATIVE JOURNEYS</div><h1 class="vv-hero-title"><span id="headline">Moments that last</span><span class="vv-title-dot">.</span></h1><p class="vv-hero-description" id="description">From portraits and weddings to the little moments in between, we capture stories you will want to revisit.</p><div class="vv-current-service"><span>NOW SHOWING</span><strong id="serviceName">Photography</strong></div></div><div class="vv-hero-actions"><a href="#work" class="vv-primary-button vv-pill-button vv-pill-dark"><span class="vv-pill-label">Explore our work</span><span class="vv-pill-disc"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a href="#contact" class="vv-text-link vv-pill-button vv-pill-light"><span class="vv-pill-label">Start a project</span><span class="vv-pill-disc"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div><div class="vv-hero-controls" id="steps" aria-label="Choose a service"><button id="pauseSlide" class="vv-play-button" aria-label="Pause slideshow">Ⅱ</button></div></div>
 <div class="vv-hero-visual"><span id="artLabel" class="vv-visual-top">VISUALVERSE / PHOTOGRAPHY</span><div class="vv-visual-field"><div class="vv-orbit vv-orbit-one"></div><div class="vv-orbit vv-orbit-two"></div><canvas id="vvCanvas" class="vv-particle-canvas" role="img" aria-label="Animated dots forming icons for VisualVerse services"></canvas></div><div class="vv-visual-bottom"><span>IDEAS INTO IMPACT</span><span id="counter">01 / 06</span></div></div></div><div class="vv-hero-bottom"><span>AN INDEPENDENT CREATIVE MEDIA STUDIO</span><span class="vv-hero-bottom-line"></span><span>EXPLORE • DISCOVER • CREATE</span></div></section>
+<!-- The scroll cue bridges the hero and Who We Are, rather than floating in the hero artwork. -->
+<div class="vv-story-band">
+  <div class="vv-story-bridge" aria-label="Scroll to the next section">
+    <span class="vv-story-bridge-rule" aria-hidden="true"></span>
+    <a class="vv-scroll-cue" href="#about" aria-label="Scroll down to learn about Visual Verse"><span class="vv-scroll-mouse"><span class="vv-scroll-wheel"></span></span><span class="vv-scroll-label">SCROLL</span></a>
+    <span class="vv-story-bridge-rule" aria-hidden="true"></span>
+  </div>
 <section class="vv-preview-section vv-about-story" id="about" aria-labelledby="vv-about-title">
   <div class="vv-about-aside">
     <span class="vv-about-index"><span class="vv-about-index-dot" aria-hidden="true"></span> 01 / WHO WE ARE</span>
@@ -324,6 +379,7 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
     <a class="vv-about-more" href="#process" aria-label="Learn more about Visual Verse and our creative approach"><span>More about Visual Verse</span><span class="vv-about-more-icon" aria-hidden="true">↗</span></a>
   </div>
 </section>
+</div><!-- /vv-story-band -->
 <section class="vv-preview-section" id="services"><span class="vv-label">WHAT WE DO / 002</span><h2 class="vv-section-h">Many disciplines.<br/>One visual language.</h2><div class="vv-service-list"><a class="vv-service-row" id="service-photography" href="#contact"><small>01</small><strong>Photography</strong><span>Moments & portraits ↗</span></a><a class="vv-service-row" id="service-videography" href="#contact"><small>02</small><strong>Videography</strong><span>Films & motion ↗</span></a><a class="vv-service-row" id="service-branding" href="#contact"><small>03</small><strong>Branding</strong><span>Identity & strategy ↗</span></a><a class="vv-service-row" id="service-graphic-design" href="#contact"><small>04</small><strong>Graphic Design</strong><span>Visual communication ↗</span></a><a class="vv-service-row" id="service-web-ui-ux" href="#contact"><small>05</small><strong>Web & UI/UX</strong><span>Digital experiences ↗</span></a><a class="vv-service-row" id="service-social-media" href="#contact"><small>06</small><strong>Social Media</strong><span>Content & campaigns ↗</span></a></div></section>
 <section class="vv-preview-section vv-audiences" id="who-we-serve">
   <span class="vv-label">THE PEOPLE WE CREATE WITH / 003</span>
