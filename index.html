@@ -243,7 +243,7 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
 .vv-about-overline{gap:14px;margin-bottom:clamp(46px,5vw,70px)}
 .vv-about-overline-line{height:1px;width:26px;background:var(--vv-aqua)}
 .vv-about-headline{margin:0;color:#21383e;font-family:var(--vv-typeface);font-weight:var(--vv-fw-extra);font-size:clamp(35px,3.75vw,58px);letter-spacing:-.065em;line-height:1.13;text-wrap:pretty}
-.vv-about-highlight{color:#29a897}
+.vv-about-highlight{color:#0f8b84} /* Accessible deep-aqua shade of brand #2EC4B6 */
 .vv-about-description{margin:35px 0 30px;max-width:645px;color:#55747e;font-size:clamp(15px,1.15vw,18px);line-height:1.8;font-weight:var(--vv-fw-regular)}
 .vv-about-more{display:inline-flex;align-items:center;gap:18px;text-decoration:none;color:#27454c;font-size:14px;font-weight:var(--vv-fw-bold);padding:12px 0 10px;border-bottom:1px solid rgba(0,63,92,.35);transition:color .25s,border-color .25s,gap .25s}
 .vv-about-more-icon{display:inline-grid;place-items:center;width:27px;height:27px;border:1px solid rgba(0,63,92,.15);border-radius:50%;font-size:17px;transition:background .25s,color .25s,transform .25s}
@@ -653,7 +653,7 @@ const burger=document.getElementById('burger'),mobile=document.getElementById('m
   const coarse=window.matchMedia('(pointer: coarse)');
   let width=0,height=0,dpr=1,tiles=[],frame=0,running=false,visible=false,lastDraw=0;
   let pointer={x:0,y:0,active:false,energy:0};
-  const color={top:'#ffffff',topLit:'#d0efdc',left:'#f3f8f5',right:'#eaf3ee',edge:'rgba(0,63,92,.13)'};
+  const color={top:'#ffffff',topLit:'#2ec4b6',left:'#ebf9f6',right:'#d8f2ef',edge:'rgba(0,63,92,.16)'};
   function mix(hexA,hexB,t){
     t=Math.max(0,Math.min(1,t));
     const a=parseInt(hexA.slice(1),16),b=parseInt(hexB.slice(1),16);
@@ -694,7 +694,7 @@ const burger=document.getElementById('burger'),mobile=document.getElementById('m
       const distPointer=Math.hypot(t.x-pointer.x,t.y-pointer.y);
       const distIdle=Math.hypot(t.x-pulseX,t.y-pulseY);
       const interactive=pointer.energy*Math.exp(-distPointer/230)*(.45+.55*Math.cos(distPointer*.026-sec*7));
-      const idle=0; // White at rest: only cursor hover introduces pale-green ripples.
+      const idle=0; // White at rest; cursor hover reveals Visual Verse aqua (#2EC4B6).
       const wave=Math.min(1,Math.max(0,interactive+idle));
       const lift=wave*23;
       const depth=3+wave*13;
