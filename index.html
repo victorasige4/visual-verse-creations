@@ -112,15 +112,147 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
 .vv-footer .vv-footer-brand:hover{opacity:.9}
 @media(max-width:1100px){.vv-header .vv-logo{width:195px}.vv-header .vv-brand-wordmark{width:195px}}
 @media(max-width:760px){.vv-header .vv-logo{width:178px;min-height:48px}.vv-header .vv-brand-wordmark{width:178px}.vv-footer .vv-footer-brand{margin-bottom:32px}}
+
+/* Visual Verse navigation and micro-interactions: reference-video refinement.
+   All original pages, particle artwork and animation remain intact. */
+:root{--vv-pill-ink:#192b30;--vv-hover-mint:#baf3e8}
+#about,#services,#who-we-serve,#work,#process,#contact,[id^="service-"]{scroll-margin-top:110px}
+.vv-header{z-index:100;background:rgba(250,252,250,.87);border-bottom:1px solid rgba(0,63,92,.06);box-shadow:0 8px 30px rgba(0,39,54,.035);-webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px)}
+.vv-navbar{height:78px;max-width:1570px;padding:0 clamp(20px,3.4vw,58px);gap:clamp(16px,1.9vw,29px)}
+.vv-header .vv-logo{flex:0 0 auto;width:clamp(172px,17.6vw,218px)}
+.vv-header .vv-brand-wordmark{width:100%;max-width:218px;height:auto}
+.vv-nav-items{display:flex;align-items:center;gap:3px;min-width:0;justify-content:center;flex:1}
+.vv-nav-items .vv-nav-link{display:inline-flex;align-items:center;justify-content:center;gap:5px;position:relative;white-space:nowrap;padding:11px clamp(7px,.8vw,12px);border:0;background:transparent;border-radius:100px;color:#264751;text-decoration:none;font-size:clamp(11px,.85vw,13px);font-weight:600;letter-spacing:-.015em;opacity:1;cursor:pointer;transition:background-color .25s ease,color .25s ease,transform .25s ease}
+.vv-nav-items .vv-nav-link::after{display:none}
+.vv-nav-items .vv-nav-link:hover,.vv-nav-items .vv-nav-link:focus-visible,.vv-nav-items .vv-nav-link[aria-current="page"],.vv-nav-items .vv-nav-trigger[aria-expanded="true"]{background:rgba(46,196,182,.115);color:var(--vv-navy);transform:translateY(-1px)}
+.vv-nav-items .vv-nav-link[aria-current="page"]::before{position:absolute;content:"";bottom:4px;left:calc(50% - 2px);width:4px;height:4px;background:var(--vv-aqua);border-radius:50%}
+.vv-nav-trigger svg{width:12px;height:12px;transition:transform .25s ease}
+.vv-nav-trigger[aria-expanded="true"] svg,.vv-nav-dropdown:hover .vv-nav-trigger svg{transform:rotate(180deg)}
+.vv-nav-dropdown{position:relative;display:flex;align-items:center}
+.vv-dropdown-panel{position:absolute;left:0;top:calc(100% + 14px);min-width:260px;padding:10px;background:#fff;border:1px solid rgba(0,63,92,.09);box-shadow:0 20px 56px rgba(0,42,54,.14);border-radius:18px;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(10px) scale(.97);transform-origin:top left;transition:transform .25s cubic-bezier(.2,.8,.2,1),opacity .25s,visibility .25s;z-index:110}
+.vv-dropdown-panel::before{content:"";position:absolute;bottom:100%;height:18px;left:0;right:0}
+.vv-nav-dropdown:hover .vv-dropdown-panel,.vv-nav-dropdown:focus-within .vv-dropdown-panel,.vv-nav-dropdown.is-open .vv-dropdown-panel{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0) scale(1)}
+.vv-dropdown-panel a{display:flex;align-items:center;gap:12px;padding:13px 11px;font-size:13px;font-weight:600;letter-spacing:0;color:var(--vv-navy);opacity:1;text-decoration:none;border-radius:10px;transition:background .2s,transform .2s}
+.vv-dropdown-panel a:hover,.vv-dropdown-panel a:focus-visible{background:#e8f7f4;transform:translateX(3px)}
+.vv-dropdown-index{font-size:10px;color:#68a8a3;font-weight:700}
+.vv-dropdown-arr{margin-left:auto;color:var(--vv-aqua)}
+.vv-nav-right{display:flex;align-items:center;gap:clamp(10px,1.45vw,22px);flex:0 0 auto}
+.vv-language-picker{position:relative}
+.vv-language-toggle{display:inline-flex;align-items:center;gap:6px;padding:10px 7px;border:0;background:transparent;color:#365a65;font-size:12px;font-weight:600;cursor:pointer;border-radius:12px;transition:background .2s}
+.vv-language-toggle:hover,.vv-language-toggle[aria-expanded="true"]{background:#eaf6f3}
+.vv-language-toggle svg{width:15px;height:15px}
+.vv-language-toggle svg:last-child{width:11px;height:11px}
+.vv-language-panel{position:absolute;right:0;top:calc(100% + 13px);padding:9px;min-width:190px;background:white;border:1px solid #d9eeeb;border-radius:16px;box-shadow:0 18px 35px rgba(0,35,46,.12);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(7px);transition:all .2s;z-index:120}
+.vv-language-picker.is-open .vv-language-panel{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
+.vv-language-panel>span{display:flex;justify-content:space-between;align-items:center;padding:12px 10px;gap:12px;font-size:12px;font-weight:600}
+.vv-language-active{color:var(--vv-navy);background:#e9f8f5;border-radius:9px}
+.vv-language-active span{color:#139f93}
+.vv-language-unavailable{color:#7a939a}
+.vv-language-unavailable small{font-size:10px;white-space:nowrap}
+/* Pill controls copied in movement and proportion, recoloured to our own brand. */
+.vv-pill-button{isolation:isolate;position:relative;display:inline-flex;align-items:center;justify-content:space-between;gap:16px;overflow:hidden;text-decoration:none;border:1px solid transparent;border-radius:100px;padding:6px 7px 6px 19px;color:#fff;background:var(--vv-pill-ink);box-shadow:0 5px 14px rgba(0,45,55,.08);font-size:12px;font-weight:700;letter-spacing:-.015em;line-height:1;min-height:45px;transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease,color .32s ease,background-color .32s ease}
+.vv-pill-button::before{content:"";position:absolute;inset:0;background:var(--vv-aqua);z-index:-1;transform:translateX(-103%);transition:transform .45s cubic-bezier(.22,.8,.2,1)}
+.vv-pill-button:hover::before,.vv-pill-button:focus-visible::before{transform:translateX(0)}
+.vv-pill-button:hover,.vv-pill-button:focus-visible{color:var(--vv-deep);transform:translateY(-2px);box-shadow:0 10px 25px rgba(0,45,55,.13);background:var(--vv-pill-ink)}
+.vv-pill-label{position:relative;z-index:2;white-space:nowrap}
+.vv-pill-disc{display:grid;place-items:center;width:32px;height:32px;flex:0 0 32px;border-radius:100%;background:var(--vv-aqua);color:var(--vv-deep);transition:transform .4s cubic-bezier(.18,.85,.2,1),background .3s,color .3s;z-index:2}
+.vv-pill-disc svg{width:17px;height:17px;transition:transform .38s cubic-bezier(.18,.85,.2,1)}
+.vv-pill-button:hover .vv-pill-disc,.vv-pill-button:focus-visible .vv-pill-disc{background:var(--vv-pill-ink);color:white;transform:rotate(0deg) scale(1.04)}
+.vv-pill-button:hover .vv-pill-disc svg,.vv-pill-button:focus-visible .vv-pill-disc svg{transform:rotate(45deg)}
+.vv-talk.vv-pill-aqua{background:var(--vv-aqua);color:var(--vv-deep);padding:5px 6px 5px 17px;min-height:41px;gap:16px;font-size:12px;box-shadow:none}
+.vv-talk.vv-pill-aqua::before{background:var(--vv-pill-ink);transform:translateX(-103%)}
+.vv-talk.vv-pill-aqua:hover::before,.vv-talk.vv-pill-aqua:focus-visible::before{transform:translateX(0)}
+.vv-talk.vv-pill-aqua .vv-pill-disc{width:30px;height:30px;flex-basis:30px;background:#eafff9}
+.vv-talk.vv-pill-aqua:hover{color:white}
+.vv-talk.vv-pill-aqua:hover .vv-pill-disc{background:var(--vv-aqua);color:var(--vv-deep)}
+.vv-hero-actions{gap:14px}
+.vv-hero-actions .vv-primary-button,.vv-hero-actions .vv-text-link{font-size:13px;font-weight:700;min-height:48px;padding:7px 8px 7px 19px;border-radius:100px;border:1px solid transparent}
+.vv-hero-actions .vv-pill-dark{background:var(--vv-pill-ink);color:#fff}
+.vv-hero-actions .vv-pill-light{background:#fff;color:var(--vv-navy);box-shadow:0 6px 22px rgba(0,41,53,.08);border-color:rgba(0,63,92,.09)}
+.vv-hero-actions .vv-pill-light::before{background:var(--vv-navy)}
+.vv-hero-actions .vv-pill-light:hover{background:#fff;color:white;border-color:transparent}
+.vv-hero-actions .vv-pill-light .vv-pill-disc{background:var(--vv-aqua);color:var(--vv-navy)}
+.vv-hero-actions .vv-pill-light:hover .vv-pill-disc{background:var(--vv-aqua);color:var(--vv-deep)}
+/* Scrolling mouse / label mirrors the understated vertical video cue. */
+.vv-scroll-cue{position:absolute;z-index:6;left:45%;bottom:22%;display:inline-flex;gap:12px;align-items:center;text-decoration:none;color:#607b83;transition:color .2s,transform .25s;font-size:10px;letter-spacing:.2em;font-weight:700}
+.vv-scroll-cue:hover{color:var(--vv-navy);transform:translateY(3px)}
+.vv-scroll-mouse{display:block;position:relative;width:20px;height:33px;border:1.5px solid #b5cfce;border-radius:12px;transition:border-color .25s}
+.vv-scroll-cue:hover .vv-scroll-mouse{border-color:var(--vv-aqua)}
+.vv-scroll-wheel{position:absolute;left:50%;top:7px;width:3px;height:6px;border-radius:2px;transform:translateX(-50%);background:var(--vv-aqua);animation:vv-wheel-scroll 1.65s cubic-bezier(.35,.1,.45,1) infinite}
+@keyframes vv-wheel-scroll{0%{opacity:0;transform:translate(-50%,-1px)}25%{opacity:1}70%{opacity:.8}100%{opacity:0;transform:translate(-50%,12px)}}
+/* Circular cursor: floats after mouse movement, expands to CLICK on anchors/buttons. */
+.vv-custom-cursor{position:fixed;top:0;left:0;z-index:9999;pointer-events:none;width:19px;height:19px;display:none;align-items:center;justify-content:center;border-radius:50%;background:rgba(19,40,45,.78);color:white;box-shadow:0 2px 15px rgba(0,24,34,.1);opacity:0;will-change:transform,width,height;transition:width .24s cubic-bezier(.18,.8,.2,1),height .24s cubic-bezier(.18,.8,.2,1),background .24s,opacity .15s}
+.vv-custom-cursor span{font-family:var(--vv-typeface);font-weight:700;font-size:9px;letter-spacing:.09em;opacity:0;transform:scale(.7);transition:opacity .15s,transform .2s}
+.vv-custom-cursor.is-interactive{width:62px;height:62px;background:rgba(24,39,42,.92)}
+.vv-custom-cursor.is-interactive span{opacity:1;transform:scale(1)}
+.vv-custom-cursor.is-on-dark{background:rgba(46,196,182,.95);color:var(--vv-deep)}
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){body.vv-has-custom-cursor,body.vv-has-custom-cursor a,body.vv-has-custom-cursor button,body.vv-has-custom-cursor summary{cursor:none!important}body.vv-has-custom-cursor .vv-custom-cursor{display:flex}}
+/* New Who we serve anchor/section, using the same established typography and spacing. */
+.vv-audiences{border-top:1px solid #e1efed}
+.vv-audiences-heading{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:end}
+.vv-audiences-heading .vv-lead{margin:0 0 28px;font-size:18px}
+.vv-audience-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-top:45px}
+.vv-audience-grid article{min-height:235px;background:#eaf6f3;padding:25px 22px;border-radius:16px;transition:transform .26s,background .26s}
+.vv-audience-grid article:hover{transform:translateY(-5px);background:#dcf3ee}
+.vv-audience-grid article>span{font-size:10px;letter-spacing:.17em;color:#439e98;font-weight:700}
+.vv-audience-grid h3{margin:58px 0 12px;font-size:clamp(20px,2vw,28px);letter-spacing:-.045em;line-height:1.1}
+.vv-audience-grid p{font-size:13px;line-height:1.65;color:#557780;margin:0}
+/* Small laptop/tablet: preserve the full mobile navigation rather than cramping labels. */
+@media(max-width:1180px){.vv-navbar{height:74px}.vv-header .vv-nav-items,.vv-header .vv-talk,.vv-language-picker{display:none}.vv-header .vv-logo{width:198px}.vv-mobile-toggle{display:grid;place-items:center}.vv-mobile-menu:not([hidden]){display:flex;flex-direction:column;padding:8px clamp(20px,4vw,45px) 25px;max-height:calc(100svh - 74px);overflow-y:auto;background:#fafcfa;border-top:1px solid #e5efed;box-shadow:0 22px 36px rgba(0,40,50,.1)}.vv-mobile-menu a,.vv-mobile-services summary{display:block;text-decoration:none;padding:14px 0;color:var(--vv-navy);font-size:15px;font-weight:600;border-bottom:1px solid #e3efed;cursor:pointer}.vv-mobile-services summary{display:flex;justify-content:space-between;align-items:center;list-style:none}.vv-mobile-services summary::-webkit-details-marker{display:none}.vv-mobile-services[open] summary span{transform:rotate(180deg)}.vv-mobile-services>div{display:grid;grid-template-columns:repeat(2,1fr);gap:0 13px;padding:4px 0 12px}.vv-mobile-services>div a{font-size:13px;color:#426c76;padding:12px 7px}.vv-mobile-language{display:flex;gap:9px;align-items:center;padding:17px 0;font-size:12px;color:#617b80}.vv-mobile-language svg{width:17px;height:17px}.vv-mobile-menu a.vv-mobile-cta{border-radius:100px;margin-top:5px;padding:14px 18px;color:var(--vv-deep);background:var(--vv-aqua);font-weight:700;display:flex;justify-content:space-between;align-items:center}.vv-mobile-cta span{font-size:19px}}
+@media(max-width:900px){.vv-audiences-heading{grid-template-columns:1fr}.vv-audiences-heading .vv-lead{margin-top:0}.vv-audience-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.vv-header .vv-logo{width:176px}.vv-header .vv-brand-wordmark{max-width:176px}.vv-scroll-cue{position:relative;left:auto;bottom:auto;margin:10px 0 18px 10px;display:flex;width:max-content}.vv-hero-actions .vv-pill-button{min-height:46px}.vv-hero-actions{gap:10px}.vv-hero-actions .vv-pill-disc{width:30px;height:30px;flex-basis:30px}.vv-audience-grid{gap:10px}.vv-audience-grid article{padding:20px 17px;min-height:240px}.vv-audience-grid h3{margin-top:42px;font-size:21px}}
+@media(max-width:400px){.vv-hero-actions .vv-pill-button{font-size:11px;gap:8px;padding-left:12px}.vv-hero-actions .vv-pill-disc{width:27px;height:27px;flex-basis:27px}.vv-audience-grid{grid-template-columns:1fr}.vv-audience-grid article{min-height:0}.vv-audience-grid h3{margin-top:22px}}
+@media(prefers-reduced-motion:reduce){.vv-scroll-wheel{animation:none;transform:translateX(-50%);opacity:1}.vv-custom-cursor{display:none!important}.vv-pill-button::before,.vv-pill-button,.vv-pill-disc,.vv-pill-disc svg,.vv-nav-link{transition:none!important}}
+
 </style></head><body>
-<header class="vv-header"><nav class="vv-navbar" aria-label="Main navigation"><a href="#top" class="vv-logo" aria-label="VisualVerse Creations — Back to top"><img class="vv-brand-wordmark" src="./brand-wordmark.png" alt="VisualVerse Creations" width="280" height="70" decoding="async" /></a><div class="vv-nav-items"><a href="#top" aria-current="page">Home</a><a href="#about">About</a><a href="#services">Services</a><a href="#work">Portfolio</a><a href="#contact">Contact</a></div><a href="#contact" class="vv-talk">Let's talk <span class="vv-talk-arrow">↗</span></a><button id="burger" class="vv-mobile-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile">☰</button></nav><div id="mobile" class="vv-mobile-menu" hidden><a href="#top">Home</a><a href="#about">About</a><a href="#services">Services</a><a href="#work">Portfolio</a><a href="#contact">Contact</a><a href="#contact">Let's talk ↗</a></div></header>
-<main id="top"><section class="vv-hero"><div class="vv-hero-grid"><div class="vv-hero-copy"><div class="vv-hero-kicker"><span class="vv-kicker-dot"></span> YOUR VISION. OUR CREATIVE CANVAS.</div><div id="sceneCopy"><div class="vv-scene-eyebrow" id="eyebrow">01 / CREATIVE JOURNEYS</div><h1 class="vv-hero-title"><span id="headline">Moments that last</span><span class="vv-title-dot">.</span></h1><p class="vv-hero-description" id="description">From portraits and weddings to the little moments in between, we capture stories you will want to revisit.</p><div class="vv-current-service"><span>NOW SHOWING</span><strong id="serviceName">Photography</strong></div></div><div class="vv-hero-actions"><a href="#work" class="vv-primary-button">Explore our work <span>↗</span></a><a href="#contact" class="vv-text-link">Start a project <span>↗</span></a></div><div class="vv-hero-controls" id="steps" aria-label="Choose a service"><button id="pauseSlide" class="vv-play-button" aria-label="Pause slideshow">Ⅱ</button></div></div>
-<div class="vv-hero-visual"><span id="artLabel" class="vv-visual-top">VISUALVERSE / PHOTOGRAPHY</span><div class="vv-visual-field"><div class="vv-orbit vv-orbit-one"></div><div class="vv-orbit vv-orbit-two"></div><canvas id="vvCanvas" class="vv-particle-canvas" role="img" aria-label="Animated dots forming icons for VisualVerse services"></canvas></div><div class="vv-visual-bottom"><span>IDEAS INTO IMPACT</span><span id="counter">01 / 06</span></div></div></div><div class="vv-hero-bottom"><span>AN INDEPENDENT CREATIVE MEDIA STUDIO</span><span class="vv-hero-bottom-line"></span><span>EXPLORE • DISCOVER • CREATE</span></div></section>
+<header class="vv-header" id="siteHeader">
+  <nav class="vv-navbar" aria-label="Main navigation">
+    <a href="#top" class="vv-logo" aria-label="Visual Verse Creations — Back to home"><img class="vv-brand-wordmark" src="./brand-wordmark.png" alt="Visual Verse Creations" width="280" height="70" decoding="async" /></a>
+    <div class="vv-nav-items" id="desktopNav">
+      <a class="vv-nav-link" href="#top" aria-current="page">Home</a>
+      <a class="vv-nav-link" href="#about">About Us</a>
+      <div class="vv-nav-dropdown" id="servicesDropdown">
+        <button type="button" class="vv-nav-link vv-nav-trigger" id="servicesTrigger" aria-haspopup="true" aria-expanded="false" aria-controls="servicesMenu">Services <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="vv-dropdown-panel" id="servicesMenu" role="menu" aria-label="Our services"><a href="#service-photography" role="menuitem"><span class="vv-dropdown-index">01</span>Photography<span class="vv-dropdown-arr">↗</span></a><a href="#service-videography" role="menuitem"><span class="vv-dropdown-index">02</span>Videography<span class="vv-dropdown-arr">↗</span></a><a href="#service-branding" role="menuitem"><span class="vv-dropdown-index">03</span>Branding<span class="vv-dropdown-arr">↗</span></a><a href="#service-graphic-design" role="menuitem"><span class="vv-dropdown-index">04</span>Graphic Design<span class="vv-dropdown-arr">↗</span></a><a href="#service-web-ui-ux" role="menuitem"><span class="vv-dropdown-index">05</span>Web & UI/UX<span class="vv-dropdown-arr">↗</span></a><a href="#service-social-media" role="menuitem"><span class="vv-dropdown-index">06</span>Social Media<span class="vv-dropdown-arr">↗</span></a></div>
+      </div>
+      <a class="vv-nav-link" href="#who-we-serve">Who we serve</a>
+      <a class="vv-nav-link" href="#work">Projects</a>
+      <a class="vv-nav-link" href="#contact">Contact</a>
+    </div>
+    <div class="vv-nav-right">
+      <div class="vv-language-picker" id="languagePicker">
+        <button type="button" class="vv-language-toggle" aria-label="Language: English" aria-expanded="false" aria-controls="languageMenu"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.25" fill="none" stroke="currentColor" stroke-width="1.65"/><path d="M3.75 12h16.5M12 3.75c-2.25 2.5-3.4 5.3-3.4 8.25s1.15 5.75 3.4 8.25c2.25-2.5 3.4-5.3 3.4-8.25S14.25 6.25 12 3.75Z" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><span>EN</span><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div id="languageMenu" class="vv-language-panel" role="group" aria-label="Website languages"><span class="vv-language-active">English <span>✓</span></span><span class="vv-language-unavailable">Kiswahili <small>Coming soon</small></span></div>
+      </div>
+      <a class="vv-talk vv-pill-button vv-pill-aqua" href="#contact"><span class="vv-pill-label">Let's talk</span><span class="vv-talk-arrow vv-pill-disc"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      <button id="burger" class="vv-mobile-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile">☰</button>
+    </div>
+  </nav>
+  <div id="mobile" class="vv-mobile-menu" hidden>
+    <a href="#top">Home</a><a href="#about">About Us</a>
+    <details class="vv-mobile-services"><summary>Services <span>⌄</span></summary><div><a href="#service-photography">Photography</a><a href="#service-videography">Videography</a><a href="#service-branding">Branding</a><a href="#service-graphic-design">Graphic Design</a><a href="#service-web-ui-ux">Web & UI/UX</a><a href="#service-social-media">Social Media</a></div></details>
+    <a href="#who-we-serve">Who we serve</a><a href="#work">Projects</a><a href="#contact">Contact</a>
+    <span class="vv-mobile-language"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.25" fill="none" stroke="currentColor" stroke-width="1.65"/><path d="M3.75 12h16.5M12 3.75c-2.25 2.5-3.4 5.3-3.4 8.25s1.15 5.75 3.4 8.25c2.25-2.5 3.4-5.3 3.4-8.25S14.25 6.25 12 3.75Z" fill="none" stroke="currentColor" stroke-width="1.4"/></svg> English (EN)</span>
+    <a href="#contact" class="vv-mobile-cta">Let's talk <span>↗</span></a>
+  </div>
+</header>
+<main id="top"><section class="vv-hero"><div class="vv-hero-grid"><div class="vv-hero-copy"><div class="vv-hero-kicker"><span class="vv-kicker-dot"></span> YOUR VISION. OUR CREATIVE CANVAS.</div><div id="sceneCopy"><div class="vv-scene-eyebrow" id="eyebrow">01 / CREATIVE JOURNEYS</div><h1 class="vv-hero-title"><span id="headline">Moments that last</span><span class="vv-title-dot">.</span></h1><p class="vv-hero-description" id="description">From portraits and weddings to the little moments in between, we capture stories you will want to revisit.</p><div class="vv-current-service"><span>NOW SHOWING</span><strong id="serviceName">Photography</strong></div></div><div class="vv-hero-actions"><a href="#work" class="vv-primary-button vv-pill-button vv-pill-dark"><span class="vv-pill-label">Explore our work</span><span class="vv-pill-disc"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a href="#contact" class="vv-text-link vv-pill-button vv-pill-light"><span class="vv-pill-label">Start a project</span><span class="vv-pill-disc"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div><div class="vv-hero-controls" id="steps" aria-label="Choose a service"><button id="pauseSlide" class="vv-play-button" aria-label="Pause slideshow">Ⅱ</button></div></div>
+<div class="vv-hero-visual"><span id="artLabel" class="vv-visual-top">VISUALVERSE / PHOTOGRAPHY</span><div class="vv-visual-field"><div class="vv-orbit vv-orbit-one"></div><div class="vv-orbit vv-orbit-two"></div><canvas id="vvCanvas" class="vv-particle-canvas" role="img" aria-label="Animated dots forming icons for VisualVerse services"></canvas></div><div class="vv-visual-bottom"><span>IDEAS INTO IMPACT</span><span id="counter">01 / 06</span></div></div></div><a class="vv-scroll-cue" href="#about" aria-label="Scroll down to learn about Visual Verse"><span class="vv-scroll-mouse"><span class="vv-scroll-wheel"></span></span><span class="vv-scroll-label">SCROLL</span></a><div class="vv-hero-bottom"><span>AN INDEPENDENT CREATIVE MEDIA STUDIO</span><span class="vv-hero-bottom-line"></span><span>EXPLORE • DISCOVER • CREATE</span></div></section>
 <section class="vv-preview-section" id="about"><span class="vv-label">A LITTLE ABOUT US / 001</span><h2 class="vv-section-h">A creative home for ideas that deserve to be seen.</h2><p class="vv-lead">VisualVerse Creations brings together design, photography, film, branding, and digital thinking. We listen closely, create thoughtfully, and turn your vision into something people can see, feel, and remember.</p></section>
-<section class="vv-preview-section" id="services"><span class="vv-label">WHAT WE DO / 002</span><h2 class="vv-section-h">Many disciplines.<br/>One visual language.</h2><div class="vv-service-list"><a class="vv-service-row" href="#contact"><small>01</small><strong>Photography</strong><span>Moments & portraits ↗</span></a><a class="vv-service-row" href="#contact"><small>02</small><strong>Videography</strong><span>Films & motion ↗</span></a><a class="vv-service-row" href="#contact"><small>03</small><strong>Branding</strong><span>Identity & strategy ↗</span></a><a class="vv-service-row" href="#contact"><small>04</small><strong>Graphic Design</strong><span>Visual communication ↗</span></a><a class="vv-service-row" href="#contact"><small>05</small><strong>Web & UI/UX</strong><span>Digital experiences ↗</span></a><a class="vv-service-row" href="#contact"><small>06</small><strong>Social Media</strong><span>Content & campaigns ↗</span></a></div></section>
-<section class="vv-preview-section" id="work"><span class="vv-label">PORTFOLIO / 003</span><h2 class="vv-section-h">Selected work.<br/>More to come.</h2><p class="vv-lead">A space for projects that represent what we love creating. Real project visuals can be added here once they are selected and approved.</p><div class="vv-work-grid"><div class="vv-work-placeholder"><div><small>PROJECT PLACEHOLDER / 01</small><strong>Portraits & stories</strong></div><p>Your photography projects will live here.</p></div><div class="vv-work-placeholder"><div><small>PROJECT PLACEHOLDER / 02</small><strong>Brands & digital</strong></div><p>Your visual identities and web projects will live here.</p></div></div></section>
-<section class="vv-preview-section" id="process"><span class="vv-label">OUR APPROACH / 004</span><h2 class="vv-section-h">Thoughtful at every step.</h2><div class="vv-process"><article><strong>01. Discover</strong><p>We understand your goals, audience and the story behind your business.</p></article><article><strong>02. Create</strong><p>We shape the concept, craft the details and keep you involved.</p></article><article><strong>03. Deliver</strong><p>We refine and hand over work that's ready for the real world.</p></article></div></section>
-</main><footer class="vv-footer" id="contact"><div class="vv-footer-inner"><a class="vv-footer-brand" href="#top" aria-label="VisualVerse Creations — Back to top"><img src="./brand-logo.png" alt="VisualVerse Creations" width="300" height="78" decoding="async" /></a><span class="vv-label" style="color:#2ec4b6">LET'S MAKE SOMETHING MATTER / 005</span><div class="vv-footer-title">Have an idea?<br/>Let's make it real.</div><a href="mailto:hello@visualverse.com">Get in touch ↗</a><div class="vv-footer-end"><span>© VISUALVERSE CREATIONS — CONCEPT PREVIEW</span><a href="#top">BACK TO TOP ↑</a></div></div></footer>
+<section class="vv-preview-section" id="services"><span class="vv-label">WHAT WE DO / 002</span><h2 class="vv-section-h">Many disciplines.<br/>One visual language.</h2><div class="vv-service-list"><a class="vv-service-row" id="service-photography" href="#contact"><small>01</small><strong>Photography</strong><span>Moments & portraits ↗</span></a><a class="vv-service-row" id="service-videography" href="#contact"><small>02</small><strong>Videography</strong><span>Films & motion ↗</span></a><a class="vv-service-row" id="service-branding" href="#contact"><small>03</small><strong>Branding</strong><span>Identity & strategy ↗</span></a><a class="vv-service-row" id="service-graphic-design" href="#contact"><small>04</small><strong>Graphic Design</strong><span>Visual communication ↗</span></a><a class="vv-service-row" id="service-web-ui-ux" href="#contact"><small>05</small><strong>Web & UI/UX</strong><span>Digital experiences ↗</span></a><a class="vv-service-row" id="service-social-media" href="#contact"><small>06</small><strong>Social Media</strong><span>Content & campaigns ↗</span></a></div></section>
+<section class="vv-preview-section vv-audiences" id="who-we-serve">
+  <span class="vv-label">THE PEOPLE WE CREATE WITH / 003</span>
+  <div class="vv-audiences-heading"><h2 class="vv-section-h">Your world.<br/>Our creative perspective.</h2><p class="vv-lead">From the first big idea to the next chapter of growth, we bring thoughtful visuals to the people making things happen.</p></div>
+  <div class="vv-audience-grid">
+    <article><span>01 /</span><h3>Growing brands</h3><p>Memorable identities, campaigns and content built for where you're headed.</p></article>
+    <article><span>02 /</span><h3>Businesses & teams</h3><p>Digital experiences and visual communication that make your work stand out.</p></article>
+    <article><span>03 /</span><h3>Creators & founders</h3><p>A creative partner to give an ambitious idea the presence it deserves.</p></article>
+    <article><span>04 /</span><h3>People & events</h3><p>Photography and films that hold onto the moments worth remembering.</p></article>
+  </div>
+</section>
+<section class="vv-preview-section" id="work"><span class="vv-label">PORTFOLIO / 004</span><h2 class="vv-section-h">Selected work.<br/>More to come.</h2><p class="vv-lead">A space for projects that represent what we love creating. Real project visuals can be added here once they are selected and approved.</p><div class="vv-work-grid"><div class="vv-work-placeholder"><div><small>PROJECT PLACEHOLDER / 01</small><strong>Portraits & stories</strong></div><p>Your photography projects will live here.</p></div><div class="vv-work-placeholder"><div><small>PROJECT PLACEHOLDER / 02</small><strong>Brands & digital</strong></div><p>Your visual identities and web projects will live here.</p></div></div></section>
+<section class="vv-preview-section" id="process"><span class="vv-label">OUR APPROACH / 005</span><h2 class="vv-section-h">Thoughtful at every step.</h2><div class="vv-process"><article><strong>01. Discover</strong><p>We understand your goals, audience and the story behind your business.</p></article><article><strong>02. Create</strong><p>We shape the concept, craft the details and keep you involved.</p></article><article><strong>03. Deliver</strong><p>We refine and hand over work that's ready for the real world.</p></article></div></section>
+</main><footer class="vv-footer" id="contact"><div class="vv-footer-inner"><a class="vv-footer-brand" href="#top" aria-label="VisualVerse Creations — Back to top"><img src="./brand-logo.png" alt="VisualVerse Creations" width="300" height="78" decoding="async" /></a><span class="vv-label" style="color:#2ec4b6">LET'S MAKE SOMETHING MATTER / 006</span><div class="vv-footer-title">Have an idea?<br/>Let's make it real.</div><a href="mailto:hello@visualverse.com">Get in touch ↗</a><div class="vv-footer-end"><span>© VISUALVERSE CREATIONS — CONCEPT PREVIEW</span><a href="#top">BACK TO TOP ↑</a></div></div></footer>
 <script>
 const scenes = [
  { eyebrow:'01 / CREATIVE JOURNEYS', title:'Moments that last',category:'Photography',description:'From portraits and weddings to the little moments in between, we capture stories you will want to revisit.',shape:'camera' },
@@ -167,4 +299,58 @@ const pause=document.getElementById('pauseSlide');function updatePause(){pause.t
 show(0);if(!reduced)setInterval(()=>{if(!paused)show((active+1)%scenes.length)},6400);
 function animate(){g.clearRect(0,0,w,h);const scale=Math.min(w,h)/420,ox=(w-420*scale)/2,oy=(h-420*scale)/2;for(const p of dots){p.x+=(p.tx-p.x)*(reduced?.24:.065);p.y+=(p.ty-p.y)*(reduced?.24:.065);p.a+=(p.ta-p.a)*.09;if(p.a<.025)continue;let px=ox+p.x*scale,py=oy+p.y*scale;if(!reduced&&pointer.active){const dx=px-pointer.x,dy=py-pointer.y,dist=Math.hypot(dx,dy);if(dist<70&&dist>0){px+=dx/dist*(70-dist)/70*23;py+=dy/dist*(70-dist)/70*23}}g.globalAlpha=Math.max(0,Math.min(1,p.a));g.fillStyle=p.fill;g.beginPath();g.arc(px,py,p.size*scale,0,Math.PI*2);g.fill()}g.globalAlpha=1;requestAnimationFrame(animate)}animate();
 const burger=document.getElementById('burger'),mobile=document.getElementById('mobile');burger.addEventListener('click',()=>{const open=mobile.hidden;mobile.hidden=!open;burger.setAttribute('aria-expanded',String(open));burger.textContent=open?'×':'☰'});mobile.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mobile.hidden=true;burger.setAttribute('aria-expanded','false');burger.textContent='☰'}));
-</script></body></html>
+</script>
+<script>
+(() => {
+  const servicesBox = document.getElementById('servicesDropdown');
+  const servicesTrigger = document.getElementById('servicesTrigger');
+  const languageBox = document.getElementById('languagePicker');
+  const languageToggle = languageBox.querySelector('.vv-language-toggle');
+  const closeServices = () => { servicesBox.classList.remove('is-open'); servicesTrigger.setAttribute('aria-expanded','false'); };
+  const closeLanguage = () => { languageBox.classList.remove('is-open'); languageToggle.setAttribute('aria-expanded','false'); };
+  servicesTrigger.addEventListener('click', (event) => {
+    event.stopPropagation(); const next = !servicesBox.classList.contains('is-open');
+    closeLanguage(); servicesBox.classList.toggle('is-open', next); servicesTrigger.setAttribute('aria-expanded', String(next));
+  });
+  servicesBox.querySelectorAll('.vv-dropdown-panel a').forEach(link => link.addEventListener('click', closeServices));
+  servicesBox.addEventListener('mouseenter', () => { if (matchMedia('(hover:hover)').matches) servicesTrigger.setAttribute('aria-expanded', 'true'); });
+  servicesBox.addEventListener('mouseleave', () => { if (!servicesBox.classList.contains('is-open')) servicesTrigger.setAttribute('aria-expanded', 'false'); });
+  languageToggle.addEventListener('click', (event) => {
+    event.stopPropagation(); const next = !languageBox.classList.contains('is-open');
+    closeServices(); languageBox.classList.toggle('is-open', next); languageToggle.setAttribute('aria-expanded', String(next));
+  });
+  document.addEventListener('click', (event) => { if (!servicesBox.contains(event.target)) closeServices(); if (!languageBox.contains(event.target)) closeLanguage(); });
+  document.addEventListener('keydown', (event) => { if (event.key === 'Escape') { closeServices(); closeLanguage(); } });
+  const mobile = document.getElementById('mobile');
+  document.querySelectorAll('#mobile a').forEach(link => link.addEventListener('click', () => {
+    const details = mobile.querySelector('details'); if (details) details.open = false;
+  }));
+  const navLinks = [...document.querySelectorAll('.vv-nav-items > a')];
+  const sections = [{id:'top',link:'#top'},{id:'about',link:'#about'},{id:'services',link:null},{id:'who-we-serve',link:'#who-we-serve'},{id:'work',link:'#work'},{id:'contact',link:'#contact'}];
+  const refreshNavState = () => {
+    const threshold = window.scrollY + Math.min(220,window.innerHeight*.32);
+    let current = '#top';
+    for (const item of sections) { const el=document.getElementById(item.id); if(el && el.getBoundingClientRect().top+window.scrollY<=threshold) current=item.link||'#services'; }
+    navLinks.forEach(link => { if(link.getAttribute('href')===current) link.setAttribute('aria-current','page'); else link.removeAttribute('aria-current'); });
+  };
+  window.addEventListener('scroll',refreshNavState,{passive:true});refreshNavState();
+  if (!matchMedia('(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference)').matches) return;
+  const cursor = document.createElement('div'); cursor.className = 'vv-custom-cursor'; cursor.innerHTML = '<span>CLICK</span>';
+  document.body.appendChild(cursor); document.body.classList.add('vv-has-custom-cursor');
+  let tx=-100,ty=-100,cx=-100,cy=-100,visible=false,started=false;
+  const interactive='a,button,summary,[role="menuitem"]';
+  document.addEventListener('pointermove', (event) => {
+    if(event.pointerType && event.pointerType!=='mouse' && event.pointerType!=='pen') return;
+    tx=event.clientX;ty=event.clientY;
+    if(!started){cx=tx;cy=ty;started=true;}
+    if(!visible){visible=true;cursor.style.opacity='1';}
+    const target=event.target instanceof Element ? event.target : null;
+    cursor.classList.toggle('is-interactive',!!target?.closest(interactive));
+    cursor.classList.toggle('is-on-dark',!!target?.closest('.vv-footer'));
+  },{passive:true});
+  document.addEventListener('pointerleave',()=>{cursor.style.opacity='0';visible=false});
+  window.addEventListener('blur',()=>{cursor.style.opacity='0';visible=false});
+  function follow(){cx+=(tx-cx)*.2;cy+=(ty-cy)*.2;cursor.style.transform=`translate3d(${cx}px,${cy}px,0) translate(-50%,-50%)`;requestAnimationFrame(follow)}follow();
+})();
+</script>
+</body></html>
