@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { ArrowLeft, ArrowUpRight, FolderOpen, Image as ImageIcon, Check, MoveUpRight } from "lucide-react";
 import { portfolioCollections, PortfolioArtwork } from "@/components/VisualVersePortfolio";
+import { VisualVerseNavbar } from "@/components/VisualVerseNavbar";
+import { WhatsAppFloating } from "@/components/VisualVersePolicies";
 import { VisualVerseFooter } from "@/components/VisualVerseClosingSections";
 
 const detailPoints: Record<string, string[]> = {
@@ -24,16 +26,7 @@ export function VisualVerseProjectsPage() {
 
   return (
     <div className="vv-projects-page">
-      <header className="vv-projects-topbar">
-        <a href="/#top" aria-label="Visual Verse Creations — Home" className="vv-projects-logo">
-          <img src="/brand-wordmark.png" alt="Visual Verse Creations" width="208" height="60" />
-        </a>
-        <nav aria-label="Projects page navigation">
-          <a href="/#services">What we do</a>
-          <a href="/projects.html" aria-current="page">Projects</a>
-          <a href="/#contact" className="vv-projects-talk">Let's talk <ArrowUpRight size={16} aria-hidden="true" /></a>
-        </nav>
-      </header>
+      <VisualVerseNavbar />
       <main>
         <section className="vv-projects-hero">
           <div className="vv-projects-hero-top">
@@ -86,6 +79,7 @@ export function VisualVerseProjectsPage() {
       <footer className="vv-close-footer-wrap" id="footer">
         <VisualVerseFooter />
       </footer>
+      <WhatsAppFloating />
     </div>
   );
 }
