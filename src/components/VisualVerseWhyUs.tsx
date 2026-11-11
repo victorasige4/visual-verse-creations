@@ -152,7 +152,7 @@ export function VisualVerseWhyUs() {
                     initial={false}
                     animate={{
                       scale: selected && !reducedMotion ? 1.08 : 1,
-                      backgroundColor: selected ? "#2EC4B6" : "rgba(12,56,52,0.78)",
+                      backgroundColor: selected ? "#2EC4B6" : "rgba(0, 63, 92, 0.84)",
                       boxShadow: selected
                         ? "0 0 0 8px rgba(46,196,182,0.10), 0 0 35px rgba(46,196,182,0.37)"
                         : "0 0 0 6px rgba(46,196,182,0.05), 0 0 18px rgba(46,196,182,0.06)",
