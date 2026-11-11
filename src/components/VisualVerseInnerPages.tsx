@@ -327,7 +327,7 @@ export function pageKind():Kind{
   const p=window.location.pathname;
   if(p.includes("about"))return "about";
   if(p.includes("who-we-serve"))return "audiences";
-  if(p.includes("request-quote"))return "quote";
+  if(p.includes("request-quote") || p === "/quote" || p === "/lets-talk")return "quote";
   if(p.includes("contact"))return "contact";
   return "services";
 }
