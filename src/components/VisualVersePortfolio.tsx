@@ -37,7 +37,7 @@ export const portfolioCollections: PortfolioCollection[] = [
     headline: "Digital that feels human.",
     description: "Websites and interfaces shaped to make every interaction count.",
     tags: ["Web Design", "UI/UX", "Prototyping"],
-    href: "/projects.html#digital",
+    href: "/projects.html#web-ui-ux",
   },
   {
     id: "campaigns",
@@ -46,7 +46,7 @@ export const portfolioCollections: PortfolioCollection[] = [
     headline: "Creative that travels further.",
     description: "Campaign visuals, moving stories and content made for connection.",
     tags: ["Graphic Design", "Video", "Social Media"],
-    href: "/projects.html#campaigns",
+    href: "/projects.html#social-media",
   },
 ];
 
