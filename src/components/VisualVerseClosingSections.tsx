@@ -76,7 +76,7 @@ export function VisualVerseFaq() {
         <span className="vv-close-eyebrow"><span/> FAQs / 007</span>
         <h2>Frequently Asked<br/>Questions.</h2>
         <p>Everything you might want to know before we make something together. Have another question? We would love to hear it.</p>
-        <a className="vv-close-small-cta" href="#contact">Ask us anything <span><ArrowUpRight size={16} aria-hidden="true"/></span></a>
+        <a className="vv-close-small-cta" href="/contact.html">Ask us anything <span><ArrowUpRight size={16} aria-hidden="true"/></span></a>
         <a href={"mailto:"+CONTACT_EMAIL+"?subject=Visual%20Verse%20Question"} className="vv-close-faq-mail"><Mail size={14} aria-hidden="true"/> Email a question</a>
       </div>
       <div className="vv-close-faq-list">
@@ -118,7 +118,7 @@ export function VisualVerseCTA(){
         <h2>Have an idea<br/>worth bringing<br/>to <em>life?</em></h2>
         <p>From your first concept to the final frame, let's create something people remember.</p>
         <div className="vv-close-cta-buttons">
-          <a href={"mailto:"+CONTACT_EMAIL+"?subject=Start%20a%20Visual%20Verse%20Project"} className="vv-close-cta-primary">Let's talk <span><ArrowUpRight size={18} aria-hidden="true"/></span></a>
+          <a href="/request-quote.html" className="vv-close-cta-primary">Let's talk <span><ArrowUpRight size={18} aria-hidden="true"/></span></a>
           <a href="/projects.html" className="vv-close-cta-secondary">Explore our work <span><ArrowUpRight size={18} aria-hidden="true"/></span></a>
         </div>
         <div className="vv-close-cta-meta">
@@ -134,12 +134,12 @@ export function VisualVerseCTA(){
 }
 
 const serviceLinks=[
-  {label:"Photography",href:"/#service-photography"},
-  {label:"Videography",href:"/#service-videography"},
-  {label:"Branding",href:"/#service-branding"},
-  {label:"Graphic Design",href:"/#service-graphic-design"},
-  {label:"Web & UI/UX",href:"/#service-web-ui-ux"},
-  {label:"Social Media",href:"/#service-social-media"},
+  {label:"Photography",href:"/services.html#details-photography"},
+  {label:"Videography",href:"/services.html#details-videography"},
+  {label:"Branding",href:"/services.html#details-branding"},
+  {label:"Graphic Design",href:"/services.html#details-graphic-design"},
+  {label:"Web & UI/UX",href:"/services.html#details-web-ui-ux"},
+  {label:"Social Media",href:"/services.html#details-social-media"},
 ];
 const navigation=[
   {label:"Home",href:"/#top"},
@@ -177,7 +177,7 @@ export function VisualVerseFooter(){
           <p>Have a project or a question? Start the conversation.</p>
           <a className="vv-close-footer-email" href={"mailto:"+CONTACT_EMAIL}>{CONTACT_EMAIL} <ArrowUpRight size={15} aria-hidden="true"/></a>
           <a className="vv-close-footer-email" href={"tel:"+CONTACT_PHONE}>+254 794 044 598 <ArrowUpRight size={15} aria-hidden="true"/></a>
-          <a className="vv-close-footer-mini-cta" href="/#contact">Start a project <ArrowRight size={15} aria-hidden="true"/></a>
+          <a className="vv-close-footer-mini-cta" href="/request-quote.html">Start a project <ArrowRight size={15} aria-hidden="true"/></a>
           <span className="vv-close-footer-availability"><CheckCircle2 size={14} aria-hidden="true"/> Available for project enquiries</span>
         </div>
       </div>
