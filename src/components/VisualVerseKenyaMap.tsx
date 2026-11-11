@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { motion } from "motion/react";
-import { countyOutlines } from "kenya-regions/outlines";
+import countyOutlines from "@/data/kenya-counties.json";
 import { MapPin, Compass, Globe2 } from "lucide-react";
 
 /** True county polygons (OCHA-derived, approximately 1-km simplification).
