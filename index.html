@@ -542,6 +542,52 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
   .vv-hero-controls .vv-step-line::after{transition:none;will-change:auto}
 }
 
+/* Design-editor-inspired keyword selection for the rotating hero heading.
+   Neutral charcoal outline and tiny square corner handles; no orange, fill or badge. */
+.vv-hero-title .vv-word-selection{
+  position:relative;
+  display:inline-block;
+  vertical-align:baseline;
+  white-space:nowrap;
+  padding:.015em .067em .045em;
+  margin:0 .01em;
+  border:1px solid rgba(45,59,64,.66);
+  background:transparent;
+  color:inherit;
+  line-height:1.01;
+  border-radius:1px;
+  animation:vv-word-selection-arrive .48s cubic-bezier(.2,.75,.18,1) both;
+}
+.vv-hero-title .vv-word-handle{
+  position:absolute;
+  display:block;
+  width:6px;
+  height:6px;
+  border:1px solid #536267;
+  background:#fafcfb;
+  pointer-events:none;
+  z-index:2;
+}
+.vv-hero-title .vv-word-handle-tl{top:-4px;left:-4px}
+.vv-hero-title .vv-word-handle-tr{top:-4px;right:-4px}
+.vv-hero-title .vv-word-handle-bl{bottom:-4px;left:-4px}
+.vv-hero-title .vv-word-handle-br{bottom:-4px;right:-4px}
+@keyframes vv-word-selection-arrive{
+  from{opacity:.28;transform:translateY(.10em) scale(.975)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+@media(max-width:760px){
+  .vv-hero-title .vv-word-selection{padding:.015em .045em .04em;margin:0 .005em}
+  .vv-hero-title .vv-word-handle{width:5px;height:5px}
+  .vv-hero-title .vv-word-handle-tl{top:-3px;left:-3px}
+  .vv-hero-title .vv-word-handle-tr{top:-3px;right:-3px}
+  .vv-hero-title .vv-word-handle-bl{bottom:-3px;left:-3px}
+  .vv-hero-title .vv-word-handle-br{bottom:-3px;right:-3px}
+}
+@media(prefers-reduced-motion:reduce){
+  .vv-hero-title .vv-word-selection{animation:none}
+}
+
 </style></head><body>
 <div id="vv-react-nav-root"></div>
 <header class="vv-header" id="siteHeader">
@@ -593,7 +639,7 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
     <a href="#contact" class="vv-mobile-cta">Let's talk <span>↗</span></a>
   </div>
 </header>
-<main id="top"><section class="vv-hero"><canvas id="vvHeroCubes" class="vv-aceternity-inspired-cubes" aria-hidden="true"></canvas><div class="vv-hero-grid"><div class="vv-hero-copy"><div class="vv-hero-kicker"><span class="vv-kicker-dot"></span> YOUR VISION. OUR CREATIVE CANVAS.</div><div id="sceneCopy"><div class="vv-scene-eyebrow" id="eyebrow">01 / CREATIVE JOURNEYS</div><h1 class="vv-hero-title"><span id="headline">Moments that last</span><span class="vv-title-dot">.</span></h1><p class="vv-hero-description" id="description">From portraits and weddings to the little moments in between, we capture stories you will want to revisit.</p><div class="vv-current-service"><span>NOW SHOWING</span><strong id="serviceName">Photography</strong></div></div><div class="vv-hero-actions"><a href="#work" class="vv-primary-button vv-pill-button vv-pill-dark"><span class="vv-pill-label">Explore our work</span><span class="vv-pill-disc"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a href="#contact" class="vv-text-link vv-pill-button vv-pill-light"><span class="vv-pill-label">Start a project</span><span class="vv-pill-disc"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div><div class="vv-hero-controls" id="steps" aria-label="Choose a service"><button id="pauseSlide" class="vv-play-button" aria-label="Pause slideshow">Ⅱ</button></div></div>
+<main id="top"><section class="vv-hero"><canvas id="vvHeroCubes" class="vv-aceternity-inspired-cubes" aria-hidden="true"></canvas><div class="vv-hero-grid"><div class="vv-hero-copy"><div class="vv-hero-kicker"><span class="vv-kicker-dot"></span> YOUR VISION. OUR CREATIVE CANVAS.</div><div id="sceneCopy"><div class="vv-scene-eyebrow" id="eyebrow">01 / CREATIVE JOURNEYS</div><h1 class="vv-hero-title"><span id="headline">Moments that <span class="vv-word-selection">last<span class="vv-word-handle vv-word-handle-tl" aria-hidden="true"></span><span class="vv-word-handle vv-word-handle-tr" aria-hidden="true"></span><span class="vv-word-handle vv-word-handle-bl" aria-hidden="true"></span><span class="vv-word-handle vv-word-handle-br" aria-hidden="true"></span></span></span><span class="vv-title-dot">.</span></h1><p class="vv-hero-description" id="description">From portraits and weddings to the little moments in between, we capture stories you will want to revisit.</p><div class="vv-current-service"><span>NOW SHOWING</span><strong id="serviceName">Photography</strong></div></div><div class="vv-hero-actions"><a href="#work" class="vv-primary-button vv-pill-button vv-pill-dark"><span class="vv-pill-label">Explore our work</span><span class="vv-pill-disc"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a href="#contact" class="vv-text-link vv-pill-button vv-pill-light"><span class="vv-pill-label">Start a project</span><span class="vv-pill-disc"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div><div class="vv-hero-controls" id="steps" aria-label="Choose a service"><button id="pauseSlide" class="vv-play-button" aria-label="Pause slideshow">Ⅱ</button></div></div>
 <div class="vv-hero-visual"><span id="artLabel" class="vv-visual-top">VISUALVERSE / PHOTOGRAPHY</span><div class="vv-visual-field"><div class="vv-orbit vv-orbit-one"></div><div class="vv-orbit vv-orbit-two"></div><canvas id="vvCanvas" class="vv-particle-canvas" role="img" aria-label="Animated dots forming icons for VisualVerse services"></canvas></div><div class="vv-visual-bottom"><span>IDEAS INTO IMPACT</span><span id="counter">01 / 06</span></div></div></div><div class="vv-hero-bottom"><span>AN INDEPENDENT CREATIVE MEDIA STUDIO</span><span class="vv-hero-bottom-line"></span><span>EXPLORE • DISCOVER • CREATE</span></div></section>
 <!-- The scroll cue bridges the hero and Who We Are, rather than floating in the hero artwork. -->
 <div class="vv-story-band">
@@ -639,12 +685,12 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
 </main><footer class="vv-footer" id="contact"><div class="vv-footer-inner"><a class="vv-footer-brand" href="#top" aria-label="VisualVerse Creations — Back to top"><img src="./brand-logo.png" alt="VisualVerse Creations" width="300" height="78" decoding="async" /></a><span class="vv-label" style="color:#2ec4b6">LET'S MAKE SOMETHING MATTER / 006</span><div class="vv-footer-title">Have an idea?<br/>Let's make it real.</div><a href="mailto:hello@visualverse.com">Get in touch ↗</a><div class="vv-footer-end"><span>© VISUALVERSE CREATIONS — CONCEPT PREVIEW</span><a href="#top">BACK TO TOP ↑</a></div></div></footer>
 <script>
 const scenes = [
- { eyebrow:'01 / CREATIVE JOURNEYS', title:'Moments that last',category:'Photography',description:'From portraits and weddings to the little moments in between, we capture stories you will want to revisit.',shape:'camera' },
- { eyebrow:'02 / MOTION & IMAGERY', title:'Stories in motion',category:'Videography',description:'Thoughtfully crafted films and moving images that give people something to see, feel, and remember.',shape:'film' },
- { eyebrow:'03 / AN IDENTITY OF YOUR OWN', title:'Made to be known',category:'Branding',description:'A distinctive visual identity gives your business a recognizable voice in every place it shows up.',shape:'identity' },
- { eyebrow:'04 / VISUAL LANGUAGE', title:'Designed to connect',category:'Graphic Design',description:'From everyday graphics to ambitious campaigns, we turn messages into clear, engaging visuals.',shape:'pen' },
- { eyebrow:'05 / DIGITAL EXPERIENCES', title:'Made to explore',category:'Web & UI/UX Design',description:'Websites and interfaces that look beautiful, feel intuitive, and help visitors find what matters.',shape:'web' },
- { eyebrow:'06 / IDEAS WITH REACH', title:'Stories worth sharing',category:'Social Media & Digital Marketing',description:'Purposeful content and campaigns that keep your brand visible and give your audience a reason to engage.',shape:'social' },
+ { eyebrow:'01 / CREATIVE JOURNEYS', title:'Moments that last',highlight:'last',category:'Photography',description:'From portraits and weddings to the little moments in between, we capture stories you will want to revisit.',shape:'camera' },
+ { eyebrow:'02 / MOTION & IMAGERY', title:'Stories in motion',highlight:'motion',category:'Videography',description:'Thoughtfully crafted films and moving images that give people something to see, feel, and remember.',shape:'film' },
+ { eyebrow:'03 / AN IDENTITY OF YOUR OWN', title:'Made to be known',highlight:'known',category:'Branding',description:'A distinctive visual identity gives your business a recognizable voice in every place it shows up.',shape:'identity' },
+ { eyebrow:'04 / VISUAL LANGUAGE', title:'Designed to connect',highlight:'connect',category:'Graphic Design',description:'From everyday graphics to ambitious campaigns, we turn messages into clear, engaging visuals.',shape:'pen' },
+ { eyebrow:'05 / DIGITAL EXPERIENCES', title:'Made to explore',highlight:'explore',category:'Web & UI/UX Design',description:'Websites and interfaces that look beautiful, feel intuitive, and help visitors find what matters.',shape:'web' },
+ { eyebrow:'06 / IDEAS WITH REACH', title:'Stories worth sharing',highlight:'sharing',category:'Social Media & Digital Marketing',description:'Purposeful content and campaigns that keep your brand visible and give your audience a reason to engage.',shape:'social' },
 ];
 let active=0,paused=false,dots=[],frames=[];
 const SCENE_DURATION=6400; // The active line loads for exactly one service interval.
@@ -686,6 +732,30 @@ function paintProgress(){
     button.style.setProperty('--vv-progress',String(fill));
   });
 }
+
+/* Each of our six headlines highlights one meaningful word.
+   Use text nodes (not innerHTML) to preserve accessible, safe headline copy. */
+function renderBoxedHeadline(scene){
+  const heading=document.getElementById('headline');
+  const keyword=scene.highlight;
+  const position=scene.title.lastIndexOf(keyword);
+  if(position<0){heading.textContent=scene.title;return}
+  const focus=document.createElement('span');
+  focus.className='vv-word-selection';
+  focus.appendChild(document.createTextNode(keyword));
+  ['tl','tr','bl','br'].forEach(corner=>{
+    const handle=document.createElement('span');
+    handle.className='vv-word-handle vv-word-handle-'+corner;
+    handle.setAttribute('aria-hidden','true');
+    focus.appendChild(handle);
+  });
+  heading.replaceChildren(
+    document.createTextNode(scene.title.slice(0,position)),
+    focus,
+    document.createTextNode(scene.title.slice(position+keyword.length))
+  );
+}
+
 function show(n){
   const scene=scenes[n];
   const copy=document.getElementById('sceneCopy');
@@ -693,7 +763,7 @@ function show(n){
   void copy.offsetWidth;
   copy.classList.add('vv-copy-enter');
   document.getElementById('eyebrow').textContent=scene.eyebrow;
-  document.getElementById('headline').textContent=scene.title;
+  renderBoxedHeadline(scene);
   document.getElementById('description').textContent=scene.description;
   document.getElementById('serviceName').textContent=scene.category;
   document.getElementById('artLabel').textContent='VISUALVERSE / '+scene.category.toUpperCase();
