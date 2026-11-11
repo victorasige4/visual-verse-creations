@@ -2,7 +2,10 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { VisualVerseNavbar } from "./components/VisualVerseNavbar";
 import { VisualVerseWhoWeAre } from "./components/VisualVerseWhoWeAre";
+import { VisualVerseServices } from "./components/VisualVerseServices";
+import { VisualVerseAudiences } from "./components/VisualVerseAudiences";
 import "./styles.css";
+import "./showcases.css";
 
 const mount = document.getElementById("vv-react-nav-root");
 if (mount) {
@@ -18,6 +21,24 @@ if (aboutMount) {
   createRoot(aboutMount).render(
     <StrictMode>
       <VisualVerseWhoWeAre />
+    </StrictMode>,
+  );
+}
+
+const servicesMount = document.getElementById("vv-services-root");
+if (servicesMount) {
+  createRoot(servicesMount).render(
+    <StrictMode>
+      <VisualVerseServices />
+    </StrictMode>,
+  );
+}
+
+const audiencesMount = document.getElementById("vv-audiences-root");
+if (audiencesMount) {
+  createRoot(audiencesMount).render(
+    <StrictMode>
+      <VisualVerseAudiences />
     </StrictMode>,
   );
 }
