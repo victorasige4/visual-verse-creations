@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { ArrowLeft, ArrowUpRight, FolderOpen, Image as ImageIcon, Check, MoveUpRight } from "lucide-react";
 import { portfolioCollections, PortfolioArtwork } from "@/components/VisualVersePortfolio";
+import { VisualVerseFooter } from "@/components/VisualVerseClosingSections";
 
 const detailPoints: Record<string, string[]> = {
   photography: ["Portraits & lifestyle stories", "Graduations, events & celebrations", "Brand and product imagery"],
@@ -82,10 +83,8 @@ export function VisualVerseProjectsPage() {
           <a href="/#contact">Let's create together <MoveUpRight size={18} aria-hidden="true"/></a>
         </section>
       </main>
-      <footer className="vv-projects-footer">
-        <a href="/#top"><img src="/brand-logo.png" alt="Visual Verse Creations" /></a>
-        <span>© VISUAL VERSE CREATIONS</span>
-        <a href="/#top">BACK TO HOME <ArrowUpRight size={14} aria-hidden="true"/></a>
+      <footer className="vv-close-footer-wrap" id="footer">
+        <VisualVerseFooter />
       </footer>
     </div>
   );
