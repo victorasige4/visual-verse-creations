@@ -152,7 +152,7 @@ export function VisualVerseAudiences(){
             <AudienceArtwork kind={current.kind}/>
             <div className="vv-aud-stage-bottom">
               <span>VISUAL VERSE / FOR PEOPLE WITH A STORY</span>
-              <span>{current.title.toUpperCase()} <ArrowUpRight size={14} aria-hidden={true}/></span>
+              <a href="/who-we-serve.html#industries" className="vv-aud-stage-collection-link">{current.title.toUpperCase()} <ArrowUpRight size={14} aria-hidden={true}/></a>
             </div>
           </motion.article>
         </AnimatePresence>
