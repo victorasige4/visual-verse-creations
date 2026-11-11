@@ -1,5 +1,6 @@
 # Visual Verse Creations — Vite + React + TypeScript + Tailwind CSS v4.
 # Build the same established homepage and its new island navigation.
+# Production redeploy requested 2026-11-12; no functional configuration changes.
 [build]
   command = "npm run build"
   publish = "dist"
