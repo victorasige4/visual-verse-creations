@@ -338,3 +338,114 @@
 @media(max-width:700px){
   .vv-why-fallback-reasons{grid-template-columns:1fr;gap:19px}
 }
+
+
+/* VISUAL VERSE / OFFICIAL WHY-US THEME
+   Single authoritative palette: Midnight Cyan #003F5C, Soft Aqua #2EC4B6.
+   Scoped to the Why Visual Verse section; preserve scroll-driven progress. */
+#process.vv-why-section {
+  --vv-why-navy: #003F5C;
+  --vv-why-aqua: #2EC4B6;
+  --vv-why-aqua-light: #B9F4EA;
+  background: var(--vv-why-navy);
+  color: #FFFFFF;
+}
+#process .vv-why-shell {
+  background:
+    radial-gradient(ellipse at 14% 15%, rgba(46, 196, 182, .18), transparent 42%),
+    radial-gradient(ellipse at 89% 79%, rgba(46, 196, 182, .11), transparent 42%),
+    linear-gradient(120deg, #002F48 0%, #003F5C 49%, #004B67 100%);
+}
+#process .vv-why-shell::before {
+  background-image: radial-gradient(rgba(46, 196, 182, .34) .7px, transparent .9px);
+}
+#process .vv-why-shell::after {
+  background: radial-gradient(370px circle at var(--vv-why-x) var(--vv-why-y),
+    rgba(46, 196, 182, .23), rgba(46, 196, 182, .08) 35%, transparent 75%);
+}
+#process .vv-why-ambient-one {
+  background: radial-gradient(circle, rgba(46, 196, 182, .29), transparent 70%);
+}
+#process .vv-why-ambient-two {
+  background: radial-gradient(circle, rgba(46, 196, 182, .20), transparent 70%);
+}
+#process .vv-why-kicker,
+#process .vv-why-signoff {
+  color: var(--vv-why-aqua-light);
+}
+#process .vv-why-kicker i {
+  background: var(--vv-why-aqua);
+  box-shadow: 0 0 13px rgba(46, 196, 182, .70);
+}
+#process .vv-why-intro h2 {
+  color: #FFFFFF;
+}
+#process .vv-why-intro h2 span {
+  color: var(--vv-why-aqua);
+}
+#process .vv-why-intro-right p,
+#process .vv-why-step-description {
+  color: #C9DEE5;
+}
+#process .vv-why-rail {
+  background: rgba(185, 244, 234, .28);
+}
+#process .vv-why-rail-progress,
+#process .vv-why-rail-progress-mobile {
+  background: linear-gradient(90deg, #2EC4B6 0%, #85E4D8 100%);
+  box-shadow: 0 0 20px rgba(46, 196, 182, .48);
+}
+#process .vv-why-node-container::before {
+  border-color: rgba(46, 196, 182, .25);
+}
+#process .vv-why-step:hover .vv-why-node-container::before,
+#process .vv-why-step.is-active .vv-why-node-container::before {
+  border-color: rgba(46, 196, 182, .68);
+}
+#process .vv-why-node {
+  color: #FFFFFF;
+  border-color: rgba(46, 196, 182, .48);
+}
+#process .vv-why-step.is-active .vv-why-node {
+  color: var(--vv-why-navy);
+  border-color: var(--vv-why-aqua-light);
+}
+#process .vv-why-step-heading {
+  color: #FFFFFF;
+}
+#process .vv-why-step.is-active .vv-why-step-heading,
+#process .vv-why-step:hover .vv-why-step-heading {
+  color: var(--vv-why-aqua-light);
+}
+#process .vv-why-step:hover .vv-why-step-description,
+#process .vv-why-step.is-active .vv-why-step-description {
+  color: #FFFFFF;
+}
+#process .vv-why-signoff {
+  border-color: rgba(46, 196, 182, .26);
+}
+#process .vv-why-step:focus-visible {
+  outline-color: var(--vv-why-aqua);
+}
+#process .vv-why-fallback {
+  color: #FFFFFF;
+  background: var(--vv-why-navy);
+}
+#process .vv-why-fallback .vv-label {
+  color: var(--vv-why-aqua);
+}
+#process .vv-why-fallback .vv-section-h {
+  color: #FFFFFF;
+}
+#process .vv-why-fallback>p,
+#process .vv-why-fallback-reasons p {
+  color: #C9DEE5;
+}
+#process .vv-why-fallback-reasons article {
+  border-color: rgba(46, 196, 182, .45);
+}
+@media (max-width: 700px) {
+  #process .vv-why-rail-progress-mobile {
+    background: linear-gradient(180deg, #2EC4B6 0%, #85E4D8 100%);
+  }
+}
