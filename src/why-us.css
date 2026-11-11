@@ -315,3 +315,26 @@
   .vv-why-shell::after{display:none}
   .vv-why-step-heading,.vv-why-step-description,.vv-why-node-container::before{transition:none}
 }
+
+/* Accessible static content if the React mount has not yet rendered. */
+.vv-why-fallback{
+  max-width:1150px;
+  margin:0 auto;
+  padding:clamp(88px,10vw,145px) max(22px,5vw);
+  color:#f6fcf9;
+}
+.vv-why-fallback .vv-label{color:#6bd7bd}
+.vv-why-fallback .vv-section-h{
+  max-width:750px;color:#f6fcf9;
+  font-size:clamp(41px,5.6vw,74px);
+  line-height:1.06;
+  letter-spacing:-.075em;
+}
+.vv-why-fallback>p{color:#a1c8c2;max-width:620px;line-height:1.75}
+.vv-why-fallback-reasons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;margin-top:65px}
+.vv-why-fallback-reasons article{border-top:1px solid rgba(46,196,182,.4);padding-top:20px}
+.vv-why-fallback-reasons strong{color:#effcf5;font-size:17px}
+.vv-why-fallback-reasons p{color:#a2c8bf;line-height:1.7;font-size:13px}
+@media(max-width:700px){
+  .vv-why-fallback-reasons{grid-template-columns:1fr;gap:19px}
+}
