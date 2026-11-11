@@ -1,0 +1,20 @@
+
+.vv-policy-links{display:flex;gap:12px;flex-wrap:wrap}
+.vv-policy-links button{border:0;background:none;padding:0;cursor:pointer;font:inherit;color:#7ab5a8;font-size:10px;letter-spacing:.03em;text-decoration:underline;text-decoration-color:rgba(122,181,168,.4);text-underline-offset:4px}
+.vv-policy-links button:hover{color:#d0f8e8}
+.vv-policy-overlay{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(5,31,39,.7);backdrop-filter:blur(9px)}
+.vv-policy-modal{width:min(740px,100%);max-height:min(88dvh,900px);overflow-y:auto;overscroll-behavior:contain;border-radius:25px;padding:clamp(24px,4vw,42px);background:#f9fdfb;color:#183f4b;border:1px solid #ccece4;box-shadow:0 32px 85px rgba(0,22,32,.3);font-family:var(--vv-island-font,"TT Travels",Arial,sans-serif)}
+.vv-policy-head{display:flex;align-items:center;justify-content:space-between;gap:18px;color:#218e86;font-size:10px;font-weight:850;letter-spacing:.15em}
+.vv-policy-head button{border:1px solid #daeae3;background:white;border-radius:50%;width:41px;height:41px;display:grid;place-items:center;cursor:pointer;color:#003f5c}
+.vv-policy-modal>h2{font-size:clamp(34px,6vw,56px);line-height:1.04;letter-spacing:-.065em;color:#003f5c;margin:20px 0 13px}
+.vv-policy-updated{font-size:11px;color:#78918e;border-bottom:1px solid #dbece5;padding-bottom:24px}
+.vv-policy-body section{padding-top:17px}.vv-policy-body section h3{color:#115f65;font-size:16px;letter-spacing:-.02em}
+.vv-policy-body p{font-size:13px;line-height:1.85;color:#57757b}
+.vv-policy-contact{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:25px 0;background:#e9f7f2;border-radius:13px;padding:18px}
+.vv-policy-contact strong{color:#003f5c;width:100%;font-size:13px}
+.vv-policy-contact a{color:#117e7c;font-size:12px;font-weight:750;text-decoration:none;display:inline-flex;gap:5px;align-items:center}
+.vv-policy-disclaimer{border-left:3px solid #2ec4b6;padding-left:12px}
+.vv-whatsapp-float{position:fixed;z-index:490;right:clamp(14px,3vw,35px);bottom:clamp(14px,3vw,31px);display:flex;align-items:center;gap:10px;background:#25d366;color:#083d32;box-shadow:0 12px 29px rgba(0,50,35,.22);border-radius:99px;padding:11px 16px;text-decoration:none;font-family:var(--vv-island-font,Arial,sans-serif);font-size:12px;font-weight:850;transition:transform .22s,box-shadow .22s}
+.vv-whatsapp-float svg{width:23px;height:23px;flex:0 0 auto}.vv-whatsapp-float:hover{transform:translateY(-4px);box-shadow:0 17px 34px rgba(0,50,35,.3)}
+@media(max-width:640px){.vv-whatsapp-float{padding:12px;border-radius:50%}.vv-whatsapp-float span{display:none}.vv-policy-links{gap:13px}.vv-policy-modal{border-radius:18px}}
+@media(prefers-reduced-motion:reduce){.vv-whatsapp-float{transition:none}}
