@@ -389,6 +389,79 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
   }
 }
 
+
+/* Nov 11 — full-viewport landing hero + clear white/pale-mint cube interaction.
+   Keep the established six-service animation and section spacers unchanged. */
+.vv-hero{
+  display:flex;
+  flex-direction:column;
+  min-height:calc(100svh - 80px);
+  background:#f8fbf9;
+}
+.vv-hero .vv-hero-grid{
+  flex:1 0 auto;
+  width:100%;
+  min-height:0;
+}
+.vv-hero .vv-hero-bottom{
+  width:100%;
+  flex:0 0 auto;
+}
+.vv-hero .vv-aceternity-inspired-cubes{
+  opacity:.97;
+}
+.vv-hero .vv-hero-visual{
+  position:relative;
+  height:clamp(445px,72svh,770px);
+  max-height:calc(100svh - 150px);
+  background:rgba(255,255,255,.48);
+  border:1px solid rgba(255,255,255,.86);
+  -webkit-backdrop-filter:blur(19px) saturate(150%);
+  backdrop-filter:blur(19px) saturate(150%);
+  box-shadow:0 24px 70px rgba(0,63,92,.11),inset 0 1px 1px rgba(255,255,255,.98);
+  overflow:hidden;
+}
+.vv-hero .vv-hero-visual::after{
+  content:"";
+  position:absolute;
+  z-index:0;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  background:linear-gradient(136deg,rgba(255,255,255,.46) 0%,rgba(255,255,255,.12) 38%,transparent 67%);
+}
+.vv-hero .vv-visual-top,
+.vv-hero .vv-visual-bottom,
+.vv-hero .vv-visual-field{z-index:2}
+.vv-hero .vv-visual-top,.vv-hero .vv-visual-bottom{color:#285d64}
+.vv-hero .vv-hero-title,.vv-hero .vv-scene-eyebrow,
+.vv-hero .vv-current-service strong{color:#003f5c}
+.vv-hero .vv-hero-description{color:#355965}
+@media(max-width:1180px){
+  .vv-hero{min-height:calc(100svh - 74px)}
+  .vv-hero .vv-hero-visual{height:clamp(440px,62svh,650px);max-height:calc(100svh - 134px)}
+}
+@media(max-width:760px){
+  .vv-hero{min-height:calc(100svh - 74px)}
+  .vv-hero .vv-hero-grid{flex:1 0 auto;min-height:0}
+  .vv-hero .vv-hero-copy{padding-top:clamp(35px,5svh,65px)}
+  .vv-hero .vv-hero-visual{
+    height:clamp(330px,90vw,480px);
+    min-height:330px;
+    max-height:none;
+    margin:20px 0 12px;
+    border-radius:22px;
+    -webkit-backdrop-filter:blur(13px) saturate(140%);
+    backdrop-filter:blur(13px) saturate(140%);
+    background:rgba(255,255,255,.56);
+    box-shadow:0 16px 44px rgba(0,63,92,.08),inset 0 1px 1px rgba(255,255,255,.9);
+  }
+  .vv-hero .vv-aceternity-inspired-cubes{opacity:.88}
+}
+@media(prefers-reduced-motion:reduce){
+  .vv-hero .vv-aceternity-inspired-cubes{opacity:.76}
+}
+
 </style></head><body>
 <header class="vv-header" id="siteHeader">
   <nav class="vv-navbar" aria-label="Main navigation">
@@ -580,7 +653,7 @@ const burger=document.getElementById('burger'),mobile=document.getElementById('m
   const coarse=window.matchMedia('(pointer: coarse)');
   let width=0,height=0,dpr=1,tiles=[],frame=0,running=false,visible=false,lastDraw=0;
   let pointer={x:0,y:0,active:false,energy:0};
-  const color={top:'#9ddbd2',topLit:'#20c6b5',left:'#78c0ba',right:'#5baab0',edge:'rgba(0,63,92,.26)'};
+  const color={top:'#ffffff',topLit:'#d0efdc',left:'#f3f8f5',right:'#eaf3ee',edge:'rgba(0,63,92,.13)'};
   function mix(hexA,hexB,t){
     t=Math.max(0,Math.min(1,t));
     const a=parseInt(hexA.slice(1),16),b=parseInt(hexB.slice(1),16);
@@ -621,7 +694,7 @@ const burger=document.getElementById('burger'),mobile=document.getElementById('m
       const distPointer=Math.hypot(t.x-pointer.x,t.y-pointer.y);
       const distIdle=Math.hypot(t.x-pulseX,t.y-pulseY);
       const interactive=pointer.energy*Math.exp(-distPointer/230)*(.45+.55*Math.cos(distPointer*.026-sec*7));
-      const idle=reduced.matches?0:Math.max(0,Math.cos(distIdle*.018-sec*1.7))*Math.exp(-distIdle/305)*.20;
+      const idle=0; // White at rest: only cursor hover introduces pale-green ripples.
       const wave=Math.min(1,Math.max(0,interactive+idle));
       const lift=wave*23;
       const depth=3+wave*13;
