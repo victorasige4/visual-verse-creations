@@ -2,17 +2,14 @@ import { useEffect, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 
 /** Always-visible floating navigation. No dropdown or hamburger.
- * Homepage links now open their respective dedicated pages; the remaining
- * editorial sections remain anchored on the homepage. */
+ * Only core pages appear in the navigation. Why Us, Locations and FAQs
+ * remain standalone sections on the homepage, not navigation items. */
 const links = [
   { label: "Home", href: "/#top" },
   { label: "About", href: "/about.html" },
   { label: "Services", href: "/services.html" },
   { label: "Who We Serve", href: "/who-we-serve.html" },
   { label: "Projects", href: "/projects.html" },
-  { label: "Why Us", href: "/#process" },
-  { label: "Locations", href: "/#where-we-serve" },
-  { label: "FAQs", href: "/#faqs" },
   { label: "Contact", href: "/contact.html" },
 ];
 
@@ -44,7 +41,7 @@ export function VisualVerseNavbar() {
         return;
       }
       let current = "/#top";
-      const anchors = [{hash:"process",link:"/#process"},{hash:"where-we-serve",link:"/#where-we-serve"},{hash:"faqs",link:"/#faqs"}];
+      const anchors: {hash:string;link:string}[] = [];
       for (const item of anchors) {
         const el = document.getElementById(item.hash);
         if (el && el.getBoundingClientRect().top < Math.min(200,window.innerHeight*.3)) current = item.link;

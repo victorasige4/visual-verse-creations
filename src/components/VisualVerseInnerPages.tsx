@@ -115,6 +115,14 @@ function AboutPage(){
       <SectionTitle eyebrow="WHY CHOOSE VISUAL VERSE">One creative partner.<br/>Many ways to tell a story.</SectionTitle>
       <div className="vv-inner-reasons-grid">{reasons.slice(0,3).map((reason,i)=><article key={reason.title}><reason.Icon size={22}/><small>0{i+1}</small><h3>{reason.title}</h3><p>{reason.text}</p></article>)}</div>
     </section>
+    <section className="vv-inner-section vv-inner-reasons" aria-label="Where we work and frequently asked questions">
+      <SectionTitle eyebrow="A LITTLE MORE ABOUT US" description="Everything you need to know about working together, with more to explore on the homepage.">Rooted in Nairobi.<br/><em>Creating beyond borders.</em></SectionTitle>
+      <div className="vv-inner-reasons-grid">
+        <article><MapPin size={22}/><small>01</small><h3>Where we create</h3><p>Visual Verse is based in Nairobi and collaborates with clients across Kenya. We work remotely where possible and plan travel for on-location photography and film projects.</p><a className="vv-inner-text-link" href="/#where-we-serve">Explore our locations <ArrowUpRight size={17}/></a></article>
+        <article><HeartHandshake size={22}/><small>02</small><h3>How we work</h3><p>We listen first, agree on the creative direction, then shape the right design, film and digital solutions around your goals.</p><a className="vv-inner-text-link" href="/#process">See why Visual Verse <ArrowUpRight size={17}/></a></article>
+        <article><MessageCircle size={22}/><small>03</small><h3>Questions before we begin?</h3><p>Wondering about pricing, timelines, collaboration or getting started? Our homepage answers the questions we hear most often.</p><a className="vv-inner-text-link" href="/#faqs">Read the FAQs <ArrowUpRight size={17}/></a></article>
+      </div>
+    </section>
   </>;
 }
 
