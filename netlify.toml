@@ -1,7 +1,11 @@
-# Dedicated Visual Verse animated homepage preview.
-# Publish the static homepage from the repository root; no build step required.
+# Visual Verse Creations — Vite + React + TypeScript + Tailwind CSS v4.
+# Build the same established homepage and its new island navigation.
 [build]
-  publish = "."
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
 
 [[headers]]
   for = "/*"
