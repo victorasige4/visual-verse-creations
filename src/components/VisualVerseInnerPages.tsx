@@ -12,6 +12,7 @@ import { VisualVerseFooter } from "./VisualVerseClosingSections";
 import { VisualVerseServices } from "./VisualVerseServices";
 import { VisualVerseAudiences } from "./VisualVerseAudiences";
 import { WhatsAppFloating } from "./VisualVersePolicies";
+import { VisualVerseAboutEditorial } from "./VisualVerseAboutEditorial";
 
 type Kind = "about" | "services" | "audiences" | "contact" | "quote";
 const EMAIL = "hello@visualverse.com";
@@ -315,16 +316,16 @@ export function VisualVerseInnerPage({kind}:{kind:Kind}){
   return <div className="vv-inner-page">
     <VisualVerseNavbar/>
     <main id="top">
-      <PageHero kind={kind}/>
-      {kind==="about"&&<AboutPage/>}
+      {kind!=="about"&&<PageHero kind={kind}/>}
+      {kind==="about"&&<VisualVerseAboutEditorial/>}
       {kind==="services"&&<ServicesPage/>}
       {kind==="audiences"&&<AudiencePage/>}
       {kind==="contact"&&<ContactPage/>}
       {kind==="quote"&&<QuotePage/>}
-      <section className="vv-inner-bottom">
+      {kind!=="about"&&<section className="vv-inner-bottom">
         <span>VISUAL VERSE / READY WHEN YOU ARE</span><h2>Have a story?<br/>Let's make it <em>memorable.</em></h2>
         <a href="/request-quote.html">Start something together <ArrowUpRight size={18}/></a>
-      </section>
+      </section>}
     </main>
     <footer className="vv-close-footer-wrap"><VisualVerseFooter/></footer>
     <WhatsAppFloating/>
