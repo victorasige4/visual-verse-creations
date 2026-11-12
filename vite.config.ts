@@ -26,6 +26,8 @@ function copyVisualVerseAssets(): Plugin {
 }
 
 export default defineConfig({
+  // GitHub Pages projects live under /<repository>/; Netlify keeps its root build.
+  base: process.env.GITHUB_PAGES === "true" ? "/visual-verse-creations/" : "/",
   build: {
     rollupOptions: {
       input: {
