@@ -14,7 +14,9 @@ const links = [
 ];
 
 function isHomePage() {
-  return window.location.pathname === "/" || window.location.pathname === "/index.html";
+  const base = import.meta.env.BASE_URL;
+  const pathname = window.location.pathname;
+  return pathname === base || pathname === base + "index.html";
 }
 
 export function VisualVerseNavbar() {
@@ -22,7 +24,7 @@ export function VisualVerseNavbar() {
     typeof window === "undefined" || (isHomePage() && window.scrollY < Math.max(85, window.innerHeight * .13))
   );
   const [active, setActive] = useState<string>(() =>
-    typeof window === "undefined" ? "/#top" : window.location.pathname === "/" ? "/#top" : window.location.pathname
+    typeof window === "undefined" ? "/#top" : isHomePage() ? "/#top" : window.location.pathname
   );
 
   useEffect(() => {
