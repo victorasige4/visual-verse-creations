@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useSpring, useTransform, useReducedMotion } from "motion/react";
 import {
   ArrowUpRight, ArrowRight, Camera, Clapperboard, Palette, PenTool, MonitorSmartphone,
   Share2, Sparkles, HeartHandshake, Target, Layers3, CheckCircle2, MapPin, MessageCircle,
@@ -6,6 +7,66 @@ import {
 } from "lucide-react";
 import { VisualVerseKenyaMap } from "./VisualVerseKenyaMap";
 import { VisualVerseFaq } from "./VisualVerseClosingSections";
+
+/** Motion cues reproduced from the supplied About walkthroughs. Effects are scoped to this page. */
+function useAboutReveal() {
+  useEffect(() => {
+    const root = document.querySelector(".vv-about-editorial");
+    if (!root) return;
+    const items = Array.from(root.querySelectorAll<HTMLElement>(".vv-about-section-header, .vv-about-lead, .vv-about-stats article, .vv-about-vision-orb, .vv-about-story-image, .vv-about-story-copy, .vv-about-principle-feature, .vv-about-tool-tags button, .vv-about-audience-tile, .vv-about-partner-grid article, .vv-about-facts dl div, .vv-about-final-panel"));
+    if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      items.forEach(el => el.classList.add("vv-about-revealed"));
+      return;
+    }
+    const observer = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("vv-about-revealed");
+          observer.unobserve(entry.target);
+        }
+      }
+    }, {threshold: .09, rootMargin: "0px 0px -35px 0px"});
+    items.forEach((el, i) => {
+      el.classList.add("vv-about-reveal");
+      el.style.setProperty("--vv-reveal-delay", Math.min(i % 3, 2) * 95 + "ms");
+      observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+}
+
+function StudioNumber({value}:{value:string}) {
+  const ref = useRef<HTMLElement>(null);
+  const [visible,setVisible] = useState(false);
+  const [display,setDisplay] = useState("00");
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (!("IntersectionObserver" in window)) {setVisible(true);return;}
+    const ob = new IntersectionObserver(([entry]) => {
+      if(entry.isIntersecting){setVisible(true);ob.disconnect();}
+    },{threshold:.2});
+    ob.observe(el);
+    return () => ob.disconnect();
+  },[]);
+  useEffect(() => {
+    if(!visible)return;
+    if(value==="∞"){setDisplay("∞");return;}
+    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){setDisplay(value);return;}
+    const target=Number(value);
+    const started=performance.now();
+    let frame=0;
+    const tick=(now:number)=>{
+      const t=Math.min(1,(now-started)/1250);
+      const ease=1-Math.pow(1-t,3);
+      setDisplay(String(Math.round(target*ease)).padStart(value.length,"0"));
+      if(t<1)frame=window.requestAnimationFrame(tick);
+    };
+    frame=window.requestAnimationFrame(tick);
+    return ()=>window.cancelAnimationFrame(frame);
+  },[visible,value]);
+  return <strong ref={ref} className="vv-about-count">{display}</strong>;
+}
 
 const strengths = [
   {value:"06",label:"creative disciplines",detail:"One studio for strategy, design, film and digital experiences"},
@@ -65,9 +126,15 @@ function AboutHeading({label,title,description}:{label:string;title:React.ReactN
 
 export function VisualVerseAboutEditorial() {
   const [activeTool,setActiveTool]=useState(0);
+  const heroRef=useRef<HTMLElement>(null);
+  const reducedMotion=useReducedMotion();
+  const {scrollYProgress:heroProgress}=useScroll({target:heroRef,offset:["start start","end start"]});
+  const heroShift=useTransform(heroProgress,[0,1],[0,-85]);
+  const heroShiftSmooth=useSpring(heroShift,{stiffness:95,damping:26});
+  useAboutReveal();
 
   return <div className="vv-about-editorial">
-    <section className="vv-about-hero" id="about-hero">
+    <section className="vv-about-hero" id="about-hero" ref={heroRef}>
       <div className="vv-about-container">
         <div className="vv-about-breadcrumb"><a href="/#top">HOME</a><span>/</span><span>ABOUT VISUAL VERSE</span></div>
         <div className="vv-about-hero-grid">
@@ -81,12 +148,12 @@ export function VisualVerseAboutEditorial() {
             </div>
           </div>
           <div className="vv-about-hero-visual" aria-label="Visual Verse studio creative composition">
-            <div className="vv-about-hero-layers" aria-label="Stacked creative workspaces illustration">
+            <motion.div className="vv-about-hero-layers" aria-label="Stacked creative workspaces illustration" style={reducedMotion?undefined:{y:heroShiftSmooth}}>
               <div className="vv-about-floating-panel vv-about-floating-back"><div className="vv-about-mock-dots"><i/><i/><i/></div><span>CREATIVE DIRECTION</span><div className="vv-about-hero-swatch-row"><i/><i/><i/></div></div>
               <div className="vv-about-floating-panel vv-about-floating-mid"><span>THE IDEA / THE STORY</span><div className="vv-about-mock-lines"><i/><i/><i/></div><div className="vv-about-mock-tiles"><i/><i/><i/></div></div>
               <div className="vv-about-floating-panel vv-about-floating-front"><div className="vv-about-mock-dots"><i/><i/><i/></div><strong>Visual Verse<br/><em>Creative Studio</em></strong><div className="vv-about-chart"><span/><span/><span/><span/><span/><span/></div><small>IMAGINE. CREATE. CONNECT.</small></div>
               <span className="vv-about-floating-symbol" aria-hidden="true">✳</span>
-            </div>
+            </motion.div>
           </div>
         </div>
         <div className="vv-about-hero-foot"><span>VISUAL VERSE CREATIONS / 001</span><a href="#our-impact">DISCOVER OUR STORY ↓</a></div>
@@ -95,7 +162,7 @@ export function VisualVerseAboutEditorial() {
 
     <section className="vv-about-stats" id="our-impact">
       <div className="vv-about-container vv-about-stats-grid">
-        {strengths.map((s,i)=><article key={s.label}><span className="vv-about-index">0{i+1} / 03</span><strong>{s.value}</strong><h2>{s.label}</h2><p>{s.detail}</p></article>)}
+        {strengths.map((s,i)=><article key={s.label}><span className="vv-about-index">0{i+1} / 03</span><StudioNumber value={s.value}/><h2>{s.label}</h2><p>{s.detail}</p></article>)}
       </div>
     </section>
 
@@ -107,7 +174,7 @@ export function VisualVerseAboutEditorial() {
     </section>
     <section className="vv-about-vision" id="vision-mission">
       <div className="vv-about-container vv-about-vision-circles">
-        <div className="vv-about-vision-orb"><span className="vv-about-orb-dot"/><h3>Vision</h3><p>To make stories matter through creativity that connects.</p></div>
+        <div className="vv-about-vision-orb"><span className="vv-about-orb-ring" aria-hidden="true"/><span className="vv-about-orb-dot"/><h3>Vision</h3><p>To make stories matter through creativity that connects.</p></div>
         <div className="vv-about-vision-orb"><span className="vv-about-orb-dot"/><h3>Mission</h3><p>Imagine. Create. Connect. Deliver thoughtful creative work that moves people.</p></div>
       </div>
     </section>
@@ -136,10 +203,10 @@ export function VisualVerseAboutEditorial() {
           <div className="vv-about-feature-copy"><span className="vv-about-index">{String(i+1).padStart(2,"0")} / 05</span><h3>{item.title}</h3><p>{item.description}</p><span className="vv-about-feature-detail">{item.detail} <ArrowUpRight size={15}/></span></div>
           <div className="vv-about-feature-art" aria-hidden="true">
             {i===0&&<div className="vv-about-art-flow"><span>DISCOVER</span><i/><span>CREATE</span><i/><span>DELIVER</span></div>}
-            {i===1&&<div className="vv-about-art-chart"><span/><span/><span/><span/><span/><span/><span/><span/></div>}
+            {i===1&&<div className="vv-about-art-chart"><span/><span/><span/><span/><span/><span/><span/><span/><i className="vv-about-chart-guide"/></div>}
             {i===2&&<div className="vv-about-art-bars"><i/><i/><i/><i/><i/></div>}
             {i===3&&<div className="vv-about-art-checks"><span>✓ &nbsp; Design refinement</span><span>✓ &nbsp; Creative consistency</span><span>✓ &nbsp; Final quality review</span></div>}
-            {i===4&&<div className="vv-about-art-orbit"><HeartHandshake size={32}/></div>}
+            {i===4&&<div className="vv-about-art-orbit"><span className="vv-about-orbit-satellite" aria-hidden="true"/><HeartHandshake size={32}/></div>}
           </div>
         </article>)}</div>
       </div>
@@ -179,7 +246,7 @@ export function VisualVerseAboutEditorial() {
     <section className="vv-about-locations vv-about-pad" id="where-we-create">
       <div className="vv-about-container">
         <AboutHeading label="WHERE WE CREATE / 008" title={<>Based in Nairobi. <em>Open to Kenya.</em></>} description="Our home is in Nairobi. For projects across Kenya, we collaborate remotely whenever possible and plan on-site production together."/>
-        <VisualVerseKenyaMap/>
+        <div className="vv-about-map-motion"><VisualVerseKenyaMap/><div className="vv-about-route-rays" aria-hidden="true"><span/><span/><span/></div></div>
       </div>
     </section>
 
