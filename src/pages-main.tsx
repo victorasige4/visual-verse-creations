@@ -13,3 +13,4 @@ const root = document.getElementById("vv-inner-page-root");
 if (root) {
   createRoot(root).render(<StrictMode><VisualVerseInnerPage kind={pageKind()} /></StrictMode>);
 }
+import "./about-editorial.css";
