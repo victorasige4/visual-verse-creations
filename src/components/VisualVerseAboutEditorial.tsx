@@ -2,7 +2,7 @@ import { useState } from "react";
 import {
   ArrowUpRight, ArrowRight, Camera, Clapperboard, Palette, PenTool, MonitorSmartphone,
   Share2, Sparkles, HeartHandshake, Target, Layers3, CheckCircle2, MapPin, MessageCircle,
-  Film, Globe2, Play, Compass, Brush, Megaphone, Instagram, Mail, CircleArrowUpRight
+  Film, Compass, Brush, Megaphone
 } from "lucide-react";
 import { VisualVerseKenyaMap } from "./VisualVerseKenyaMap";
 import { VisualVerseFaq } from "./VisualVerseClosingSections";
