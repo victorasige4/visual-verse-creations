@@ -196,3 +196,25 @@
 @media(prefers-reduced-motion:reduce) {
   .vv-nav2,.vv-nav2-island,.vv-nav2-links a {transition:none}
 }
+
+/* Center primary links within the navbar independently from the logo and CTA. */
+@media (min-width: 921px) {
+  .vv-nav2-island {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content minmax(0, 1fr);
+    align-items: center;
+  }
+  .vv-nav2-logo { justify-self: start; }
+  .vv-nav2-links {
+    justify-self: center;
+    justify-content: center;
+    flex: none;
+    width: max-content;
+    max-width: 100%;
+  }
+  .vv-nav2-actions { justify-self: end; }
+}
+/* Mobile links stay swipeable, but center naturally when they all fit. */
+@media (max-width: 920px) {
+  .vv-nav2-links { justify-content: safe center; }
+}

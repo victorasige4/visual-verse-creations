@@ -39,3 +39,13 @@ jobs:
           test -f dist/about-photographer.webp
           grep -q vv-about-pixel-root dist/index.html
           grep -q vv-react-nav-root dist/index.html
+
+      - name: Check GitHub Pages subpath build
+        env:
+          GITHUB_PAGES: "true"
+        run: |
+          npm run build
+          node scripts/prepare-github-pages.mjs
+          grep -q '/visual-verse-creations/assets/' dist/index.html
+          test -s dist/about.html
+          test -s dist/projects.html
