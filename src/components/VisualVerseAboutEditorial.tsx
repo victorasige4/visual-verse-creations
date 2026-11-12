@@ -65,8 +65,6 @@ function AboutHeading({label,title,description}:{label:string;title:React.ReactN
 
 export function VisualVerseAboutEditorial() {
   const [activeTool,setActiveTool]=useState(0);
-  const [activeAudience,setActiveAudience]=useState(0);
-  const audience=audiences[activeAudience];
 
   return <div className="vv-about-editorial">
     <section className="vv-about-hero" id="about-hero">
@@ -75,7 +73,7 @@ export function VisualVerseAboutEditorial() {
         <div className="vv-about-hero-grid">
           <div className="vv-about-hero-copy">
             <span className="vv-about-kicker"><span className="vv-about-dot"/> INDEPENDENT CREATIVE STUDIO · NAIROBI</span>
-            <h1>We turn <em>ideas</em> into stories people <em>feel.</em></h1>
+            <h1>We turn<br/>your ideas<br/>into <em>experiences.</em></h1>
             <p>Visual Verse is a multidisciplinary creative studio bringing branding, photography, filmmaking, graphic design and digital experiences together. We shape every project around the people, purpose and possibility behind it.</p>
             <div className="vv-about-hero-links">
               <a className="vv-about-button vv-about-button-primary" href="/request-quote.html">Let's create together <ArrowUpRight size={18}/></a>
@@ -83,10 +81,12 @@ export function VisualVerseAboutEditorial() {
             </div>
           </div>
           <div className="vv-about-hero-visual" aria-label="Visual Verse studio creative composition">
-            <div className="vv-about-hero-photo"><img src="/about-photographer.webp" alt="Creative photographer working with a camera"/></div>
-            <div className="vv-about-hero-sticker"><img src="/logo-mark.png" alt=""/><span>IMAGINE.<br/>CREATE.<br/>CONNECT.</span></div>
-            <div className="vv-about-hero-note"><span className="vv-about-pulse"/> CURRENTLY CREATING<br/><strong>Thoughtful work, made together.</strong></div>
-            <div className="vv-about-hero-gridlines" aria-hidden="true"/>
+            <div className="vv-about-hero-layers" aria-label="Stacked creative workspaces illustration">
+              <div className="vv-about-floating-panel vv-about-floating-back"><div className="vv-about-mock-dots"><i/><i/><i/></div><span>CREATIVE DIRECTION</span><div className="vv-about-hero-swatch-row"><i/><i/><i/></div></div>
+              <div className="vv-about-floating-panel vv-about-floating-mid"><span>THE IDEA / THE STORY</span><div className="vv-about-mock-lines"><i/><i/><i/></div><div className="vv-about-mock-tiles"><i/><i/><i/></div></div>
+              <div className="vv-about-floating-panel vv-about-floating-front"><div className="vv-about-mock-dots"><i/><i/><i/></div><strong>Visual Verse<br/><em>Creative Studio</em></strong><div className="vv-about-chart"><span/><span/><span/><span/><span/><span/></div><small>IMAGINE. CREATE. CONNECT.</small></div>
+              <span className="vv-about-floating-symbol" aria-hidden="true">✳</span>
+            </div>
           </div>
         </div>
         <div className="vv-about-hero-foot"><span>VISUAL VERSE CREATIONS / 001</span><a href="#our-impact">DISCOVER OUR STORY ↓</a></div>
@@ -100,12 +100,15 @@ export function VisualVerseAboutEditorial() {
     </section>
 
     <section className="vv-about-belief vv-about-pad" id="our-belief">
-      <div className="vv-about-container vv-about-belief-grid">
-        <div><AboutHeading label="WHAT WE BELIEVE / 002" title={<>Good creativity is <em>felt,</em> not just seen.</>}/><p className="vv-about-lead">We believe every good story begins with listening. When creativity meets purpose, design can build trust, images can hold emotion and digital experiences can feel effortless.</p></div>
-        <div className="vv-about-belief-cards">
-          <article><span className="vv-about-index">OUR VISION</span><Compass size={32}/><h3>Make stories matter.</h3><p>To help people and brands express who they are through memorable creative experiences.</p></article>
-          <article><span className="vv-about-index">OUR MISSION</span><Target size={32}/><h3>Imagine. Create. Connect.</h3><p>To bring thoughtful design, visual storytelling and digital craft together in work that moves people.</p></article>
-        </div>
+      <div className="vv-about-container">
+        <span className="vv-about-kicker"><span className="vv-about-dot"/> WHAT WE BELIEVE / 002</span>
+        <h2 className="vv-about-belief-statement">We believe <strong>creativity</strong> can shape how people <em>see, feel and connect.</em> We turn that belief into reality through <strong>thoughtful stories, purposeful design and meaningful visual experiences.</strong></h2>
+      </div>
+    </section>
+    <section className="vv-about-vision" id="vision-mission">
+      <div className="vv-about-container vv-about-vision-circles">
+        <div className="vv-about-vision-orb"><span className="vv-about-orb-dot"/><h3>Vision</h3><p>To make stories matter through creativity that connects.</p></div>
+        <div className="vv-about-vision-orb"><span className="vv-about-orb-dot"/><h3>Mission</h3><p>Imagine. Create. Connect. Deliver thoughtful creative work that moves people.</p></div>
       </div>
     </section>
 
@@ -128,10 +131,16 @@ export function VisualVerseAboutEditorial() {
 
     <section className="vv-about-principles vv-about-pad" id="our-approach">
       <div className="vv-about-container">
-        <AboutHeading label="HOW WE WORK / 004" title={<>Five principles behind <em>everything we create.</em></>} description="Our process stays human, intentional and flexible—whether we're developing an identity, building a website or telling a story through film."/>
-        <div className="vv-about-principle-grid">{principles.map((item,i)=><article key={item.title}>
-          <div className="vv-about-principle-top"><span>0{i+1} / 05</span><item.icon size={29} strokeWidth={1.7}/></div>
-          <h3>{item.title}</h3><p>{item.description}</p><div className="vv-about-principle-tag"><CheckCircle2 size={15}/>{item.detail}</div>
+        <AboutHeading label="HOW WE WORK / 004" title={<>Five principles behind every <em>creative story.</em></>}/>
+        <div className="vv-about-principle-stack">{principles.map((item,i)=><article key={item.title} className={"vv-about-principle-feature "+(i%2?"is-dark":"is-light")}>
+          <div className="vv-about-feature-copy"><span className="vv-about-index">{String(i+1).padStart(2,"0")} / 05</span><h3>{item.title}</h3><p>{item.description}</p><span className="vv-about-feature-detail">{item.detail} <ArrowUpRight size={15}/></span></div>
+          <div className="vv-about-feature-art" aria-hidden="true">
+            {i===0&&<div className="vv-about-art-flow"><span>DISCOVER</span><i/><span>CREATE</span><i/><span>DELIVER</span></div>}
+            {i===1&&<div className="vv-about-art-chart"><span/><span/><span/><span/><span/><span/><span/><span/></div>}
+            {i===2&&<div className="vv-about-art-bars"><i/><i/><i/><i/><i/></div>}
+            {i===3&&<div className="vv-about-art-checks"><span>✓ &nbsp; Design refinement</span><span>✓ &nbsp; Creative consistency</span><span>✓ &nbsp; Final quality review</span></div>}
+            {i===4&&<div className="vv-about-art-orbit"><HeartHandshake size={32}/></div>}
+          </div>
         </article>)}</div>
       </div>
     </section>
@@ -149,15 +158,14 @@ export function VisualVerseAboutEditorial() {
 
     <section className="vv-about-audiences vv-about-pad" id="our-audiences">
       <div className="vv-about-container">
-        <AboutHeading label="WHO WE CREATE WITH / 006" title={<>From the first idea to the <em>next big chapter.</em></>} description="Different people, different ambitions. The same dedication to making the story count."/>
-        <div className="vv-about-audience-layout">
-          <div className="vv-about-audience-list" role="tablist" aria-label="Choose an audience">{audiences.map((item,i)=><button type="button" role="tab" id={"vv-about-aud-tab-"+i} aria-controls="vv-about-audience-panel" aria-selected={i===activeAudience} onClick={()=>setActiveAudience(i)} className={i===activeAudience?"is-active":""} key={item.name}><span>0{i+1}</span>{item.name}<ArrowUpRight size={17}/></button>)}</div>
-          <div className="vv-about-audience-card" role="tabpanel" id="vv-about-audience-panel" aria-labelledby={"vv-about-aud-tab-"+activeAudience} key={audience.name}>
-            <div className="vv-about-audience-card-top"><audience.icon size={45} strokeWidth={1.25}/><span>{audience.eyebrow}</span></div><h3>{audience.name}</h3>
-            <div className="vv-about-transformation"><div><small>FROM</small><p>{audience.before}</p></div><ArrowRight size={24}/><div><small>TO</small><p>{audience.after}</p></div></div>
-            <a href="/who-we-serve.html">Find your creative fit <ArrowUpRight size={18}/></a>
-          </div>
+        <AboutHeading label="WHO WE CREATE WITH / 006" title={<>From big brands to <em>first ideas.</em></>} description="Different people and goals. One creative partner for the moments that matter."/>
+        <div className="vv-about-audience-tiles">
+          {audiences.map((item,i)=><a href="/who-we-serve.html" key={item.name} className="vv-about-audience-tile">
+            <span className="vv-about-audience-tile-icon"><item.icon size={23}/></span>
+            <span><strong>{item.name}</strong><small>{item.eyebrow}</small></span><ArrowUpRight size={17} className="vv-about-audience-arrow"/>
+          </a>)}
         </div>
+        <a className="vv-about-inline-link vv-about-audience-more" href="/who-we-serve.html">See how we work with your kind of project <ArrowUpRight size={17}/></a>
       </div>
     </section>
 
@@ -183,13 +191,13 @@ export function VisualVerseAboutEditorial() {
 
     <section className="vv-about-facts vv-about-pad" id="at-a-glance">
       <div className="vv-about-container vv-about-facts-layout">
-        <AboutHeading label="VISUAL VERSE AT A GLANCE / 009" title={<>The short <em>version.</em></>}/>
+        <AboutHeading label="VISUAL VERSE AT A GLANCE / 009" title={<>The short version.</>}/>
         <dl>{detail.map(([term,value])=><div key={term}><dt>{term}</dt><dd>{value}</dd></div>)}</dl>
       </div>
     </section>
 
     <section className="vv-about-final" id="lets-create">
-      <div className="vv-about-container">
+      <div className="vv-about-container vv-about-final-panel">
         <div className="vv-about-final-head"><span className="vv-about-kicker"><span className="vv-about-dot"/> LET'S MAKE SOMETHING MEANINGFUL / 010</span><img src="/logo-mark.png" alt=""/></div>
         <h2>Have a story? <em>Let's make it unforgettable.</em></h2>
         <p>Tell us what you're dreaming up. We'll shape a creative way forward together.</p>
