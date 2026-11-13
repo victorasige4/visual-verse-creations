@@ -431,3 +431,174 @@
  .vv-sp-stage{height:35svh;min-height:215px}
  .vv-sp-right{margin-top:9px}
 }
+
+
+/* ================================================================
+   THE SERVICES — Original Visual Verse photographic 3D pin cards
+   Source structure: Aceternity 3d-pin-demo, restyled for our palette.
+   Desktop: 3 columns / 2 rows. Tablet: 2. Mobile: 1.
+   ================================================================ */
+.vv-sv-pin-services{
+  position:relative;z-index:3;isolation:isolate;
+  background:#002a40;
+  padding:114px 0 118px;
+  color:#fff;
+  scroll-margin-top:90px;
+}
+.vv-sv-pin-services .vv-sv-kicker{color:#2ec4b6}
+.vv-sv-pin-heading-row{
+  display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr);
+  align-items:end;gap:54px;margin:24px 0 56px;
+}
+.vv-sv-pin-heading h2{
+  color:#fff!important;
+  font-size:clamp(48px,5.35vw,74px);
+  line-height:1.04;letter-spacing:-.076em;font-weight:850;
+  margin:0;max-width:730px;
+}
+.vv-sv-pin-heading h2 em{font-style:normal;color:#2ec4b6}
+.vv-sv-pin-heading p{margin:0 0 5px;line-height:1.72;font-size:16px;color:#a8c9ce}
+.vv-sv-pin-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:52px 25px;
+  align-items:stretch;
+}
+.vv-sv-pin-cell{
+  min-width:0;height:375px;position:relative;
+  scroll-margin-top:115px;
+}
+.vv-sv-pin-anchor{position:absolute;top:0;left:0;width:1px;height:1px;pointer-events:none}
+.vv-sv-service-pin{height:100%;width:100%;display:block}
+.vv-sv-service-pin .vv-pin-platform{height:100%;width:100%}
+.vv-sv-service-pin .vv-pin-face{border-radius:22px}
+.vv-sv-pin-card{
+  position:relative;isolation:isolate;
+  height:100%;width:100%;overflow:hidden;
+  border-radius:22px;
+  background:linear-gradient(135deg,#003f5c,#002a40);
+  color:#fff;
+}
+.vv-sv-pin-photo{
+  display:block;width:100%;height:100%;object-fit:cover;
+  position:absolute;inset:0;z-index:-1;
+  filter:brightness(.73) saturate(.85);
+  transform:scale(1.02);
+  transition:filter .8s ease,transform 1.1s cubic-bezier(.2,1,.3,1);
+}
+.vv-sv-pin-container:hover .vv-sv-pin-photo,
+.vv-sv-service-pin:hover .vv-sv-pin-photo,
+.vv-sv-service-pin:focus-visible .vv-sv-pin-photo{
+  filter:brightness(.9) saturate(1);
+  transform:scale(1.11);
+}
+.vv-sv-pin-ui-art{
+  position:absolute;inset:0;z-index:-1;
+  display:grid;place-items:center;
+  padding:29px;
+  background:radial-gradient(circle at 50% 45%,rgba(46,196,182,.35),transparent 57%),#003f5c;
+}
+.vv-sv-pin-ui-art .vv-ui-preview{
+  width:100%;height:100%;max-width:320px;max-height:320px;min-height:0;
+  border-radius:15px;
+  transform:scale(.95);
+  transition:transform .9s cubic-bezier(.2,1,.3,1);
+}
+.vv-sv-service-pin:hover .vv-sv-pin-ui-art .vv-ui-preview{transform:scale(1.045)}
+.vv-sv-pin-ui-art .vv-ui-webkit,.vv-sv-pin-ui-art .vv-ui-campaigns,.vv-sv-pin-ui-art .vv-ui-brand-kit{min-height:235px;}
+.vv-sv-pin-wash{
+  position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:linear-gradient(180deg,rgba(0,27,42,.42),rgba(0,35,51,.06) 34%,rgba(0,26,42,.45) 66%,rgba(0,25,39,.94));
+  transition:background .7s ease;
+}
+.vv-sv-pin-top,.vv-sv-pin-center,.vv-sv-pin-bottom{position:absolute;z-index:2;left:27px;right:27px}
+.vv-sv-pin-top{
+  top:24px;display:flex;justify-content:space-between;align-items:center;
+  color:#2ec4b6;
+  font-weight:800;font-size:13px;letter-spacing:.12em;
+}
+.vv-sv-pin-top small{color:#a1dbd6;font-size:10px}
+.vv-sv-pin-top svg{color:#d8faf4}
+.vv-sv-pin-center{
+  top:50%;transform:translateY(-36%);
+  text-align:center;
+  transition:transform .65s cubic-bezier(.22,1,.36,1);
+}
+.vv-sv-pin-category{
+  color:#b9e8e5;font-weight:750;font-size:10px;line-height:1.5;
+  text-transform:uppercase;letter-spacing:.14em;
+  display:block;opacity:.78;margin-bottom:12px;
+}
+.vv-sv-pin-center h3{
+  margin:0;
+  font-size:clamp(22px,2vw,30px);
+  line-height:1.13;letter-spacing:-.045em;
+  font-weight:850;color:#2ec4b6;
+  text-shadow:0 2px 16px rgba(0,20,31,.35);
+}
+.vv-sv-pin-center p{
+  max-height:0;overflow:hidden;
+  margin:0 auto;
+  font-size:12px;line-height:1.55;
+  color:#e3f6f3;opacity:0;
+  transition:max-height .55s,opacity .55s,margin .55s;
+}
+.vv-sv-service-pin:hover .vv-sv-pin-center,
+.vv-sv-service-pin:focus-visible .vv-sv-pin-center{
+  transform:translateY(-48%);
+}
+.vv-sv-service-pin:hover .vv-sv-pin-center p,
+.vv-sv-service-pin:focus-visible .vv-sv-pin-center p{
+  max-height:130px;opacity:1;margin-top:14px;
+}
+.vv-sv-pin-bottom{
+  bottom:23px;display:flex;align-items:center;justify-content:space-between;
+  gap:8px;
+  font-size:8px;font-weight:800;letter-spacing:.15em;color:#a6caca;
+}
+.vv-sv-pin-explore{
+  color:#e1fbf6;display:inline-flex;align-items:center;
+  gap:5px;white-space:nowrap;font-size:10px;letter-spacing:.03em;
+}
+.vv-sv-pin-explore svg{color:#2ec4b6;transition:rotate .5s ease,translate .5s}
+.vv-sv-service-pin:hover .vv-sv-pin-explore svg{rotate:45deg;translate:2px -2px}
+.vv-sv-pin-outro{
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;
+  gap:13px;margin:72px 0 0;
+  color:#a9cdd0;font-size:14px;line-height:1.55;
+}
+.vv-sv-pin-outro a{
+  display:inline-flex;align-items:center;gap:7px;
+  color:#2ec4b6;font-weight:800;text-decoration:none;
+}
+.vv-sv-pin-outro a:hover{text-decoration:underline}
+@media(max-width:1050px){
+  .vv-sv-pin-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:44px 22px}
+  .vv-sv-pin-cell{height:375px}
+  .vv-sv-pin-heading-row{grid-template-columns:1.3fr .7fr;gap:36px}
+}
+@media(max-width:710px){
+  .vv-sv-pin-services{padding:85px 0 94px}
+  .vv-sv-pin-heading-row{grid-template-columns:1fr;gap:15px;margin:21px 0 40px}
+  .vv-sv-pin-heading h2{font-size:clamp(41px,10vw,53px)}
+  .vv-sv-pin-heading p{font-size:15px;max-width:450px}
+  .vv-sv-pin-grid{grid-template-columns:1fr;gap:28px}
+  .vv-sv-pin-cell{height:330px}
+  .vv-sv-pin-top,.vv-sv-pin-center,.vv-sv-pin-bottom{left:21px;right:21px}
+  .vv-sv-pin-top{top:20px}
+  .vv-sv-pin-center h3{font-size:clamp(24px,7vw,31px)}
+  .vv-sv-pin-bottom{bottom:20px}
+  .vv-sv-pin-outro{margin-top:45px}
+}
+@media(hover:none),(pointer:coarse){
+  .vv-sv-pin-center{transform:translateY(-44%)}
+  .vv-sv-pin-center p{max-height:115px;opacity:1;margin-top:10px;font-size:11px}
+  .vv-sv-pin-ui-art .vv-ui-preview{transform:scale(1)}
+}
+@media(prefers-reduced-motion:reduce){
+  .vv-sv-service-pin .vv-pin-platform,
+  .vv-sv-pin-photo,.vv-sv-pin-center,.vv-sv-pin-center p,
+  .vv-sv-pin-ui-art .vv-ui-preview{
+    transition:none!important;animation:none!important;
+  }
+}
