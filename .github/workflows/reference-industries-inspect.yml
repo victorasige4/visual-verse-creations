@@ -1,0 +1,84 @@
+name: Temporary Potadot industries section inspection
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/reference-industries-inspect.yml"
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: |
+          npm install --no-save --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Inspect industries we serve
+        run: |
+          cat > /tmp/inspect-industries.mjs <<'INSPECT'
+          import { chromium } from 'playwright';
+          import fs from 'node:fs';
+          fs.mkdirSync('industries-qa',{recursive:true});
+          const browser=await chromium.launch({headless:true});
+          for(const [name,width,height] of [['desktop',1440,1000],['mobile',390,844]]){
+            const page=await browser.newPage({viewport:{width,height},deviceScaleFactor:1,reducedMotion:'reduce'});
+            try{
+              await page.goto('https://potadot.com.my/about-us/',{waitUntil:'domcontentloaded',timeout:45000});
+              await page.waitForTimeout(3600);
+              const heading=page.getByText("Industries we serve",{exact:true}).first();
+              await heading.scrollIntoViewIfNeeded();
+              await page.waitForTimeout(1800);
+              const result=await page.evaluate(()=>{
+                const all=Array.from(document.querySelectorAll('*'));
+                const heading=all.find(el=>el.textContent?.trim()==='Industries we serve' && el.children.length===0);
+                const section=heading?.closest('section') || heading?.parentElement?.parentElement?.parentElement;
+                if(!section)return {error:'no section',matched:heading?.outerHTML};
+                const rect=section.getBoundingClientRect();
+                const style=el=>{
+                  const r=el.getBoundingClientRect(),s=getComputedStyle(el);
+                  return {tag:el.tagName,txt:el.textContent?.trim().slice(0,70),cls:typeof el.className==='string'?el.className.slice(0,90):'',
+                    x:Math.round(r.x-rect.x),y:Math.round(r.y-rect.y),w:Math.round(r.width),h:Math.round(r.height),
+                    background:s.background,backgroundColor:s.backgroundColor,border:s.border,borderRadius:s.borderRadius,
+                    display:s.display,gridTemplateColumns:s.gridTemplateColumns,position:s.position,transform:s.transform,
+                    overflow:s.overflow,transition:s.transition,animation:s.animation,
+                    color:s.color,opacity:s.opacity,boxShadow:s.boxShadow,fontSize:s.fontSize};
+                };
+                const children=Array.from(section.querySelectorAll('h2,h3,article,button,a,[class]')).filter(x=>{
+                  const r=x.getBoundingClientRect();return r.width>30&&r.height>14;
+                }).slice(0,150).map(style);
+                return {url:location.href,section:style(section),html:section.outerHTML.slice(0,95000),
+                  elements:children};
+              });
+              fs.writeFileSync('industries-qa/potadot-'+name+'.json',JSON.stringify(result,null,2));
+              const section=heading.locator('xpath=ancestor::section[1]');
+              if(await section.count()){
+                await section.screenshot({path:'industries-qa/potadot-'+name+'.png',timeout:15000,animations:'disabled'});
+                const candidates=section.locator('article,button,[class*="industry"],[class*="Industry"]');
+                let clicked=false;
+                for(let j=0;j<Math.min(await candidates.count(),50);j++){
+                  const el=candidates.nth(j);
+                  const bb=await el.boundingBox();
+                  if(!bb||bb.width<120||bb.height<100||bb.width>1200)continue;
+                  await el.hover({force:true,timeout:5000});
+                  await page.waitForTimeout(650);
+                  await section.screenshot({path:'industries-qa/potadot-'+name+'-hover.png',timeout:15000,animations:'disabled'});
+                  clicked=true;break;
+                }
+                console.log(name,'hover captured',clicked);
+              }
+              console.log(name,JSON.stringify({height:result.section?.h,elements:result.elements?.length,error:result.error}));
+            }catch(e){fs.writeFileSync('industries-qa/potadot-'+name+'-error.txt',String(e));console.log(name,'ERROR',String(e));}
+            await page.close();
+          }
+          await browser.close();
+          INSPECT
+          node /tmp/inspect-industries.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: potadot-industries-reference
+          path: industries-qa/
+          retention-days: 2
