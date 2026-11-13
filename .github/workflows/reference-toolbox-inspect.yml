@@ -23,6 +23,8 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Inspect reference and our toolbox
         run: |
+          npm run dev -- --host 127.0.0.1 --port 5173 >/tmp/vv-inspection-vite.log 2>&1 &
+          sleep 3
           cat > .toolbox-inspect.mjs <<'INSPECT'
           import { chromium } from 'playwright';
           import { writeFileSync, mkdirSync } from 'node:fs';
@@ -30,7 +32,7 @@ jobs:
           const browser = await chromium.launch({ headless: true });
           const targets = [
             ['potadot', 'https://potadot.com.my/about-us/'],
-            ['visual-verse', 'https://victorasige4.github.io/visual-verse-creations/about.html']
+            ['visual-verse', 'http://127.0.0.1:5173/about.html']
           ];
           for(const [name, url] of targets) {
             for(const [viewport, width, height] of [['desktop', 1440, 1000], ['mobile', 390, 844]]) {
@@ -43,7 +45,7 @@ jobs:
                   const hd=headings.find(e=>/Modern tools, picked for each job/i.test(e.textContent||'')) ||
                     headings.find(e=>/The tools change/i.test(e.textContent||'')) ||
                     headings.find(e=>/Our toolbox/i.test(e.textContent||''));
-                  const root=hd?.closest('section') || hd?.parentElement?.parentElement?.parentElement;
+                  const root=document.getElementById('our-toolbox') || hd?.closest('section') || hd?.parentElement?.parentElement?.parentElement;
                   if(!root)return {error:'section not found',h:headings.map(x=>x.textContent?.slice(0,50)).slice(0,25)};
                   root.scrollIntoView({block:'start'});
                   const sectionRect=root.getBoundingClientRect();
@@ -70,7 +72,7 @@ jobs:
                 writeFileSync('toolbox-reference/'+name+'-'+viewport+'.json',JSON.stringify(info,null,2));
                 if(!info.error){
                   const handle=await page.evaluateHandle(() => {
-                    const hd=Array.from(document.querySelectorAll('h1,h2,h3,h4')).find(e=>/Modern tools, picked for each job|The tools change/i.test(e.textContent||''));return hd?.closest('section')||null;
+                    const hd=Array.from(document.querySelectorAll('h1,h2,h3,h4')).find(e=>/Modern tools, picked for each job|The tools change/i.test(e.textContent||''));return document.getElementById('our-toolbox') || hd?.closest('section')||null;
                   });
                   if(handle.asElement()) await handle.asElement().screenshot({path:'toolbox-reference/'+name+'-'+viewport+'.png', animations:'disabled',timeout:12000});
                   else await page.screenshot({path:'toolbox-reference/'+name+'-'+viewport+'.png'});
