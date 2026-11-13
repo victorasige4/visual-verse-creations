@@ -7,6 +7,7 @@ import {
 import { VisualVerseKenyaMap } from "./VisualVerseKenyaMap";
 import { VisualVerseFaq } from "./VisualVerseClosingSections";
 import { CardStackDemo } from "./ui/card-stack-demo";
+import { VisualVersePurposeCompass } from "./VisualVersePurposeCompass";
 import { useAboutScrollWords } from "../hooks/useAboutScrollWords";
 import "../about-scroll-words.css";
 
@@ -161,12 +162,7 @@ export function VisualVerseAboutEditorial() {
         <h2 className="vv-about-belief-statement">We believe <strong>creativity</strong> can shape how people <em>see, feel and connect.</em> We turn that belief into reality through <strong>thoughtful stories, purposeful design and meaningful visual experiences.</strong></h2>
       </div>
     </section>
-    <section className="vv-about-vision" id="vision-mission">
-      <div className="vv-about-container vv-about-vision-circles">
-        <div className="vv-about-vision-orb"><span className="vv-about-orb-ring" aria-hidden="true"/><span className="vv-about-orb-dot"/><h3>Vision</h3><p>To make stories matter through creativity that connects.</p></div>
-        <div className="vv-about-vision-orb"><span className="vv-about-orb-dot"/><h3>Mission</h3><p>Imagine. Create. Connect. Deliver thoughtful creative work that moves people.</p></div>
-      </div>
-    </section>
+    <VisualVersePurposeCompass/>
 
     <section className="vv-about-story vv-about-pad" id="our-story">
       <div className="vv-about-container vv-about-story-grid">
