@@ -195,10 +195,10 @@ export function VisualVersePotadotToolbox() {
           <span className="vv-potbx-eyebrow">
             <i aria-hidden="true"/><i aria-hidden="true"/> OUR TOOLBOX
           </span>
-          <h2 id="vv-potbx-heading">Modern tools, picked for each job.</h2>
+          <h2 id="vv-potbx-heading"><span className="vv-potbx-title-line">Modern tools,</span><span className="vv-potbx-title-line">picked for<span className="vv-potbx-last-word"> each job.</span></span></h2>
           <p>
-            We combine design, photography, film, creative AI and digital development,
-            choosing the right tools to take each idea from first concept to finished experience.
+            We work across design, photography, film, AI and digital, bringing the right
+            tools together to take your idea from first concept to its final form.
           </p>
         </div>
 

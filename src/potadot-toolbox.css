@@ -261,3 +261,16 @@
   .vv-potbx-pulse{animation:none!important;opacity:0!important}
   .vv-potbx-chip{will-change:auto!important}
 }
+
+
+/* Screenshot-to-screenshot refinements: maintain Potadot's exact text
+   line grouping and the two-plus-one mobile category rows. */
+.vv-potbx-title-line,
+.vv-potbx-last-word{display:block}
+.vv-about-editorial #our-toolbox{scroll-margin-top:116px}
+@media(max-width:760px){
+  .vv-potbx-title-line{display:block}
+  .vv-potbx-last-word{display:inline}
+  .vv-potbx-legend{display:grid;grid-template-columns:repeat(2,max-content);justify-content:center;gap:9px 8px}
+  .vv-potbx-legend>span:nth-child(3){grid-column:1 / -1;justify-self:center}
+}
