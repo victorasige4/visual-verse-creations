@@ -1,5 +1,5 @@
-import { useEffect, useRef, type CSSProperties } from "react";
-import { ArrowUpRight, ArrowRight, Camera, Clapperboard, Palette, PenTool, MonitorSmartphone, Share2, Check, Layers, Sparkles, UsersRound, MessageCircle, FileText } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { ArrowUpRight, ArrowRight, Camera, Clapperboard, Palette, PenTool, MonitorSmartphone, Share2, Check, UsersRound, MessageCircle, FileText } from "lucide-react";
 import { ServiceArtwork } from "./VisualVerseServices";
 import { VisualVerseProcessJourney } from "./VisualVerseProcessJourney";
 import "../visual-verse-services-page.css";

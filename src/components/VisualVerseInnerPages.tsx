@@ -9,7 +9,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 import { VisualVerseNavbar } from "./VisualVerseNavbar";
 import { VisualVerseFooter } from "./VisualVerseClosingSections";
-import { VisualVerseServices } from "./VisualVerseServices";
+import { VisualVerseServicesEditorial } from "./VisualVerseServicesEditorial";
 import { VisualVerseAudiences } from "./VisualVerseAudiences";
 import { WhatsAppFloating } from "./VisualVersePolicies";
 import { VisualVerseAboutEditorial } from "./VisualVerseAboutEditorial";
@@ -128,28 +128,7 @@ function AboutPage(){
 }
 
 function ServicesPage(){
-  return <>
-    <section className="vv-inner-section vv-inner-service-showcase" id="services">
-      <VisualVerseServices/>
-    </section>
-    <section className="vv-inner-section vv-inner-service-directory" id="service-directory">
-      <SectionTitle eyebrow="THE DETAILS / ALL OUR SERVICES" description="Explore what we can create together, service by service.">A full creative toolkit.<br/><em>Made for your idea.</em></SectionTitle>
-      <div className="vv-inner-service-grid">
-        {services.map(({id,title,label,summary,deliverables,Icon},i)=>(
-          <article className="vv-inner-service-card" key={id} id={"details-"+id}>
-            <div className="vv-inner-service-card-head"><Icon size={29} strokeWidth={1.55}/></div>
-            <span>{label}</span><h3>{title}</h3><p>{summary}</p>
-            <ul>{deliverables.map(d=><li key={d}><CheckCircle2 size={14} aria-hidden="true"/>{d}</li>)}</ul>
-            <a href={"/request-quote.html?service="+encodeURIComponent(title)}>Discuss {title} <ArrowUpRight size={17} aria-hidden="true"/></a>
-          </article>
-        ))}
-      </div>
-    </section>
-    <section className="vv-inner-section vv-inner-reasons">
-      <SectionTitle eyebrow="WHY CLIENTS CHOOSE US" description="Creativity should be thoughtful, useful and easy to collaborate on.">Good work is<br/><em>a team effort.</em></SectionTitle>
-      <div className="vv-inner-reasons-grid">{reasons.map((reason,i)=><article key={reason.title}><reason.Icon size={22}/><small>{String(i+1).padStart(2,"0")}</small><h3>{reason.title}</h3><p>{reason.text}</p></article>)}</div>
-    </section>
-  </>;
+  return <VisualVerseServicesEditorial/>;
 }
 
 type AudienceInfo={id:string;title:string;subtitle:string;challenge:string;outcome:string;deliverables:string[];Icon:LucideIcon;stat:string};
@@ -316,7 +295,7 @@ export function VisualVerseInnerPage({kind}:{kind:Kind}){
   return <div className="vv-inner-page">
     <VisualVerseNavbar/>
     <main id="top">
-      {kind!=="about"&&<PageHero kind={kind}/>}
+      {kind!=="about"&&kind!=="services"&&<PageHero kind={kind}/>}
       {kind==="about"&&<VisualVerseAboutEditorial/>}
       {kind==="services"&&<ServicesPage/>}
       {kind==="audiences"&&<AudiencePage/>}

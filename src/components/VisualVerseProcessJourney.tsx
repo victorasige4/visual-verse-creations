@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState, type ReactNode, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowUpRight, Check, CheckCircle2, Circle, Clock3, Heart, MessageCircle, Play, Rocket, Sparkles, WandSparkles } from "lucide-react";
+import { ArrowUpRight, Check, CheckCircle2, Heart, Rocket, Sparkles } from "lucide-react";
 import "../visual-verse-services-page.css";
 
 /**

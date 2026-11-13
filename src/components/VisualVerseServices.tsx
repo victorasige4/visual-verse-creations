@@ -57,13 +57,13 @@ const services: Service[] = [
   }
 ];
 
-function ServiceArtwork({ kind }: { kind: ServiceKind }) {
+export function ServiceArtwork({ kind }: { kind: ServiceKind }) {
   if(kind==="photo")return (
     <div className="vv-ui-preview vv-ui-lightroom" aria-label="Lightroom-inspired photo editing workspace illustration">
       <div className="vv-ui-top"><span>● ● ●</span><strong>PHOTO / DEVELOP</strong><small>Lr · EDIT</small></div>
       <div className="vv-ui-editor">
         <div className="vv-ui-filmstrip">{["01","02","03","04"].map(x=><span key={x}>{x}</span>)}</div>
-        <div className="vv-ui-photo"><img src="/about-photographer.webp" alt="Professional photographer in portrait editor preview" loading="lazy"/><span>BEFORE / AFTER</span></div>
+        <div className="vv-ui-photo"><img src={import.meta.env.BASE_URL+"about-photographer.webp"} alt="Professional photographer in portrait editor preview" loading="lazy"/><span>BEFORE / AFTER</span></div>
         <div className="vv-ui-controls"><strong>LIGHT</strong>{["Exposure","Contrast","Highlights","Shadows","Vibrance"].map((label,i)=><div key={label}><small>{label}</small><i style={{width:(35+i*11)+"%"}}/></div>)}</div>
       </div>
       <div className="vv-ui-bottom">ORIGINAL FRAME · EDITED TO TELL A STORY</div>
@@ -80,7 +80,7 @@ function ServiceArtwork({ kind }: { kind: ServiceKind }) {
   if(kind==="branding")return (
     <div className="vv-ui-preview vv-ui-brand-kit" aria-label="Visual Verse brand identity kit illustration">
       <div className="vv-ui-brand-paper vv-ui-brand-behind"><span>IDENTITY SYSTEM</span><b>VV</b></div>
-      <div className="vv-ui-brand-paper vv-ui-brand-front"><span>VISUAL VERSE / CREATIONS</span><img src="/logo-mark.png" alt="Visual Verse favicon logo"/><strong>Ideas with<br/>an identity.</strong></div>
+      <div className="vv-ui-brand-paper vv-ui-brand-front"><span>VISUAL VERSE / CREATIONS</span><img src={import.meta.env.BASE_URL+"logo-mark.png"} alt="Visual Verse favicon logo"/><strong>Ideas with<br/>an identity.</strong></div>
       <div className="vv-ui-brand-swatches"><i/><i/><i/></div>
     </div>
   );
@@ -97,7 +97,7 @@ function ServiceArtwork({ kind }: { kind: ServiceKind }) {
   );
   if(kind==="web")return (
     <div className="vv-ui-preview vv-ui-webkit" aria-label="Responsive website displayed on desktop and mobile screen">
-      <div className="vv-ui-web-desktop"><div className="vv-ui-web-bar">● ● ● <span>visualverse.com / creative experience</span></div><div className="vv-ui-web-screen"><img src="/logo-mark.png" alt="Visual Verse logo in example website design"/><small>THE NEXT DIGITAL STORY</small><strong>Make an<br/>impression.</strong><span>EXPLORE WORK ↗</span><div className="vv-ui-web-orbit"/></div></div>
+      <div className="vv-ui-web-desktop"><div className="vv-ui-web-bar">● ● ● <span>visualverse.com / creative experience</span></div><div className="vv-ui-web-screen"><img src={import.meta.env.BASE_URL+"logo-mark.png"} alt="Visual Verse logo in example website design"/><small>THE NEXT DIGITAL STORY</small><strong>Make an<br/>impression.</strong><span>EXPLORE WORK ↗</span><div className="vv-ui-web-orbit"/></div></div>
       <div className="vv-ui-web-phone"><div className="vv-ui-web-notch"/><span>VV / MOBILE</span><strong>Designed<br/>for every<br/>screen.</strong><div className="vv-ui-mobile-pill">LEARN MORE ↗</div></div>
     </div>
   );
