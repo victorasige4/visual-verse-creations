@@ -72,7 +72,7 @@ function getPosition(dimensions: Dimensions, ring: Ring, slot: number, time: num
 }
 
 function positionTool(element: HTMLButtonElement, position: Position, selected: boolean) {
-  const scale = selected ? position.scale * 1.115 : position.scale;
+  const scale = selected ? position.scale * 1.11 : position.scale;
   element.style.transform =
     "translate(-50%, -50%) translate3d(" +
     position.x.toFixed(2) + "px," + position.y.toFixed(2) +
@@ -203,7 +203,7 @@ export function VisualVersePotadotToolbox() {
         </div>
 
         <div className="vv-potbx-stage">
-          <div className="vv-potbx-scene" ref={sceneRef}>
+          <div className={"vv-potbx-scene" + (selectedIndex !== null ? " has-focus" : "")} ref={sceneRef}>
             <div className="vv-potbx-orbit" aria-label="Creative tools moving in three interactive rings" role="group">
               <svg className="vv-potbx-svg"
                 viewBox={dimensions.mobile ? "-179 -193.5 358 387" : "-329.5 -263.5 659 527"}
@@ -265,9 +265,8 @@ export function VisualVersePotadotToolbox() {
             </div>
           </div>
           <div className="vv-potbx-caption" aria-live="polite" aria-atomic="true">
-            <small>{selectedTool ? "IN FOCUS" : "HOVER A TOOL"}</small>
+            <small>{selectedTool ? categories[selectedTool.ring].name.toUpperCase() : "HOVER A TOOL"}</small>
             <strong>{selectedTool ? selectedTool.name : "One team, every layer"}</strong>
-            {selectedTool && <span>{selectedTool.detail}</span>}
           </div>
           <div className="vv-potbx-legend" aria-label="The three disciplines in our toolbox">
             {categories.map((category, ring) => (

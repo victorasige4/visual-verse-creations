@@ -274,3 +274,42 @@
   .vv-potbx-legend{display:grid;grid-template-columns:repeat(2,max-content);justify-content:center;gap:9px 8px}
   .vv-potbx-legend>span:nth-child(3){grid-column:1 / -1;justify-self:center}
 }
+
+
+/* Reference hover behavior: spotlight the selected capsule; the other
+   labels recede and their backgrounds disappear until hover ends. */
+.vv-potbx-scene.has-focus .vv-potbx-chip:not(.is-active){
+  opacity:.23!important;
+  filter:blur(.55px)!important;
+  background:transparent;
+  box-shadow:none;
+  color:#697881;
+}
+.vv-potbx-scene.has-focus .vv-potbx-svg ellipse{
+  opacity:.43!important;
+}
+.vv-about-editorial .vv-potbx-chip{
+  transition:background .23s,color .23s,box-shadow .23s,scale .27s cubic-bezier(.2,1,.36,1)!important;
+}
+.vv-about-editorial .vv-potbx-chip.is-active{
+  scale:1.38;
+  background:#0e3a3e;
+  color:#fff;
+  box-shadow:0 0 0 6px #30b97930,0 12px 30px #0c55394a,0 0 28px #2ec4b62b;
+}
+.vv-about-editorial .vv-potbx-chip.is-active:hover,
+.vv-about-editorial .vv-potbx-chip.is-active:focus-visible{
+  background:#0e3a3e;color:#fff;
+  box-shadow:0 0 0 7px #30b97935,0 12px 30px #0c55394a,0 0 28px #2ec4b62b;
+}
+.vv-potbx-chip.is-active .vv-potbx-chip-dot{
+  background:#34cb74;
+  box-shadow:0 0 0 4px #42c97b1d,0 0 9px #39ce76;
+}
+.vv-potbx-scene.has-focus .vv-potbx-core{
+  box-shadow:0 0 30px #33be733a,0 0 0 11px #33be7318;
+}
+.vv-potbx-legend>span.is-active{
+  background:#f2f3f7;
+  box-shadow:0 8px 19px #1b293418;
+}
