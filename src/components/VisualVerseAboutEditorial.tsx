@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useSpring, useTransform, useReducedMotion } from "motion/react";
 import {
   ArrowUpRight, ArrowRight, Camera, Clapperboard, Palette, PenTool, MonitorSmartphone,
   Share2, Sparkles, HeartHandshake, Target, Layers3, CheckCircle2, MapPin, MessageCircle,
@@ -7,6 +6,7 @@ import {
 } from "lucide-react";
 import { VisualVerseKenyaMap } from "./VisualVerseKenyaMap";
 import { VisualVerseFaq } from "./VisualVerseClosingSections";
+import { CardStackDemo } from "./ui/card-stack-demo";
 
 /** Motion cues reproduced from the supplied About walkthroughs. Effects are scoped to this page. */
 function useAboutReveal() {
@@ -126,15 +126,10 @@ function AboutHeading({label,title,description}:{label:string;title:React.ReactN
 
 export function VisualVerseAboutEditorial() {
   const [activeTool,setActiveTool]=useState(0);
-  const heroRef=useRef<HTMLElement>(null);
-  const reducedMotion=useReducedMotion();
-  const {scrollYProgress:heroProgress}=useScroll({target:heroRef,offset:["start start","end start"]});
-  const heroShift=useTransform(heroProgress,[0,1],[0,-85]);
-  const heroShiftSmooth=useSpring(heroShift,{stiffness:95,damping:26});
   useAboutReveal();
 
   return <div className="vv-about-editorial">
-    <section className="vv-about-hero" id="about-hero" ref={heroRef}>
+    <section className="vv-about-hero" id="about-hero">
       <div className="vv-about-container">
         <div className="vv-about-breadcrumb"><a href="/#top">HOME</a><span>/</span><span>ABOUT VISUAL VERSE</span></div>
         <div className="vv-about-hero-grid">
@@ -147,13 +142,8 @@ export function VisualVerseAboutEditorial() {
               <a className="vv-about-inline-link" href="/projects.html">Explore our work <ArrowRight size={17}/></a>
             </div>
           </div>
-          <div className="vv-about-hero-visual" aria-label="Visual Verse studio creative composition">
-            <motion.div className="vv-about-hero-layers" aria-label="Stacked creative workspaces illustration" style={reducedMotion?undefined:{y:heroShiftSmooth}}>
-              <div className="vv-about-floating-panel vv-about-floating-back"><div className="vv-about-mock-dots"><i/><i/><i/></div><span>CREATIVE DIRECTION</span><div className="vv-about-hero-swatch-row"><i/><i/><i/></div></div>
-              <div className="vv-about-floating-panel vv-about-floating-mid"><span>THE IDEA / THE STORY</span><div className="vv-about-mock-lines"><i/><i/><i/></div><div className="vv-about-mock-tiles"><i/><i/><i/></div></div>
-              <div className="vv-about-floating-panel vv-about-floating-front"><div className="vv-about-mock-dots"><i/><i/><i/></div><strong>Visual Verse<br/><em>Creative Studio</em></strong><div className="vv-about-chart"><span/><span/><span/><span/><span/><span/></div><small>IMAGINE. CREATE. CONNECT.</small></div>
-              <span className="vv-about-floating-symbol" aria-hidden="true">✳</span>
-            </motion.div>
+          <div className="vv-about-hero-visual vv-about-hero-visual--card-stack" aria-label="Visual Verse: Imagine, Create, Connect">
+            <CardStackDemo />
           </div>
         </div>
         <div className="vv-about-hero-foot"><span>VISUAL VERSE CREATIONS / 001</span><a href="#our-impact">DISCOVER OUR STORY ↓</a></div>
