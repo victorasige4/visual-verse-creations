@@ -19,6 +19,7 @@ import "./about-card-stack.css";
 import "./vision-mission.css";
 import "./how-we-work-studio.css";
 import "./potadot-toolbox.css";
+import "./visual-verse-industries.css";
 
 import "./resizable-navbar.css";
 import "./tt-travels.css";
