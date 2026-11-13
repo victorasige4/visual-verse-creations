@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowUpRight, Camera, Palette, MonitorSmartphone,
-  CheckCircle2, MapPin, MessageCircle,
-  Film, Brush, Megaphone
+  CheckCircle2, MessageCircle,
+  Film, Megaphone
 } from "lucide-react";
 import { VisualVerseKenyaMap } from "./VisualVerseKenyaMap";
 import { VisualVerseFaq } from "./VisualVerseClosingSections";
@@ -10,6 +10,7 @@ import { CardStackDemo } from "./ui/card-stack-demo";
 import { VisualVersePurposeCompass } from "./VisualVersePurposeCompass";
 import { VisualVerseHowWeWork } from "./VisualVerseHowWeWork";
 import { VisualVersePotadotToolbox } from "./VisualVersePotadotToolbox";
+import { VisualVerseIndustries } from "./VisualVerseIndustries";
 import { useAboutScrollWords } from "../hooks/useAboutScrollWords";
 import "../about-scroll-words.css";
 
@@ -77,14 +78,6 @@ const strengths = [
   {value:"06",label:"creative disciplines",detail:"One studio for strategy, design, film and digital experiences"},
   {value:"01",label:"connected creative process",detail:"Your idea moves from discovery to delivery with clarity"},
   {value:"∞",label:"stories worth telling",detail:"From independent creators to brands and organisations"}
-];
-const audiences = [
-  {name:"Growing brands",eyebrow:"IDENTITY / PRESENCE",before:"An idea people haven't met",after:"A brand they recognise",icon:Palette},
-  {name:"Businesses & organisations",eyebrow:"COMMUNICATION / CONTENT",before:"Information without impact",after:"Stories that connect",icon:Megaphone},
-  {name:"Creators & founders",eyebrow:"LAUNCH / EXPRESSION",before:"A vision still taking shape",after:"A distinct creative identity",icon:Brush},
-  {name:"Events & communities",eyebrow:"PEOPLE / MOMENTS",before:"A moment that passes",after:"A story that stays",icon:Camera},
-  {name:"Digital-first teams",eyebrow:"PRODUCT / EXPERIENCE",before:"An interface that feels complex",after:"An experience that feels natural",icon:MonitorSmartphone},
-  {name:"Campaigns & storytellers",eyebrow:"FILM / DIGITAL",before:"A message lost in the noise",after:"Something worth sharing",icon:Film}
 ];
 const partners = [
   {name:"Marketing teams",description:"Creative direction, campaign visuals and production that bring an existing strategy to life.",icon:Megaphone},
@@ -167,18 +160,7 @@ export function VisualVerseAboutEditorial() {
 
     <VisualVersePotadotToolbox/>
 
-    <section className="vv-about-audiences vv-about-pad" id="our-audiences">
-      <div className="vv-about-container">
-        <AboutHeading label="WHO WE CREATE WITH" title={<>From big brands to <em>first ideas.</em></>} description="Different people and goals. One creative partner for the moments that matter."/>
-        <div className="vv-about-audience-tiles">
-          {audiences.map((item,i)=><a href="/who-we-serve.html" key={item.name} className="vv-about-audience-tile">
-            <span className="vv-about-audience-tile-icon"><item.icon size={23}/></span>
-            <span><strong>{item.name}</strong><small>{item.eyebrow}</small></span><ArrowUpRight size={17} className="vv-about-audience-arrow"/>
-          </a>)}
-        </div>
-        <a className="vv-about-inline-link vv-about-audience-more" href="/who-we-serve.html">See how we work with your kind of project <ArrowUpRight size={17}/></a>
-      </div>
-    </section>
+    <VisualVerseIndustries />
 
     <section className="vv-about-partners vv-about-pad" id="collaborate">
       <div className="vv-about-container">
