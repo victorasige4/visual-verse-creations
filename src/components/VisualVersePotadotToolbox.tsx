@@ -17,24 +17,24 @@ type Dimensions = { width: number; mobile: boolean };
 type Position = { x: number; y: number; scale: number; opacity: number; blur: number; z: number };
 
 const tools: Tool[] = [
-  { name: "Figma", ring: 0, detail: "Design and collaborative prototyping." },
-  { name: "Photoshop", ring: 0, detail: "Image compositing, creative artwork and retouching." },
-  { name: "Illustrator", ring: 0, detail: "Brand systems, illustrations and vector design." },
-  { name: "Lightroom", ring: 0, detail: "Photographic colour, light and finishing." },
-  { name: "Premiere Pro", ring: 0, detail: "Video stories shaped through editing." },
-  { name: "After Effects", ring: 0, detail: "Motion graphics and animated experiences." },
-  { name: "CapCut", ring: 1, detail: "Short-form video editing for digital storytelling." },
-  { name: "Google Flow", ring: 1, detail: "AI-assisted creative exploration and production." },
-  { name: "ChatGPT", ring: 1, detail: "Creative research, ideation and problem-solving." },
-  { name: "Semrush", ring: 1, detail: "Search, audience research and digital strategy." },
-  { name: "Cursor", ring: 1, detail: "Building interfaces and code-driven experiences." },
-  { name: "GitHub", ring: 1, detail: "Team collaboration, versioning and delivery." },
-  { name: "React", ring: 2, detail: "Interactive, responsive web interfaces." },
-  { name: "Tailwind CSS", ring: 2, detail: "Flexible and consistent design systems." },
-  { name: "TypeScript", ring: 2, detail: "Reliable digital development." },
-  { name: "Vite", ring: 2, detail: "Fast, modern frontend workflows." },
-  { name: "shadcn/ui", ring: 2, detail: "Accessible, reusable interface components." },
-  { name: "Motion", ring: 2, detail: "Expressive and purposeful digital animation." },
+  { name: "Photoshop", ring: 0, detail: "Visual design, composites and careful photo retouching." },
+  { name: "Illustrator", ring: 0, detail: "Identity systems, illustration and expressive vector artwork." },
+  { name: "Canva", ring: 0, detail: "Collaborative design and fast-moving social content." },
+  { name: "InDesign", ring: 0, detail: "Thoughtful editorial layouts, proposals and publications." },
+  { name: "Lightroom", ring: 0, detail: "Colour, light and finishing for every photograph." },
+  { name: "Figma", ring: 0, detail: "Design systems, interfaces and interactive prototypes." },
+  { name: "After Effects", ring: 1, detail: "Motion graphics and expressive animated storytelling." },
+  { name: "Premiere Pro", ring: 1, detail: "Films and reels edited with rhythm and purpose." },
+  { name: "CapCut", ring: 1, detail: "Agile short-form videos for modern digital platforms." },
+  { name: "Google Flow", ring: 1, detail: "Exploring visual concepts through AI-powered filmmaking." },
+  { name: "ChatGPT", ring: 1, detail: "Research, concepts and creative problem-solving." },
+  { name: "Semrush", ring: 1, detail: "Search intelligence and digital audience insights." },
+  { name: "Cursor", ring: 2, detail: "Turning designs into working web experiences." },
+  { name: "GitHub", ring: 2, detail: "Version control, collaboration and dependable delivery." },
+  { name: "React", ring: 2, detail: "Interactive, responsive websites and interfaces." },
+  { name: "Tailwind CSS", ring: 2, detail: "Flexible and consistent interface design systems." },
+  { name: "TypeScript", ring: 2, detail: "Reliable, maintainable digital development." },
+  { name: "Vite", ring: 2, detail: "Fast, modern frontend development workflows." },
 ];
 
 const categories = [
@@ -72,7 +72,7 @@ function getPosition(dimensions: Dimensions, ring: Ring, slot: number, time: num
 }
 
 function positionTool(element: HTMLButtonElement, position: Position, selected: boolean) {
-  const scale = selected ? position.scale * 1.11 : position.scale;
+  const scale = selected ? position.scale * 1.025 : position.scale;
   element.style.transform =
     "translate(-50%, -50%) translate3d(" +
     position.x.toFixed(2) + "px," + position.y.toFixed(2) +
