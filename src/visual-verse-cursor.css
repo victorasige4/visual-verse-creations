@@ -1,0 +1,31 @@
+
+/* Small precision cursor inspired by Potadot's restrained, interactive language.
+   Visual Verse applies its own aqua + deep-navy optical treatment.
+   Only enable for mouse pointers after the custom cursor is alive. */
+.vv-cursor-layer{position:fixed;inset:0;pointer-events:none;z-index:2147482000;overflow:visible}
+.vv-cursor-core,.vv-cursor-orbit{position:fixed;top:0;left:0;display:grid;place-items:center;pointer-events:none;border-radius:999px;opacity:0;will-change:transform;transition:opacity .15s ease,background .23s ease,border-color .23s ease,width .3s cubic-bezier(.18,.9,.2,1),height .3s cubic-bezier(.18,.9,.2,1),box-shadow .3s ease}
+.vv-cursor-core{width:10px;height:10px;background:#2ec4b6;box-shadow:0 0 0 2px #f4fffb,0 0 0 3px rgba(0,63,92,.2);z-index:2}
+.vv-cursor-core i{width:3px;height:3px;background:#003f5c;border-radius:50%}
+.vv-cursor-orbit{width:36px;height:36px;border:1.4px solid rgba(0,105,116,.66);background:rgba(46,196,182,.05);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);z-index:1}
+.vv-cursor-orbit-tick{position:absolute;top:-3px;left:calc(50% - 3px);width:6px;height:6px;border-radius:50%;background:#2ec4b6;box-shadow:0 0 6px #2ec4b6}
+.vv-cursor-orbit-label{font-family:var(--vv-typeface,"TT Travels",Arial,sans-serif);font-size:8px;font-weight:800;letter-spacing:.1em;color:#003f5c;opacity:0;transform:scale(.6);transition:opacity .17s,transform .25s}
+.vv-cursor-core.is-visible,.vv-cursor-orbit.is-visible{opacity:1}
+.vv-cursor-orbit.is-interactive{width:74px;height:74px;border-color:rgba(46,196,182,.82);border-width:2px;background:rgba(225,255,247,.86);box-shadow:0 8px 35px rgba(0,63,92,.13),0 0 0 5px rgba(46,196,182,.08)}
+.vv-cursor-orbit.is-interactive .vv-cursor-orbit-tick{top:5px;left:5px}
+.vv-cursor-orbit.is-interactive .vv-cursor-orbit-label{opacity:1;transform:scale(1)}
+.vv-cursor-orbit.is-pressed{width:25px;height:25px;background:rgba(46,196,182,.35)}
+.vv-cursor-orbit.is-pressed .vv-cursor-orbit-label{opacity:0}
+@media(hover:hover) and (pointer:fine){
+  html.vv-custom-cursor-enabled,
+  html.vv-custom-cursor-enabled body,
+  html.vv-custom-cursor-enabled body :where(a,button,[role="button"],summary,[data-cursor]){
+    cursor:none!important
+  }
+  html.vv-custom-cursor-enabled body :where(input:not([type="submit"]):not([type="button"]),textarea,[contenteditable="true"],[role="textbox"]){
+    cursor:text!important
+  }
+}
+@media(hover:none),(pointer:coarse),(prefers-reduced-motion:reduce){
+ .vv-cursor-layer{display:none!important}
+ html.vv-custom-cursor-enabled,html.vv-custom-cursor-enabled body,html.vv-custom-cursor-enabled body *{cursor:auto}
+}
