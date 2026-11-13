@@ -16,3 +16,6 @@ if (root) {
     </StrictMode>,
   );
 }
+
+import "./resizable-navbar.css";
+import "./tt-travels.css";

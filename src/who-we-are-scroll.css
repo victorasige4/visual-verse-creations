@@ -1,0 +1,34 @@
+/* Potadot-inspired scroll-scrubbed typography on homepage Who We Are.
+   Each word is coloured by scroll position in React; the page stays readable
+   before JS loads, when JS fails, and under prefers-reduced-motion. */
+.vv-story-band .vv-about-headline[data-vv-scroll-words="true"]{
+  text-wrap:pretty;
+  line-height:1.19;
+}
+.vv-story-band .vv-about-headline .vv-scroll-word{
+  display:inline-block;
+  position:relative;
+  white-space:nowrap;
+  will-change:color;
+  color:#a9b9c1;
+  font-family:inherit;
+  transition:none;
+}
+.vv-story-band .vv-about-headline .vv-scroll-word.is-accent {
+  color:#2ec4b6;
+}
+.vv-story-band .vv-about-headline .vv-about-highlight:has(.vv-scroll-word){
+  -webkit-text-fill-color:unset;
+  text-decoration:none;
+}
+.vv-story-band .vv-about-headline[data-vv-scroll-words="true"] .vv-scroll-word{
+  -webkit-text-fill-color:currentColor;
+}
+@media(prefers-reduced-motion:reduce){
+  .vv-story-band .vv-about-headline .vv-scroll-word{
+    color:inherit!important;opacity:1!important;
+  }
+  .vv-story-band .vv-about-headline .vv-scroll-word.is-accent{
+    color:#2ec4b6!important;
+  }
+}

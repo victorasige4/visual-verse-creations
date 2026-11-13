@@ -1,0 +1,79 @@
+/* Visual Verse typography system
+ * The supplied ZIP is TypeType's TRIAL release. Its licence forbids embedding
+ * the fonts on public web pages. No proprietary font binaries are included.
+ * These local() declarations use legitimately installed TT Travels when present.
+ * To render it for every visitor, obtain a suitable webfont licence and deliver
+ * the licensed webfont through an appropriately licensed web hosting setup.
+ */
+@font-face{
+  font-family:"VisualVerse TT Travels";
+  src:local("TT Travels Thin"),local("TTTravels-Thin");
+  font-style:normal;font-weight:100;font-display:swap;
+}
+@font-face{
+  font-family:"VisualVerse TT Travels";
+  src:local("TT Travels ExtraLight"),local("TTTravels-ExtraLight");
+  font-style:normal;font-weight:200;font-display:swap;
+}
+@font-face{
+  font-family:"VisualVerse TT Travels";
+  src:local("TT Travels Light"),local("TTTravels-Light");
+  font-style:normal;font-weight:300;font-display:swap;
+}
+@font-face{
+  font-family:"VisualVerse TT Travels";
+  src:local("TT Travels Regular"),local("TTTravels-Regular"),local("TT Travels");
+  font-style:normal;font-weight:400;font-display:swap;
+}
+@font-face{
+  font-family:"VisualVerse TT Travels";
+  src:local("TT Travels Medium"),local("TTTravels-Medium");
+  font-style:normal;font-weight:500;font-display:swap;
+}
+@font-face{
+  font-family:"VisualVerse TT Travels";
+  src:local("TT Travels DemiBold"),local("TTTravels-DemiBold");
+  font-style:normal;font-weight:600;font-display:swap;
+}
+@font-face{
+  font-family:"VisualVerse TT Travels";
+  src:local("TT Travels Bold"),local("TTTravels-Bold");
+  font-style:normal;font-weight:700;font-display:swap;
+}
+@font-face{
+  font-family:"VisualVerse TT Travels";
+  src:local("TT Travels ExtraBold"),local("TTTravels-ExtraBold");
+  font-style:normal;font-weight:800;font-display:swap;
+}
+@font-face{
+  font-family:"VisualVerse TT Travels";
+  src:local("TT Travels Black"),local("TTTravels-Black");
+  font-style:normal;font-weight:900;font-display:swap;
+}
+:root{
+  --vv-typeface:"VisualVerse TT Travels","TT Travels",Arial,sans-serif;
+  --vv-island-font:var(--vv-typeface);
+  --vv-font-heading-weight:800;
+  --vv-font-subheading-weight:700;
+  --vv-font-body-weight:400;
+  --vv-font-nav-weight:600;
+  --vv-font-label-weight:600;
+  --vv-fw-regular:400;
+  --vv-fw-medium:500;
+  --vv-fw-demi:600;
+  --vv-fw-bold:700;
+  --vv-fw-extra:800;
+}
+:where(html,body),body :where(h1,h2,h3,h4,h5,h6,p,span,small,strong,em,b,i,a,button,input,textarea,select,label,summary,blockquote,li,dt,dd,figcaption,time,legend){
+  font-family:var(--vv-typeface)!important;
+}
+:where(button,input,textarea,select){font-family:var(--vv-typeface)!important;}
+/* Weight hierarchy: hero/statement 800–900, section titles 800, subheads 700,
+   body 400, interactive/nav 600, supporting eyebrow/captions 500–600. */
+.vv-hero-title,.vv-about-hero-copy h1,.vv-about-belief-statement{font-weight:800}
+.vv-about-editorial h2,.vv-about-headline,.vv-close-cta h2{font-weight:800}
+.vv-about-editorial h3,.vv-section-h,.vv-about-section-head h2{font-weight:700}
+.vv-nav-resize-link,.vv-nav-resize-chevron,.vv-nav-resize-mega-item strong{font-weight:600}
+.vv-nav-resize-cta,.vv-nav-resize-mega-heading h2{font-weight:700}
+.vv-about-editorial p,.vv-preview-section p,.vv-close-footer-wrap p{font-weight:400}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
