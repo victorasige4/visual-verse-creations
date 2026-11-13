@@ -68,7 +68,7 @@ export function VisualVerseCollaborators() {
           <span className="vv-collab-eyebrow"><i aria-hidden="true"/><i aria-hidden="true"/>WHO WE COLLABORATE WITH</span>
           <div className="vv-collab-header-main">
             <h2 id="vv-collab-title"><span>Better together with </span><span>the right partners.</span></h2>
-            <p>We partner with teams that need standout design, content and production. <a href="/contact.html">Let's create together</a>.</p>
+            <p>We collaborate with teams that need thoughtful design, film, content production and digital storytelling. <a href="/contact.html">Let's create together</a>.</p>
           </div>
         </header>
         <div className="vv-collab-cards" aria-label="Our creative collaborators">
