@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowUpRight, Check, CheckCircle2, Heart, Rocket, Sparkles } from "lucide-react";
 import "../visual-verse-services-page.css";
 
@@ -83,6 +83,7 @@ export function VisualVerseProcessJourney() {
   const rootRef = useRef<HTMLElement>(null);
   const activeRef = useRef(0);
   const [active, setActive] = useState(0);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     const root = rootRef.current;
@@ -96,6 +97,7 @@ export function VisualVerseProcessJourney() {
       const current = Math.min(6, Math.max(0, Math.round(progress * 6)));
       root.style.setProperty("--vv-sp-progress", progress.toFixed(4));
       root.style.setProperty("--vv-sp-active", String(current));
+      root.style.setProperty("--vv-sp-phase", Math.max(0, Math.min(1, (progress * 6 + .5) % 1)).toFixed(4));
       if (activeRef.current !== current) {
         activeRef.current = current;
         setActive(current);
@@ -126,23 +128,26 @@ export function VisualVerseProcessJourney() {
           <div className="vv-sp-overline"><i/><i/> OUR PROCESS</div>
           <h2 id="vv-sp-title">Seven steps from <em>first hello</em> to the final frame—and beyond.</h2>
           <div className="vv-sp-stage" aria-live="off">
+            <div className="vv-sp-stage-sparks" aria-hidden="true"><span/><span/><span/><span/></div>
             <div className="vv-sp-counter"><strong>{stamp(active)}</strong><span>/ 07</span></div>
+            <div className="vv-sp-stage-label"><span>IN MOTION</span><i/> <span>{steps[active].title}</span></div>
             <div className="vv-sp-scene-layer">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div key={active} className="vv-sp-scene"
-                  initial={{opacity:0,y:17,filter:"blur(5px)"}}
-                  animate={{opacity:1,y:0,filter:"blur(0px)"}}
-                  exit={{opacity:0,y:-12,filter:"blur(5px)"}}
-                  transition={{duration:.42,ease:[.22,1,.36,1]}}>
+                  initial={reducedMotion ? false : {opacity:0,y:62,scale:.87,rotateX:14,filter:"blur(14px)"}}
+                  animate={{opacity:1,y:0,scale:1,rotateX:0,filter:"blur(0px)"}}
+                  exit={reducedMotion ? {opacity:1} : {opacity:0,y:-32,scale:1.035,rotateX:-6,filter:"blur(10px)"}}
+                  transition={reducedMotion ? {duration:0} : {duration:.67,ease:[.16,1,.3,1]}}>
                   <ProcessArtwork step={active}/>
                 </motion.div>
               </AnimatePresence>
             </div>
-            <div className="vv-sp-stage-track"><span style={{width:((active+1)/7*100).toFixed(2)+"%"}}/></div>
+            <div className="vv-sp-stage-track"><span/></div>
           </div>
         </div>
         <div className="vv-sp-right">
           <ol className="vv-sp-steps" aria-label="Seven stages of the Visual Verse creative process">
+            <span className="vv-sp-moving-beacon" aria-hidden="true"/>
             {steps.map((item,index)=><li className={"vv-sp-step"+(index===active?" is-active":"")+(index<active?" is-complete":"")} key={item.title}>
               <button type="button"
                 className="vv-sp-step-button"
@@ -160,6 +165,7 @@ export function VisualVerseProcessJourney() {
         </div>
       </div>
       <div className="vv-sp-section-progress" aria-hidden="true"><span/></div>
+      <p className="vv-sp-sr-only" aria-live="polite">Step {stamp(active)} of 07: {steps[active].title}</p>
     </div>
   </section>;
 }
