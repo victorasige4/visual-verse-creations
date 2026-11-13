@@ -13,6 +13,12 @@
 }
 
 :root {
+  /* Visual Verse canonical palette: reuse for every current and future section. */
+  --vv-brand-navy: #003f5c;
+  --vv-brand-navy-deep: #002a40;
+  --vv-brand-mint: #2ec4b6;
+  --vv-brand-white: #ffffff;
+  --vv-brand-mist: #f7fcfb;
   --vv-island-navy: #003f5c;
   --vv-island-aqua: #2ec4b6;
   --vv-island-ink: #234651;

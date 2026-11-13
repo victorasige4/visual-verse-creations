@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type PointerEvent } from "react";
+import { useEffect, useRef, useState, type PointerEvent, type CSSProperties, type ReactNode } from "react";
 import { ArrowUpRight } from "lucide-react";
 import "../visual-verse-cta.css";
 
@@ -98,9 +98,9 @@ export function VisualVerseAboutCta() {
               {words.map((word,index)=>(
                 <span className="vv-cta-word-wrap" key={index}>
                   <span className="vv-cta-word"
-                    style={{"--vv-cta-word-index":index} as React.CSSProperties}>{word}</span>
+                    style={{"--vv-cta-word-index":index} as CSSProperties}>{word}</span>
                 </span>
-              )).reduce<React.ReactNode[]>((result,element,index)=>{
+              )).reduce<ReactNode[]>((result,element,index)=>{
                 if(index>0) result.push(" ");
                 result.push(element);
                 return result;

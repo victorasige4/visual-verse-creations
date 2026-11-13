@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, CheckCircle2, MessageCircle } from "lucide-react";
+import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { VisualVerseKenyaMap } from "./VisualVerseKenyaMap";
 import { VisualVerseFaq } from "./VisualVerseClosingSections";
 import { CardStackDemo } from "./ui/card-stack-demo";
@@ -8,6 +8,7 @@ import { VisualVerseHowWeWork } from "./VisualVerseHowWeWork";
 import { VisualVersePotadotToolbox } from "./VisualVersePotadotToolbox";
 import { VisualVerseIndustries } from "./VisualVerseIndustries";
 import { VisualVerseCollaborators } from "./VisualVerseCollaborators";
+import { VisualVerseAboutCta } from "./VisualVerseAboutCta";
 import { useAboutScrollWords } from "../hooks/useAboutScrollWords";
 import "../about-scroll-words.css";
 
@@ -16,7 +17,7 @@ function useAboutReveal() {
   useEffect(() => {
     const root = document.querySelector(".vv-about-editorial");
     if (!root) return;
-    const items = Array.from(root.querySelectorAll<HTMLElement>(".vv-about-section-header, .vv-about-lead, .vv-about-stats article, .vv-about-vision-orb, .vv-about-story-image, .vv-about-story-copy, .vv-about-audience-tile, .vv-about-facts dl div, .vv-about-final-panel"));
+    const items = Array.from(root.querySelectorAll<HTMLElement>(".vv-about-section-header, .vv-about-lead, .vv-about-stats article, .vv-about-vision-orb, .vv-about-story-image, .vv-about-story-copy, .vv-about-audience-tile, .vv-about-facts dl div"));
     if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       items.forEach(el => el.classList.add("vv-about-revealed"));
       return;
@@ -175,14 +176,6 @@ export function VisualVerseAboutEditorial() {
       </div>
     </section>
 
-    <section className="vv-about-final" id="lets-create">
-      <div className="vv-about-container vv-about-final-panel">
-        <div className="vv-about-final-head"><span className="vv-about-kicker"><span className="vv-about-dot"/> LET'S MAKE SOMETHING MEANINGFUL</span><img src="/logo-mark.png" alt=""/></div>
-        <h2>Have a story? <em>Let's make it unforgettable.</em></h2>
-        <p>Tell us what you're dreaming up. We'll shape a creative way forward together.</p>
-        <div className="vv-about-final-actions"><a className="vv-about-button vv-about-button-primary" href="/request-quote.html">Start your project <ArrowUpRight size={18}/></a><a href="https://wa.me/254794044598" target="_blank" rel="noreferrer">WhatsApp us <MessageCircle size={19}/></a></div>
-        <div className="vv-about-final-bottom"><span>NAIROBI, KENYA · AVAILABLE FOR ENQUIRIES</span><a href="mailto:hello@visualverse.com">hello@visualverse.com</a></div>
-      </div>
-    </section>
+    <VisualVerseAboutCta />
   </div>;
 }
