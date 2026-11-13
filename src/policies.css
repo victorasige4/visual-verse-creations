@@ -14,7 +14,7 @@
 .vv-policy-contact strong{color:#003f5c;width:100%;font-size:13px}
 .vv-policy-contact a{color:#117e7c;font-size:12px;font-weight:750;text-decoration:none;display:inline-flex;gap:5px;align-items:center}
 .vv-policy-disclaimer{border-left:3px solid #2ec4b6;padding-left:12px}
-.vv-whatsapp-float{position:fixed;z-index:490;right:clamp(14px,3vw,35px);bottom:clamp(14px,3vw,31px);display:flex;align-items:center;gap:10px;background:#25d366;color:#083d32;box-shadow:0 12px 29px rgba(0,50,35,.22);border-radius:99px;padding:11px 16px;text-decoration:none;font-family:var(--vv-island-font,Arial,sans-serif);font-size:12px;font-weight:850;transition:transform .22s,box-shadow .22s}
-.vv-whatsapp-float svg{width:23px;height:23px;flex:0 0 auto}.vv-whatsapp-float:hover{transform:translateY(-4px);box-shadow:0 17px 34px rgba(0,50,35,.3)}
+.vv-whatsapp-float{position:fixed;z-index:490;right:clamp(14px,3vw,35px);bottom:clamp(14px,3vw,31px);display:flex;align-items:center;gap:10px;background:#2ec4b6;color:#003f5c;box-shadow:0 12px 29px rgba(0,63,92,.22);border-radius:99px;padding:11px 16px;text-decoration:none;font-family:var(--vv-island-font,Arial,sans-serif);font-size:12px;font-weight:850;transition:transform .22s,box-shadow .22s}
+.vv-whatsapp-float svg{width:23px;height:23px;flex:0 0 auto}.vv-whatsapp-float:hover{transform:translateY(-4px);box-shadow:0 17px 34px rgba(0,63,92,.3)}
 @media(max-width:640px){.vv-whatsapp-float{padding:12px;border-radius:50%}.vv-whatsapp-float span{display:none}.vv-policy-links{gap:13px}.vv-policy-modal{border-radius:18px}}
 @media(prefers-reduced-motion:reduce){.vv-whatsapp-float{transition:none}}
