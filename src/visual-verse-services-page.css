@@ -408,3 +408,26 @@
  .vv-sv-reveal,.vv-sv-reveal:not(.is-visible){transform:none!important;opacity:1!important;filter:none!important}
  .vv-sp-scene,.vv-sp-steps,.vv-sv-resource,.vv-sv-nav a,.vv-sv-service-link>span,.vv-sp-launch-circle-ring{animation:none!important;transition:none!important}
 }
+
+
+/* Visual QA refinement: at 390px the fixed glass navigation occupies the
+   first ~91px. Clear it before the process kicker/headline, while retaining
+   the pinned seven-scene sequence and visible timeline below the artwork. */
+@media(max-width:760px){
+ .vv-sp-grid{padding-top:108px}
+ .vv-sp-left h2{font-size:clamp(24px,6.8vw,34px);margin:11px 0 13px;line-height:1.075}
+ .vv-sp-stage{height:clamp(240px,38svh,312px)}
+ .vv-sp-right{min-height:145px;margin-top:15px}
+}
+@media(max-width:400px){
+ .vv-sp-grid{padding-top:108px}
+ .vv-sp-left h2{font-size:clamp(23px,6.6vw,26px)}
+ .vv-sp-stage{height:clamp(250px,36svh,304px)}
+ .vv-sp-right{min-height:143px}
+}
+@media(max-width:760px) and (max-height:730px){
+ .vv-sp-grid{padding-top:93px}
+ .vv-sp-left h2{font-size:clamp(22px,6vw,28px)}
+ .vv-sp-stage{height:35svh;min-height:215px}
+ .vv-sp-right{margin-top:9px}
+}

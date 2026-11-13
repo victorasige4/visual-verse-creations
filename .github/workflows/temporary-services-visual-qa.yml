@@ -1,4 +1,5 @@
 name: Temporary Services page interactive visual QA
+# Final round: mobile navbar clearance and reduced-motion assertion
 on:
   push:
     branches: [main]
@@ -92,7 +93,7 @@ jobs:
           await page.goto('http://127.0.0.1:5173/services.html',{waitUntil:'domcontentloaded'});
           await page.locator('#our-process').scrollIntoViewIfNeeded();
           await page.waitForTimeout(250);
-          const reduced=await page.evaluate(()=>({animation:getComputedStyle(document.querySelector('.vv-sp-launch-circle-ring')).animationName,
+          const reduced=await page.evaluate(()=>({animation:getComputedStyle(document.querySelector('.vv-sp-pin')).animationName,
             heroHidden:Array.from(document.querySelectorAll('.vv-sv-reveal')).some(el=>getComputedStyle(el).opacity==='0')}));
           output.push({view:'reduced-motion',reduced});
           fs.writeFileSync('services-verification/results.json',JSON.stringify(output,null,2));
