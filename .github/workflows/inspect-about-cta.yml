@@ -1,4 +1,5 @@
 name: Temporary Potadot CTA visual reference
+# Final local CTA screenshots after typography and cursor refinement
 on:
   push:
     branches: [main]
@@ -25,7 +26,7 @@ jobs:
           fs.mkdirSync('cta-reference', {recursive:true});
           const browser=await chromium.launch({headless:true});
           const pages=[
-            ['potadot','https://potadot.com.my/about-us/','Have a workflow that needs a system?'],
+            // Potadot reference already captured and measured; verify final local only.
             ['visual-verse','http://127.0.0.1:5173/about.html',"Have a story?"]
           ];
           const viewports=[['desktop',1440,960],['mobile',390,844]];
