@@ -15,3 +15,6 @@ if (root) {
 }
 import "./about-editorial.css";
 import "./about-card-stack.css";
+
+import "./resizable-navbar.css";
+import "./tt-travels.css";
