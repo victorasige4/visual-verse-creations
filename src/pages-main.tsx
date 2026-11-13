@@ -14,3 +14,4 @@ if (root) {
   createRoot(root).render(<StrictMode><VisualVerseInnerPage kind={pageKind()} /></StrictMode>);
 }
 import "./about-editorial.css";
+import "./about-card-stack.css";

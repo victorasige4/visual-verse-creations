@@ -1,0 +1,223 @@
+/* Visual Verse About / Aceternity Card Stack demo
+   Replaces ONLY the layered artwork in the About page hero.
+   Palette: midnight cyan #003F5C, aqua #2EC4B6, white and derived tints. */
+.vv-about-hero-visual--card-stack {
+  width: 100%;
+  min-width: 0;
+  min-height: 545px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  filter: none;
+  perspective: none;
+}
+.vv-about-stack-demo { width: 100%; position: relative; isolation: isolate; }
+.vv-about-stage-viewport { position: relative; height: 400px; width: 100%; overflow: visible; }
+.vv-about-stage-halo {
+  position: absolute;
+  left: 52%;
+  top: 46%;
+  width: 340px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+  background: radial-gradient(circle,rgba(46,196,182,.24),rgba(46,196,182,.045) 52%,transparent 72%);
+  filter: blur(12px);
+}
+.vv-about-stage-halo-two { width: 520px; top: 55%; left: 48%; opacity: .4; filter: blur(28px); }
+.vv-about-acet-stack {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(475px, calc(100% - 55px));
+  height: 300px;
+  transform-style: preserve-3d;
+}
+.vv-about-acet-card {
+  position: absolute;
+  inset: 0;
+  border-radius: 23px;
+  border: 1px solid rgba(255,255,255,.8);
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 28px 55px rgba(0,63,92,.16), 0 8px 19px rgba(0,63,92,.06);
+  will-change: transform;
+  transform-origin: 50% 50%;
+  backface-visibility: hidden;
+}
+.vv-about-acet-card.is-front {
+  box-shadow: 0 32px 60px rgba(0,63,92,.19),0 8px 18px rgba(0,63,92,.08);
+}
+.vv-about-card-art { width: 100%; height: 100%; position: relative; overflow: hidden; isolation: isolate; }
+.vv-about-card-imagine { background: linear-gradient(135deg,#f3fcfa 0%,#e5f7f3 48%,#ffffff); }
+.vv-about-card-create { background: linear-gradient(125deg,#003f5c 0%,#075a75 65%,#0d7890); }
+.vv-about-card-connect { background: linear-gradient(135deg,#e4f9f5,#ffffff 72%); }
+.vv-stack-mesh {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(to right,rgba(0,63,92,.065) 1px,transparent 1px),
+                    linear-gradient(to bottom,rgba(0,63,92,.065) 1px,transparent 1px);
+  background-size: 23px 23px;
+  mask-image: linear-gradient(125deg, transparent 2%,#000 40%,transparent 95%);
+  pointer-events: none;
+}
+.vv-about-card-create .vv-stack-mesh { opacity: .25; }
+.vv-stack-window-dots { position: absolute; display: flex; align-items: center; gap: 5px; top: 12px; left: 15px; z-index: 5; }
+.vv-stack-window-dots i { width: 6px; height: 6px; display: block; border-radius: 50%; background: #2ec4b6; }
+.vv-stack-window-dots i:nth-child(2) { background: #81dbd1; }
+.vv-stack-window-dots i:nth-child(3) { background: #bddbdc; }
+/* Card 1 — visual idea / identity / sketches */
+.vv-stack-soft-orbit {
+  position: absolute; width: 325px; height: 325px; border: 1px solid rgba(46,196,182,.35);
+  border-radius: 50%; top: -125px; right: -73px; box-shadow: 0 0 0 36px rgba(46,196,182,.035);
+  animation: vv-stack-orbit 15s linear infinite;
+}
+.vv-stack-design-board {
+  position: absolute; width: 340px; height: 235px; left: 50%; top: 50%; transform: translate(-50%,-50%) rotate(-6deg);
+  background: rgba(255,255,255,.92); border: 1px solid rgba(0,63,92,.12); border-radius: 16px;
+  box-shadow: 0 20px 44px rgba(0,63,92,.16);
+  overflow: hidden;
+}
+.vv-stack-mood-canvas { position: absolute; inset: 13px 13px 17px; }
+.vv-stack-mood-canvas svg { width: 100%; height: 100%; overflow: visible; }
+.vv-stack-sketch-line { stroke-dasharray: 430; stroke-dashoffset: 430; animation: vv-stack-draw 4.8s cubic-bezier(.22,1,.36,1) infinite; }
+@keyframes vv-stack-draw { 0%,12%{stroke-dashoffset:430}55%,88%{stroke-dashoffset:0}100%{stroke-dashoffset:-430} }
+.vv-stack-art-blob { transform-origin: 132px 103px; animation: vv-stack-breathe 4s ease-in-out infinite; }
+.vv-stack-mood-swatches { position: absolute; display: flex; gap: 6px; right: 20px; top: 18px; }
+.vv-stack-mood-swatches i { width: 17px; height: 17px; border-radius: 5px; background:#003f5c; }
+.vv-stack-mood-swatches i:nth-child(2){background:#2ec4b6}
+.vv-stack-mood-swatches i:nth-child(3){background:#aeece3}
+.vv-stack-mood-swatches i:nth-child(4){background:#ffffff;border:1px solid #c7e8e3}
+.vv-stack-float {
+  position: absolute; z-index: 7; display: grid; place-items: center;
+  width: 61px; height: 61px; border-radius: 18px;
+  background: #003f5c; color: #72eedf; box-shadow: 0 14px 25px rgba(0,63,92,.18);
+  animation: vv-stack-float 4.4s ease-in-out infinite;
+}
+.vv-stack-float-a{right:10%;top:7%;rotate:12deg}
+.vv-stack-float-b{left:7%;bottom:7%;rotate:-12deg;animation-delay:-2s;background:#2ec4b6;color:#003f5c}
+.vv-stack-star { position:absolute;color:#2ec4b6;z-index:6;font-size:38px;line-height:1;animation:vv-stack-spin 13s linear infinite;}
+.vv-stack-star-a{left:11%;top:5%}.vv-stack-star-b{right:12%;bottom:10%;animation-direction:reverse;font-size:51px}
+/* Card 2 — production / camera / timeline */
+.vv-stack-film-editor {
+  position:absolute; width:76%; height:78%; top:9%;left:12%;
+  background: #f6fffd; border: 1px solid rgba(255,255,255,.9);border-radius:16px;
+  box-shadow:0 16px 38px rgba(0,21,34,.27); transform:rotate(5deg);overflow:hidden;
+}
+.vv-stack-editor-screen { position:absolute; left:14px;right:14px;top:33px;height:55%;border-radius:9px;overflow:hidden;
+  background:linear-gradient(140deg,#b6f5ea,#2ec4b6 59%,#006382);}
+.vv-stack-sun { position:absolute;width:53px;height:53px;background:#f3fffe;opacity:.74;border-radius:50%;top:14px;right:19%;box-shadow:0 0 0 15px rgba(255,255,255,.13);animation:vv-stack-breathe 3.8s infinite;}
+.vv-stack-editor-hill{position:absolute;width:130%;height:78%;bottom:-42%;left:-15%;border-radius:50%;background:#07546b;transform:rotate(-14deg)}
+.vv-stack-hill-back{bottom:-46%;left:40%;background:#039ca4;transform:rotate(15deg);z-index:1}
+.vv-stack-hill-front{z-index:2}
+.vv-stack-play-icon {position:absolute;z-index:4;top:50%;left:50%;transform:translate(-50%,-50%);
+  display:grid;place-items:center;width:63px;height:63px;background:rgba(255,255,255,.92);
+  color:#003f5c;border-radius:50%;box-shadow:0 8px 25px rgba(0,63,92,.17);animation:vv-stack-breathe 3s ease-in-out infinite;}
+.vv-stack-viewfinder{position:absolute;width:17px;height:17px;border-color:#fff;border-style:solid;z-index:3}
+.view-top-left{top:9px;left:9px;border-width:2px 0 0 2px}
+.view-top-right{top:9px;right:9px;border-width:2px 2px 0 0}
+.view-bottom-left{bottom:9px;left:9px;border-width:0 0 2px 2px}
+.view-bottom-right{bottom:9px;right:9px;border-width:0 2px 2px 0}
+.vv-stack-timeline{position:absolute;left:14px;right:14px;bottom:16px;height:53px;padding-top:10px;display:grid;gap:6px;}
+.vv-stack-track{height:14px;display:flex;gap:4px}
+.vv-stack-track i{height:100%;border-radius:4px;background:#2ec4b6;flex:1}
+.vv-stack-track-one i:nth-child(2){flex:1.75;background:#003f5c}
+.vv-stack-track-one i:nth-child(3){background:#5bced0}
+.vv-stack-track-two i{background:#d6e9f0}
+.vv-stack-track-two i:nth-child(2){background:#003f5c}
+.vv-stack-timeline-playhead{position:absolute;top:0;bottom:0;left:3%;width:2px;background:#2ec4b6;box-shadow:0 0 0 3px rgba(46,196,182,.21);animation:vv-stack-scrub 5s linear infinite}
+@keyframes vv-stack-scrub {0%{left:4%}90%{left:93%}100%{left:4%}}
+.vv-stack-camera-token{position:absolute;right:6%;bottom:8%;z-index:6;display:grid;place-items:center;
+  width:76px;height:76px;border-radius:23px;background:#003f5c;color:#ccfaf3;
+  box-shadow:0 15px 28px rgba(0,0,0,.26);rotate:-13deg;animation:vv-stack-float 4.4s ease-in-out infinite;}
+.vv-stack-lens{position:absolute;width:17px;height:17px;border:2px solid #2ec4b6;border-radius:50%}
+.vv-stack-float-c{width:50px;height:50px;left:5%;top:9%;background:#2ec4b6;color:#003f5c}
+.vv-stack-float-d{width:48px;height:48px;left:5%;bottom:9%;background:#e4faf6;color:#003f5c;animation-delay:-2s}
+/* Card 3 — coordinated websites, responsive experiences and connected campaigns */
+.vv-stack-network{position:absolute;inset:0;width:100%;height:100%;opacity:.7;animation:vv-stack-breathe 5s ease-in-out infinite;}
+.vv-stack-web-window{position:absolute;left:8%;top:15%;width:72%;height:70%;border-radius:15px;background:white;
+  border:1px solid #bbdfdf;box-shadow:0 18px 30px rgba(0,63,92,.15);overflow:hidden;transform:rotate(-6deg);}
+.vv-stack-web-cover{position:absolute;inset:35px 13px 48px;border-radius:9px;overflow:hidden;background:linear-gradient(130deg,#003f5c,#0e7790)}
+.vv-stack-web-orb{position:absolute;top:50%;left:40%;translate:-50% -50%;display:grid;place-items:center;width:85px;height:85px;
+  border-radius:50%;background:#2ec4b6;color:#003f5c;box-shadow:0 0 0 23px rgba(46,196,182,.15);animation:vv-stack-breathe 3.5s infinite}
+.vv-stack-web-shapes{position:absolute;right:5%;top:18%;width:36%;display:grid;gap:9px;}
+.vv-stack-web-shapes i{height:12px;border-radius:14px;background:rgba(255,255,255,.62)}
+.vv-stack-web-shapes i:nth-child(2){width:69%}.vv-stack-web-shapes i:nth-child(3){width:85%;height:34px;background:#2ec4b6}
+.vv-stack-web-footer{position:absolute;bottom:15px;left:18px;right:18px;display:flex;gap:7px}
+.vv-stack-web-footer span{height:13px;width:21%;background:#cae9e3;border-radius:5px}
+.vv-stack-web-footer span:nth-child(2){width:42%;background:#e2f5f1}
+.vv-stack-mobile-window{position:absolute;right:10%;bottom:5%;width:25%;height:66%;border:5px solid #003f5c;background:#fff;
+  border-radius:21px;z-index:6;box-shadow:0 16px 25px rgba(0,63,92,.26);transform:rotate(9deg);
+  display:flex;flex-direction:column;gap:6px;align-items:center;padding:12px 7px}
+.vv-stack-mobile-camera{position:absolute;top:3px;height:4px;width:25px;border-radius:4px;background:#003f5c}
+.vv-stack-mobile-art{display:grid;place-items:center;width:100%;height:61%;border-radius:10px;color:#003f5c;background:linear-gradient(135deg,#e9faf7,#2ec4b6)}
+.vv-stack-mobile-window>span{height:6px;width:80%;background:#c5ebe5;border-radius:5px}
+.vv-stack-mobile-window>span:nth-last-child(1){width:55%;background:#003f5c}
+.vv-stack-social-token{position:absolute;top:6%;right:9%;display:grid;place-items:center;width:55px;height:55px;
+  border-radius:17px;background:#2ec4b6;color:#003f5c;box-shadow:0 12px 20px rgba(0,63,92,.15);z-index:7;animation:vv-stack-float 4.3s infinite}
+.vv-stack-connected-bubble{position:absolute;z-index:6;display:grid;place-items:center;width:40px;height:40px;background:#003f5c;color:#2ec4b6;
+  border-radius:50%;box-shadow:0 8px 15px rgba(0,63,92,.15);animation:vv-stack-float 5.2s infinite}
+.vv-stack-connected-a{left:5%;bottom:7%}.vv-stack-connected-b{left:8%;top:9%;animation-delay:-2s}
+/* Synchronized Potadot-style controls beneath the visual. */
+.vv-about-card-switches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;max-width:505px;margin:0 auto;padding:1px 0 6px}
+.vv-about-card-switch{position:relative;display:flex;align-items:center;gap:9px;min-width:0;min-height:62px;border:1px solid #d5e9e7;
+  border-radius:12px;background:rgba(255,255,255,.82);color:#003f5c;padding:10px 9px 15px;cursor:pointer;
+  font-family:inherit;text-align:left;transition:background .25s,border-color .25s,box-shadow .25s,transform .25s;}
+.vv-about-card-switch-index{font-size:9px;line-height:1;font-weight:850;color:#4e9699}
+.vv-about-card-switch-copy{display:grid;gap:3px;min-width:0}
+.vv-about-card-switch-copy strong{font-size:11px;line-height:1.1;font-weight:850;white-space:nowrap}
+.vv-about-card-switch-copy small{font-size:8px;line-height:1.2;font-weight:650;color:#638c91}
+.vv-about-card-switch>svg{margin-left:auto;flex-shrink:0;color:#2d9c9a}
+.vv-about-card-switch.is-active{background:#003f5c;color:white;border-color:#003f5c;box-shadow:0 9px 22px rgba(0,63,92,.15)}
+.vv-about-card-switch.is-active .vv-about-card-switch-index,.vv-about-card-switch.is-active .vv-about-card-switch-copy small{color:#b4f2e7}
+.vv-about-card-switch.is-active>svg{color:#2ec4b6}
+.vv-about-card-switch:hover{transform:translateY(-3px);border-color:#2ec4b6}
+.vv-about-card-switch-track{position:absolute;bottom:0;left:8px;right:8px;height:3px;border-radius:5px;overflow:hidden;background:rgba(46,196,182,.12)}
+.vv-about-card-switch-fill{display:block;width:0;height:100%;border-radius:4px;background:#2ec4b6}
+.vv-about-card-switch.is-active .vv-about-card-switch-fill{animation:vv-about-card-progress 5.2s linear forwards}
+.vv-about-stack-demo.is-paused .vv-about-card-switch-fill{animation-play-state:paused}
+@keyframes vv-about-card-progress{from{width:0}to{width:100%}}
+@keyframes vv-stack-float {0%,100%{translate:0 0}50%{translate:0 -12px}}
+@keyframes vv-stack-orbit{to{rotate:360deg}}
+@keyframes vv-stack-spin{to{rotate:360deg}}
+@keyframes vv-stack-breathe{0%,100%{scale:1}50%{scale:1.075}}
+@media(max-width:1120px) {
+  .vv-about-hero-visual--card-stack { min-height: 540px; }
+  .vv-about-stage-viewport{height:385px}
+  .vv-about-acet-stack{width:min(450px,calc(100% - 48px));height:290px}
+}
+@media(max-width:900px){
+  .vv-about-hero-visual--card-stack{min-height:500px;margin-top:12px}
+  .vv-about-stage-viewport{height:390px}
+  .vv-about-acet-stack{width:min(485px,calc(100% - 65px));height:300px}
+  .vv-about-card-switches{max-width:515px}
+}
+@media(max-width:560px){
+  .vv-about-hero-visual--card-stack{min-height:0;margin-top:26px}
+  .vv-about-stage-viewport{height:300px}
+  .vv-about-acet-stack{top:17px;width:calc(100% - 36px);height:230px}
+  .vv-stack-design-board{width:79%;height:74%}
+  .vv-stack-mood-canvas{inset:7px}
+  .vv-stack-float{width:43px;height:43px;border-radius:13px}
+  .vv-stack-float svg{width:20px}
+  .vv-stack-camera-token{width:55px;height:55px}
+  .vv-stack-film-editor{width:82%;left:9%}
+  .vv-stack-editor-screen{height:50%}
+  .vv-stack-timeline{bottom:5px;gap:4px}
+  .vv-stack-float-c,.vv-stack-float-d{width:39px;height:39px}
+  .vv-stack-mobile-window{border-width:3px;border-radius:13px}
+  .vv-about-card-switches{gap:5px}
+  .vv-about-card-switch{min-height:56px;gap:4px;padding:8px 5px 12px}
+  .vv-about-card-switch-index{font-size:8px}
+  .vv-about-card-switch-copy strong{font-size:10px}
+  .vv-about-card-switch-copy small{font-size:7px}
+  .vv-about-card-switch>svg{display:none}
+}
+@media(max-width:380px){.vv-about-card-switch-copy small{display:none}.vv-about-card-switch{min-height:43px}.vv-about-stage-viewport{height:265px}.vv-about-acet-stack{height:205px}}
+@media(prefers-reduced-motion:reduce){
+  .vv-about-card-art *, .vv-about-stage-viewport *, .vv-about-card-switch-fill{animation:none!important;transition:none!important}
+  .vv-stack-sketch-line{stroke-dashoffset:0}
+  .vv-stack-timeline-playhead{left:44%}
+  .vv-about-card-switch.is-active .vv-about-card-switch-fill{width:100%}
+}
