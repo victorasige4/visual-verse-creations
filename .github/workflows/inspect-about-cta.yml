@@ -26,7 +26,7 @@ jobs:
           const browser=await chromium.launch({headless:true});
           const pages=[
             ['potadot','https://potadot.com.my/about-us/','Have a workflow that needs a system?'],
-            ['visual-verse','https://victorasige4.github.io/visual-verse-creations/about.html',"Have a story?"]
+            ['visual-verse','http://127.0.0.1:5173/about.html',"Have a story?"]
           ];
           const viewports=[['desktop',1440,960],['mobile',390,844]];
           for(const [company,url,title] of pages){
@@ -96,6 +96,8 @@ jobs:
           }
           await browser.close();
           JS
+          npm run dev -- --host 127.0.0.1 --port 5173 >/tmp/vv-cta-vite.log 2>&1 &
+          sleep 3
           node .inspect-about-cta.mjs
       - uses: actions/upload-artifact@v4
         if: always()
