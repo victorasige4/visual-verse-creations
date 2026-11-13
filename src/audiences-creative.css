@@ -212,3 +212,10 @@
 @media(prefers-reduced-motion:reduce){
   #who-we-serve .vvcr-autoplay-toggle{transition:none}
 }
+
+/* Authentic Visual Verse mark replaces the old text label at the heart of the business network. */
+.vvcr-business-logo-wrap{position:relative;display:grid;place-items:center;width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,#f7fffc,#d6f9ee);box-shadow:inset 0 2px 6px #ffffffc9,0 0 30px #2ec4b65b;animation:vvcr-logo-hover 5s ease-in-out infinite}
+.vvcr-business-logo{display:block;width:56px;height:56px;object-fit:contain;filter:drop-shadow(0 3px 3px #003f5c23)}
+@keyframes vvcr-logo-hover{50%{transform:translateY(-4px) rotate(-5deg);box-shadow:0 9px 36px #2ec4b690}}
+@media(max-width:620px){.vvcr-business-logo-wrap{width:60px;height:60px}.vvcr-business-logo{width:44px;height:44px}}
+@media(prefers-reduced-motion:reduce){.vvcr-business-logo-wrap{animation:none}}
