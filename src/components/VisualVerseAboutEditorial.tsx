@@ -137,10 +137,6 @@ export function VisualVerseAboutEditorial() {
             <span className="vv-about-kicker"><span className="vv-about-dot"/> INDEPENDENT CREATIVE STUDIO · NAIROBI</span>
             <h1>We turn<br/>your ideas<br/>into <em>experiences.</em></h1>
             <p>Visual Verse is a multidisciplinary creative studio bringing branding, photography, filmmaking, graphic design and digital experiences together. We shape every project around the people, purpose and possibility behind it.</p>
-            <div className="vv-about-hero-links">
-              <a className="vv-about-button vv-about-button-primary" href="/request-quote.html">Let's create together <ArrowUpRight size={18}/></a>
-              <a className="vv-about-inline-link" href="/projects.html">Explore our work <ArrowRight size={17}/></a>
-            </div>
           </div>
           <div className="vv-about-hero-visual vv-about-hero-visual--card-stack" aria-label="Visual Verse: Imagine, Create, Connect">
             <CardStackDemo />
