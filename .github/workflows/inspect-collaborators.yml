@@ -79,8 +79,45 @@ jobs:
             }
             await page.close();
           }
+          for(const [label,width,height] of [['desktop',1440,1000],['tablet',820,1000],['mobile',390,844]]){
+            const page=await browser.newPage({viewport:{width,height},deviceScaleFactor:1,reducedMotion:'reduce'});
+            try{
+              await page.goto('http://127.0.0.1:5173/about.html',{waitUntil:'domcontentloaded',timeout:35000});
+              await page.waitForTimeout(2400);
+              const section=page.locator('#collaborate');
+              await section.scrollIntoViewIfNeeded();
+              await page.waitForTimeout(600);
+              await section.screenshot({path:'collaborators-reference/visual-verse-'+label+'.png',animations:'disabled'});
+              const data=await section.evaluate(el=>{
+                const rect=el.getBoundingClientRect();
+                const sel=['.vv-collab-eyebrow','.vv-collab-header-main h2','.vv-collab-header-main p','.vv-collab-cards','.vv-collab-card','.vv-collab-icon'];
+                const elements=[];
+                for(const selector of sel){
+                  for(const node of el.querySelectorAll(selector)){
+                    const r=node.getBoundingClientRect(),css=getComputedStyle(node);
+                    elements.push({selector,text:node.textContent?.trim().slice(0,100),x:Math.round(r.x-rect.x),y:Math.round(r.y-rect.y),
+                      w:Math.round(r.width),h:Math.round(r.height),fontSize:css.fontSize,lineHeight:css.lineHeight,
+                      background:css.backgroundColor,shadow:css.boxShadow,padding:css.padding,display:css.display});
+                  }
+                }
+                return {height:rect.height,elements};
+              });
+              fs.writeFileSync('collaborators-reference/visual-verse-'+label+'.json',JSON.stringify(data,null,2));
+              const first=page.locator('.vv-collab-card').first();
+              await first.hover({force:true});
+              await page.waitForTimeout(600);
+              await section.screenshot({path:'collaborators-reference/visual-verse-'+label+'-hover.png',animations:'disabled'});
+              console.log('VISUAL-VERSE',label,JSON.stringify(data));
+            }catch(error){
+              fs.writeFileSync('collaborators-reference/visual-verse-'+label+'-error.txt',String(error));
+              console.log('VISUAL-VERSE ERROR',label,String(error));
+            }
+            await page.close();
+          }
           await browser.close();
           JS
+          npm run dev -- --host 127.0.0.1 --port 5173 >/tmp/vv-collab-vite.log 2>&1 &
+          sleep 3
           node .inspect-collaborators.mjs
       - uses: actions/upload-artifact@v4
         if: always()
