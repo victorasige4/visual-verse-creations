@@ -1,4 +1,5 @@
 name: One-off reference toolbox inspection
+# final hover-state quality check
 on:
   push:
     branches: [main]
