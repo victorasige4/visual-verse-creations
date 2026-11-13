@@ -1,4 +1,5 @@
 name: Temporary Potadot industries section inspection
+# Final viewport comparison after width and spacing correction
 on:
   push:
     branches: [main]
