@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  ArrowUpRight, ArrowRight, Camera, Clapperboard, Palette, PenTool, MonitorSmartphone,
-  Share2, Sparkles, HeartHandshake, Target, Layers3, CheckCircle2, MapPin, MessageCircle,
-  Film, Compass, Brush, Megaphone
+  ArrowUpRight, Camera, Palette, MonitorSmartphone,
+  CheckCircle2, MapPin, MessageCircle,
+  Film, Brush, Megaphone
 } from "lucide-react";
 import { VisualVerseKenyaMap } from "./VisualVerseKenyaMap";
 import { VisualVerseFaq } from "./VisualVerseClosingSections";
 import { CardStackDemo } from "./ui/card-stack-demo";
 import { VisualVersePurposeCompass } from "./VisualVersePurposeCompass";
+import { VisualVerseHowWeWork } from "./VisualVerseHowWeWork";
 import { useAboutScrollWords } from "../hooks/useAboutScrollWords";
 import "../about-scroll-words.css";
 
@@ -16,7 +17,7 @@ function useAboutReveal() {
   useEffect(() => {
     const root = document.querySelector(".vv-about-editorial");
     if (!root) return;
-    const items = Array.from(root.querySelectorAll<HTMLElement>(".vv-about-section-header, .vv-about-lead, .vv-about-stats article, .vv-about-vision-orb, .vv-about-story-image, .vv-about-story-copy, .vv-about-principle-feature, .vv-about-tool-tags button, .vv-about-audience-tile, .vv-about-partner-grid article, .vv-about-facts dl div, .vv-about-final-panel"));
+    const items = Array.from(root.querySelectorAll<HTMLElement>(".vv-about-section-header, .vv-about-lead, .vv-about-stats article, .vv-about-vision-orb, .vv-about-story-image, .vv-about-story-copy, .vv-about-tool-tags button, .vv-about-audience-tile, .vv-about-partner-grid article, .vv-about-facts dl div, .vv-about-final-panel"));
     if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       items.forEach(el => el.classList.add("vv-about-revealed"));
       return;
@@ -75,13 +76,6 @@ const strengths = [
   {value:"06",label:"creative disciplines",detail:"One studio for strategy, design, film and digital experiences"},
   {value:"01",label:"connected creative process",detail:"Your idea moves from discovery to delivery with clarity"},
   {value:"∞",label:"stories worth telling",detail:"From independent creators to brands and organisations"}
-];
-const principles = [
-  {title:"Built around your story",description:"No two clients have the same vision. We begin by understanding your people, goals and the experience you want to create.",detail:"The brief shapes the work",icon:Target},
-  {title:"Creativity with direction",description:"Beautiful is a starting point, not the finish line. We bring clarity, strategy and a reason to every decision.",detail:"Intentional, not just attractive",icon:Sparkles},
-  {title:"One connected creative team",description:"Branding, design, photography, film and digital thinking work better when the experience feels like one story.",detail:"Many disciplines, one vision",icon:Layers3},
-  {title:"Craft in every frame",description:"Details matter: light, composition, typography, transitions, accessibility and the final handover.",detail:"Care from concept to delivery",icon:CheckCircle2},
-  {title:"A partnership, not a handoff",description:"We listen, share progress, invite feedback and aim for a process that feels as good as the finished work.",detail:"Built through collaboration",icon:HeartHandshake}
 ];
 const toolkit = [
   {name:"Figma",type:"UI & experience"},
@@ -181,21 +175,7 @@ export function VisualVerseAboutEditorial() {
       </div>
     </section>
 
-    <section className="vv-about-principles vv-about-pad" id="our-approach">
-      <div className="vv-about-container">
-        <AboutHeading label="HOW WE WORK" title={<>Five principles behind every <em>creative story.</em></>}/>
-        <div className="vv-about-principle-stack">{principles.map((item,i)=><article key={item.title} className={"vv-about-principle-feature "+(i%2?"is-dark":"is-light")}>
-          <div className="vv-about-feature-copy"><h3>{item.title}</h3><p>{item.description}</p><span className="vv-about-feature-detail">{item.detail} <ArrowUpRight size={15}/></span></div>
-          <div className="vv-about-feature-art" aria-hidden="true">
-            {i===0&&<div className="vv-about-art-flow"><span>DISCOVER</span><i/><span>CREATE</span><i/><span>DELIVER</span></div>}
-            {i===1&&<div className="vv-about-art-chart"><span/><span/><span/><span/><span/><span/><span/><span/><i className="vv-about-chart-guide"/></div>}
-            {i===2&&<div className="vv-about-art-bars"><i/><i/><i/><i/><i/></div>}
-            {i===3&&<div className="vv-about-art-checks"><span>✓ &nbsp; Design refinement</span><span>✓ &nbsp; Creative consistency</span><span>✓ &nbsp; Final quality review</span></div>}
-            {i===4&&<div className="vv-about-art-orbit"><span className="vv-about-orbit-satellite" aria-hidden="true"/><HeartHandshake size={32}/></div>}
-          </div>
-        </article>)}</div>
-      </div>
-    </section>
+    <VisualVerseHowWeWork />
 
     <section className="vv-about-tools vv-about-pad" id="our-toolbox">
       <div className="vv-about-container vv-about-tools-grid">
