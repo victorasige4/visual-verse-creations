@@ -1,0 +1,156 @@
+name: Temporary services references and process inspection
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/temporary-services-reference.yml']
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: |
+          npm install --no-save --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Capture reference sites and process interactions
+        run: |
+          cat > .inspect-services-reference.mjs <<'JS'
+          import { chromium } from 'playwright';
+          import fs from 'node:fs';
+          fs.mkdirSync('services-ref',{recursive:true});
+          const browser=await chromium.launch({headless:true});
+          const targets=[
+            ['potadot','https://potadot.com.my/services'],
+            ['visual-verse-original','https://visual-verse-studio.netlify.app/services'],
+            ['visual-verse-current','http://127.0.0.1:5173/services.html']
+          ];
+          const viewports=[['desktop',1440,900],['mobile',390,844]];
+          for(const [site,url] of targets)for(const [view,width,height] of viewports){
+            const page=await browser.newPage({viewport:{width,height},deviceScaleFactor:1,reducedMotion:'no-preference'});
+            const prefix='services-ref/'+site+'-'+view;
+            try{
+              await page.goto(url,{waitUntil:'domcontentloaded',timeout:55000});
+              await page.waitForTimeout(3200);
+              const heads=await page.locator('h1,h2,h3').allTextContents();
+              const dims=await page.evaluate(()=>({title:document.title,href:location.href,bodyHeight:document.body.scrollHeight,
+                fonts:document.fonts?.status,background:getComputedStyle(document.body).backgroundColor,ready:document.readyState}));
+              fs.writeFileSync(prefix+'-headings.json',JSON.stringify({heads,dims},null,2));
+              await page.screenshot({path:prefix+'-hero.png',animations:'disabled'});
+              const processCandidates=page.getByText('Our process',{exact:true});
+              const hasProcess=await processCandidates.count()>0;
+              const overview=await page.evaluate(()=>{
+                const hs=Array.from(document.querySelectorAll('h1,h2,h3,h4'));
+                const out=[];
+                for(const h of hs){
+                  const r=h.getBoundingClientRect();
+                  out.push({text:h.textContent?.trim(),top:Math.round(r.top+window.scrollY),
+                    tag:h.tagName,cls:h.className,parentClass:h.parentElement?.className?.toString().slice(0,130)});
+                }
+                return out;
+              });
+              fs.writeFileSync(prefix+'-outline.json',JSON.stringify(overview,null,2));
+              if(site==='potadot' && hasProcess){
+                const processHead=processCandidates.first();
+                await processHead.scrollIntoViewIfNeeded();
+                const sectionData=await processHead.evaluate(h=>{
+                  const section=h.closest('section')||h.parentElement?.parentElement?.parentElement;
+                  if(!section)return {error:'section not found'};
+                  const rect=section.getBoundingClientRect();
+                  const styles=(e)=>{
+                    const r=e.getBoundingClientRect(),s=getComputedStyle(e);
+                    return {tag:e.tagName,tagText:e.textContent?.trim().slice(0,120),
+                      className:typeof e.className==='string'?e.className.slice(0,140):'',
+                      x:Math.round(r.x-rect.x),y:Math.round(r.y-rect.y),w:Math.round(r.width),h:Math.round(r.height),
+                      bg:s.backgroundColor,color:s.color,opacity:s.opacity,position:s.position,display:s.display,
+                      grid:s.gridTemplateColumns,overflow:s.overflow,transition:s.transition,transform:s.transform,
+                      animation:s.animation,boxShadow:s.boxShadow,borderRadius:s.borderRadius,padding:s.padding,
+                      fontSize:s.fontSize,fontWeight:s.fontWeight,fontFamily:s.fontFamily,
+                      textAlign:s.textAlign,
+                    };
+                  };
+                  return {rect:styles(section),html:section.outerHTML.slice(0,220000),
+                    nodes:Array.from(section.querySelectorAll('h1,h2,h3,h4,p,button,a,li,svg,canvas,video,[class*="step"],[class*="Step"],[class*="process"],[class*="Process"]'))
+                      .filter(el=>{const r=el.getBoundingClientRect();return r.width>40&&r.height>12}).slice(0,150).map(styles)};
+                });
+                fs.writeFileSync(prefix+'-process-dom.json',JSON.stringify(sectionData,null,2));
+                await processHead.scrollIntoViewIfNeeded();
+                await page.waitForTimeout(700);
+                const startY=await processHead.evaluate(h=>h.getBoundingClientRect().top+window.scrollY);
+                for(let i=0;i<9;i++){
+                  const y=Math.round(startY + (i-1)*height*.65);
+                  await page.evaluate(y=>window.scrollTo({top:y,behavior:'instant'}),y);
+                  await page.waitForTimeout(500);
+                  await page.screenshot({path:prefix+'-process-scroll-'+i+'.png',animations:'allow'});
+                  const data=await page.evaluate(()=>{
+                    const items=Array.from(document.querySelectorAll('[class*="process"],[class*="Process"],[class*="step"],[class*="Step"]'))
+                      .filter(e=>{const r=e.getBoundingClientRect();return r.width>50&&r.height>14&&r.top<innerHeight&&r.bottom>0})
+                      .slice(0,85).map(e=>{
+                        const r=e.getBoundingClientRect(),s=getComputedStyle(e);
+                        return {cl:typeof e.className==='string'?e.className.slice(0,90):'',
+                          text:e.textContent?.trim().slice(0,100),top:Math.round(r.top),h:Math.round(r.height),
+                          opacity:s.opacity,transform:s.transform,background:s.backgroundColor};
+                      });
+                    return {scrollY:window.scrollY,items};
+                  });
+                  fs.writeFileSync(prefix+'-process-scroll-'+i+'.json',JSON.stringify(data,null,2));
+                }
+                const controls=processHead.locator('xpath=ancestor::section[1]').locator('button, a, [role="button"], [tabindex="0"]');
+                for(let i=0;i<Math.min(await controls.count(),12);i++){
+                  const btn=controls.nth(i);
+                  const r=await btn.boundingBox();
+                  if(!r||r.width<20||r.height<20)continue;
+                  try{
+                    await btn.hover({force:true,timeout:2200});
+                    await page.waitForTimeout(200);
+                    await page.screenshot({path:prefix+'-process-hover-'+i+'.png',animations:'allow'});
+                    if(r.width>100&&r.height>40){
+                      await btn.click({force:true,timeout:2200});
+                      await page.waitForTimeout(400);
+                      await page.screenshot({path:prefix+'-process-click-'+i+'.png',animations:'allow'});
+                    }
+                  }catch(e){console.log('control',i,String(e).slice(0,180))}
+                }
+              }else if(site==='visual-verse-original'){
+                const snippets=await page.evaluate(()=>{
+                  const selectors=['section','[class*="service"]','[class*="process"]'];
+                  const result=[];
+                  for(const el of document.querySelectorAll(selectors.join(','))){
+                    const r=el.getBoundingClientRect();
+                    if(r.width<120||r.height<80||r.height>2200)continue;
+                    const c=typeof el.className==='string'?el.className:'';
+                    result.push({tag:el.tagName,cl:c.slice(0,90),text:el.textContent?.trim().slice(0,380),w:Math.round(r.width),h:Math.round(r.height),y:Math.round(r.top+window.scrollY)});
+                  }
+                  return result.slice(0,100);
+                });
+                fs.writeFileSync(prefix+'-sections.json',JSON.stringify(snippets,null,2));
+                const yPositions=[.25,.52,.78];
+                for(let i=0;i<yPositions.length;i++){
+                  await page.evaluate(t=>window.scrollTo({top:document.body.scrollHeight*t,behavior:'instant'}),yPositions[i]);
+                  await page.waitForTimeout(400);
+                  await page.screenshot({path:prefix+'-scroll-'+i+'.png',animations:'disabled'});
+                }
+              }else if(site==='visual-verse-current'){
+                for(let i=0;i<3;i++){
+                  await page.evaluate(y=>window.scrollTo({top:document.body.scrollHeight*y,behavior:'instant'}),(.24+.26*i));
+                  await page.waitForTimeout(200);
+                  await page.screenshot({path:prefix+'-scroll-'+i+'.png',animations:'disabled'});
+                }
+              }
+              console.log(site,view,JSON.stringify({dims,headings:heads.slice(0,18),process:hasProcess}));
+            }catch(error){fs.writeFileSync(prefix+'-error.txt',String(error));console.log('ERROR',site,view,String(error));}
+            finally{await page.close();}
+          }
+          await browser.close();
+          JS
+          npm run dev -- --host 127.0.0.1 --port 5173 >/tmp/vv-services-vite.log 2>&1 &
+          sleep 3
+          node .inspect-services-reference.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: services-reference-analysis
+          path: services-ref/
+          retention-days: 3
