@@ -94,3 +94,7 @@ const waRoot = document.createElement("div");
 waRoot.id = "vv-whatsapp-root";
 document.body.appendChild(waRoot);
 createRoot(waRoot).render(<WhatsAppFloating />);
+
+import "./resizable-navbar.css";
+import "./tt-travels.css";
+import "./who-we-are-scroll.css";
