@@ -1,0 +1,88 @@
+name: Temporary CTA word animation browser verification
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-cta-words.yml'
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Verify text reveal at desktop and mobile
+        run: |
+          cat > .verify-cta-words.mjs <<'JS'
+          import { chromium } from 'playwright';
+          import fs from 'node:fs';
+          fs.mkdirSync('cta-motion-proof',{recursive:true});
+          const browser=await chromium.launch({headless:true});
+          const summary=[];
+          const sample=async page=>{
+            return await page.locator('#vv-cta-title').evaluate(el=>{
+              const words=Array.from(el.querySelectorAll('.vv-cta-word'));
+              return {
+                visible:el.getBoundingClientRect().top<innerHeight,
+                states:words.map((word,i)=>{
+                  const css=getComputedStyle(word);
+                  return {i,text:word.textContent,opacity:css.opacity,transform:css.transform,filter:css.filter,
+                    animations:word.getAnimations().map(a=>({playState:a.playState,currentTime:a.currentTime,
+                      duration:a.effect?.getTiming()?.duration,delay:a.effect?.getTiming()?.delay}))};
+                })
+              };
+            });
+          };
+          for(const [name,w,h] of [['desktop',1440,900],['mobile',390,844]]){
+            const page=await browser.newPage({viewport:{width:w,height:h},reducedMotion:'no-preference'});
+            const errors=[];
+            page.on('pageerror',error=>errors.push(String(error)));
+            await page.goto('http://127.0.0.1:5173/about.html',{waitUntil:'domcontentloaded'});
+            await page.waitForSelector('#vv-cta-title .vv-cta-word');
+            await page.waitForTimeout(400);
+            await page.locator('#vv-cta-title').scrollIntoViewIfNeeded();
+            await page.waitForTimeout(320);
+            const during=await sample(page);
+            await page.locator('#lets-create').screenshot({path:'cta-motion-proof/'+name+'-during.png',animations:'allow'});
+            await page.waitForTimeout(700);
+            const middle=await sample(page);
+            await page.waitForTimeout(1400);
+            const settled=await sample(page);
+            await page.locator('#lets-create').screenshot({path:'cta-motion-proof/'+name+'-settled.png',animations:'allow'});
+            summary.push({name,errors,during,middle,settled});
+            if(!during.states.some(word=>word.animations.length>0&&word.animations.some(a=>a.playState==='running'))){
+              throw new Error(name+': No active word animation after heading entered viewport');
+            }
+            if(errors.length)throw new Error(name+': page errors '+errors.join(' | '));
+            await page.close();
+          }
+          const reduced=await browser.newPage({viewport:{width:390,height:844},reducedMotion:'reduce'});
+          await reduced.goto('http://127.0.0.1:5173/about.html',{waitUntil:'domcontentloaded'});
+          await reduced.waitForSelector('#vv-cta-title .vv-cta-word');
+          await reduced.locator('#vv-cta-title').scrollIntoViewIfNeeded();
+          await reduced.waitForTimeout(200);
+          const reducedState=await sample(reduced);
+          summary.push({name:'reduced-motion',reducedState});
+          if(reducedState.states.some(x=>x.opacity!=='1'||x.animations.length>0)){
+            throw new Error('Reduced motion did not show static visible heading');
+          }
+          fs.writeFileSync('cta-motion-proof/results.json',JSON.stringify(summary,null,2));
+          console.log(JSON.stringify(summary.map(x=>({name:x.name,duringAnimations:x.during?.states.filter(y=>y.animations.length>0).length,
+            duringFirst:x.during?.states[0],middleLast:x.middle?.states.at(-1),reducedVisible:x.reducedState?.states.every(y=>y.opacity==='1')})),null,2));
+          await browser.close();
+          JS
+          npm run dev -- --host 127.0.0.1 --port 5173 >/tmp/cta-vite.log 2>&1 &
+          sleep 3
+          node .verify-cta-words.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cta-word-animation-proof
+          path: cta-motion-proof/
+          retention-days: 2
