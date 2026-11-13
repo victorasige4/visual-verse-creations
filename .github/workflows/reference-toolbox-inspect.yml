@@ -77,6 +77,19 @@ jobs:
                   if(handle.asElement()) await handle.asElement().screenshot({path:'toolbox-reference/'+name+'-'+viewport+'.png', animations:'disabled',timeout:12000});
                   else await page.screenshot({path:'toolbox-reference/'+name+'-'+viewport+'.png'});
                 }else await page.screenshot({path:'toolbox-reference/'+name+'-'+viewport+'.png'});
+                try {
+                  const selector = name === 'potadot' ? '.o3-chip' : '.vv-potbx-chip';
+                  const firstTool = page.locator(selector).first();
+                  if (await firstTool.count()) {
+                    await firstTool.hover({force:true});
+                    await page.waitForTimeout(350);
+                    const section = page.locator(name === 'potadot' ? 'section.toolbox' : '#our-toolbox');
+                    if (await section.count()) await section.screenshot({
+                      path:'toolbox-reference/'+name+'-'+viewport+'-hover.png',
+                      animations:'disabled',timeout:12000
+                    });
+                  }
+                } catch (error) { console.log('Hover screenshot skipped: '+String(error)); }
                 console.log(name,viewport,JSON.stringify({url:info.url,error:info.error,elements:info.elements?.length,sectionHeight:info.sectionHeight}));
               }catch(error){writeFileSync('toolbox-reference/'+name+'-'+viewport+'-error.txt',String(error));console.log(name,viewport,'ERROR',String(error));}
               finally{await page.close();}
