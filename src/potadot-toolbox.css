@@ -167,3 +167,73 @@
     animation:none!important;transition:none!important;
   }
 }
+
+
+/* Final polish: magnetic instruments, a single live connection, and a quiet
+   pointer halo. The original compact Potadot-style geometry remains intact. */
+.vv-potbx-world::after {
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(210px circle at var(--vv-potbx-spot-x,50%) var(--vv-potbx-spot-y,50%),
+    rgba(46,196,182,.16),rgba(46,196,182,.04) 45%,transparent 78%);
+  opacity:0;transition:opacity .36s ease;
+}
+.vv-potbx-world.is-pointer-live::after{opacity:1}
+.vv-potbx-connection {
+  position:absolute;inset:0;width:100%;height:100%;z-index:1;
+  overflow:visible;pointer-events:none;
+  filter:drop-shadow(0 0 4px rgba(46,196,182,.22));
+}
+.vv-potbx-centre{transition:border-color .35s,box-shadow .42s,background .35s}
+.vv-potbx-centre.is-connected{
+  border-color:#88dccc;
+  background:radial-gradient(circle at 50% 42%,#ffffff 43%,#edfbf5 100%);
+  box-shadow:0 19px 55px rgba(0,63,92,.16),0 0 0 11px rgba(46,196,182,.12),0 0 33px rgba(46,196,182,.23);
+}
+.vv-potbx-magnet {
+  display:grid;place-items:center;
+  width:100%;height:100%;
+  transform:translate3d(var(--vv-potbx-magnet-x,0px),var(--vv-potbx-magnet-y,0px),0);
+  transition:transform .18s cubic-bezier(.2,1,.36,1);
+  will-change:transform;
+}
+.vv-potbx-world.has-focus .vv-potbx-tool:not(.is-related) .vv-potbx-tool-drift {
+  opacity:.61;filter:saturate(.8);
+}
+.vv-potbx-tool-drift {
+  transition:transform .26s cubic-bezier(.2,1,.32,1),box-shadow .26s,
+    border-color .26s,opacity .38s,filter .38s;
+}
+.vv-potbx-world.has-focus .vv-potbx-tool.is-active .vv-potbx-tool-drift {
+  border-color:#2ec4b6;
+  box-shadow:0 18px 32px rgba(0,63,92,.23),0 0 0 5px rgba(46,196,182,.18);
+}
+.vv-potbx-section.is-revealed .vv-potbx-tool{
+  animation:vvpotbx-arrive .75s cubic-bezier(.22,1,.36,1) both;
+  animation-delay:calc(var(--potbx-index,0) * 45ms);
+}
+.vv-potbx-section.is-revealed .vv-potbx-centre{
+  animation:vvpotbx-centre-arrive .85s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes vvpotbx-arrive {
+  from{opacity:0;filter:blur(7px)}
+  to{opacity:1;filter:blur(0)}
+}
+@keyframes vvpotbx-centre-arrive {
+  from{opacity:0;scale:.89;filter:blur(6px)}
+  to{opacity:1;scale:1;filter:blur(0)}
+}
+.vv-potbx-readout-copy strong{transition:color .25s}
+.vv-potbx-world.has-focus + .vv-potbx-bottom .vv-potbx-readout-copy strong {color:#087f7b}
+@media(hover:none), (max-width:730px) {
+  .vv-potbx-world::after,.vv-potbx-connection {display:none}
+  .vv-potbx-magnet{transform:none!important;transition:none}
+  .vv-potbx-world.has-focus .vv-potbx-tool:not(.is-related) .vv-potbx-tool-drift{opacity:1;filter:none}
+  .vv-potbx-section.is-revealed .vv-potbx-tool{animation-duration:.35s;animation-delay:0ms}
+}
+@media(prefers-reduced-motion:reduce){
+  .vv-potbx-world::after,.vv-potbx-connection {display:none!important}
+  .vv-potbx-magnet{transform:none!important;will-change:auto}
+  .vv-potbx-section.is-revealed .vv-potbx-tool,.vv-potbx-section.is-revealed .vv-potbx-centre {
+    animation:none!important;opacity:1!important;filter:none!important;scale:1!important;
+  }
+}

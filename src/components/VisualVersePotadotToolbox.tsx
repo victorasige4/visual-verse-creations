@@ -1,4 +1,4 @@
-import { useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import "../potadot-toolbox.css";
 
@@ -51,8 +51,41 @@ export function VisualVersePotadotToolbox() {
   const current = focused ?? selected;
   const active = current === null ? null : tools[current];
   const reduceMotion = Boolean(useReducedMotion());
+  const sectionRef = useRef<HTMLElement>(null);
+  const [revealed,setRevealed] = useState(false);
 
-  return <section id="our-toolbox" className="vv-about-tools vv-potbx-section vv-about-pad" aria-labelledby="vv-potbx-heading">
+  // Reveal the tool marks on entry without autoplay or a layout shift.
+  useEffect(() => {
+    const element = sectionRef.current;
+    if (!element) return;
+    if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setRevealed(true);
+      return;
+    }
+    const observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        setRevealed(true);
+        observer.disconnect();
+      }
+    },{threshold:0.13,rootMargin:"0px 0px -45px 0px"});
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  const moveMagnet = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    if (reduceMotion || event.pointerType !== "mouse") return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = Math.max(-6,Math.min(6,((event.clientX - rect.left) / rect.width - .5) * 12));
+    const y = Math.max(-6,Math.min(6,((event.clientY - rect.top) / rect.height - .5) * 12));
+    event.currentTarget.style.setProperty("--vv-potbx-magnet-x",x.toFixed(2)+"px");
+    event.currentTarget.style.setProperty("--vv-potbx-magnet-y",y.toFixed(2)+"px");
+  };
+  const clearMagnet = (element: HTMLButtonElement) => {
+    element.style.removeProperty("--vv-potbx-magnet-x");
+    element.style.removeProperty("--vv-potbx-magnet-y");
+  };
+
+  return <section id="our-toolbox" className={"vv-about-tools vv-potbx-section vv-about-pad"+(revealed?" is-revealed":"")} ref={sectionRef} aria-labelledby="vv-potbx-heading">
     <div className="vv-about-container vv-potbx-container">
       <header className="vv-potbx-intro">
         <div>
@@ -63,8 +96,37 @@ export function VisualVersePotadotToolbox() {
       </header>
 
       <div className="vv-potbx-display">
-        <div className="vv-potbx-world">
-          <div className="vv-potbx-centre" aria-label="Visual Verse Creations">
+        <div className={"vv-potbx-world"+(active?" has-focus":"")}
+          onPointerEnter={e=>{if(e.pointerType==="mouse" && !reduceMotion)e.currentTarget.classList.add("is-pointer-live")}}
+          onPointerMove={e=>{
+            if(e.pointerType!=="mouse" || reduceMotion)return;
+            const rect=e.currentTarget.getBoundingClientRect();
+            e.currentTarget.style.setProperty("--vv-potbx-spot-x",(e.clientX-rect.left).toFixed(1)+"px");
+            e.currentTarget.style.setProperty("--vv-potbx-spot-y",(e.clientY-rect.top).toFixed(1)+"px");
+          }}
+          onPointerLeave={e=>{e.currentTarget.classList.remove("is-pointer-live");setFocused(null)}}>
+          <svg className="vv-potbx-connection" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="vv-potbx-light-path" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#2ec4b6" stopOpacity=".23"/>
+                <stop offset="65%" stopColor="#2ec4b6" stopOpacity=".85"/>
+                <stop offset="100%" stopColor="#003f5c" stopOpacity=".45"/>
+              </linearGradient>
+            </defs>
+            <AnimatePresence>
+              {active&&<motion.line key={active.icon} x1="50" y1="50" x2={active.x} y2={active.y}
+                vectorEffect="non-scaling-stroke" stroke="url(#vv-potbx-light-path)" strokeWidth={1.5}
+                strokeLinecap="round"
+                initial={reduceMotion?false:{opacity:0,pathLength:0}}
+                animate={{opacity:.85,pathLength:1}} exit={{opacity:0}}
+                transition={{duration:reduceMotion?0:.44,ease:[.2,1,.3,1]}}/>}
+            </AnimatePresence>
+            {active&&!reduceMotion&&<motion.circle key={"signal-"+active.icon} r=".43" fill="#2ec4b6"
+              cx="50" cy="50" initial={{opacity:0}}
+              animate={{cx:[50,active.x],cy:[50,active.y],opacity:[0,1,0]}}
+              transition={{duration:2.2,repeat:Infinity,ease:"easeInOut"}}/>}
+          </svg>
+          <div className={"vv-potbx-centre"+(active?" is-connected":"")} aria-label="Visual Verse Creations">
             <img src={import.meta.env.BASE_URL+"logo-mark.png"} alt="Visual Verse Creations logo"/>
           </div>
           <div className="vv-potbx-tool-cloud" role="group" aria-label="Explore the software in our toolbox">
@@ -73,22 +135,38 @@ export function VisualVersePotadotToolbox() {
                 "--potbx-x": tool.x+"%",
                 "--potbx-y": tool.y+"%",
                 "--potbx-delay": tool.delay+"s",
+                "--potbx-index": index,
               } as CSSProperties;
               return <button type="button" key={tool.name}
-                className={"vv-potbx-tool"+(current===index?" is-active":"")+(tool.icon==="flow"?" is-wordmark":"")}
+                className={"vv-potbx-tool"+(current===index?" is-active":"")+(active&&active.group===tool.group?" is-related":"")+(tool.icon==="flow"?" is-wordmark":"")}
                 title={tool.name}
                 aria-label={"Explore "+tool.name}
                 aria-pressed={selected===index}
                 style={style}
                 data-cursor="EXPLORE"
                 onPointerEnter={e=>{if(e.pointerType==="mouse")setFocused(index)}}
-                onPointerLeave={e=>{if(e.pointerType==="mouse")setFocused(null)}}
+                onPointerMove={moveMagnet}
+                onPointerLeave={e=>{clearMagnet(e.currentTarget);if(e.pointerType==="mouse")setFocused(null)}}
                 onFocus={()=>setFocused(index)}
                 onBlur={()=>setFocused(null)}
                 onClick={()=>setSelected(previous=>previous===index?null:index)}
+                onKeyDown={event=>{
+                  if(event.key==="Escape"){setSelected(null);setFocused(null);return;}
+                  const step=(event.key==="ArrowRight"||event.key==="ArrowDown")?1:
+                    (event.key==="ArrowLeft"||event.key==="ArrowUp")?-1:0;
+                  if(step){
+                    event.preventDefault();
+                    const next=(index+step+tools.length)%tools.length;
+                    const buttons=event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>(".vv-potbx-tool");
+                    buttons?.[next]?.focus();
+                    setSelected(next);
+                  }
+                }}
               >
-                <span className="vv-potbx-tool-drift">
-                  <img src={svg(tool)} alt="" loading="lazy" aria-hidden="true"/>
+                <span className="vv-potbx-magnet">
+                  <span className="vv-potbx-tool-drift">
+                    <img src={svg(tool)} alt="" loading="lazy" aria-hidden="true"/>
+                  </span>
                 </span>
                 <span className="vv-potbx-tool-tooltip" aria-hidden="true">{tool.name}</span>
               </button>;
@@ -97,7 +175,7 @@ export function VisualVersePotadotToolbox() {
         </div>
         <div className="vv-potbx-bottom">
           <div className="vv-potbx-readout" aria-live="polite" aria-atomic="true">
-            <div className="vv-potbx-prompt"><i aria-hidden="true"/>{active?"IN FOCUS":"HOVER A TOOL"}</div>
+            <div className="vv-potbx-prompt"><i aria-hidden="true"/>{active?"CREATIVE SIGNAL / IN FOCUS":"HOVER OR TAP A TOOL"}</div>
             <AnimatePresence mode="wait" initial={false}>
               <motion.div key={active?.icon??"default"} className="vv-potbx-readout-copy"
                 initial={reduceMotion?false:{opacity:0,y:8}}
