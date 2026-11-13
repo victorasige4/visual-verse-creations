@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import {
-  ArrowUpRight, ArrowRight, Sparkles, Building2, Rocket, Camera,
-  RefreshCw, Check, Play, MousePointer2, Palette, PenTool, Globe2,
-  MonitorSmartphone, Clapperboard, Heart, CircleDot, Instagram, Film,
-  Aperture, Zap, ChevronRight, Mic2, Smartphone, MousePointerClick
+  ArrowUpRight, Sparkles, Building2, Rocket, Camera,
+  RefreshCw, Play, Globe2, Clapperboard, Heart, CircleDot,
+  Film, Aperture, Zap, MousePointerClick
 } from "lucide-react";
 import "../audiences-creative.css";
 
@@ -27,7 +26,7 @@ function BrandUniverse({active}:{active:boolean}) {
   const [remix,setRemix]=useState(0);
   const m=brandMoods[mood];
   useEffect(()=>{ if(!active)return; const id=window.setInterval(()=>setRemix(v=>v+1),4200);return ()=>clearInterval(id);},[active]);
-  return <div className="vvcr-brand vvcr-scene" style={{"--scene-bg":m.bg,"--scene-fg":m.fg,"--scene-accent":m.accent} as React.CSSProperties}>
+  return <div className="vvcr-brand vvcr-scene" style={{"--scene-bg":m.bg,"--scene-fg":m.fg,"--scene-accent":m.accent} as CSSProperties}>
     <div className="vvcr-brand-grid" aria-hidden="true"/>
     <div className="vvcr-scene-top"><span className="vvcr-live"><i/> IDENTITY EXPERIMENT / LIVE</span><span>CREATIVE LAB NO. 01</span></div>
     <div className="vvcr-brand-orbit" aria-hidden="true"><span/><span/><span/><b>✳</b></div>
