@@ -175,3 +175,18 @@
   }
   .vv-industry-card{opacity:1!important;transform:none!important}
 }
+
+
+/* Screenshot QA against Potadot at 1440px and 390px: match reference
+   1168px desktop grid, 358px mobile cards and section top offsets. */
+#our-audiences .vv-industry-container{
+  max-width:1168px!important;
+  width:min(1168px,calc(100% - 48px))!important;
+}
+.vv-about-editorial .vv-about-audiences.vv-industry-section{padding-top:100px}
+.vv-industry-card.is-on .vv-industry-watermark{opacity:.085}
+.vv-industry-watermark{opacity:.055}
+@media(max-width:700px){
+  #our-audiences .vv-industry-container{width:calc(100% - 32px)!important}
+  .vv-about-editorial .vv-about-audiences.vv-industry-section{padding-top:52px}
+}
