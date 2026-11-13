@@ -1,199 +1,283 @@
-import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import "../potadot-toolbox.css";
 
 /**
- * Potadot-style Our Toolbox: 18 compact software marks in a loose, balanced
- * constellation, the studio's actual mark at the centre and an interactive
- * "Hover a tool" readout beneath. No oversized icon cards or decorative rings.
+ * Three elliptical tool orbits — composed to match the actual layout and
+ * interaction of Potadot's About-page "Our toolbox".
  *
- * All tool symbols are sourced brand SVGs. Google Flow uses the original Google
- * Flow mark archived on Wikimedia Commons; all others are local SVG assets.
+ * The artwork, names, descriptions and labels are Visual Verse's own.
+ * Three six-item rings use depth-driven scale/blur/opacity (rather than
+ * static scattered logo tiles). Animation pauses on hover, keyboard focus
+ * or touch selection. Reduced motion displays the same composition still.
  */
-type Tool = {
-  name: string;
-  icon: string;
-  group: string;
-  description: string;
-  x: number;
-  y: number;
-  delay: number;
-  external?: string;
-};
+
+type Ring = 0 | 1 | 2;
+type Tool = { name: string; ring: Ring; detail: string };
+type Dimensions = { width: number; mobile: boolean };
+type Position = { x: number; y: number; scale: number; opacity: number; blur: number; z: number };
 
 const tools: Tool[] = [
-  {name:"Figma",icon:"figma",group:"Design & identity",description:"Prototyping, interface design and visual collaboration.",x:8,y:21,delay:-1.1},
-  {name:"Photoshop",icon:"photoshop",group:"Design & identity",description:"Image composition, retouching and graphic design.",x:24,y:13,delay:-2.3},
-  {name:"Illustrator",icon:"illustrator",group:"Design & identity",description:"Distinctive vector graphics and brand identities.",x:42,y:17,delay:-1.7},
-  {name:"Lightroom",icon:"lightroom",group:"Photo, film & motion",description:"Light, colour and the final touch on every photograph.",x:60,y:11,delay:-3.1},
-  {name:"Premiere Pro",icon:"premiere",group:"Photo, film & motion",description:"Editing stories with pacing, rhythm and purpose.",x:78,y:19,delay:-.4},
-  {name:"After Effects",icon:"aftereffects",group:"Photo, film & motion",description:"Movement, motion graphics and animated storytelling.",x:92,y:12,delay:-1.5},
-  {name:"CapCut",icon:"capcut",group:"Photo, film & motion",description:"Agile short-form edits for digital-first stories.",x:11,y:45,delay:-2.1},
-  {name:"Cursor",icon:"cursor",group:"Digital & strategy",description:"Moving from visual ideas to working websites.",x:27,y:39,delay:-.8},
-  {name:"Google Flow",icon:"flow",group:"Digital & strategy",description:"Exploring new ways to develop visual concepts.",x:10,y:68,delay:-2.7,external:"https://upload.wikimedia.org/wikipedia/commons/5/52/Google_Flow_logo.svg"},
-  {name:"ChatGPT",icon:"chatgpt",group:"Digital & strategy",description:"Research, brainstorming and refining creative direction.",x:76,y:40,delay:-1.4},
-  {name:"Semrush",icon:"semrush",group:"Digital & strategy",description:"Search research and digital audience insights.",x:92,y:38,delay:-3.4},
-  {name:"GitHub",icon:"github",group:"Digital & strategy",description:"Collaborating on, reviewing and shipping digital work.",x:89,y:64,delay:-.5},
-  {name:"React",icon:"react",group:"Digital & strategy",description:"Building modern, interactive web experiences.",x:10,y:89,delay:-1.9},
-  {name:"Tailwind CSS",icon:"tailwind",group:"Digital & strategy",description:"Creating responsive visual design systems.",x:28,y:82,delay:-2.2},
-  {name:"TypeScript",icon:"typescript",group:"Digital & strategy",description:"Reliable, maintainable foundations for interfaces.",x:42,y:89,delay:-.9},
-  {name:"Vite",icon:"vite",group:"Digital & strategy",description:"Fast, modern frontend production workflows.",x:60,y:85,delay:-2.8},
-  {name:"shadcn/ui",icon:"shadcn",group:"Digital & strategy",description:"Thoughtful and accessible interface foundations.",x:77,y:82,delay:-1.2},
-  {name:"Motion",icon:"motion",group:"Digital & strategy",description:"Purposeful movement and interaction in the browser.",x:70,y:67,delay:-3.0},
+  { name: "Figma", ring: 0, detail: "Design and collaborative prototyping." },
+  { name: "Photoshop", ring: 0, detail: "Image compositing, creative artwork and retouching." },
+  { name: "Illustrator", ring: 0, detail: "Brand systems, illustrations and vector design." },
+  { name: "Lightroom", ring: 0, detail: "Photographic colour, light and finishing." },
+  { name: "Premiere Pro", ring: 0, detail: "Video stories shaped through editing." },
+  { name: "After Effects", ring: 0, detail: "Motion graphics and animated experiences." },
+  { name: "CapCut", ring: 1, detail: "Short-form video editing for digital storytelling." },
+  { name: "Google Flow", ring: 1, detail: "AI-assisted creative exploration and production." },
+  { name: "ChatGPT", ring: 1, detail: "Creative research, ideation and problem-solving." },
+  { name: "Semrush", ring: 1, detail: "Search, audience research and digital strategy." },
+  { name: "Cursor", ring: 1, detail: "Building interfaces and code-driven experiences." },
+  { name: "GitHub", ring: 1, detail: "Team collaboration, versioning and delivery." },
+  { name: "React", ring: 2, detail: "Interactive, responsive web interfaces." },
+  { name: "Tailwind CSS", ring: 2, detail: "Flexible and consistent design systems." },
+  { name: "TypeScript", ring: 2, detail: "Reliable digital development." },
+  { name: "Vite", ring: 2, detail: "Fast, modern frontend workflows." },
+  { name: "shadcn/ui", ring: 2, detail: "Accessible, reusable interface components." },
+  { name: "Motion", ring: 2, detail: "Expressive and purposeful digital animation." },
 ];
 
-const groups = ["Design & identity", "Photo, film & motion", "Digital & strategy"];
-const svg = (tool: Tool) => tool.external ?? import.meta.env.BASE_URL + "toolbox/" + tool.icon + ".svg";
+const categories = [
+  { name: "Design & visual", color: "#35be74" },
+  { name: "Creative workflow", color: "#b97747" },
+  { name: "Digital & web", color: "#0d3e48" },
+] as const;
+
+const TAU = Math.PI * 2;
+const START = [0, .6, 1.2] as const; // Matches the reference's staggered rings.
+const SPEED = [.075, -.048, .033] as const; // Radians per second.
+const clamp = (value: number, low: number, high: number) =>
+  Math.min(high, Math.max(low, value));
+
+function radii(dimensions: Dimensions, ring: Ring) {
+  const outer = dimensions.width;
+  const rxFactor = dimensions.mobile ? [.156, .2496, .358] : [.20, .32, .46];
+  const rx = outer * rxFactor[ring];
+  return { rx, ry: rx * (dimensions.mobile ? .85 : .52) };
+}
+
+function getPosition(dimensions: Dimensions, ring: Ring, slot: number, time: number): Position {
+  const { rx, ry } = radii(dimensions, ring);
+  const angle = START[ring] + slot * TAU / 6 + time * SPEED[ring];
+  const depth = Math.sin(angle);
+  const x = Math.cos(angle) * rx;
+  const y = depth * ry;
+  return {
+    x, y,
+    scale: clamp(.9 + depth * .16, .72, 1.07),
+    opacity: clamp(.71 + depth * .29, .4, 1),
+    blur: depth < -.1 ? (-depth - .1) * 1.45 : 0,
+    z: Math.round(25 + depth * 23),
+  };
+}
+
+function positionTool(element: HTMLButtonElement, position: Position, selected: boolean) {
+  const scale = selected ? position.scale * 1.115 : position.scale;
+  element.style.transform =
+    "translate(-50%, -50%) translate3d(" +
+    position.x.toFixed(2) + "px," + position.y.toFixed(2) +
+    "px,0) scale(" + scale.toFixed(3) + ")";
+  element.style.opacity = String(selected ? 1 : position.opacity);
+  element.style.filter = position.blur > 0 && !selected
+    ? "blur(" + position.blur.toFixed(2) + "px)" : "none";
+  element.style.zIndex = String(selected ? 65 : position.z);
+}
 
 export function VisualVersePotadotToolbox() {
-  const [focused,setFocused] = useState<number|null>(null);
-  const [selected,setSelected] = useState<number|null>(null);
-  const current = focused ?? selected;
-  const active = current === null ? null : tools[current];
-  const reduceMotion = Boolean(useReducedMotion());
-  const sectionRef = useRef<HTMLElement>(null);
-  const [revealed,setRevealed] = useState(false);
+  const [hovered, setHovered] = useState<number | null>(null);
+  const [selected, setSelected] = useState<number | null>(null);
+  const [dimensions, setDimensions] = useState<Dimensions>({ width: 659, mobile: false });
+  const selectedIndex = hovered ?? selected;
+  const selectedTool = selectedIndex === null ? null : tools[selectedIndex];
+  const sceneRef = useRef<HTMLDivElement | null>(null);
+  const chipRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const ringRefs = useRef<(SVGEllipseElement | null)[]>([]);
+  const cometRefs = useRef<(SVGCircleElement | null)[]>([]);
+  const beamRef = useRef<SVGLineElement | null>(null);
+  const activeRef = useRef<number | null>(null);
+  const visibleRef = useRef(true);
+  activeRef.current = selectedIndex;
 
-  // Reveal the tool marks on entry without autoplay or a layout shift.
   useEffect(() => {
-    const element = sectionRef.current;
-    if (!element) return;
-    if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setRevealed(true);
-      return;
-    }
-    const observer = new IntersectionObserver(entries => {
-      if (entries.some(entry => entry.isIntersecting)) {
-        setRevealed(true);
-        observer.disconnect();
-      }
-    },{threshold:0.13,rootMargin:"0px 0px -45px 0px"});
-    observer.observe(element);
+    const scene = sceneRef.current;
+    if (!scene) return;
+    const update = () => {
+      const width = scene.getBoundingClientRect().width;
+      const mobile = window.matchMedia("(max-width: 760px)").matches;
+      const next = mobile ? Math.min(358, Math.max(250, width - 32)) : Math.min(659, width);
+      setDimensions(previous => previous.mobile === mobile && Math.abs(previous.width - next) < 1
+        ? previous : { width: next, mobile });
+    };
+    const observer = new ResizeObserver(update);
+    observer.observe(scene);
+    update();
     return () => observer.disconnect();
   }, []);
 
-  const moveMagnet = (event: ReactPointerEvent<HTMLButtonElement>) => {
-    if (reduceMotion || event.pointerType !== "mouse") return;
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = Math.max(-6,Math.min(6,((event.clientX - rect.left) / rect.width - .5) * 12));
-    const y = Math.max(-6,Math.min(6,((event.clientY - rect.top) / rect.height - .5) * 12));
-    event.currentTarget.style.setProperty("--vv-potbx-magnet-x",x.toFixed(2)+"px");
-    event.currentTarget.style.setProperty("--vv-potbx-magnet-y",y.toFixed(2)+"px");
-  };
-  const clearMagnet = (element: HTMLButtonElement) => {
-    element.style.removeProperty("--vv-potbx-magnet-x");
-    element.style.removeProperty("--vv-potbx-magnet-y");
-  };
+  useEffect(() => {
+    const scene = sceneRef.current;
+    if (!scene) return;
+    const onVisibility = () => { visibleRef.current = !document.hidden; };
+    document.addEventListener("visibilitychange", onVisibility);
+    const intersection = new IntersectionObserver(([entry]) => {
+      visibleRef.current = Boolean(entry?.isIntersecting) && !document.hidden;
+    }, { rootMargin: "80px 0px", threshold: 0 });
+    intersection.observe(scene);
 
-  return <section id="our-toolbox" className={"vv-about-tools vv-potbx-section vv-about-pad"+(revealed?" is-revealed":"")} ref={sectionRef} aria-labelledby="vv-potbx-heading">
-    <div className="vv-about-container vv-potbx-container">
-      <header className="vv-potbx-intro">
-        <div>
-          <span className="vv-potbx-eyebrow"><span aria-hidden="true"/> OUR CREATIVE TOOLBOX</span>
-          <h2 id="vv-potbx-heading">Modern tools,<br/><em>picked for each job.</em></h2>
-        </div>
-        <p>From branding and photography to film, digital design and development, we bring the right tools together for the story in front of us.</p>
-      </header>
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let elapsed = 0;
+    let previous = performance.now();
+    let frame = 0;
 
-      <div className="vv-potbx-display">
-        <div className={"vv-potbx-world"+(active?" has-focus":"")}
-          onPointerEnter={e=>{if(e.pointerType==="mouse" && !reduceMotion)e.currentTarget.classList.add("is-pointer-live")}}
-          onPointerMove={e=>{
-            if(e.pointerType!=="mouse" || reduceMotion)return;
-            const rect=e.currentTarget.getBoundingClientRect();
-            e.currentTarget.style.setProperty("--vv-potbx-spot-x",(e.clientX-rect.left).toFixed(1)+"px");
-            e.currentTarget.style.setProperty("--vv-potbx-spot-y",(e.clientY-rect.top).toFixed(1)+"px");
-          }}
-          onPointerLeave={e=>{e.currentTarget.classList.remove("is-pointer-live");setFocused(null)}}>
-          <svg className="vv-potbx-connection" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-            <defs>
-              <linearGradient id="vv-potbx-light-path" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#2ec4b6" stopOpacity=".23"/>
-                <stop offset="65%" stopColor="#2ec4b6" stopOpacity=".85"/>
-                <stop offset="100%" stopColor="#003f5c" stopOpacity=".45"/>
-              </linearGradient>
-            </defs>
-            <AnimatePresence>
-              {active&&<motion.line key={active.icon} x1="50" y1="50" x2={active.x} y2={active.y}
-                vectorEffect="non-scaling-stroke" stroke="url(#vv-potbx-light-path)" strokeWidth={1.5}
-                strokeLinecap="round"
-                initial={reduceMotion?false:{opacity:0,pathLength:0}}
-                animate={{opacity:.85,pathLength:1}} exit={{opacity:0}}
-                transition={{duration:reduceMotion?0:.44,ease:[.2,1,.3,1]}}/>}
-            </AnimatePresence>
-            {active&&!reduceMotion&&<motion.circle key={"signal-"+active.icon} r=".43" fill="#2ec4b6"
-              cx="50" cy="50" initial={{opacity:0}}
-              animate={{cx:[50,active.x],cy:[50,active.y],opacity:[0,1,0]}}
-              transition={{duration:2.2,repeat:Infinity,ease:"easeInOut"}}/>}
-          </svg>
-          <div className={"vv-potbx-centre"+(active?" is-connected":"")} aria-label="Visual Verse Creations">
-            <img src={import.meta.env.BASE_URL+"logo-mark.png"} alt="Visual Verse Creations logo"/>
-          </div>
-          <div className="vv-potbx-tool-cloud" role="group" aria-label="Explore the software in our toolbox">
-            {tools.map((tool,index)=>{
-              const style = {
-                "--potbx-x": tool.x+"%",
-                "--potbx-y": tool.y+"%",
-                "--potbx-delay": tool.delay+"s",
-                "--potbx-index": index,
-              } as CSSProperties;
-              return <button type="button" key={tool.name}
-                className={"vv-potbx-tool"+(current===index?" is-active":"")+(active&&active.group===tool.group?" is-related":"")+(tool.icon==="flow"?" is-wordmark":"")}
-                title={tool.name}
-                aria-label={"Explore "+tool.name}
-                aria-pressed={selected===index}
-                style={style}
-                data-cursor="EXPLORE"
-                onPointerEnter={e=>{if(e.pointerType==="mouse")setFocused(index)}}
-                onPointerMove={moveMagnet}
-                onPointerLeave={e=>{clearMagnet(e.currentTarget);if(e.pointerType==="mouse")setFocused(null)}}
-                onFocus={()=>setFocused(index)}
-                onBlur={()=>setFocused(null)}
-                onClick={()=>setSelected(previous=>previous===index?null:index)}
-                onKeyDown={event=>{
-                  if(event.key==="Escape"){setSelected(null);setFocused(null);return;}
-                  const step=(event.key==="ArrowRight"||event.key==="ArrowDown")?1:
-                    (event.key==="ArrowLeft"||event.key==="ArrowUp")?-1:0;
-                  if(step){
-                    event.preventDefault();
-                    const next=(index+step+tools.length)%tools.length;
-                    const buttons=event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>(".vv-potbx-tool");
-                    buttons?.[next]?.focus();
-                    setSelected(next);
-                  }
-                }}
-              >
-                <span className="vv-potbx-magnet">
-                  <span className="vv-potbx-tool-drift">
-                    <img src={svg(tool)} alt="" loading="lazy" aria-hidden="true"/>
-                  </span>
-                </span>
-                <span className="vv-potbx-tool-tooltip" aria-hidden="true">{tool.name}</span>
-              </button>;
-            })}
-          </div>
+    const paint = (now: number) => {
+      const delta = Math.min(45, now - previous);
+      previous = now;
+      const active = activeRef.current;
+      if (visibleRef.current && !reduce.matches && active === null) elapsed += delta / 1000;
+
+      for (let ring = 0; ring < 3; ring++) {
+        const { rx, ry } = radii(dimensions, ring as Ring);
+        ringRefs.current[ring]?.setAttribute("rx", rx.toFixed(2));
+        ringRefs.current[ring]?.setAttribute("ry", ry.toFixed(2));
+        ringRefs.current[ring]?.setAttribute(
+          "stroke-dasharray", dimensions.mobile ? "2 5" : "2 7"
+        );
+        ringRefs.current[ring]?.setAttribute("opacity", active === null ? "0.78" : "0.34");
+
+        const angle = START[ring] + elapsed * SPEED[ring];
+        const comet = cometRefs.current[ring];
+        comet?.setAttribute("cx", (Math.cos(angle) * rx).toFixed(2));
+        comet?.setAttribute("cy", (Math.sin(angle) * ry).toFixed(2));
+        comet?.setAttribute("opacity", active === null ? "0.65" : "0.24");
+      }
+
+      tools.forEach((tool, index) => {
+        const element = chipRefs.current[index];
+        if (!element) return;
+        const slot = index % 6;
+        const position = getPosition(dimensions, tool.ring, slot, elapsed);
+        positionTool(element, position, active === index);
+      });
+
+      const beam = beamRef.current;
+      if (beam) {
+        if (active !== null) {
+          const tool = tools[active];
+          const position = getPosition(dimensions, tool.ring, active % 6, elapsed);
+          beam.setAttribute("x2", position.x.toFixed(2));
+          beam.setAttribute("y2", position.y.toFixed(2));
+          beam.style.opacity = "0.55";
+        } else beam.style.opacity = "0";
+      }
+      if (!reduce.matches) frame = window.requestAnimationFrame(paint);
+    };
+
+    frame = window.requestAnimationFrame(paint);
+    const onMotionChange = () => {
+      if (!reduce.matches && !frame) {
+        previous = performance.now();
+        frame = window.requestAnimationFrame(paint);
+      }
+    };
+    reduce.addEventListener("change", onMotionChange);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      intersection.disconnect();
+      reduce.removeEventListener("change", onMotionChange);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, [dimensions]);
+
+  return (
+    <section className="vv-about-tools vv-potbx-section" id="our-toolbox" aria-labelledby="vv-potbx-heading">
+      <div className="vv-about-container vv-potbx-grid">
+        <div className="vv-potbx-editorial">
+          <span className="vv-potbx-eyebrow">
+            <i aria-hidden="true"/><i aria-hidden="true"/> OUR TOOLBOX
+          </span>
+          <h2 id="vv-potbx-heading">Modern tools, picked for each job.</h2>
+          <p>
+            We combine design, photography, film, creative AI and digital development,
+            choosing the right tools to take each idea from first concept to finished experience.
+          </p>
         </div>
-        <div className="vv-potbx-bottom">
-          <div className="vv-potbx-readout" aria-live="polite" aria-atomic="true">
-            <div className="vv-potbx-prompt"><i aria-hidden="true"/>{active?"CREATIVE SIGNAL / IN FOCUS":"HOVER OR TAP A TOOL"}</div>
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div key={active?.icon??"default"} className="vv-potbx-readout-copy"
-                initial={reduceMotion?false:{opacity:0,y:8}}
-                animate={{opacity:1,y:0}}
-                exit={reduceMotion?{opacity:0}:{opacity:0,y:-7}}
-                transition={{duration:reduceMotion?0:.22}}>
-                <strong>{active?active.name:"One team, every layer."}</strong>
-                <p>{active?active.description:"One creative studio. Every discipline working together."}</p>
-              </motion.div>
-            </AnimatePresence>
+
+        <div className="vv-potbx-stage">
+          <div className="vv-potbx-scene" ref={sceneRef}>
+            <div className="vv-potbx-orbit" aria-label="Creative tools moving in three interactive rings" role="group">
+              <svg className="vv-potbx-svg"
+                viewBox={dimensions.mobile ? "-179 -193.5 358 387" : "-329.5 -263.5 659 527"}
+                width={dimensions.mobile ? 358 : 659} height={dimensions.mobile ? 387 : 527}
+                aria-hidden="true">
+                {categories.map((category, ring) => {
+                  const geometry = radii(dimensions, ring as Ring);
+                  return (
+                    <g key={category.name}>
+                      <ellipse ref={node => { ringRefs.current[ring] = node; }}
+                        rx={geometry.rx} ry={geometry.ry}
+                        stroke="#aab3bd" strokeWidth="1"
+                        strokeDasharray="2 7" fill="none" opacity=".78"/>
+                      <circle ref={node => { cometRefs.current[ring] = node; }}
+                        cx={geometry.rx} cy="0" r={dimensions.mobile ? 3 : 4}
+                        fill={category.color} opacity=".65"/>
+                    </g>
+                  );
+                })}
+                <line ref={beamRef} x1="0" y1="0" x2="0" y2="0"
+                  stroke="#35be74" strokeWidth="1.5"
+                  strokeDasharray="3 6" opacity="0"/>
+              </svg>
+
+              <div className={"vv-potbx-core" + (selectedIndex !== null ? " is-focused" : "")}>
+                <span className="vv-potbx-pulse" aria-hidden="true"/>
+                <span className="vv-potbx-pulse" aria-hidden="true"/>
+                <img src={import.meta.env.BASE_URL + "logo-mark.png"} alt="Visual Verse Creations logo"/>
+              </div>
+
+              {tools.map((tool, index) => {
+                const still = getPosition(dimensions, tool.ring, index % 6, 0);
+                const initial: CSSProperties = {
+                  transform: "translate(-50%, -50%) translate3d(" +
+                    still.x.toFixed(1) + "px," + still.y.toFixed(1) +
+                    "px,0) scale(" + still.scale.toFixed(3) + ")",
+                  opacity: still.opacity,
+                  zIndex: still.z,
+                };
+                return (
+                  <button key={tool.name} type="button"
+                    ref={node => { chipRefs.current[index] = node; }}
+                    className={"vv-potbx-chip" + (selectedIndex === index ? " is-active" : "")}
+                    style={initial}
+                    title={tool.detail}
+                    aria-pressed={selected === index}
+                    aria-label={"Explore " + tool.name}
+                    data-cursor="EXPLORE"
+                    onMouseEnter={() => setHovered(index)}
+                    onMouseLeave={() => setHovered(null)}
+                    onFocus={() => setHovered(index)}
+                    onBlur={() => setHovered(null)}
+                    onClick={() => setSelected(current => current === index ? null : index)}>
+                    <i className={"vv-potbx-chip-dot ring-" + tool.ring} aria-hidden="true"/>
+                    {tool.name}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-          <div className="vv-potbx-disciplines" aria-label="Our creative disciplines">
-            {groups.map(group=><span className={"vv-potbx-discipline"+(active?.group===group?" is-active":"")} key={group}>
-              <i aria-hidden="true"/>{group}
-            </span>)}
+          <div className="vv-potbx-caption" aria-live="polite" aria-atomic="true">
+            <small>{selectedTool ? "IN FOCUS" : "HOVER A TOOL"}</small>
+            <strong>{selectedTool ? selectedTool.name : "One team, every layer"}</strong>
+            {selectedTool && <span>{selectedTool.detail}</span>}
+          </div>
+          <div className="vv-potbx-legend" aria-label="The three disciplines in our toolbox">
+            {categories.map((category, ring) => (
+              <span key={category.name} className={selectedTool?.ring === ring ? "is-active" : ""}>
+                <i className={"ring-" + ring} aria-hidden="true"/>{category.name}
+              </span>
+            ))}
           </div>
         </div>
       </div>
-    </div>
-  </section>;
+    </section>
+  );
 }
