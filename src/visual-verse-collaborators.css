@@ -6,9 +6,9 @@
 
 .vv-about-editorial .vv-about-partners.vv-collab-section{
   --vv-collab-paper:#f2f3f7;
-  --vv-collab-ink:#242225;
+  --vv-collab-ink:#003f5c;
   --vv-collab-muted:#697382;
-  --vv-collab-mint:#29b78c;
+  --vv-collab-mint:#2ec4b6;
   position:relative;isolation:isolate;
   background:#f2f3f7;color:var(--vv-collab-ink);
   padding:clamp(80px,12vw,160px) 0;
@@ -25,15 +25,15 @@
   font-size:12px;line-height:21px;
   font-weight:850;letter-spacing:.18em;
   text-transform:uppercase;
-  color:#198969;
+  color:#0d7183;
 }
 .vv-collab-eyebrow>i{
   display:block;width:7px;height:7px;flex:0 0 7px;
-  background:#2eb879;border-radius:50%;
+  background:#2ec4b6;border-radius:50%;
 }
 .vv-collab-eyebrow>i:nth-child(2){
   width:6px;height:6px;flex-basis:6px;
-  margin-left:-2px;background:#e4b59a;
+  margin-left:-2px;background:#b4ece4;
 }
 .vv-collab-header-main{
   display:grid;grid-template-columns:minmax(0,616px) minmax(0,492px);
@@ -55,7 +55,7 @@
   font-weight:400;color:var(--vv-collab-muted);
 }
 .vv-about-editorial .vv-collab-header-main p a{
-  display:inline;color:#168c69;
+  display:inline;color:#0d7183;
   font-weight:650;text-decoration:underline;
   text-decoration-thickness:1.5px;
   text-underline-offset:3px;transition:color .25s;
@@ -89,7 +89,7 @@
 .vv-collab-icon{
   width:52px;height:52px;display:grid;place-items:center;
   border-radius:16px;
-  background:transparent;color:#20b879;
+  background:transparent;color:#2ec4b6;
   box-shadow:inset 6px 6px 14px rgba(160,166,186,.38),
              inset -6px -6px 14px rgba(255,255,255,.95);
 }

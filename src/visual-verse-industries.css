@@ -6,7 +6,7 @@
 
 .vv-about-editorial .vv-about-audiences.vv-industry-section{
   --ind-accent:#2ec4b6;--ind-dark:#158f87;--ind-paper:#f2f3f7;
-  --ind-ink:#21262d;--ind-muted:#68737d;--ind-warm:#b67a4d;
+  --ind-ink:#21262d;--ind-muted:#68737d;--ind-warm:#0d7183;
   position:relative;overflow:hidden;isolation:isolate;
   background:#f6f8fa;color:var(--ind-ink);
   padding:105px 0 98px;
@@ -27,7 +27,7 @@
   background:var(--ind-accent)
 }
 .vv-industry-eyebrow i:nth-child(2){
-  width:6px;height:6px;flex-basis:6px;margin-left:-2px;background:#d5ad8b
+  width:6px;height:6px;flex-basis:6px;margin-left:-2px;background:#b4ece4
 }
 .vv-about-editorial .vv-industry-head h2{
   max-width:740px;

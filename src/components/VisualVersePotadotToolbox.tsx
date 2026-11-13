@@ -38,9 +38,9 @@ const tools: Tool[] = [
 ];
 
 const categories = [
-  { name: "Design & visual", color: "#35be74" },
-  { name: "Creative workflow", color: "#b97747" },
-  { name: "Digital & web", color: "#0d3e48" },
+  { name: "Design & visual", color: "#2ec4b6" },
+  { name: "Creative workflow", color: "#0d7183" },
+  { name: "Digital & web", color: "#003f5c" },
 ] as const;
 
 const TAU = Math.PI * 2;
@@ -224,7 +224,7 @@ export function VisualVersePotadotToolbox() {
                   );
                 })}
                 <line ref={beamRef} x1="0" y1="0" x2="0" y2="0"
-                  stroke="#35be74" strokeWidth="1.5"
+                  stroke="#2ec4b6" strokeWidth="1.5"
                   strokeDasharray="3 6" opacity="0"/>
               </svg>
 
