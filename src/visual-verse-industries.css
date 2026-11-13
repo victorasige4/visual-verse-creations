@@ -1,0 +1,177 @@
+/* VISUAL VERSE / ABOUT — WHO WE CREATE WITH
+   Faithful structural and interaction recreation of Potadot's Industries We
+   Serve section: 3x2 soft cards, icon tilt, 01-06 indices, before/after flip,
+   bottom progress rule, translucent icon watermark, responsive one-column flow.
+   Copy and Visual Verse's brand palette remain original to this studio. */
+
+.vv-about-editorial .vv-about-audiences.vv-industry-section{
+  --ind-accent:#2ec4b6;--ind-dark:#158f87;--ind-paper:#f2f3f7;
+  --ind-ink:#21262d;--ind-muted:#68737d;--ind-warm:#b67a4d;
+  position:relative;overflow:hidden;isolation:isolate;
+  background:#f6f8fa;color:var(--ind-ink);
+  padding:105px 0 98px;
+}
+.vv-industry-container{
+  max-width:1168px!important;
+  width:min(1168px,calc(100% - 48px));
+}
+.vv-industry-container *,.vv-industry-container *:before,.vv-industry-container *:after{box-sizing:border-box}
+.vv-industry-head{margin-bottom:75px}
+.vv-industry-eyebrow{
+  display:inline-flex;gap:8px;align-items:center;
+  color:var(--ind-dark);font-size:10px;line-height:1.6;
+  font-weight:850;letter-spacing:.19em;text-transform:uppercase;
+}
+.vv-industry-eyebrow i{
+  display:inline-block;width:7px;height:7px;flex:0 0 7px;border-radius:50%;
+  background:var(--ind-accent)
+}
+.vv-industry-eyebrow i:nth-child(2){
+  width:6px;height:6px;flex-basis:6px;margin-left:-2px;background:#d5ad8b
+}
+.vv-about-editorial .vv-industry-head h2{
+  max-width:740px;
+  margin:37px 0 0;
+  color:var(--ind-ink);
+  font-size:clamp(43px,4.52vw,65px);line-height:1.03;
+  font-weight:900;letter-spacing:-.077em;
+}
+.vv-industry-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:20px;
+}
+.vv-industry-card{
+  position:relative;isolation:isolate;overflow:hidden;
+  min-height:259px;padding:26px 26px 25px;border-radius:28px;
+  background:linear-gradient(147deg,#f4f5f8 0%,#f1f2f6 67%,#eef0f4 100%);
+  box-shadow:0 15px 28px rgba(22,31,53,.085),0 3px 7px rgba(22,31,53,.016);
+  cursor:pointer;border:0;color:var(--ind-ink);outline-offset:4px;
+  transform:translateY(21px);opacity:0;
+  transition:transform .72s cubic-bezier(.22,1,.36,1),
+    opacity .72s cubic-bezier(.22,1,.36,1),
+    box-shadow .56s cubic-bezier(.22,1,.36,1),
+    background .56s ease!important;
+  transition-delay:calc(var(--vv-industry-index,0) * 75ms);
+}
+.vv-industry-section.is-revealed .vv-industry-card{transform:translateY(0);opacity:1}
+.vv-industry-card:hover{box-shadow:0 20px 38px rgba(22,31,53,.135),0 7px 18px rgba(22,31,53,.035)}
+.vv-industry-card:focus-visible{outline:3px solid var(--ind-accent);outline-offset:4px}
+.vv-industry-card-top{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:flex-start}
+.vv-industry-icon{
+  width:56px;height:56px;border-radius:19px;
+  display:grid;place-items:center;flex:0 0 56px;
+  transform:rotate(-7deg);
+  color:#474d56;background:linear-gradient(142deg,#d7dbe3,#f9fafc);
+  box-shadow:0 14px 17px rgba(20,32,53,.105);
+  transition:background .55s cubic-bezier(.22,1,.36,1),
+    color .55s,box-shadow .55s,transform .6s cubic-bezier(.22,1,.36,1)!important;
+}
+.vv-industry-card.is-on .vv-industry-icon{
+  color:#fff;
+  background:linear-gradient(135deg,#2ec4b6,#158f87);
+  box-shadow:0 12px 18px rgba(21,143,135,.21);
+  transform:rotate(-8deg);
+}
+.vv-industry-icon svg{position:relative;z-index:1}
+.vv-industry-number{
+  color:#a5abb4;font-size:11px;letter-spacing:.28em;
+  line-height:1.5;font-weight:800;
+  font-variant-numeric:tabular-nums;margin:15px 1px 0 8px;
+  transition:color .5s!important;
+}
+.vv-industry-card.is-on .vv-industry-number{color:var(--ind-dark)}
+.vv-about-editorial .vv-industry-card h3{
+  position:relative;z-index:3;
+  font-size:clamp(16px,1.5vw,21px);
+  line-height:1.19;letter-spacing:-.06em;
+  font-weight:850;margin:26px 0 0;color:var(--ind-ink);
+  max-width:100%;
+}
+.vv-industry-flip{
+  position:relative;z-index:3;
+  margin-top:31px;min-height:32px;
+  font-size:13px;line-height:1.48;font-weight:700;
+}
+.vv-industry-before,.vv-industry-after{
+  position:absolute;inset:0 auto auto 0;
+  width:100%;display:flex;align-items:flex-start;gap:9px;
+  transition:opacity .55s cubic-bezier(.22,1,.36,1),
+    transform .55s cubic-bezier(.22,1,.36,1),
+    visibility .55s!important;
+}
+.vv-industry-before{opacity:1;visibility:visible;color:var(--ind-muted);transform:translateY(0)}
+.vv-industry-after{opacity:0;visibility:hidden;color:var(--ind-dark);transform:translateY(8px)}
+.vv-industry-card.is-on .vv-industry-before{opacity:0;visibility:hidden;transform:translateY(-8px)}
+.vv-industry-card.is-on .vv-industry-after{opacity:1;visibility:visible;transform:translateY(0)}
+.vv-industry-before i,.vv-industry-after i{
+  width:8px;height:8px;flex:0 0 8px;margin-top:6px;border-radius:50%;
+  background:var(--ind-warm)
+}
+.vv-industry-after i{background:var(--ind-accent)}
+.vv-industry-watermark{
+  position:absolute;z-index:1;pointer-events:none;
+  right:-25px;bottom:-44px;width:167px;height:167px;
+  display:grid;place-items:center;transform:rotate(-13deg);
+  opacity:.085;color:#939ca9;
+  transition:opacity .58s,color .58s,transform .7s cubic-bezier(.22,1,.36,1)!important;
+}
+.vv-industry-card.is-on .vv-industry-watermark{
+  color:#1cae9f;opacity:.125;transform:rotate(-8deg);
+}
+.vv-industry-bar{
+  position:absolute;z-index:3;left:26px;right:26px;bottom:22px;height:3px;
+  border-radius:99px;
+  background:linear-gradient(90deg,#2ec4b6,#158f87);
+  transform-origin:0 50%;transform:scaleX(1);
+  transition:opacity .48s,transform .55s!important;
+}
+.vv-industry-link{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:34px;padding-bottom:2px;
+  color:var(--ind-dark);font-size:15px;font-weight:800;
+  line-height:1.4;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px;
+  transition:color .3s,gap .3s!important;
+}
+.vv-industry-link:hover{color:#003f5c;gap:13px}
+
+@media(max-width:1030px) and (min-width:701px){
+  .vv-industry-container{width:min(100% - 38px,1168px)}
+  .vv-industry-grid{gap:15px}
+  .vv-industry-card{padding:22px 20px;min-height:240px;border-radius:24px}
+  .vv-industry-bar{left:20px;right:20px}
+  .vv-industry-card h3{font-size:17px!important}
+  .vv-industry-flip{margin-top:23px;font-size:12px}
+}
+@media(max-width:700px){
+  .vv-about-editorial .vv-about-audiences.vv-industry-section{padding:78px 0 75px}
+  .vv-industry-container{width:calc(100% - 32px)}
+  .vv-industry-head{margin-bottom:36px}
+  .vv-industry-eyebrow{font-size:10px;letter-spacing:.16em}
+  .vv-about-editorial .vv-industry-head h2{
+    font-size:clamp(36px,8.55vw,47px);
+    line-height:1.07;letter-spacing:-.075em;
+    max-width:440px;margin-top:34px
+  }
+  .vv-industry-grid{grid-template-columns:1fr;gap:14px}
+  .vv-industry-card{
+    min-height:218px;padding:23px 22px 25px;
+    border-radius:28px;
+  }
+  .vv-industry-icon{width:56px;height:56px;flex-basis:56px}
+  .vv-industry-number{margin-top:15px}
+  .vv-about-editorial .vv-industry-card h3{
+    font-size:17px;line-height:1.24;margin-top:19px;
+  }
+  .vv-industry-flip{font-size:13px;line-height:1.5;margin-top:12px}
+  .vv-industry-bar{left:22px;right:22px;bottom:22px}
+  .vv-industry-watermark{right:-21px;bottom:-42px;width:145px;height:145px}
+  .vv-industry-watermark svg{width:145px;height:145px}
+  .vv-industry-link{margin-top:34px;font-size:14px}
+}
+@media(prefers-reduced-motion:reduce){
+  .vv-industry-card,.vv-industry-card *{
+    animation:none!important;transition:none!important
+  }
+  .vv-industry-card{opacity:1!important;transform:none!important}
+}
