@@ -1,0 +1,151 @@
+/* VISUAL VERSE — WHO WE COLLABORATE WITH
+   Closely recreates Potadot's About-page four-card partner section:
+   1168px container, 2-column editorial heading, 18px card grid,
+   #f2f3f7 neumorphic cards, inset 52px icons, cursor-based mint spotlight.
+   Content and accents belong to Visual Verse; TT Travels is inherited. */
+
+.vv-about-editorial .vv-about-partners.vv-collab-section{
+  --vv-collab-paper:#f2f3f7;
+  --vv-collab-ink:#242225;
+  --vv-collab-muted:#697382;
+  --vv-collab-mint:#29b78c;
+  position:relative;isolation:isolate;
+  background:#f2f3f7;color:var(--vv-collab-ink);
+  padding:clamp(80px,12vw,160px) 0;
+  scroll-margin-top:95px;
+}
+.vv-about-editorial .vv-collab-container{
+  width:min(1168px,calc(100% - 2 * clamp(16px,4vw,33px)));
+  max-width:1168px;
+}
+.vv-collab-container *, .vv-collab-container *:before, .vv-collab-container *:after{box-sizing:border-box}
+.vv-collab-header{margin:0}
+.vv-collab-eyebrow{
+  height:21px;display:flex;align-items:center;gap:8px;
+  font-size:12px;line-height:21px;
+  font-weight:850;letter-spacing:.18em;
+  text-transform:uppercase;
+  color:#198969;
+}
+.vv-collab-eyebrow>i{
+  display:block;width:7px;height:7px;flex:0 0 7px;
+  background:#2eb879;border-radius:50%;
+}
+.vv-collab-eyebrow>i:nth-child(2){
+  width:6px;height:6px;flex-basis:6px;
+  margin-left:-2px;background:#e4b59a;
+}
+.vv-collab-header-main{
+  display:grid;grid-template-columns:minmax(0,616px) minmax(0,492px);
+  gap:60px;align-items:end;
+  margin-top:32px;
+}
+.vv-about-editorial .vv-collab-header-main h2{
+  max-width:616px;margin:0;
+  font-weight:850;
+  font-size:clamp(48px,4.45vw,64px);
+  line-height:1.04;
+  letter-spacing:-.07em;
+  color:var(--vv-collab-ink);
+}
+.vv-collab-header-main h2 span{display:block}
+.vv-about-editorial .vv-collab-header-main p{
+  max-width:492px;margin:0 0 2px;
+  font-size:17px;line-height:1.6;
+  font-weight:400;color:var(--vv-collab-muted);
+}
+.vv-about-editorial .vv-collab-header-main p a{
+  display:inline;color:#168c69;
+  font-weight:650;text-decoration:underline;
+  text-decoration-thickness:1.5px;
+  text-underline-offset:3px;transition:color .25s;
+}
+.vv-about-editorial .vv-collab-header-main p a:hover{color:#003f5c}
+
+.vv-collab-cards{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:18px;
+  align-items:stretch;margin-top:80px;
+}
+.vv-collab-card{
+  position:relative;isolation:isolate;overflow:hidden;
+  min-width:0;min-height:252px;
+  padding:26px;border:0;border-radius:26px;
+  display:grid;grid-template-columns:minmax(0,1fr);
+  grid-template-rows:52px max-content max-content;align-content:start;gap:14px;
+  background:var(--vv-collab-paper);
+  color:var(--vv-collab-ink);
+  box-shadow:6px 6px 16px rgba(160,166,186,.35),
+             -6px -6px 16px rgba(255,255,255,.90);
+  transition:box-shadow .6s cubic-bezier(.22,1,.36,1),
+             background .65s cubic-bezier(.22,1,.36,1) !important;
+}
+.vv-collab-card:hover{
+  background:radial-gradient(420px at var(--vv-partner-mx,50%) var(--vv-partner-my,50%),
+    rgba(46,196,182,.13),transparent 42%) var(--vv-collab-paper);
+  box-shadow:12px 12px 28px rgba(160,166,186,.42),
+             -12px -12px 28px rgba(255,255,255,.95);
+}
+.vv-collab-icon{
+  width:52px;height:52px;display:grid;place-items:center;
+  border-radius:16px;
+  background:transparent;color:#20b879;
+  box-shadow:inset 6px 6px 14px rgba(160,166,186,.38),
+             inset -6px -6px 14px rgba(255,255,255,.95);
+}
+.vv-collab-icon svg{display:block}
+.vv-about-editorial .vv-collab-card h3{
+  color:var(--vv-collab-ink);
+  font-size:19px;font-weight:850;line-height:1.27;
+  letter-spacing:-.045em;margin:0;max-width:100%;
+}
+.vv-about-editorial .vv-collab-card p{
+  color:var(--vv-collab-muted);
+  font-size:15px;line-height:1.6;
+  font-weight:400;margin:0;
+}
+
+/* Same gentle section entrance as the reference site. */
+.vv-collab-section.is-revealed .vv-collab-card{
+  animation:vv-collab-rise .72s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes vv-collab-rise{
+  from{opacity:0;translate:0 20px}
+  to{opacity:1;translate:0 0}
+}
+
+@media(max-width:1100px){
+  .vv-collab-header-main{
+    display:flex;flex-direction:column;
+    align-items:flex-start;gap:26px;
+  }
+  .vv-collab-header-main h2 span{display:inline}
+  .vv-about-editorial .vv-collab-header-main h2{
+    font-size:clamp(36px,4.6vw,50px);
+    line-height:1.09;
+    max-width:100%;
+  }
+  .vv-about-editorial .vv-collab-header-main p{
+    max-width:100%;font-size:16px;line-height:1.6;margin:0;
+  }
+  .vv-collab-cards{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    margin-top:50px;
+  }
+  .vv-collab-card{min-height:204px}
+}
+@media(max-width:620px){
+  .vv-about-editorial .vv-about-partners.vv-collab-section{padding:80px 0}
+  .vv-collab-header-main{gap:32px}
+  .vv-collab-header-main h2 span{display:block}
+  .vv-about-editorial .vv-collab-header-main h2{
+    font-size:clamp(31px,8.7vw,39px);
+    line-height:1.05;letter-spacing:-.07em;
+  }
+  .vv-about-editorial .vv-collab-header-main p{font-size:16px;line-height:1.6}
+  .vv-collab-cards{grid-template-columns:1fr;gap:18px;margin-top:43px}
+  .vv-collab-card{min-height:204px}
+}
+@media(prefers-reduced-motion:reduce){
+  .vv-collab-card{animation:none!important;transition:none!important;opacity:1!important;translate:0 0!important}
+}
