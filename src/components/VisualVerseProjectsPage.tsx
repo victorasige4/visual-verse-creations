@@ -6,6 +6,7 @@ import type { PortfolioCollection } from "@/components/VisualVersePortfolio";
 import { VisualVerseNavbar } from "@/components/VisualVerseNavbar";
 import { WhatsAppFloating } from "@/components/VisualVersePolicies";
 import { VisualVerseFooter } from "@/components/VisualVerseClosingSections";
+import { VisualVerseAboutCta } from "@/components/VisualVerseAboutCta";
 
 type ProjectCategory={
  id:string;name:string;short:string;number:string;headline:string;description:string;
@@ -117,12 +118,8 @@ export function VisualVerseProjectsPage(){
           ))}
         </div>
 
-        <section className="vv-projects-notice">
-          <span className="vv-projects-kicker">GOT AN IDEA IN MIND?</span>
-          <h2>Want to see your<br/><em>story here?</em></h2>
-          <p>These collections introduce our creative disciplines. Gallery photographs are from the original website, while illustrative concepts demonstrate possibilities rather than completed client commissions.</p>
-          <a href="/request-quote.html">Let's create something together <ArrowUpRight size={18}/></a>
-        </section>
+        <p className="vv-projects-archive-note">The collections above introduce our creative disciplines. Gallery photography comes from the original Visual Verse portfolio; illustrative concepts demonstrate possibilities, not claimed commissions.</p>
+        <VisualVerseAboutCta/>
       </main>
       <footer className="vv-close-footer-wrap" id="footer"><VisualVerseFooter/></footer>
       <WhatsAppFloating/>

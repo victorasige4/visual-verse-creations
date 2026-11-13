@@ -1,4 +1,5 @@
 import { PolicyLinks } from "./VisualVersePolicies";
+import { VisualVerseAboutCta } from "./VisualVerseAboutCta";
 import {
   ArrowRight, ArrowUpRight, CheckCircle2, Mail,
   MapPin, ArrowUp
@@ -38,26 +39,7 @@ const CONTACT_PHONE = "+254794044598";
 export { VisualVerseFaqLab as VisualVerseFaq } from "./VisualVerseFaqLab";
 
 export function VisualVerseCTA(){
-  return (
-    <div className="vv-close-cta">
-      <div className="vv-close-cta-content">
-        <span className="vv-close-cta-eyebrow"><i aria-hidden="true"/> LET'S MAKE SOMETHING MATTER</span>
-        <h2>Have an idea<br/>worth bringing<br/>to <em>life?</em></h2>
-        <p>From your first concept to the final frame, let's create something people remember.</p>
-        <div className="vv-close-cta-buttons">
-          <a href="/request-quote.html" className="vv-close-cta-primary">Let's talk <span><ArrowUpRight size={18} aria-hidden="true"/></span></a>
-          <a href="/projects.html" className="vv-close-cta-secondary">Explore our work <span><ArrowUpRight size={18} aria-hidden="true"/></span></a>
-        </div>
-        <div className="vv-close-cta-meta">
-          <span><MapPin size={13} aria-hidden="true"/> NAIROBI, KENYA</span>
-          <a href={"mailto:"+CONTACT_EMAIL}><Mail size={13} aria-hidden="true"/> {CONTACT_EMAIL}</a>
-          <a href={"tel:"+CONTACT_PHONE}><MapPin size={13} aria-hidden="true"/> +254 794 044 598</a>
-        </div>
-      </div>
-      <span className="vv-close-cta-orbit" aria-hidden="true"/>
-      <img className="vv-close-cta-mark" src="/logo-mark.png" alt="" aria-hidden="true" loading="lazy"/>
-    </div>
-  );
+  return <VisualVerseAboutCta/>;
 }
 
 const serviceLinks=[

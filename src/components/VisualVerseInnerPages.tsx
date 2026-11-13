@@ -13,6 +13,7 @@ import { VisualVerseServicesEditorial } from "./VisualVerseServicesEditorial";
 import { VisualVerseAudiences } from "./VisualVerseAudiences";
 import { WhatsAppFloating } from "./VisualVersePolicies";
 import { VisualVerseAboutEditorial } from "./VisualVerseAboutEditorial";
+import { VisualVerseAboutCta } from "./VisualVerseAboutCta";
 
 type Kind = "about" | "services" | "audiences" | "contact" | "quote";
 const EMAIL = "hello@visualverse.com";
@@ -301,10 +302,7 @@ export function VisualVerseInnerPage({kind}:{kind:Kind}){
       {kind==="audiences"&&<AudiencePage/>}
       {kind==="contact"&&<ContactPage/>}
       {kind==="quote"&&<QuotePage/>}
-      {kind!=="about"&&<section className="vv-inner-bottom">
-        <span>VISUAL VERSE / READY WHEN YOU ARE</span><h2>Have a story?<br/>Let's make it <em>memorable.</em></h2>
-        <a href="/request-quote.html">Start something together <ArrowUpRight size={18}/></a>
-      </section>}
+      {kind!=="about"&&<VisualVerseAboutCta/>}
     </main>
     <footer className="vv-close-footer-wrap"><VisualVerseFooter/></footer>
     <WhatsAppFloating/>
