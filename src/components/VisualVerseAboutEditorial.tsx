@@ -1,9 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  ArrowUpRight, Camera, Palette, MonitorSmartphone,
-  CheckCircle2, MessageCircle,
-  Film, Megaphone
-} from "lucide-react";
+import { ArrowUpRight, CheckCircle2, MessageCircle } from "lucide-react";
 import { VisualVerseKenyaMap } from "./VisualVerseKenyaMap";
 import { VisualVerseFaq } from "./VisualVerseClosingSections";
 import { CardStackDemo } from "./ui/card-stack-demo";
@@ -11,6 +7,7 @@ import { VisualVersePurposeCompass } from "./VisualVersePurposeCompass";
 import { VisualVerseHowWeWork } from "./VisualVerseHowWeWork";
 import { VisualVersePotadotToolbox } from "./VisualVersePotadotToolbox";
 import { VisualVerseIndustries } from "./VisualVerseIndustries";
+import { VisualVerseCollaborators } from "./VisualVerseCollaborators";
 import { useAboutScrollWords } from "../hooks/useAboutScrollWords";
 import "../about-scroll-words.css";
 
@@ -19,7 +16,7 @@ function useAboutReveal() {
   useEffect(() => {
     const root = document.querySelector(".vv-about-editorial");
     if (!root) return;
-    const items = Array.from(root.querySelectorAll<HTMLElement>(".vv-about-section-header, .vv-about-lead, .vv-about-stats article, .vv-about-vision-orb, .vv-about-story-image, .vv-about-story-copy, .vv-about-audience-tile, .vv-about-partner-grid article, .vv-about-facts dl div, .vv-about-final-panel"));
+    const items = Array.from(root.querySelectorAll<HTMLElement>(".vv-about-section-header, .vv-about-lead, .vv-about-stats article, .vv-about-vision-orb, .vv-about-story-image, .vv-about-story-copy, .vv-about-audience-tile, .vv-about-facts dl div, .vv-about-final-panel"));
     if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       items.forEach(el => el.classList.add("vv-about-revealed"));
       return;
@@ -78,12 +75,6 @@ const strengths = [
   {value:"06",label:"creative disciplines",detail:"One studio for strategy, design, film and digital experiences"},
   {value:"01",label:"connected creative process",detail:"Your idea moves from discovery to delivery with clarity"},
   {value:"∞",label:"stories worth telling",detail:"From independent creators to brands and organisations"}
-];
-const partners = [
-  {name:"Marketing teams",description:"Creative direction, campaign visuals and production that bring an existing strategy to life.",icon:Megaphone},
-  {name:"Creative agencies",description:"A flexible design, photography, filming or digital production collaborator for bigger briefs.",icon:Palette},
-  {name:"Event planners",description:"Visual identity, event coverage, social content and keepsakes with a consistent story.",icon:Camera},
-  {name:"Founders & product teams",description:"Brand thinking, websites, interface concepts and launch material under one creative roof.",icon:MonitorSmartphone}
 ];
 const detail = [
   ["Studio","Visual Verse Creations"],
@@ -162,12 +153,7 @@ export function VisualVerseAboutEditorial() {
 
     <VisualVerseIndustries />
 
-    <section className="vv-about-partners vv-about-pad" id="collaborate">
-      <div className="vv-about-container">
-        <AboutHeading label="WHO WE COLLABORATE WITH" title={<>The best ideas are <em>made together.</em></>} description="We make room for the right collaborators, expertise and perspectives to bring a good brief to life."/>
-        <div className="vv-about-partner-grid">{partners.map((p,i)=><article key={p.name}><p.icon size={29}/><h3>{p.name}</h3><p>{p.description}</p></article>)}</div>
-      </div>
-    </section>
+    <VisualVerseCollaborators />
 
     <section className="vv-about-locations vv-about-pad" id="where-we-create">
       <div className="vv-about-container">
