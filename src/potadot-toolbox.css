@@ -313,3 +313,42 @@
   background:#f2f3f7;
   box-shadow:0 8px 19px #1b293418;
 }
+
+
+/* Visual Verse interaction refinement, November 2026:
+   keep Potadot's hover treatment, soften the transition in and out. */
+.vv-about-editorial .vv-potbx-chip {
+  transition:
+    opacity .64s cubic-bezier(.22,1,.36,1),
+    filter .64s cubic-bezier(.22,1,.36,1),
+    background-color .58s cubic-bezier(.22,1,.36,1),
+    color .58s cubic-bezier(.22,1,.36,1),
+    box-shadow .7s cubic-bezier(.22,1,.36,1),
+    scale .66s cubic-bezier(.22,1,.36,1) !important;
+}
+.vv-potbx-scene.has-focus .vv-potbx-chip:not(.is-active){
+  opacity:.48!important;
+  filter:blur(.22px)!important;
+  background:rgba(242,243,247,.47);
+  box-shadow:0 4px 13px rgba(9,24,44,.045);
+  color:#6d7981;
+}
+.vv-about-editorial .vv-potbx-chip.is-active{
+  scale:1.16;
+  background:#104448;
+  box-shadow:0 0 0 4px rgba(46,196,182,.15),0 10px 28px rgba(12,85,57,.20),0 0 17px rgba(46,196,182,.15);
+}
+.vv-about-editorial .vv-potbx-chip.is-active:is(:hover,:focus-visible){
+  background:#104448;
+  box-shadow:0 0 0 5px rgba(46,196,182,.18),0 10px 28px rgba(12,85,57,.21),0 0 20px rgba(46,196,182,.17);
+}
+.vv-potbx-scene.has-focus .vv-potbx-svg ellipse{opacity:.6!important}
+.vv-potbx-scene .vv-potbx-svg ellipse{transition:opacity .65s ease}
+.vv-potbx-core,.vv-potbx-legend>span{
+  transition:background .65s cubic-bezier(.22,1,.36,1),box-shadow .65s cubic-bezier(.22,1,.36,1),border-color .65s ease!important;
+}
+@media(prefers-reduced-motion:reduce){
+  .vv-about-editorial .vv-potbx-chip,
+  .vv-potbx-core,.vv-potbx-legend>span,
+  .vv-potbx-scene .vv-potbx-svg ellipse{transition:none!important}
+}
