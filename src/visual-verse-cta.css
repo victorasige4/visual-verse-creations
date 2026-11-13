@@ -359,3 +359,18 @@
   body:has(.vv-cta-button:hover) .vv-cursor-orbit-label,
   body:has(.vv-cta-button:focus-visible) .vv-cursor-orbit-label{opacity:0!important}
 }
+
+
+/* Headline animation is driven by the IntersectionObserver + Web Animations
+   API in VisualVerseAboutCta. Unlike the old state-based CSS transitions it
+   starts only when the actual headline is visible, not when the CTA section
+   barely clips the viewport. These fallback rules prevent a double reveal. */
+.vv-cta-section .vv-cta-word,
+.vv-cta-section.is-ready:not(.is-visible) .vv-cta-word,
+.vv-cta-section.is-visible .vv-cta-word{
+  opacity:1;
+  transform:none;
+  filter:none;
+  transition:none!important;
+  transition-delay:0ms!important;
+}
