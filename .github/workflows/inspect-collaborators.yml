@@ -1,4 +1,5 @@
 name: Temporary collaborator reference inspection
+# Final visual comparison after mobile card alignment
 on:
   push:
     branches: [main]
