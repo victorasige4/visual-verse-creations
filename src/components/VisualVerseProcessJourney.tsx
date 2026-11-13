@@ -147,7 +147,6 @@ export function VisualVerseProcessJourney() {
         </div>
         <div className="vv-sp-right">
           <ol className="vv-sp-steps" aria-label="Seven stages of the Visual Verse creative process">
-            <span className="vv-sp-moving-beacon" aria-hidden="true"/>
             {steps.map((item,index)=><li className={"vv-sp-step"+(index===active?" is-active":"")+(index<active?" is-complete":"")} key={item.title}>
               <button type="button"
                 className="vv-sp-step-button"
