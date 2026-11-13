@@ -1,0 +1,90 @@
+name: Temporary collaborator reference inspection
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/inspect-collaborators.yml
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Capture reference at desktop and mobile
+        run: |
+          cat > .inspect-collaborators.mjs <<'JS'
+          import {chromium} from 'playwright';
+          import fs from 'node:fs';
+          fs.mkdirSync('collaborators-reference',{recursive:true});
+          const browser=await chromium.launch({headless:true});
+          for(const [label,width,height] of [['desktop',1440,1000],['tablet',820,1000],['mobile',390,844]]){
+            const page=await browser.newPage({viewport:{width,height},deviceScaleFactor:1,reducedMotion:'reduce'});
+            try{
+              await page.goto('https://potadot.com.my/about-us/',{waitUntil:'domcontentloaded',timeout:45000});
+              await page.waitForTimeout(3100);
+              const heading=page.getByRole('heading',{name:'Better together with the right partners.'}).first();
+              await heading.scrollIntoViewIfNeeded();
+              await page.waitForTimeout(750);
+              const section=heading.locator('xpath=ancestor::section[1]');
+              const detail=await section.evaluate(el=>{
+                const sectionRect=el.getBoundingClientRect();
+                const style=(node)=>{
+                  const r=node.getBoundingClientRect(),s=getComputedStyle(node);
+                  return {tag:node.tagName,txt:node.textContent?.trim().slice(0,135),
+                    cls:typeof node.className==='string'?node.className.slice(0,125):'',
+                    x:Math.round(r.x-sectionRect.x),y:Math.round(r.y-sectionRect.y),
+                    w:Math.round(r.width),h:Math.round(r.height),
+                    background:s.background, color:s.color,
+                    border:s.border,borderRadius:s.borderRadius,
+                    fontFamily:s.fontFamily,fontSize:s.fontSize,fontWeight:s.fontWeight,
+                    lineHeight:s.lineHeight,letterSpacing:s.letterSpacing,
+                    boxShadow:s.boxShadow,display:s.display,
+                    gap:s.gap,gridTemplateColumns:s.gridTemplateColumns,
+                    padding:s.padding,position:s.position,transition:s.transition,
+                    transform:s.transform,overflow:s.overflow,
+                    animation:s.animation,opacity:s.opacity};
+                };
+                return {
+                  section:style(el),
+                  html:el.outerHTML.slice(0,150000),
+                  elements:Array.from(el.querySelectorAll('h2,h3,p,a,article,button,img,svg,div,span')).filter(x=>{let r=x.getBoundingClientRect();return r.width>30&&r.height>10}).slice(0,135).map(style),
+                };
+              });
+              fs.writeFileSync('collaborators-reference/'+label+'.json',JSON.stringify(detail,null,2));
+              await section.screenshot({path:'collaborators-reference/'+label+'.png',animations:'disabled',timeout:15000});
+              const candidates=section.locator('article, a, button, [class*="partner"], [class*="collab"]');
+              for(let i=0;i<Math.min(await candidates.count(),55);i++){
+                const el=candidates.nth(i);const bb=await el.boundingBox();
+                if(!bb||bb.width<150||bb.height<110||bb.width>650)continue;
+                try{
+                  await el.hover({force:true,timeout:4000});
+                  await page.waitForTimeout(650);
+                  await section.screenshot({path:'collaborators-reference/'+label+'-hover.png',animations:'disabled',timeout:15000});
+                  const info=await el.evaluate(el=>({cls:el.className,html:el.outerHTML.slice(0,25000),computed:{transform:getComputedStyle(el).transform,background:getComputedStyle(el).background,boxShadow:getComputedStyle(el).boxShadow}}));
+                  fs.writeFileSync('collaborators-reference/'+label+'-hover.json',JSON.stringify(info,null,2));
+                  break;
+                }catch(e){console.log('hover failed',String(e))}
+              }
+              console.log(label, JSON.stringify({section:detail.section,elements:detail.elements.length}));
+            }catch(error){
+              fs.writeFileSync('collaborators-reference/'+label+'-error.txt',String(error));
+              console.log(label,'ERROR',String(error));
+            }
+            await page.close();
+          }
+          await browser.close();
+          JS
+          node .inspect-collaborators.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: collaborator-reference
+          path: collaborators-reference/
+          retention-days: 2
