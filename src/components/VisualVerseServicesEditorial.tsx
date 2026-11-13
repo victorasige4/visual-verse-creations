@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import { ArrowUpRight, ArrowRight, Camera, Clapperboard, Palette, PenTool, MonitorSmartphone, Share2, Check, UsersRound, MessageCircle, FileText } from "lucide-react";
 import { ServiceArtwork } from "./VisualVerseServices";
+import { PinContainer } from "./ui/3d-pin";
+import "../aceternity-3d-pin.css";
 import { VisualVerseProcessJourney } from "./VisualVerseProcessJourney";
 import "../visual-verse-services-page.css";
 
@@ -106,42 +108,68 @@ export function VisualVerseServicesEditorial() {
       </div>
     </section>
 
-    <div id="services" className="vv-sv-service-list">
-      {services.map((s,index)=>{
-        const Icon=s.Icon;
-        return <section className={"vv-sv-service vv-sv-service-"+s.id+(index%2?" is-reverse":"")} id={"service-"+s.id} key={s.id} aria-labelledby={"sv-"+s.id}>
-          <div className="vv-sv-container vv-sv-service-grid">
-            <div className="vv-sv-service-copy vv-sv-reveal">
-              <div className="vv-sv-number"><strong>{s.number}</strong><span>/ 06</span></div>
-              <div className="vv-sv-service-icon"><Icon size={24} strokeWidth={1.65}/><span>CREATIVE DISCIPLINE</span></div>
-              <h2 id={"sv-"+s.id}>{s.name}</h2>
-              <p className="vv-sv-service-intro">{s.description}</p>
-              <ul className="vv-sv-service-bullets">{s.bullets.map(b=><li key={b}><Check size={16} aria-hidden="true"/>{b}</li>)}</ul>
-              <div className="vv-sv-tags">{s.tags.map(t=><span key={t}>{t}</span>)}</div>
-              <a className="vv-sv-service-link" href={import.meta.env.BASE_URL+"request-quote.html?service="+encodeURIComponent(s.name)}>
-                {s.link}<span><ArrowUpRight size={19}/></span>
-              </a>
-            </div>
-            <div className="vv-sv-service-art vv-sv-reveal">
-              <div className="vv-sv-art-inner">
-                <span className="vv-sv-art-overline"><i/> VISUAL VERSE / {s.name.toUpperCase()}</span>
-                <ServiceArtwork kind={s.kind}/>
-                <div className="vv-sv-art-footer"><span>VISUAL VERSE CREATIONS</span><b>{s.number} / 06</b></div>
-              </div>
-            </div>
+    <section id="services" className="vv-sv-pin-services" aria-labelledby="vv-sv-services-title">
+      <div className="vv-sv-container">
+        <header className="vv-sv-pin-heading vv-sv-reveal">
+          <span className="vv-sv-kicker"><i/><i/> THE CREATIVE DISCIPLINES</span>
+          <div className="vv-sv-pin-heading-row">
+            <h2 id="vv-sv-services-title">What we <em>bring to life.</em></h2>
+            <p>Six ways to tell your story. Hover over a card to see it come alive, or tap to explore your next project.</p>
           </div>
-        </section>
-      })}
-    </div>
+        </header>
+        <div className="vv-sv-pin-grid">
+          {services.map((s,index)=>{
+            const Icon=s.Icon;
+            const photo: Record<string,string> = {
+              photography:"about-photographer.webp",
+              videography:"portfolio-event-story.jpg",
+              "graphic-design":"portfolio-social-design.jpg",
+            };
+            const image=photo[s.id];
+            return <article className="vv-sv-pin-cell vv-sv-reveal" id={"details-"+s.id} key={s.id}
+              aria-labelledby={"sv-"+s.id}>
+              <span id={"service-"+s.id} className="vv-sv-pin-anchor" aria-hidden="true"/>
+              <PinContainer
+                containerClassName="vv-sv-service-pin"
+                title={s.name}
+                href={import.meta.env.BASE_URL+"request-quote.html?service="+encodeURIComponent(s.name)}
+              >
+                <div className={"vv-sv-pin-card vv-sv-pin-"+s.id}>
+                  {image?<img className="vv-sv-pin-photo"
+                    src={import.meta.env.BASE_URL+image}
+                    alt="" loading={index>2?"lazy":"eager"} decoding="async"
+                  />:<div className="vv-sv-pin-ui-art" aria-hidden="true"><ServiceArtwork kind={s.kind}/></div>}
+                  <div className="vv-sv-pin-wash" aria-hidden="true"/>
+                  <div className="vv-sv-pin-top">
+                    <span>{s.number}<small> / 06</small></span>
+                    <Icon size={23} strokeWidth={1.5} aria-hidden="true"/>
+                  </div>
+                  <div className="vv-sv-pin-center">
+                    <span className="vv-sv-pin-category">{s.tags.slice(0,2).join(" · ")}</span>
+                    <h3 id={"sv-"+s.id}>{s.name}</h3>
+                    <p>{s.description}</p>
+                  </div>
+                  <div className="vv-sv-pin-bottom">
+                    <span>VISUAL VERSE CREATIONS</span>
+                    <span className="vv-sv-pin-explore">Explore service <ArrowUpRight size={17}/></span>
+                  </div>
+                </div>
+              </PinContainer>
+            </article>;
+          })}
+        </div>
+        <p className="vv-sv-pin-outro">One studio. Many disciplines. <a href={import.meta.env.BASE_URL+"request-quote.html"}>Let's shape yours <ArrowUpRight size={14}/></a></p>
+      </div>
+    </section>
 
     <VisualVerseProcessJourney/>
 
     <section className="vv-sv-resources" id="before-you-begin">
       <div className="vv-sv-container">
         <header className="vv-sv-resource-heading vv-sv-reveal">
-          <span className="vv-sv-kicker"><i/><i/> BEFORE WE BEGIN</span>
-          <h2>Everything starts with <em>a good conversation.</em></h2>
-          <p>Not sure where to start? These are the three best next steps.</p>
+          <span className="vv-sv-kicker"><i/><i/> BEFORE YOU DECIDE</span>
+          <h2>The right creative partner starts <em>with the right questions.</em></h2>
+          <p>A little clarity goes a long way. Here's where to begin.</p>
         </header>
         <div className="vv-sv-resource-grid">
           <a href={import.meta.env.BASE_URL+"request-quote.html"} className="vv-sv-resource vv-sv-reveal">
