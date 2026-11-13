@@ -1,121 +1,139 @@
 import { useState, type CSSProperties } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import {
-  Aperture, ArrowUpRight, AudioLines, BrainCircuit, Clapperboard,
-  Code2, Layers3, MousePointer2, PenTool, Scan, Sparkles, Workflow
-} from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import "../potadot-toolbox.css";
 
 /**
- * Potadot-inspired "Our Toolbox": an interactive constellation of tools
- * orbiting a central studio mark, with a focused hover/tap readout.
- * All product details and brand assets here belong to Visual Verse.
- * Hover is a progressive enhancement: keyboard, pointer, and tap also work.
+ * Potadot-reference toolbox structure:
+ * minimal introduction, an open tech-logo constellation around one central
+ * brand mark, hover-to-focus interaction, and the small discipline readout.
+ * The icons and copy are for Visual Verse, not Potadot.
  */
-const tools = [
-  {name:"Figma",short:"Fig",about:"Interfaces, prototypes and ideas we can test together.",group:"Design & identity",Icon:Layers3,tint:"#b6f1dc",x:15,y:21,delay:-.4},
-  {name:"Photoshop",short:"Ps",about:"Photography, retouching and imaginative image-making.",group:"Design & identity",Icon:Scan,tint:"#a6dffa",x:39,y:12,delay:-2.6},
-  {name:"Illustrator",short:"Ai",about:"Identity systems, illustration and memorable graphics.",group:"Design & identity",Icon:PenTool,tint:"#ffcfaa",x:72,y:17,delay:-.8},
-  {name:"Lightroom",short:"Lr",about:"Colour, light and the details that make a photograph.",group:"Photography & film",Icon:Aperture,tint:"#b7e3ff",x:87,y:36,delay:-1.8},
-  {name:"Premiere Pro",short:"Pr",about:"Video editing that gives every moment a rhythm.",group:"Photography & film",Icon:Clapperboard,tint:"#dec9fc",x:87,y:68,delay:-2.9},
-  {name:"After Effects",short:"Ae",about:"Motion graphics and stories brought to life.",group:"Photography & film",Icon:AudioLines,tint:"#c9c7ff",x:66,y:86,delay:-1.4},
-  {name:"Cursor",short:">_",about:"Code-driven websites, thoughtful details and development.",group:"Digital & strategy",Icon:MousePointer2,tint:"#d1f0e3",x:36,y:88,delay:-3.3},
-  {name:"Google Flow",short:"Fl",about:"Exploration and creative production with AI workflows.",group:"Digital & strategy",Icon:Workflow,tint:"#f1cfe9",x:12,y:71,delay:-.3},
-  {name:"ChatGPT",short:"AI",about:"Research, ideation and thinking through fresh possibilities.",group:"Digital & strategy",Icon:BrainCircuit,tint:"#b6f1d8",x:10,y:46,delay:-2.1},
-  {name:"Semrush",short:"Se",about:"Digital research that helps the creative work find its audience.",group:"Digital & strategy",Icon:Code2,tint:"#ffdab7",x:89,y:52,delay:-1.2},
-] as const;
+type Tool = {
+  name: string;
+  icon: string;
+  group: string;
+  description: string;
+};
 
-const categories = [
-  {name:"Design & identity",subtitle:"Where ideas take shape."},
-  {name:"Photography & film",subtitle:"Where moments become stories."},
-  {name:"Digital & strategy",subtitle:"Where ideas meet the world."},
-] as const;
+const tools: Tool[] = [
+  { name: "Figma", icon: "figma", group: "Design & identity", description: "Interfaces, wireframes, prototypes and creative collaboration." },
+  { name: "Photoshop", icon: "photoshop", group: "Design & identity", description: "Compositing, retouching and imaginative visual design." },
+  { name: "Illustrator", icon: "illustrator", group: "Design & identity", description: "Identity systems, illustrations and vector artwork." },
+  { name: "Lightroom", icon: "lightroom", group: "Photography & film", description: "Colour, light, editing and photographic finishing." },
+  { name: "Premiere Pro", icon: "premiere", group: "Photography & film", description: "Editing films, reels and stories with a strong sense of rhythm." },
+  { name: "After Effects", icon: "aftereffects", group: "Photography & film", description: "Motion graphics, animation and visual storytelling." },
+  { name: "CapCut", icon: "capcut", group: "Photography & film", description: "Fast, flexible edits for short-form digital content." },
+  { name: "Cursor", icon: "cursor", group: "Digital & strategy", description: "Turning interfaces and designs into responsive digital experiences." },
+  { name: "Google Flow", icon: "flow", group: "Digital & strategy", description: "Exploring visual ideas with new creative workflows." },
+  { name: "ChatGPT", icon: "chatgpt", group: "Digital & strategy", description: "Brainstorming, research and creative problem solving." },
+  { name: "Semrush", icon: "semrush", group: "Digital & strategy", description: "Audience research and search-led digital thinking." },
+  { name: "GitHub", icon: "github", group: "Digital & strategy", description: "Versioning, collaboration and shipping digital work." },
+  { name: "React", icon: "react", group: "Digital & strategy", description: "Modern components for thoughtful interactive interfaces." },
+  { name: "Tailwind CSS", icon: "tailwind", group: "Digital & strategy", description: "Responsive styling and consistent design systems." },
+];
 
-export function VisualVersePotadotToolbox(){
-  const [selected,setSelected]=useState<number|null>(null);
-  const [hovered,setHovered]=useState<number|null>(null);
-  const activeIndex=hovered??selected;
-  const active=activeIndex===null?null:tools[activeIndex];
-  const reduced=Boolean(useReducedMotion());
+const categories = ["Design & identity", "Photography & film", "Digital & strategy"];
+
+const positions = tools.map((_, i) => {
+  const angle = (-90 + (360 / tools.length) * i) * Math.PI / 180;
+  return {
+    "--potbx-x": (50 + 42 * Math.cos(angle)).toFixed(2) + "%",
+    "--potbx-y": (50 + 40 * Math.sin(angle)).toFixed(2) + "%",
+    "--potbx-delay": -(i % 7) * .41 + "s"
+  } as CSSProperties;
+});
+
+const toolIcon = (icon: string) => import.meta.env.BASE_URL + "toolbox/" + icon + ".svg";
+
+export function VisualVersePotadotToolbox() {
+  const [hovered, setHovered] = useState<number | null>(null);
+  const [selected, setSelected] = useState<number | null>(null);
+  const current = hovered ?? selected;
+  const active = current === null ? null : tools[current];
+  const reduced = Boolean(useReducedMotion());
+
   return <section id="our-toolbox" className="vv-about-tools vv-potbx-section vv-about-pad" aria-labelledby="vv-potbx-heading">
     <div className="vv-about-container vv-potbx-container">
-      <div className="vv-potbx-intro">
-        <div className="vv-potbx-intro-main">
-          <span className="vv-potbx-eyebrow"><span className="vv-potbx-eyebrow-dot"/> OUR CREATIVE TOOLBOX</span>
+      <header className="vv-potbx-intro">
+        <div>
+          <span className="vv-potbx-eyebrow"><span aria-hidden="true"/> OUR TOOLBOX</span>
           <h2 id="vv-potbx-heading">The tools change.<br/><em>The vision stays.</em></h2>
         </div>
-        <p>From the first Figma wireframe to the final photograph, film, brand identity or digital experience, we choose the right creative tools for the story we're telling.</p>
-      </div>
+        <p>We bring together design, photography, filmmaking and digital thinking. Every tool has its place, but the idea always leads.</p>
+      </header>
 
       <div className="vv-potbx-display">
         <div className="vv-potbx-world">
-          <div className="vv-potbx-world-grain" aria-hidden="true"/>
-          <div className="vv-potbx-world-arc arc-outer" aria-hidden="true"/>
-          <div className="vv-potbx-world-arc arc-middle" aria-hidden="true"/>
-          <div className="vv-potbx-world-arc arc-inner" aria-hidden="true"/>
-          <span className="vv-potbx-star star-a" aria-hidden="true">✳</span>
-          <span className="vv-potbx-star star-b" aria-hidden="true">✦</span>
-          <span className="vv-potbx-star star-c" aria-hidden="true">✶</span>
-
+          <div className="vv-potbx-thread vv-potbx-thread-first" aria-hidden="true"/>
+          <div className="vv-potbx-thread vv-potbx-thread-second" aria-hidden="true"/>
           <div className="vv-potbx-centre" aria-live="polite" aria-atomic="true">
             <AnimatePresence mode="wait" initial={false}>
-              <motion.div key={active?.name??"studio"} className="vv-potbx-centre-content"
-                initial={reduced?false:{opacity:0,scale:.78,rotate:-9,filter:"blur(7px)"}}
-                animate={{opacity:1,scale:1,rotate:0,filter:"blur(0px)"}}
-                exit={reduced?{opacity:0}:{opacity:0,scale:1.13,rotate:8,filter:"blur(7px)"}}
-                transition={{duration:reduced?0:.45,ease:[.2,1,.32,1]}}>
-                {active
-                  ?<><div className="vv-potbx-selected-icon" style={{"--potbx-selected":active.tint} as CSSProperties}><active.Icon size={46} strokeWidth={1.4}/><span>{active.short}</span></div><strong>{active.name}</strong><small>{active.group}</small></>
-                  :<><span className="vv-potbx-mark"><img src={import.meta.env.BASE_URL+"logo-mark.png"} alt="Visual Verse Creations"/></span><strong>VISUAL VERSE</strong><small>ONE STUDIO. EVERY CREATIVE DISCIPLINE.</small></>}
+              <motion.div key={active?.icon ?? "visual-verse"} className="vv-potbx-centre-inner"
+                initial={reduced ? false : {opacity:0,scale:.86}}
+                animate={{opacity:1,scale:1}}
+                exit={reduced ? {opacity:0} : {opacity:0,scale:1.1}}
+                transition={{duration:reduced ? 0 : .27,ease:[.22,1,.36,1]}}>
+                {active ? <>
+                  <img src={toolIcon(active.icon)} alt="" aria-hidden="true" className="vv-potbx-centre-logo vv-potbx-centre-tool"/>
+                  <strong>{active.name}</strong>
+                </> : <>
+                  <img src={import.meta.env.BASE_URL + "logo-mark.png"} alt="Visual Verse Creations" className="vv-potbx-centre-logo"/>
+                  <strong>VISUAL VERSE</strong>
+                </>}
               </motion.div>
             </AnimatePresence>
           </div>
 
-          <div className="vv-potbx-tool-cloud" role="group" aria-label="Explore the creative tools used by Visual Verse">
-            {tools.map((tool,index)=>{
-              const Icon=tool.Icon;
-              const isActive=activeIndex===index;
-              return <button type="button" key={tool.name}
-                className={"vv-potbx-tool"+(isActive?" is-active":"")}
-                style={{"--potbx-x":tool.x+"%","--potbx-y":tool.y+"%","--potbx-delay":tool.delay+"s","--potbx-tint":tool.tint} as CSSProperties}
-                onMouseEnter={()=>setHovered(index)}
-                onMouseLeave={()=>setHovered(null)}
-                onFocus={()=>setHovered(index)}
-                onBlur={()=>setHovered(null)}
-                onClick={()=>setSelected(selected===index?null:index)}
-                aria-label={"Explore "+tool.name}
-                aria-pressed={isActive}
-                data-cursor="EXPLORE">
-                <span className="vv-potbx-tool-float"><span className="vv-potbx-tool-glyph"><Icon size={18} strokeWidth={1.8} aria-hidden="true"/></span><span className="vv-potbx-tool-name">{tool.name}</span><ArrowUpRight size={13} className="vv-potbx-tool-arrow" aria-hidden="true"/></span>
-              </button>;
-            })}
+          <div className="vv-potbx-tool-cloud" role="group" aria-label="Explore Visual Verse's creative tools">
+            {tools.map((tool,index) => <button
+              key={tool.icon}
+              type="button"
+              className={"vv-potbx-tool" + (current === index ? " is-active" : "")}
+              style={positions[index]}
+              title={tool.name}
+              aria-label={"Explore " + tool.name}
+              aria-pressed={selected === index}
+              data-name={tool.name}
+              data-cursor="EXPLORE"
+              onPointerEnter={event => {if(event.pointerType === "mouse")setHovered(index)}}
+              onPointerLeave={event => {if(event.pointerType === "mouse")setHovered(null)}}
+              onFocus={() => setHovered(index)}
+              onBlur={() => setHovered(null)}
+              onClick={() => setSelected(previous => previous === index ? null : index)}>
+              <span className="vv-potbx-tool-float"><img src={toolIcon(tool.icon)} alt="" aria-hidden="true"/></span>
+            </button>)}
           </div>
-          <div className="vv-potbx-world-caption" aria-hidden="true"><span><Sparkles size={13}/> A WORLD OF CREATIVE POSSIBILITIES</span><span>IMAGINE • CREATE • CONNECT</span></div>
         </div>
 
         <div className="vv-potbx-bottom">
           <div className="vv-potbx-readout">
-            <div className="vv-potbx-readout-micro"><span className="vv-potbx-signal"/>{active?"TOOL IN FOCUS":"HOVER OR TAP A TOOL"}</div>
+            <span className="vv-potbx-overline"><i aria-hidden="true"/>{active ? "IN FOCUS" : "HOVER A TOOL"}</span>
             <AnimatePresence mode="wait" initial={false}>
-              <motion.div key={active?.name??"all"} className="vv-potbx-readout-content"
-                initial={reduced?false:{opacity:0,y:10}}
+              <motion.div key={active?.icon ?? "default"}
+                initial={reduced ? false : {opacity:0,y:8}}
                 animate={{opacity:1,y:0}}
-                exit={reduced?{opacity:0}:{opacity:0,y:-8}}
-                transition={{duration:reduced?0:.28}}>
-                <strong>{active?active.name:"One studio, every layer."}</strong>
-                <p>{active?active.about:"Strategy, design, photography, film and digital experiences — brought together around your idea."}</p>
+                exit={reduced ? {opacity:0} : {opacity:0,y:-8}}
+                transition={{duration:reduced ? 0 : .24}}
+                className="vv-potbx-readout-copy">
+                <strong>{active ? active.name : "One team, every layer."}</strong>
+                <p>{active ? active.description : "Different tools. One connected creative process."}</p>
               </motion.div>
             </AnimatePresence>
           </div>
-          <div className="vv-potbx-disciplines" aria-label="Our toolbox disciplines">
-            {categories.map(category=><div key={category.name} className={"vv-potbx-discipline"+(active?.group===category.name?" is-active":"")}>
-              <span className="vv-potbx-discipline-dot"/><div><strong>{category.name}</strong><small>{category.subtitle}</small></div>
-            </div>)}
+
+          <div className="vv-potbx-disciplines" aria-label="Creative disciplines">
+            {categories.map(category => <span key={category}
+              className={"vv-potbx-discipline" + (active?.group === category ? " is-active" : "")}>
+              <i aria-hidden="true"/>{category}
+            </span>)}
           </div>
         </div>
       </div>
-
-      <div className="vv-potbx-foot"><span>DIFFERENT TOOLS. THE SAME CREATIVE INTENTION.</span><a href="/services.html">Explore what we do <ArrowUpRight size={16}/></a></div>
+      <div className="vv-potbx-foot">
+        <span>THE RIGHT TOOLS FOR THE RIGHT STORY.</span>
+        <a href="/services.html">Explore our services <ArrowUpRight size={16} aria-hidden="true"/></a>
+      </div>
     </div>
   </section>;
 }
