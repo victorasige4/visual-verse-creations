@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useReducedMotion } from "motion/react";
 import {
-  ArrowUpRight, Camera, Clapperboard, Film, Layers3, MonitorSmartphone,
+  Camera, Clapperboard, Film, Layers3, MonitorSmartphone,
   Palette, PenTool, Share2, Sparkles, WandSparkles
 } from "lucide-react";
 import { CardStack, type CardStackItem } from "./card-stack";
@@ -131,7 +131,6 @@ export function CardStackDemo() {
           >
             <span className="vv-about-card-switch-index">0{index+1}</span>
             <span className="vv-about-card-switch-copy"><strong>{name}</strong><small>{stageCaptions[index]}</small></span>
-            <ArrowUpRight size={15} aria-hidden="true"/>
             <span className="vv-about-card-switch-track"><span key={active===index?"active":"inactive"} className="vv-about-card-switch-fill"/></span>
           </button>
         ))}
