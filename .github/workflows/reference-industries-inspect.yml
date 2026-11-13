@@ -73,8 +73,35 @@ jobs:
             }catch(e){fs.writeFileSync('industries-qa/potadot-'+name+'-error.txt',String(e));console.log(name,'ERROR',String(e));}
             await page.close();
           }
+
+          for(const [name,width,height] of [['desktop',1440,1000],['mobile',390,844]]){
+            const page=await browser.newPage({viewport:{width,height},deviceScaleFactor:1,reducedMotion:'reduce'});
+            try{
+              await page.goto('http://127.0.0.1:5173/about.html',{waitUntil:'domcontentloaded',timeout:45000});
+              await page.waitForTimeout(2500);
+              const industry=page.locator('#our-audiences');
+              await industry.scrollIntoViewIfNeeded();
+              await page.waitForTimeout(1300);
+              await industry.screenshot({path:'industries-qa/visual-verse-'+name+'.png',animations:'disabled'});
+              await page.locator('.vv-industry-card').first().hover({force:true});
+              await page.waitForTimeout(700);
+              await industry.screenshot({path:'industries-qa/visual-verse-'+name+'-hover.png',animations:'disabled'});
+              const result=await industry.evaluate(el=>{
+                const r=el.getBoundingClientRect();
+                return {title:el.querySelector('h2')?.textContent,cards:Array.from(el.querySelectorAll('.vv-industry-card')).map(c=>{
+                  const rr=c.getBoundingClientRect(),s=getComputedStyle(c);
+                  return {txt:c.querySelector('h3')?.textContent,x:Math.round(rr.x-r.x),y:Math.round(rr.y-r.y),w:Math.round(rr.width),h:Math.round(rr.height),bg:s.backgroundColor};
+                })};
+              });
+              fs.writeFileSync('industries-qa/visual-verse-'+name+'.json',JSON.stringify(result,null,2));
+              console.log('VV',name,JSON.stringify(result));
+            }catch(e){fs.writeFileSync('industries-qa/visual-verse-'+name+'-error.txt',String(e));console.log('VV ERROR',String(e));}
+            await page.close();
+          }
           await browser.close();
           INSPECT
+          npm run dev -- --host 127.0.0.1 --port 5173 >/tmp/vv-industries-vite.log 2>&1 &
+          sleep 3
           node .inspect-industries.mjs
       - uses: actions/upload-artifact@v4
         if: always()
