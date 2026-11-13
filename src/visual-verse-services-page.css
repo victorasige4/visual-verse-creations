@@ -602,3 +602,224 @@
     transition:none!important;animation:none!important;
   }
 }
+
+
+/* ================================================================
+   PROCESS MOTION V2 — per-stage microanimation and scroll-responsive
+   active beacon. React remounts each scene by active step, so every
+   sequence plays anew as the timeline advances (without another observer).
+   ================================================================ */
+.vv-sp-sr-only{
+  position:absolute;clip:rect(0 0 0 0);
+  width:1px;height:1px;overflow:hidden;white-space:nowrap;
+}
+.vv-sp-stage:before{
+  content:"";position:absolute;inset:-45%;z-index:0;pointer-events:none;
+  background:conic-gradient(from 0deg,transparent 0 75%,rgba(46,196,182,.075) 85%,transparent 94%);
+  animation:vv-sp-glow-orbit 16s linear infinite;
+}
+@keyframes vv-sp-glow-orbit{to{transform:rotate(1turn)}}
+.vv-sp-stage-label{
+  position:absolute;z-index:3;right:21px;top:23px;
+  display:flex;align-items:center;gap:7px;min-width:0;max-width:65%;
+  font-size:9px;font-weight:850;letter-spacing:.1em;color:#a6d8d7;
+}
+.vv-sp-stage-label span:last-child{
+  color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  letter-spacing:.01em;font-size:10px;
+}
+.vv-sp-stage-label i{
+  width:5px;height:5px;flex:0 0 5px;border-radius:50%;
+  background:#2ec4b6;box-shadow:0 0 8px #2ec4b6;
+  animation:vv-sp-dot-pulse 1.6s ease-in-out infinite;
+}
+@keyframes vv-sp-dot-pulse{50%{opacity:.35;transform:scale(.6)}}
+.vv-sp-stage-sparks{position:absolute;z-index:0;inset:0;overflow:hidden;pointer-events:none}
+.vv-sp-stage-sparks span{
+  position:absolute;display:block;width:3px;height:3px;border-radius:50%;
+  background:#2ec4b6;opacity:.15;
+  animation:vv-sp-spark-float 6.5s ease-in-out infinite alternate;
+}
+.vv-sp-stage-sparks span:nth-child(1){left:12%;top:26%;animation-delay:-1s}
+.vv-sp-stage-sparks span:nth-child(2){left:85%;top:58%;animation-delay:-4s;width:5px;height:5px}
+.vv-sp-stage-sparks span:nth-child(3){left:22%;top:86%;animation-delay:-2.5s;width:2px;height:2px}
+.vv-sp-stage-sparks span:nth-child(4){left:78%;top:15%;animation-delay:-5s}
+@keyframes vv-sp-spark-float{
+  0%{opacity:.15;transform:translate3d(0,8px,0)}
+  65%{opacity:.8}
+  100%{opacity:.1;transform:translate3d(10px,-22px,0)}
+}
+.vv-sp-scene{position:relative;transform-style:preserve-3d}
+.vv-sp-scene::after{
+  content:"";position:absolute;inset:-4% -8%;z-index:8;pointer-events:none;
+  opacity:0;
+  background:linear-gradient(180deg,transparent 40%,rgba(46,196,182,.10) 48%,rgba(46,196,182,.20) 50%,transparent 54%);
+  animation:vv-sp-scan-sweep 1.4s cubic-bezier(.19,1,.22,1) .1s both;
+}
+@keyframes vv-sp-scan-sweep{
+  0%{opacity:0;transform:translateY(-70%)}
+  35%{opacity:.75}
+  100%{opacity:0;transform:translateY(90%)}
+}
+.vv-sp-stage-track span{
+  width:calc(14.2857% + var(--vv-sp-progress,0) * 85.7143%);
+  transition:width .09s linear;
+}
+.vv-sp-steps::after{
+  content:"";position:absolute;z-index:4;left:19px;
+  top:calc(25px + (100% - 50px) * var(--vv-sp-progress,0));
+  width:10px;height:10px;border-radius:50%;
+  background:#2ec4b6;
+  border:2px solid #003f5c;
+  box-shadow:0 0 0 5px rgba(46,196,182,.12),0 0 18px rgba(46,196,182,.62);
+  pointer-events:none;
+  transition:top .14s ease;
+  animation:vv-sp-beacon-breathe 2.2s ease-in-out infinite;
+}
+@keyframes vv-sp-beacon-breathe{
+  50%{box-shadow:0 0 0 9px rgba(46,196,182,.04),0 0 22px rgba(46,196,182,.5)}
+}
+.vv-sp-step.is-active .vv-sp-step-number{
+  animation:vv-sp-active-pop .63s cubic-bezier(.17,1.5,.3,1) both;
+}
+@keyframes vv-sp-active-pop{
+  from{transform:scale(.68);opacity:.4;filter:brightness(2)}
+  to{transform:scale(1.06);opacity:1;filter:brightness(1)}
+}
+/* STEP 01: conversation bubbles enter in sequence; dots reveal progressively */
+.vv-sp-art-chat .vv-sp-speech{
+  transform-origin:bottom left;animation:vv-sp-bubble-enter .74s cubic-bezier(.18,1,.3,1) both;
+}
+.vv-sp-art-chat .is-answer{transform-origin:bottom right;animation-delay:.24s}
+@keyframes vv-sp-bubble-enter{
+  from{opacity:0;transform:translateY(28px) scale(.78);filter:blur(7px)}
+  to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+}
+.vv-sp-art-chat .vv-sp-flow{animation:vv-sp-slide-appear .7s ease .62s both}
+.vv-sp-art-chat .vv-sp-art-notes{animation:vv-sp-slide-appear .72s ease .85s both}
+@keyframes vv-sp-slide-appear{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+/* STEP 02: roadmap chart bars fill one after another */
+.vv-sp-art-roadmap .vv-sp-window-head{animation:vv-sp-slide-appear .5s ease both}
+.vv-sp-roadmap-grid i{
+  transform-origin:left;animation:vv-sp-grow-bar 1.05s cubic-bezier(.2,1,.2,1) both;
+  animation-delay:var(--bar-delay,0ms);
+}
+@keyframes vv-sp-grow-bar{from{opacity:.1;transform:scaleX(.02)}to{opacity:1;transform:scaleX(1)}}
+.vv-sp-art-roadmap .vv-sp-roadmap-foot{animation:vv-sp-slide-appear .7s ease .65s both}
+/* STEP 03: moodboard tiles reveal on their own rhythms */
+.vv-sp-art-mood .vv-sp-mood-type{
+  animation:vv-sp-mood-reveal .94s cubic-bezier(.15,1,.3,1) both;
+}
+@keyframes vv-sp-mood-reveal{
+  from{opacity:.15;clip-path:inset(100% 0 0 0);transform:translateY(15px)}
+  to{opacity:1;clip-path:inset(0 0 0 0);transform:translateY(0)}
+}
+.vv-sp-art-mood .vv-sp-mood-img{
+  animation:vv-sp-mood-reveal .85s cubic-bezier(.2,1,.3,1) .19s both;
+}
+.vv-sp-art-mood .vv-sp-mood-img img{
+  animation:vv-sp-mood-camera 6s ease-in-out .8s infinite alternate;
+}
+@keyframes vv-sp-mood-camera{from{transform:scale(1)}to{transform:scale(1.13)}}
+.vv-sp-mood-color i{animation:vv-sp-swatch-pop .6s cubic-bezier(.17,1.3,.3,1) both}
+.vv-sp-mood-color i:nth-child(1){animation-delay:.5s}
+.vv-sp-mood-color i:nth-child(2){animation-delay:.65s}
+.vv-sp-mood-color i:nth-child(3){animation-delay:.8s}
+@keyframes vv-sp-swatch-pop{from{opacity:0;transform:scaleX(0)}to{opacity:1;transform:scaleX(1)}}
+/* STEP 04: creative software workspace artboard assembles and cursor blinks */
+.vv-sp-art-production .vv-sp-artboard{
+  animation:vv-sp-soft-zoom 1s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes vv-sp-soft-zoom{
+  from{opacity:.3;transform:scale(.9) rotateY(-7deg);filter:blur(9px)}
+  to{opacity:1;transform:scale(1) rotateY(0);filter:blur(0)}
+}
+.vv-sp-art-production .vv-sp-artboard strong{
+  animation:vv-sp-type-rise .85s cubic-bezier(.16,1,.3,1) .35s both;
+}
+@keyframes vv-sp-type-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.vv-sp-art-production .vv-sp-artboard::after{
+  content:"";display:block;position:absolute;left:12px;top:12px;width:10px;height:10px;
+  border:1.5px solid #2ec4b6;transform:rotate(45deg);
+  animation:vv-sp-design-cursor 3.8s ease-in-out .3s infinite alternate;
+  pointer-events:none;z-index:3;
+}
+@keyframes vv-sp-design-cursor{
+  0%{transform:translate(5px,0) rotate(45deg);opacity:0}
+  15%{opacity:1}
+  65%{transform:translate(140px,87px) rotate(0);opacity:.9}
+  100%{transform:translate(95px,136px) rotate(90deg);opacity:0}
+}
+.vv-sp-art-production .vv-sp-artboard-orbit{
+  animation:vv-sp-orbit-breathe 7s ease-in-out infinite;
+}
+@keyframes vv-sp-orbit-breathe{50%{transform:scale(1.25) rotate(90deg)}}
+/* STEP 05: quality checks tick in one-by-one */
+.vv-sp-art-review .vv-sp-checks>div{
+  animation:vv-sp-review-check .65s cubic-bezier(.22,1,.36,1) both;
+}
+.vv-sp-art-review .vv-sp-checks>div:nth-child(1){animation-delay:.15s}
+.vv-sp-art-review .vv-sp-checks>div:nth-child(2){animation-delay:.35s}
+.vv-sp-art-review .vv-sp-checks>div:nth-child(3){animation-delay:.55s}
+.vv-sp-art-review .vv-sp-checks>div:nth-child(4){animation-delay:.75s}
+@keyframes vv-sp-review-check{
+  from{opacity:0;transform:translateX(-18px);filter:blur(4px)}
+  to{opacity:1;transform:translateX(0);filter:blur(0)}
+}
+.vv-sp-review-progress{
+  transform-origin:left;
+  animation:vv-sp-grow-bar 1.6s cubic-bezier(.22,1,.36,1) .5s both;
+}
+/* STEP 06: launch ring pulse + ascending chips */
+.vv-sp-art-launch .vv-sp-launch-circle{
+  animation:vv-sp-launch-entry .98s cubic-bezier(.16,1,.3,1) both,
+            vv-sp-launch-bob 4.5s ease-in-out 1.1s infinite;
+}
+@keyframes vv-sp-launch-entry{
+  from{opacity:0;transform:translateY(34px) scale(.67);filter:blur(10px)}
+  to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+}
+@keyframes vv-sp-launch-bob{
+  50%{transform:translateY(-9px);box-shadow:0 0 48px #2ec4b65b}
+}
+.vv-sp-art-launch .vv-sp-launch-chips span{
+  animation:vv-sp-slide-appear .56s ease both;
+}
+.vv-sp-art-launch .vv-sp-launch-chips span:nth-child(1){animation-delay:.48s}
+.vv-sp-art-launch .vv-sp-launch-chips span:nth-child(2){animation-delay:.67s}
+.vv-sp-art-launch .vv-sp-launch-chips span:nth-child(3){animation-delay:.84s}
+/* STEP 07: line chart literally draws itself */
+.vv-sp-art-growth .vv-sp-chart path:last-child{
+  stroke-dasharray:490;
+  stroke-dashoffset:490;
+  animation:vv-sp-chart-draw 1.9s cubic-bezier(.15,1,.3,1) .3s forwards;
+}
+@keyframes vv-sp-chart-draw{to{stroke-dashoffset:0}}
+.vv-sp-art-growth .vv-sp-health,.vv-sp-art-growth .vv-sp-growth-foot{
+  animation:vv-sp-slide-appear .7s ease both;
+}
+.vv-sp-art-growth .vv-sp-growth-foot{animation-delay:1.1s}
+@media(max-width:760px){
+  .vv-sp-stage-label{top:18px;right:16px;font-size:8px;max-width:61%}
+  .vv-sp-stage-label span:last-child{font-size:9px}
+  .vv-sp-steps::after{left:16px}
+  .vv-sp-art-production .vv-sp-artboard::after{display:none}
+  .vv-sp-stage-sparks span:nth-child(2),.vv-sp-stage-sparks span:nth-child(4){display:none}
+}
+@media(prefers-reduced-motion:reduce){
+ .vv-sp-stage:before,.vv-sp-stage-sparks span,.vv-sp-stage-label i,
+ .vv-sp-scene::after,.vv-sp-steps::after,
+ .vv-sp-art-chat .vv-sp-speech,.vv-sp-art-chat .vv-sp-flow,.vv-sp-art-chat .vv-sp-art-notes,
+ .vv-sp-roadmap-grid i,.vv-sp-art-roadmap .vv-sp-window-head,.vv-sp-art-roadmap .vv-sp-roadmap-foot,
+ .vv-sp-art-mood .vv-sp-mood-type,.vv-sp-art-mood .vv-sp-mood-img,
+ .vv-sp-art-mood .vv-sp-mood-img img,.vv-sp-mood-color i,
+ .vv-sp-art-production .vv-sp-artboard,.vv-sp-art-production .vv-sp-artboard strong,
+ .vv-sp-art-production .vv-sp-artboard::after,.vv-sp-art-production .vv-sp-artboard-orbit,
+ .vv-sp-art-review .vv-sp-checks>div,.vv-sp-review-progress,
+ .vv-sp-art-launch .vv-sp-launch-circle,.vv-sp-art-launch .vv-sp-launch-chips span,
+ .vv-sp-art-growth .vv-sp-chart path:last-child,.vv-sp-art-growth .vv-sp-health,
+ .vv-sp-art-growth .vv-sp-growth-foot,.vv-sp-step.is-active .vv-sp-step-number{
+   animation:none!important;transition:none!important;opacity:1!important;transform:none!important;filter:none!important;
+ }
+ .vv-sp-art-growth .vv-sp-chart path:last-child{stroke-dashoffset:0!important}
+}
