@@ -5,21 +5,10 @@ import { useEffect } from "react";
  * muted words resolve progressively, left to right, into the brand's navy and
  * aqua as the text crosses the viewport. Dark areas use white and aqua.
  *
- * Scope the effect to editorial prose so labels, buttons, statistics, maps,
- * and interactive components retain their normal legibility.
+ * This effect is exclusive to the "What We Believe" statement on
+ * the About page. All other headings and paragraphs keep their normal styling.
  */
-const SELECTORS = [
-  ".vv-about-hero-copy h1",
-  ".vv-about-hero-copy > p",
-  ".vv-about-belief-statement",
-  ".vv-about-section-header h2",
-  ".vv-about-section-header > p",
-  ".vv-about-story-copy > p",
-  ".vv-about-lead",
-  ".vv-about-vision-orb p",
-  ".vv-about-final-panel > h2",
-  ".vv-about-final-panel > p",
-].join(", ");
+const SELECTOR = ".vv-about-belief-statement";
 
 type RGB = readonly [number, number, number];
 const NAVY: RGB = [0, 63, 92];
@@ -46,7 +35,7 @@ export function useAboutScrollWords() {
     if (media.matches) return;
 
     const blocks: ScrollBlock[] = [];
-    const candidates = root.querySelectorAll<HTMLElement>(SELECTORS);
+    const candidates = root.querySelectorAll<HTMLElement>(SELECTOR);
     candidates.forEach((element) => {
       const text = element.textContent?.replace(/\s+/g, " ").trim();
       if (!text) return;
