@@ -3,11 +3,13 @@ import { AnimatePresence, motion } from "motion/react";
 import {
   ArrowUpRight, Sparkles, Building2, Rocket, Camera,
   RefreshCw, Play, Globe2, Clapperboard, Heart, CircleDot,
-  Film, Aperture, Zap, MousePointerClick
+  Film, Aperture, Zap, MousePointerClick, Pause
 } from "lucide-react";
 import "../audiences-creative.css";
 
 type Kind = "brands" | "business" | "creators" | "events";
+// Each audience gets time to play its own animations before the next world enters.
+const AUDIENCE_ROTATION_MS = 11000;
 const categories = [
   { kind:"brands" as const, title:"Growing brands", line:"Identity with a pulse.", Icon:Sparkles, number:"01" },
   { kind:"business" as const, title:"Businesses & teams", line:"One story. Every channel.", Icon:Building2, number:"02" },
@@ -127,19 +129,49 @@ function EventUniverse({active}:{active:boolean}) {
 
 export function VisualVerseAudiences(){
   const [selected,setSelected]=useState<Kind>("brands");
-  const [visible,setVisible]=useState(true);
+  const [visible,setVisible]=useState(false);
+  const [pageActive,setPageActive]=useState(()=>!document.hidden);
+  const [autoPlay,setAutoPlay]=useState(true);
+  const [cycle,setCycle]=useState(0);
   const sectionRef=useRef<HTMLDivElement>(null);
-  useEffect(()=>{const el=sectionRef.current;if(!el)return;const observer=new IntersectionObserver(entries=>setVisible(Boolean(entries[0]?.isIntersecting)),{rootMargin:"80px",threshold:.02});observer.observe(el);return ()=>observer.disconnect()},[]);
+
+  useEffect(()=>{
+    const el=sectionRef.current;
+    if(!el)return;
+    const observer=new IntersectionObserver(entries=>setVisible(Boolean(entries[0]?.isIntersecting)),{rootMargin:"80px",threshold:.02});
+    observer.observe(el);
+    return ()=>observer.disconnect();
+  },[]);
+  useEffect(()=>{
+    const handleVisibility=()=>setPageActive(!document.hidden);
+    document.addEventListener("visibilitychange",handleVisibility);
+    return ()=>document.removeEventListener("visibilitychange",handleVisibility);
+  },[]);
+  // The stage remains interactive throughout: hovering does not stop the rotation.
+  // Pausing, leaving the viewport, or switching browser tabs also pauses the timer.
+  useEffect(()=>{
+    if(!visible||!pageActive||!autoPlay)return;
+    const timer=window.setTimeout(()=>{
+      setSelected(current=>categories[(categories.findIndex(item=>item.kind===current)+1)%categories.length].kind);
+      setCycle(current=>current+1);
+    },AUDIENCE_ROTATION_MS);
+    return ()=>window.clearTimeout(timer);
+  },[selected,cycle,visible,pageActive,autoPlay]);
+  const chooseAudience=(kind:Kind)=>{
+    setSelected(kind);
+    setCycle(current=>current+1); // Reset the progress bar even when selecting the current tab.
+  };
   const activeIndex=categories.findIndex(v=>v.kind===selected);
+  const rotationRunning=autoPlay&&visible&&pageActive;
   return <div className="vvcr-root" ref={sectionRef}>
-    <div className="vvcr-intro"><span className="vv-label"><span className="vvcr-intro-spark">✳</span> THE PEOPLE WE CREATE WITH / 003</span><h2 className="vvcr-title">Every story<br/>has its <em>people.</em></h2><p>Different ambitions. Different worlds. One creative obsession: making your story impossible to ignore.</p><div className="vvcr-small-instruction"><MousePointerClick size={15}/> Pick a world. Then play with it.</div></div>
+    <div className="vvcr-intro"><span className="vv-label"><span className="vvcr-intro-spark">✳</span> THE PEOPLE WE CREATE WITH / 003</span><h2 className="vvcr-title">Every story<br/>has its <em>people.</em></h2><p>Different ambitions. Different worlds. One creative obsession: making your story impossible to ignore.</p><div className="vvcr-small-instruction"><MousePointerClick size={15}/> Pick a world, or watch them come alive.</div></div>
     <div className="vvcr-experience">
-      <div className="vvcr-selector" role="group" aria-label="Choose a creative audience">{categories.map(({kind,title,line,Icon,number})=><button key={kind} type="button" className={"vvcr-category"+(selected===kind?" active":"")} onClick={()=>setSelected(kind)} aria-pressed={selected===kind}><span className="vvcr-category-no">{number}</span><span className="vvcr-category-icon"><Icon size={20} strokeWidth={1.6}/></span><span className="vvcr-category-text"><strong>{title}</strong><small>{line}</small></span><span className="vvcr-category-arrow"><ArrowUpRight size={18}/></span>{selected===kind&&<motion.span layoutId="vvcr-active-line" className="vvcr-category-rail"/>}</button>)}</div>
+      <div className="vvcr-selector" role="group" aria-label="Explore four creative audiences; switches automatically every 11 seconds">{categories.map(({kind,title,line,Icon,number})=><button key={kind} type="button" className={"vvcr-category"+(selected===kind?" active":"")} onClick={()=>chooseAudience(kind)} aria-pressed={selected===kind}><span className="vvcr-category-no">{number}</span><span className="vvcr-category-icon"><Icon size={20} strokeWidth={1.6}/></span><span className="vvcr-category-text"><strong>{title}</strong><small>{line}</small></span><span className="vvcr-category-arrow"><ArrowUpRight size={18}/></span>{selected===kind&&<span className="vvcr-category-progress-track" aria-hidden="true">{rotationRunning&&<motion.span key={kind+"-"+cycle} className="vvcr-category-progress-fill" initial={{scaleX:0}} animate={{scaleX:1}} transition={{duration:AUDIENCE_ROTATION_MS/1000,ease:"linear"}}/>}</span>}</button>)}</div>
       <div className="vvcr-stage-wrap"><div className="vvcr-stage-caption"><span>VISUAL VERSE / CREATIVE UNIVERSES</span><span>EXPLORE 0{activeIndex+1} / 04 <span className="vvcr-caption-arrow">↗</span></span></div><AnimatePresence mode="wait">
         <motion.div key={selected} className="vvcr-transition" initial={{opacity:0,y:20,scale:.97,filter:"blur(8px)"}} animate={{opacity:1,y:0,scale:1,filter:"blur(0px)"}} exit={{opacity:0,y:-17,scale:1.015,filter:"blur(8px)"}} transition={{duration:.44,ease:[.22,1,.36,1]}} onPointerMove={e=>{if(e.pointerType!=="mouse")return;const b=e.currentTarget.getBoundingClientRect();e.currentTarget.style.setProperty("--vvcr-x",String((e.clientX-b.left)/b.width-.5));e.currentTarget.style.setProperty("--vvcr-y",String((e.clientY-b.top)/b.height-.5));}}>
           {selected==="brands"?<BrandUniverse active={visible}/>:selected==="business"?<BusinessUniverse active={visible}/>:selected==="creators"?<CreatorsUniverse active={visible}/>:<EventUniverse active={visible}/>}
         </motion.div>
-      </AnimatePresence><div className="vvcr-stage-bottom"><span><span className="vvcr-bottom-dot"/> FOUR WORLDS. ENDLESS POSSIBILITIES.</span><a href="/who-we-serve.html#industries">MEET THE PEOPLE WE CREATE WITH <ArrowUpRight size={15}/></a></div></div>
+      </AnimatePresence><div className="vvcr-stage-bottom"><span><span className="vvcr-bottom-dot"/> FOUR WORLDS. ENDLESS POSSIBILITIES.</span><button type="button" className="vvcr-autoplay-toggle" onClick={()=>{setAutoPlay(value=>!value);setCycle(value=>value+1);}} aria-label={autoPlay?"Pause automatic audience switching":"Resume automatic audience switching"} aria-pressed={autoPlay}>{autoPlay?<Pause size={12}/>:<Play size={12}/>} {autoPlay?"AUTO ROTATE ON":"AUTO ROTATE PAUSED"}</button><a href="/who-we-serve.html#industries">MEET THE PEOPLE WE CREATE WITH <ArrowUpRight size={15}/></a></div></div>
     </div>
   </div>
 }
