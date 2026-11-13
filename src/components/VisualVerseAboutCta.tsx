@@ -17,27 +17,86 @@ const words = heading.split(/\s+/);
 
 export function VisualVerseAboutCta() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const headingRef = useRef<HTMLHeadingElement | null>(null);
   const [ready, setReady] = useState(false);
   const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
-    const element = sectionRef.current;
-    if (!element) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced || !("IntersectionObserver" in window)) {
+    const section = sectionRef.current;
+    const headingElement = headingRef.current;
+    if (!section || !headingElement) return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const words = Array.from(headingElement.querySelectorAll<HTMLElement>(".vv-cta-word"));
+    if (reduceMotion.matches || !("IntersectionObserver" in window) ||
+        !("animate" in headingElement)) {
       setReady(true);
       setRevealed(true);
       return;
     }
+
     setReady(true);
-    const observer = new IntersectionObserver(entries => {
-      if (entries.some(entry => entry.isIntersecting)) {
+    let started = false;
+    let panelVisible = false;
+    let panelObserver: IntersectionObserver | null = null;
+    let wordObserver: IntersectionObserver | null = null;
+    const animations: Animation[] = [];
+
+    // A section-level observer animates the background panel independently.
+    // Text animation must wait for the ACTUAL headline to appear, otherwise
+    // the long CTA can trigger it before the user can see the words.
+    panelObserver = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting) && !panelVisible) {
+        panelVisible = true;
         setRevealed(true);
-        observer.disconnect();
       }
-    }, { threshold: .12, rootMargin: "0px 0px -25px 0px" });
-    observer.observe(element);
-    return () => observer.disconnect();
+    }, { threshold: .045 });
+    panelObserver.observe(section);
+
+    // WAAPI guarantees a visible entrance even when React batches state
+    // updates or a visitor jumps straight to #lets-create.
+    const animateWords = () => {
+      if (started) return;
+      started = true;
+      setRevealed(true);
+      animations.forEach(a => a.cancel());
+      animations.length = 0;
+      words.forEach((word, index) => {
+        const animation = word.animate(
+          [
+            { opacity: 0, transform: "translate3d(0, 112%, 0) rotate(2deg)", filter: "blur(7px)" },
+            { opacity: 1, transform: "translate3d(0, 0, 0) rotate(0deg)", filter: "blur(0px)" },
+          ],
+          {
+            duration: 1050,
+            delay: 130 + index * 112,
+            easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+            fill: "both",
+          }
+        );
+        animation.addEventListener("finish", () => animation.cancel(), { once: true });
+        animations.push(animation);
+      });
+    };
+
+    wordObserver = new IntersectionObserver(entries => {
+      const entry = entries[0];
+      if (!entry) return;
+      if (entry.isIntersecting && entry.intersectionRatio >= .24) {
+        animateWords();
+      } else if (!entry.isIntersecting) {
+        // Replay only after the headline has left the viewport completely,
+        // not on minor scroll changes while people are reading it.
+        started = false;
+      }
+    }, { threshold: [0, .24, .4], rootMargin: "0px 0px -8% 0px" });
+    wordObserver.observe(headingElement);
+
+    return () => {
+      panelObserver?.disconnect();
+      wordObserver?.disconnect();
+      animations.forEach(a => a.cancel());
+    };
   }, []);
 
   const magneticMove = (event: PointerEvent<HTMLAnchorElement>) => {
@@ -94,7 +153,7 @@ export function VisualVerseAboutCta() {
         <div className="vv-cta-content">
           <div className="vv-cta-leading">
             <span className="vv-cta-eyebrow"><i aria-hidden="true"/><i aria-hidden="true"/> LET'S MAKE SOMETHING MEANINGFUL</span>
-            <h2 id="vv-cta-title" className="vv-cta-headline">
+            <h2 id="vv-cta-title" ref={headingRef} className="vv-cta-headline">
               {words.map((word,index)=>(
                 <span className="vv-cta-word-wrap" key={index}>
                   <span className="vv-cta-word"
