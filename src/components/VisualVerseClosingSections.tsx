@@ -1,11 +1,8 @@
 import { PolicyLinks } from "./VisualVersePolicies";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
 import {
-  ArrowRight, ArrowUpRight, ChevronDown, CheckCircle2, Globe2, Mail,
-  MapPin, MoveUpRight, Sparkles, ArrowUp, Compass, BriefcaseBusiness
+  ArrowRight, ArrowUpRight, CheckCircle2, Mail,
+  MapPin, ArrowUp
 } from "lucide-react";
-import { kenyaCities, mapRegions, type KenyaCity, type LngLat } from "@/data/east-africa";
 
 const creativeWords = [
   "Marketing", "User Experience", "Interaction Design", "Logos", "Brand Identity",
@@ -37,78 +34,8 @@ export { VisualVerseKenyaMap as VisualVerseWhereWeServe } from "./VisualVerseKen
 const CONTACT_EMAIL = "hello@visualverse.com";
 const CONTACT_PHONE = "+254794044598";
 
-const questions = [
-  {
-    question:"What services does Visual Verse offer?",
-    answer:"We bring together photography, videography, branding, graphic design, web and UI/UX design, and social media and digital marketing. We can focus on one service or combine disciplines around a broader creative brief.",
-  },
-  {
-    question:"Do you work with clients outside Nairobi?",
-    answer:"Yes. We can collaborate remotely with clients across Kenya. For photography, videography and other work that requires an on-site presence, travel and scheduling are discussed during project planning.",
-  },
-  {
-    question:"How do we start a project?",
-    answer:"Share what you are building, the outcome you need, your timeline and any reference material. We can then clarify the scope, creative direction and next steps before confirming the project.",
-  },
-  {
-    question:"How is a project priced?",
-    answer:"Every quote depends on the deliverables, scope, complexity, usage needs and turnaround time. We prepare an appropriate quotation after discussing your requirements; there is no universal price for every project.",
-  },
-  {
-    question:"Can you work with an existing logo or brand identity?",
-    answer:"Absolutely. We can work within your current guidelines, refresh selected elements or discuss a complete identity project if that is what your brand needs.",
-  },
-  {
-    question:"How long does a project usually take?",
-    answer:"Timelines vary depending on the service, complexity, feedback rounds and assets required. We agree on realistic milestones before production begins.",
-  },
-  {
-    question:"Will I be involved in the creative process?",
-    answer:"Yes. We begin by understanding your brief and include feedback points throughout the project so the final work reflects your vision and the agreed creative direction.",
-  },
-];
-
-export function VisualVerseFaq() {
-  const [open,setOpen]=useState<number|null>(0);
-  return (
-    <div className="vv-close-faq">
-      <div className="vv-close-faq-intro">
-        <span className="vv-close-eyebrow"><span/> FAQs</span>
-        <h2>Frequently Asked<br/>Questions.</h2>
-        <p>Everything you might want to know before we make something together. Have another question? We would love to hear it.</p>
-        <a className="vv-close-small-cta" href="/contact.html">Ask us anything <span><ArrowUpRight size={16} aria-hidden="true"/></span></a>
-        <a href={"mailto:"+CONTACT_EMAIL+"?subject=Visual%20Verse%20Question"} className="vv-close-faq-mail"><Mail size={14} aria-hidden="true"/> Email a question</a>
-      </div>
-      <div className="vv-close-faq-list">
-        {questions.map((item,index)=>{
-          const opened=open===index;
-          return (
-            <div className={"vv-close-faq-item"+(opened?" is-open":"")} key={item.question}>
-              <h3>
-                <button type="button" onClick={()=>setOpen(opened?null:index)} aria-expanded={opened}
-                  aria-controls={"vv-faq-answer-"+index}>
-                  <span>{item.question}</span>
-                  <span className="vv-close-faq-icon"><span aria-hidden="true">{opened?"−":"+"}</span></span>
-                </button>
-              </h3>
-              <AnimatePresence initial={false}>
-                {opened&&(
-                  <motion.div key="answer" id={"vv-faq-answer-"+index}
-                    initial={{height:0,opacity:0}} animate={{height:"auto",opacity:1}}
-                    exit={{height:0,opacity:0}}
-                    transition={{duration:.26,ease:[.22,1,.36,1]}}
-                    className="vv-close-faq-answer" role="region">
-                    <p>{item.answer}</p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
+/** Shared FAQ experience used on Home and About. */
+export { VisualVerseFaqLab as VisualVerseFaq } from "./VisualVerseFaqLab";
 
 export function VisualVerseCTA(){
   return (
