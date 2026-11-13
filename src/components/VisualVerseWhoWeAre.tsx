@@ -8,7 +8,7 @@ export function VisualVerseWhoWeAre() {
     if(!title || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const savedMarkup=title.innerHTML;
     const savedLabel=title.getAttribute("aria-label");
-    const originalText=title.textContent?.replace(/\\s+/g," ").trim() || "About Visual Verse Creations";
+    const originalText=title.textContent?.replace(/\s+/g," ").trim() || "About Visual Verse Creations";
     title.setAttribute("aria-label",originalText);
     title.setAttribute("data-vv-scroll-words","true");
 
@@ -20,9 +20,9 @@ export function VisualVerseWhoWeAre() {
     for(const textNode of textNodes){
       const fragment=document.createDocumentFragment();
       const accent=Boolean(textNode.parentElement?.closest(".vv-about-highlight"));
-      const segments=textNode.textContent?.match(/\\s+|[^\\s]+/g) || [];
+      const segments=textNode.textContent?.match(/\s+|[^\s]+/g) || [];
       for(const segment of segments){
-        if(/^\\s+$/.test(segment)){fragment.appendChild(document.createTextNode(segment));continue;}
+        if(/^\s+$/.test(segment)){fragment.appendChild(document.createTextNode(segment));continue;}
         const word=document.createElement("span");
         word.className="vv-scroll-word"+(accent?" is-accent":"");
         word.textContent=segment;
