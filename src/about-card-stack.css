@@ -221,3 +221,17 @@
   .vv-stack-timeline-playhead{left:44%}
   .vv-about-card-switch.is-active .vv-about-card-switch-fill{width:100%}
 }
+
+/* About hero: deliberate three-line headline at every breakpoint. */
+.vv-about-editorial .vv-about-hero-copy h1 {
+  font-size: clamp(32px, 4.45vw, 59px);
+  line-height: 1.08;
+  letter-spacing: -.075em;
+  max-width: 100%;
+}
+.vv-about-editorial .vv-about-hero-title-line { display:block; white-space:nowrap; }
+/* Three-stage controls have no directional arrows. */
+.vv-about-card-switch { justify-content:flex-start; }
+@media(max-width:900px) {
+  .vv-about-editorial .vv-about-hero-copy h1 { font-size:clamp(32px,7vw,58px); }
+}
