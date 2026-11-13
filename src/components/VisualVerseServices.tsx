@@ -135,7 +135,7 @@ export function VisualVerseServices() {
     <div className="vv-svc-layout">
       <div className="vv-svc-heading">
         <div>
-          <span className="vv-label">WHAT WE DO / 002</span>
+          <span className="vv-label">WHAT WE DO</span>
           <h2 className="vv-section-h">Six ways we<br/>bring ideas to life.</h2>
         </div>
         <p>One creative studio, every detail considered. Hover over a service to see how Visual Verse turns your vision into something remarkable.</p>
@@ -169,7 +169,7 @@ export function VisualVerseServices() {
                       transition={{duration:0.32,ease:[0.22,1,0.36,1]}}
                     >
                       <div className="vv-svc-panel-copy">
-                        <div className="vv-svc-overline"><Icon size={16} aria-hidden={true}/> {String(index+1).padStart(2,"0")} / 06 · {item.label}</div>
+                        <div className="vv-svc-overline"><Icon size={16} aria-hidden={true}/> {item.label}</div>
                         <h3>{item.title}</h3>
                         <p className="vv-svc-panel-headline">{item.headline}</p>
                         <p className="vv-svc-panel-description">{item.description}</p>
@@ -186,7 +186,7 @@ export function VisualVerseServices() {
         })}
       </div>
       <div className="vv-svc-footer">
-        <span>01 — 06 / OUR CREATIVE DISCIPLINES</span>
+        <span>01 — OUR CREATIVE DISCIPLINES</span>
         <p>Different disciplines. One distinct visual language.</p>
       </div>
     </div>

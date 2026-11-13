@@ -66,7 +66,7 @@ export function VisualVerseProjectsPage(){
 
         <section className="vv-projects-gallery-section" id="vv-projects-gallery">
           <div className="vv-projects-gallery-header">
-            <div><span className="vv-projects-kicker">EXPLORE OUR WORK / 01—06</span><h2>Find the kind of<br/>story you're looking for.</h2></div>
+            <div><span className="vv-projects-kicker">EXPLORE OUR WORK</span><h2>Find the kind of<br/>story you're looking for.</h2></div>
             <p>Choose a creative category to explore a little further. Photographic samples are drawn from the Visual Verse archive; other visuals are illustrative directions.</p>
           </div>
           <div className="vv-projects-filters" role="group" aria-label="Filter portfolio categories">
@@ -77,7 +77,7 @@ export function VisualVerseProjectsPage(){
             {displayed.map((item)=>(
               <a href={"#"+item.id} key={item.id} className="vv-projects-focus-card">
                 <div className="vv-projects-focus-image"><CategoryVisual category={item}/><span className="vv-projects-focus-arrow"><ArrowUpRight size={21}/></span></div>
-                <div className="vv-projects-focus-caption"><span>{item.number} / 06</span><h3>{item.name}</h3><p>{item.headline}</p></div>
+                <div className="vv-projects-focus-caption"><h3>{item.name}</h3><p>{item.headline}</p></div>
               </a>
             ))}
           </div>
@@ -100,10 +100,10 @@ export function VisualVerseProjectsPage(){
               {category.id==="social-media"&&<span id="campaigns" className="vv-projects-alias"/>}
               <div className="vv-projects-category-visual">
                 <div className="vv-projects-category-art"><CategoryVisual category={category}/></div>
-                <span className="vv-projects-visual-meta"><ImageIcon size={13} aria-hidden="true"/> CATEGORY / {category.number}</span>
+                <span className="vv-projects-visual-meta"><ImageIcon size={13} aria-hidden="true"/> CREATIVE CATEGORY</span>
               </div>
               <div className="vv-projects-category-copy">
-                <span className="vv-projects-kicker">{category.number} / COLLECTION 0{index+1}</span>
+                <span className="vv-projects-kicker">CREATIVE COLLECTION</span>
                 <h2 id={"vv-project-"+category.id}>{category.name}</h2>
                 <h3>{category.headline}</h3>
                 <p>{category.description}</p>

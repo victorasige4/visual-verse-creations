@@ -62,13 +62,13 @@ export function PortfolioArtwork({ kind }: { kind: PortfolioCollection["id"] }) 
         <span className="vv-pf-photo-focus" aria-hidden="true" />
       </div>
       <div className="vv-pf-photo-chip"><Camera size={14} aria-hidden="true" /><span>EVERY FRAME / A STORY</span></div>
-      <div className="vv-pf-photo-mark" aria-hidden="true">01</div>
+      
     </div>
   );
 
   if (kind === "branding") return (
     <div className="vv-pf-art vv-pf-art-brand">
-      <div className="vv-pf-brand-sheet vv-pf-brand-back"><span>IDENTITY STUDIES / 02</span><strong>V / V</strong></div>
+      <div className="vv-pf-brand-sheet vv-pf-brand-back"><span>IDENTITY STUDIES</span><strong>V / V</strong></div>
       <div className="vv-pf-brand-sheet vv-pf-brand-front">
         <span className="vv-pf-brand-caption"><Palette size={14} aria-hidden="true"/> VISUAL VERSE / BRAND WORLD</span>
         <img src="/logo-mark.png" alt="Visual Verse favicon displayed in a branding concept" />
@@ -121,7 +121,7 @@ export function PortfolioPreviewCard({ collection }: { collection: PortfolioColl
     <CardContainer containerClassName="vv-pf-card-outer" className="vv-pf-card">
       <CardBody className="vv-pf-card-content">
         <CardItem translateZ={24} className="vv-pf-card-eyebrow">
-          <span>{collection.number} / 04</span>
+          
           <span>PORTFOLIO COLLECTION</span>
         </CardItem>
         <CardItem translateZ={52} className="vv-pf-card-media">
@@ -149,7 +149,7 @@ export function VisualVersePortfolio() {
     <div className="vv-pf-layout">
       <div className="vv-pf-header">
         <div>
-          <span className="vv-label">SELECTED DIRECTIONS / 004</span>
+          <span className="vv-label">SELECTED DIRECTIONS</span>
           <h2 className="vv-section-h">A glimpse of<br/>what we create<span className="vv-pf-period">.</span></h2>
         </div>
         <div className="vv-pf-intro">

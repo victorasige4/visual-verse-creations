@@ -94,7 +94,7 @@ export function VisualVerseWhyUs() {
           transition={{ duration: 0.65, ease: [0.2, 0.8, 0.2, 1] }}
         >
           <div className="vv-why-intro-left">
-            <span className="vv-why-kicker"><i aria-hidden="true" /> WHY VISUAL VERSE / 005</span>
+            <span className="vv-why-kicker"><i aria-hidden="true" /> WHY VISUAL VERSE</span>
             <h2>Creative sparks.<br /><span>Real impact.</span></h2>
           </div>
           <div className="vv-why-intro-right">
@@ -136,7 +136,7 @@ export function VisualVerseWhyUs() {
                 key={reason.number}
                 className={"vv-why-step" + (selected ? " is-active" : "")}
                 aria-pressed={selected}
-                aria-label={reason.number + ". " + reason.title + ". " + reason.description}
+                aria-label={reason.title + ". " + reason.description}
                 onPointerEnter={(event) => {
                   if (event.pointerType === "mouse") {
                     setHoveringSteps(true);
@@ -159,7 +159,6 @@ export function VisualVerseWhyUs() {
                     }}
                     transition={reducedMotion ? { duration: 0 } : { duration: 0.36, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    {reason.number}
                   </motion.span>
                 </span>
                 <strong className="vv-why-step-heading">{reason.title}</strong>
@@ -170,7 +169,7 @@ export function VisualVerseWhyUs() {
         </motion.div>
         <div className="vv-why-signoff" aria-hidden="true">
           <span>THOUGHTFUL DESIGN. LASTING STORIES.</span>
-          <span>VISUAL VERSE CREATIONS · 01—03</span>
+          <span>VISUAL VERSE CREATIONS</span>
         </div>
       </div>
     </div>

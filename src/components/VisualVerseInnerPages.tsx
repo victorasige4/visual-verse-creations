@@ -58,7 +58,7 @@ function PageHero({kind}:{kind:Kind}){
     <section className="vv-inner-hero vv-inner-hero-v2">
       <div className="vv-inner-hero-inner">
         <div className="vv-inner-hero-copy">
-          <span className="vv-inner-eyebrow"><i aria-hidden="true"/> {page.count} &nbsp; {page.eyebrow}</span>
+          <span className="vv-inner-eyebrow"><i aria-hidden="true"/> {page.eyebrow}</span>
           <h1>{page.first}<br/><em>{page.accent}</em></h1>
           <p>{page.description}</p>
           <div className="vv-inner-hero-actions">
@@ -103,7 +103,7 @@ function AboutPage(){
     <section className="vv-inner-section vv-inner-values-section" id="our-values">
       <SectionTitle eyebrow="WHAT GUIDES US / OUR VALUES" description="Four principles behind the creative choices we make.">Creativity with<br/><em>a point of view.</em></SectionTitle>
       <div className="vv-inner-values">
-        {values.map(({title,text,Icon},i)=><article key={title}><span className="vv-inner-values-top"><small>{String(i+1).padStart(2,"0")} / 04</small><Icon size={25}/></span><h3>{title}</h3><p>{text}</p></article>)}
+        {values.map(({title,text,Icon},i)=><article key={title}><span className="vv-inner-values-top"><Icon size={25}/></span><h3>{title}</h3><p>{text}</p></article>)}
       </div>
     </section>
     <section className="vv-inner-team-section">
@@ -119,9 +119,9 @@ function AboutPage(){
     <section className="vv-inner-section vv-inner-reasons" aria-label="Where we work and frequently asked questions">
       <SectionTitle eyebrow="A LITTLE MORE ABOUT US" description="Everything you need to know about working together, with more to explore on the homepage.">Rooted in Nairobi.<br/><em>Creating beyond borders.</em></SectionTitle>
       <div className="vv-inner-reasons-grid">
-        <article><MapPin size={22}/><small>01</small><h3>Where we create</h3><p>Visual Verse is based in Nairobi and collaborates with clients across Kenya. We work remotely where possible and plan travel for on-location photography and film projects.</p><a className="vv-inner-text-link" href="/#where-we-serve">Explore our locations <ArrowUpRight size={17}/></a></article>
-        <article><HeartHandshake size={22}/><small>02</small><h3>How we work</h3><p>We listen first, agree on the creative direction, then shape the right design, film and digital solutions around your goals.</p><a className="vv-inner-text-link" href="/#process">See why Visual Verse <ArrowUpRight size={17}/></a></article>
-        <article><MessageCircle size={22}/><small>03</small><h3>Questions before we begin?</h3><p>Wondering about pricing, timelines, collaboration or getting started? Our homepage answers the questions we hear most often.</p><a className="vv-inner-text-link" href="/#faqs">Read the FAQs <ArrowUpRight size={17}/></a></article>
+        <article><MapPin size={22}/><h3>Where we create</h3><p>Visual Verse is based in Nairobi and collaborates with clients across Kenya. We work remotely where possible and plan travel for on-location photography and film projects.</p><a className="vv-inner-text-link" href="/#where-we-serve">Explore our locations <ArrowUpRight size={17}/></a></article>
+        <article><HeartHandshake size={22}/><h3>How we work</h3><p>We listen first, agree on the creative direction, then shape the right design, film and digital solutions around your goals.</p><a className="vv-inner-text-link" href="/#process">See why Visual Verse <ArrowUpRight size={17}/></a></article>
+        <article><MessageCircle size={22}/><h3>Questions before we begin?</h3><p>Wondering about pricing, timelines, collaboration or getting started? Our homepage answers the questions we hear most often.</p><a className="vv-inner-text-link" href="/#faqs">Read the FAQs <ArrowUpRight size={17}/></a></article>
       </div>
     </section>
   </>;
@@ -137,7 +137,7 @@ function ServicesPage(){
       <div className="vv-inner-service-grid">
         {services.map(({id,title,label,summary,deliverables,Icon},i)=>(
           <article className="vv-inner-service-card" key={id} id={"details-"+id}>
-            <div className="vv-inner-service-card-head"><small>{String(i+1).padStart(2,"0")} / 06</small><Icon size={29} strokeWidth={1.55}/></div>
+            <div className="vv-inner-service-card-head"><Icon size={29} strokeWidth={1.55}/></div>
             <span>{label}</span><h3>{title}</h3><p>{summary}</p>
             <ul>{deliverables.map(d=><li key={d}><CheckCircle2 size={14} aria-hidden="true"/>{d}</li>)}</ul>
             <a href={"/request-quote.html?service="+encodeURIComponent(title)}>Discuss {title} <ArrowUpRight size={17} aria-hidden="true"/></a>
@@ -186,7 +186,7 @@ function AudiencePage(){
               </div>
             </div>
             <div className="vv-industry-copy">
-              <span className="vv-inner-eyebrow">0{active+1} / 04 &nbsp; CREATIVE PARTNERSHIPS</span>
+              <span className="vv-inner-eyebrow">CREATIVE PARTNERSHIPS</span>
               <h3>{selected.title}</h3><p>{selected.subtitle}</p>
               <div className="vv-industry-before-after"><div><small>THE CHALLENGE</small><p>{selected.challenge}</p></div><div><small>WHAT WE CAN CREATE</small><p>{selected.outcome}</p></div></div>
               <span className="vv-industry-deliverable-label">RELEVANT SERVICES</span>
@@ -281,7 +281,7 @@ function QuotePage(){
           <a className="vv-inner-text-link" href={"tel:"+PHONE}>Prefer to talk first? +254 794 044 598 <ArrowUpRight size={16}/></a>
         </div>
         <form className="vv-inner-form vv-inner-quote-form" onSubmit={submit}>
-          <div className="vv-inner-form-section-title"><span>01 / YOUR INFORMATION</span><h3>Who are we creating with?</h3></div>
+          <div className="vv-inner-form-section-title"><span>YOUR INFORMATION</span><h3>Who are we creating with?</h3></div>
           <div className="vv-inner-form-row">
             <label>Full name * <input required minLength={2} value={name} onChange={e=>setName(e.target.value)} placeholder="Your name" autoComplete="name"/></label>
             <label>Email * <input required type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email"/></label>
@@ -290,7 +290,7 @@ function QuotePage(){
             <label>Company / organisation <input value={company} onChange={e=>setCompany(e.target.value)} placeholder="Optional"/></label>
             <label>Phone / WhatsApp <input value={phone} onChange={e=>setPhone(e.target.value)} type="tel" placeholder="+254..." autoComplete="tel"/></label>
           </div>
-          <div className="vv-inner-form-section-title"><span>02 / PROJECT DETAILS</span><h3>What are you imagining?</h3></div>
+          <div className="vv-inner-form-section-title"><span>PROJECT DETAILS</span><h3>What are you imagining?</h3></div>
           <label>Service needed * <select required value={service} onChange={e=>setService(e.target.value)}>{services.map(s=><option key={s.id} value={s.title}>{s.title}</option>)}<option>Several services / Other</option></select></label>
           <div className="vv-inner-form-row">
             <label>Budget range <select value={budget} onChange={e=>setBudget(e.target.value)}>{budgets.map(b=><option key={b}>{b}</option>)}</select></label>

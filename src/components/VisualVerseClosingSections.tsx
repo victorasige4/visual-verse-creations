@@ -73,7 +73,7 @@ export function VisualVerseFaq() {
   return (
     <div className="vv-close-faq">
       <div className="vv-close-faq-intro">
-        <span className="vv-close-eyebrow"><span/> FAQs / 007</span>
+        <span className="vv-close-eyebrow"><span/> FAQs</span>
         <h2>Frequently Asked<br/>Questions.</h2>
         <p>Everything you might want to know before we make something together. Have another question? We would love to hear it.</p>
         <a className="vv-close-small-cta" href="/contact.html">Ask us anything <span><ArrowUpRight size={16} aria-hidden="true"/></span></a>
@@ -114,7 +114,7 @@ export function VisualVerseCTA(){
   return (
     <div className="vv-close-cta">
       <div className="vv-close-cta-content">
-        <span className="vv-close-cta-eyebrow"><i aria-hidden="true"/> LET'S MAKE SOMETHING MATTER / 008</span>
+        <span className="vv-close-cta-eyebrow"><i aria-hidden="true"/> LET'S MAKE SOMETHING MATTER</span>
         <h2>Have an idea<br/>worth bringing<br/>to <em>life?</em></h2>
         <p>From your first concept to the final frame, let's create something people remember.</p>
         <div className="vv-close-cta-buttons">
