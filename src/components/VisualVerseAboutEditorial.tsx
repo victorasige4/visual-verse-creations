@@ -9,6 +9,7 @@ import { VisualVerseFaq } from "./VisualVerseClosingSections";
 import { CardStackDemo } from "./ui/card-stack-demo";
 import { VisualVersePurposeCompass } from "./VisualVersePurposeCompass";
 import { VisualVerseHowWeWork } from "./VisualVerseHowWeWork";
+import { VisualVersePotadotToolbox } from "./VisualVersePotadotToolbox";
 import { useAboutScrollWords } from "../hooks/useAboutScrollWords";
 import "../about-scroll-words.css";
 
@@ -17,7 +18,7 @@ function useAboutReveal() {
   useEffect(() => {
     const root = document.querySelector(".vv-about-editorial");
     if (!root) return;
-    const items = Array.from(root.querySelectorAll<HTMLElement>(".vv-about-section-header, .vv-about-lead, .vv-about-stats article, .vv-about-vision-orb, .vv-about-story-image, .vv-about-story-copy, .vv-about-tool-tags button, .vv-about-audience-tile, .vv-about-partner-grid article, .vv-about-facts dl div, .vv-about-final-panel"));
+    const items = Array.from(root.querySelectorAll<HTMLElement>(".vv-about-section-header, .vv-about-lead, .vv-about-stats article, .vv-about-vision-orb, .vv-about-story-image, .vv-about-story-copy, .vv-about-audience-tile, .vv-about-partner-grid article, .vv-about-facts dl div, .vv-about-final-panel"));
     if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       items.forEach(el => el.classList.add("vv-about-revealed"));
       return;
@@ -77,18 +78,6 @@ const strengths = [
   {value:"01",label:"connected creative process",detail:"Your idea moves from discovery to delivery with clarity"},
   {value:"∞",label:"stories worth telling",detail:"From independent creators to brands and organisations"}
 ];
-const toolkit = [
-  {name:"Figma",type:"UI & experience"},
-  {name:"Photoshop",type:"Image crafting"},
-  {name:"Illustrator",type:"Vector & identity"},
-  {name:"Lightroom",type:"Photography"},
-  {name:"Premiere Pro",type:"Film & editing"},
-  {name:"After Effects",type:"Motion"},
-  {name:"Cursor",type:"Web development"},
-  {name:"Google Flow",type:"Creative AI"},
-  {name:"ChatGPT",type:"Ideation"},
-  {name:"Semrush",type:"Digital research"}
-];
 const audiences = [
   {name:"Growing brands",eyebrow:"IDENTITY / PRESENCE",before:"An idea people haven't met",after:"A brand they recognise",icon:Palette},
   {name:"Businesses & organisations",eyebrow:"COMMUNICATION / CONTENT",before:"Information without impact",after:"Stories that connect",icon:Megaphone},
@@ -122,7 +111,6 @@ function AboutHeading({label,title,description}:{label:string;title:React.ReactN
 }
 
 export function VisualVerseAboutEditorial() {
-  const [activeTool,setActiveTool]=useState(0);
   useAboutReveal();
   useAboutScrollWords();
 
@@ -177,16 +165,7 @@ export function VisualVerseAboutEditorial() {
 
     <VisualVerseHowWeWork />
 
-    <section className="vv-about-tools vv-about-pad" id="our-toolbox">
-      <div className="vv-about-container vv-about-tools-grid">
-        <div>
-          <AboutHeading label="OUR CREATIVE TOOLBOX" title={<>The tools change. <em>The vision stays.</em></>}/>
-          <p className="vv-about-lead">We combine established creative software, modern workflows and emerging technology to choose what works best for each project—not the other way around.</p>
-          <div className="vv-about-tool-readout"><span>IN FOCUS / {String(activeTool+1).padStart(2,"0")}</span><strong>{toolkit[activeTool].name}</strong><small>{toolkit[activeTool].type}</small></div>
-        </div>
-        <div className="vv-about-tool-tags" role="group" aria-label="Creative software and tools">{toolkit.map((item,i)=><button type="button" key={item.name} className={i===activeTool?"is-active":""} onMouseEnter={()=>setActiveTool(i)} onFocus={()=>setActiveTool(i)} onClick={()=>setActiveTool(i)} aria-pressed={i===activeTool}><span>{item.name}</span><ArrowUpRight size={16}/></button>)}</div>
-      </div>
-    </section>
+    <VisualVersePotadotToolbox/>
 
     <section className="vv-about-audiences vv-about-pad" id="our-audiences">
       <div className="vv-about-container">
