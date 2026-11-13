@@ -7,6 +7,8 @@ import {
 import { VisualVerseKenyaMap } from "./VisualVerseKenyaMap";
 import { VisualVerseFaq } from "./VisualVerseClosingSections";
 import { CardStackDemo } from "./ui/card-stack-demo";
+import { useAboutScrollWords } from "../hooks/useAboutScrollWords";
+import "../about-scroll-words.css";
 
 /** Motion cues reproduced from the supplied About walkthroughs. Effects are scoped to this page. */
 function useAboutReveal() {
@@ -127,6 +129,7 @@ function AboutHeading({label,title,description}:{label:string;title:React.ReactN
 export function VisualVerseAboutEditorial() {
   const [activeTool,setActiveTool]=useState(0);
   useAboutReveal();
+  useAboutScrollWords();
 
   return <div className="vv-about-editorial">
     <section className="vv-about-hero" id="about-hero">
@@ -251,7 +254,7 @@ export function VisualVerseAboutEditorial() {
 
     <section className="vv-about-final" id="lets-create">
       <div className="vv-about-container vv-about-final-panel">
-        <div className="vv-about-final-head"><span className="vv-about-kicker"><span className="vv-about-dot"/> LET'S MAKE SOMETHING MEANINGFUL / 010</span><img src="/logo-mark.png" alt=""/></div>
+        <div className="vv-about-final-head"><span className="vv-about-kicker"><span className="vv-about-dot"/> LET'S MAKE SOMETHING MEANINGFUL</span><img src="/logo-mark.png" alt=""/></div>
         <h2>Have a story? <em>Let's make it unforgettable.</em></h2>
         <p>Tell us what you're dreaming up. We'll shape a creative way forward together.</p>
         <div className="vv-about-final-actions"><a className="vv-about-button vv-about-button-primary" href="/request-quote.html">Start your project <ArrowUpRight size={18}/></a><a href="https://wa.me/254794044598" target="_blank" rel="noreferrer">WhatsApp us <MessageCircle size={19}/></a></div>
