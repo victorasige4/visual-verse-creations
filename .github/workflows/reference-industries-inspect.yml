@@ -18,7 +18,7 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Inspect industries we serve
         run: |
-          cat > /tmp/inspect-industries.mjs <<'INSPECT'
+          cat > .inspect-industries.mjs <<'INSPECT'
           import { chromium } from 'playwright';
           import fs from 'node:fs';
           fs.mkdirSync('industries-qa',{recursive:true});
@@ -75,7 +75,7 @@ jobs:
           }
           await browser.close();
           INSPECT
-          node /tmp/inspect-industries.mjs
+          node .inspect-industries.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
