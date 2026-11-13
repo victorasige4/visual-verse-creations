@@ -110,7 +110,7 @@
 .vv-about-editorial .vv-cta-section .vv-cta-headline{
   margin:0;
   width:100%;
-  max-width:806px;
+  max-width:700px;
   color:var(--vv-cta-white)!important;
   font-size:clamp(54px,6.4vw,92px);
   line-height:1.04;
@@ -339,4 +339,23 @@
   .vv-cta-section.is-ready .vv-cta-word{
     opacity:1!important;transform:none!important;filter:none!important;
   }
+}
+
+
+/* Final visual comparison: match Potadot's three-line desktop heading and
+   preserve the native hover text by keeping our global cursor unobtrusive. */
+@media(min-width:961px){
+  .vv-about-editorial .vv-cta-section .vv-cta-headline{max-width:700px}
+}
+@media(hover:hover) and (pointer:fine){
+  body:has(.vv-cta-button:hover) .vv-cursor-orbit.is-interactive,
+  body:has(.vv-cta-button:focus-visible) .vv-cursor-orbit.is-interactive{
+    width:35px;height:35px;
+    background:rgba(46,196,182,.09);
+    border:1.5px solid rgba(46,196,182,.73);
+    box-shadow:none;
+    -webkit-backdrop-filter:none;backdrop-filter:none;
+  }
+  body:has(.vv-cta-button:hover) .vv-cursor-orbit-label,
+  body:has(.vv-cta-button:focus-visible) .vv-cursor-orbit-label{opacity:0!important}
 }
