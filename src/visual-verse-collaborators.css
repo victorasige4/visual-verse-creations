@@ -149,3 +149,17 @@
 @media(prefers-reduced-motion:reduce){
   .vv-collab-card{animation:none!important;transition:none!important;opacity:1!important;translate:0 0!important}
 }
+
+
+/* Screenshot-measured refinement:
+   reference: tablet first row 228px, second row 204px;
+   mobile first/fourth 228px, middle cards 204px.
+   Concise intro preserves the original two-line desktop / three-line
+   mobile copy height above the card row. */
+@media (max-width:1100px) and (min-width:621px){
+  .vv-collab-card:nth-child(-n+2){min-height:228px}
+}
+@media (max-width:620px){
+  .vv-collab-card:first-child,
+  .vv-collab-card:last-child{min-height:228px}
+}
