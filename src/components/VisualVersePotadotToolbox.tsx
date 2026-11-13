@@ -25,24 +25,24 @@ const tools: Tool[] = [
   {name:"Figma",icon:"figma",group:"Design & identity",description:"Prototyping, interface design and visual collaboration.",x:8,y:21,delay:-1.1},
   {name:"Photoshop",icon:"photoshop",group:"Design & identity",description:"Image composition, retouching and graphic design.",x:24,y:13,delay:-2.3},
   {name:"Illustrator",icon:"illustrator",group:"Design & identity",description:"Distinctive vector graphics and brand identities.",x:42,y:17,delay:-1.7},
-  {name:"Lightroom",icon:"lightroom",group:"Photography & film",description:"Light, colour and the final touch on every photograph.",x:60,y:11,delay:-3.1},
-  {name:"Premiere Pro",icon:"premiere",group:"Photography & film",description:"Editing stories with pacing, rhythm and purpose.",x:78,y:19,delay:-.4},
-  {name:"After Effects",icon:"aftereffects",group:"Photography & film",description:"Movement, motion graphics and animated storytelling.",x:92,y:12,delay:-1.5},
-  {name:"CapCut",icon:"capcut",group:"Photography & film",description:"Agile short-form edits for digital-first stories.",x:11,y:45,delay:-2.1},
-  {name:"Cursor",icon:"cursor",group:"Web & digital",description:"Moving from visual ideas to working websites.",x:27,y:39,delay:-.8},
-  {name:"Google Flow",icon:"flow",group:"Creative AI & strategy",description:"Exploring new ways to develop visual concepts.",x:10,y:68,delay:-2.7,external:"https://upload.wikimedia.org/wikipedia/commons/5/52/Google_Flow_logo.svg"},
-  {name:"ChatGPT",icon:"chatgpt",group:"Creative AI & strategy",description:"Research, brainstorming and refining creative direction.",x:76,y:40,delay:-1.4},
-  {name:"Semrush",icon:"semrush",group:"Creative AI & strategy",description:"Search research and digital audience insights.",x:92,y:38,delay:-3.4},
-  {name:"GitHub",icon:"github",group:"Web & digital",description:"Collaborating on, reviewing and shipping digital work.",x:89,y:64,delay:-.5},
-  {name:"React",icon:"react",group:"Web & digital",description:"Building modern, interactive web experiences.",x:10,y:89,delay:-1.9},
-  {name:"Tailwind CSS",icon:"tailwind",group:"Web & digital",description:"Creating responsive visual design systems.",x:28,y:82,delay:-2.2},
-  {name:"TypeScript",icon:"typescript",group:"Web & digital",description:"Reliable, maintainable foundations for interfaces.",x:42,y:89,delay:-.9},
-  {name:"Vite",icon:"vite",group:"Web & digital",description:"Fast, modern frontend production workflows.",x:60,y:85,delay:-2.8},
-  {name:"shadcn/ui",icon:"shadcn",group:"Web & digital",description:"Thoughtful and accessible interface foundations.",x:77,y:82,delay:-1.2},
-  {name:"Motion",icon:"motion",group:"Web & digital",description:"Purposeful movement and interaction in the browser.",x:70,y:67,delay:-3.0},
+  {name:"Lightroom",icon:"lightroom",group:"Photo, film & motion",description:"Light, colour and the final touch on every photograph.",x:60,y:11,delay:-3.1},
+  {name:"Premiere Pro",icon:"premiere",group:"Photo, film & motion",description:"Editing stories with pacing, rhythm and purpose.",x:78,y:19,delay:-.4},
+  {name:"After Effects",icon:"aftereffects",group:"Photo, film & motion",description:"Movement, motion graphics and animated storytelling.",x:92,y:12,delay:-1.5},
+  {name:"CapCut",icon:"capcut",group:"Photo, film & motion",description:"Agile short-form edits for digital-first stories.",x:11,y:45,delay:-2.1},
+  {name:"Cursor",icon:"cursor",group:"Digital & strategy",description:"Moving from visual ideas to working websites.",x:27,y:39,delay:-.8},
+  {name:"Google Flow",icon:"flow",group:"Digital & strategy",description:"Exploring new ways to develop visual concepts.",x:10,y:68,delay:-2.7,external:"https://upload.wikimedia.org/wikipedia/commons/5/52/Google_Flow_logo.svg"},
+  {name:"ChatGPT",icon:"chatgpt",group:"Digital & strategy",description:"Research, brainstorming and refining creative direction.",x:76,y:40,delay:-1.4},
+  {name:"Semrush",icon:"semrush",group:"Digital & strategy",description:"Search research and digital audience insights.",x:92,y:38,delay:-3.4},
+  {name:"GitHub",icon:"github",group:"Digital & strategy",description:"Collaborating on, reviewing and shipping digital work.",x:89,y:64,delay:-.5},
+  {name:"React",icon:"react",group:"Digital & strategy",description:"Building modern, interactive web experiences.",x:10,y:89,delay:-1.9},
+  {name:"Tailwind CSS",icon:"tailwind",group:"Digital & strategy",description:"Creating responsive visual design systems.",x:28,y:82,delay:-2.2},
+  {name:"TypeScript",icon:"typescript",group:"Digital & strategy",description:"Reliable, maintainable foundations for interfaces.",x:42,y:89,delay:-.9},
+  {name:"Vite",icon:"vite",group:"Digital & strategy",description:"Fast, modern frontend production workflows.",x:60,y:85,delay:-2.8},
+  {name:"shadcn/ui",icon:"shadcn",group:"Digital & strategy",description:"Thoughtful and accessible interface foundations.",x:77,y:82,delay:-1.2},
+  {name:"Motion",icon:"motion",group:"Digital & strategy",description:"Purposeful movement and interaction in the browser.",x:70,y:67,delay:-3.0},
 ];
 
-const groups = ["Design & identity", "Photography & film", "Web & digital", "Creative AI & strategy"];
+const groups = ["Design & identity", "Photo, film & motion", "Digital & strategy"];
 const svg = (tool: Tool) => tool.external ?? import.meta.env.BASE_URL + "toolbox/" + tool.icon + ".svg";
 
 export function VisualVersePotadotToolbox() {
