@@ -1,10 +1,10 @@
-import { useState, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useState, type KeyboardEvent, type ReactNode } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
-  ArrowDown, ArrowRight, ArrowUpRight, Aperture, BadgeCheck, Building2,
-  Camera, Check, ChevronDown, Clapperboard, Compass, FolderKanban,
-  Globe2, HeartHandshake, Lightbulb, Megaphone, MonitorSmartphone,
-  MoveUpRight, Palette, Play, Rocket, Sparkles, UsersRound, WandSparkles,
+  ArrowDown, ArrowUpRight, Aperture, BadgeCheck, Building2,
+  Camera, Check, ChevronDown, Clapperboard, Compass,
+  Globe2, HeartHandshake, Lightbulb, MonitorSmartphone,
+  MoveUpRight, Palette, Play, Rocket, Sparkles, WandSparkles,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import "../who-we-serve-redesign.css";
@@ -344,9 +344,16 @@ function FaqSection() {
 
 export function VisualVerseWhoWeServePage() {
   const [expanded, setExpanded] = useState<string | null>(null);
+  useEffect(() => {
+    // Restore direct links from the existing homepage, including #industries.
+    const target = window.location.hash.slice(1);
+    if (!["people", "industries", "who-we-serve", "your-journey", "how-we-work"].includes(target)) return;
+    const frame = window.requestAnimationFrame(() => document.getElementById(target)?.scrollIntoView({ block: "start" }));
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
   const reduced = useReducedMotion();
   return <div className="vvws-page">
-    <section className="vvws-hero" aria-labelledby="vvws-hero-title">
+    <section className="vvws-hero" id="who-we-serve" aria-labelledby="vvws-hero-title">
       <div className="vvws-hero-grid" aria-hidden="true"/>
       <div className="vvws-hero-glow" aria-hidden="true"/>
       <div className="vvws-container vvws-hero-layout">
@@ -400,6 +407,7 @@ export function VisualVerseWhoWeServePage() {
     </div>
 
     <section className="vvws-people" id="people" aria-labelledby="vvws-people-heading">
+      <span className="vvws-anchor" id="industries" aria-hidden="true"/>
       <div className="vvws-container">
         <Reveal className="vvws-section-intro vvws-people-intro">
           <div>
