@@ -17,17 +17,34 @@ const findClient=(id)=>state.clients.find((c)=>c.id===id)?.name??"Private client
 const tag=(value)=>'<span class="badge '+(value==="suspended"?"suspended":"")+'">'+esc(nice(value))+"</span>";
 let toastTimer;
 function notify(message){const el=$("notice");el.className="notice-toast";el.textContent=message;el.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.hidden=true,6000);}
-function showLogin(mode="login"){
+let completingPasswordSetup=false;
+function showLogin(mode="email"){
   $("workspace").hidden=true;$("auth-screen").hidden=false;
-  $("login-form").hidden=mode!=="login";$("set-password-form").hidden=mode!=="password";$("reset-form").hidden=mode!=="reset";$("mfa-login-form").hidden=mode!=="mfa";
-  $("auth-heading").textContent=mode==="password"?"Secure your invitation.":mode==="reset"?"Set up your password.":mode==="mfa"?"One more secure step.":"Welcome back.";
-  $("auth-description").textContent=mode==="password"?"Choose a strong password to complete your studio access.":mode==="reset"?"Enter the email address from your studio invitation. We'll send a secure link so you can create a password, or change an existing one.":mode==="mfa"?"Enter the six-digit code from your authenticator app.":"Sign in with your Visual Verse team account.";
+  $("setup-email-form").hidden=mode!=="email";
+  $("setup-email-sent").hidden=mode!=="sent";
+  $("login-form").hidden=mode!=="login";
+  $("set-password-form").hidden=mode!=="password";
+  $("setup-complete").hidden=mode!=="complete";
+  $("mfa-login-form").hidden=mode!=="mfa";
+  const headings={email:"Set up your studio access.",sent:"Check your email.",login:"Welcome back.",password:"Create your password.",complete:"Password set successfully.",mfa:"One more secure step."};
+  const descriptions={
+    email:"Enter the email address where you received your invitation.",
+    sent:"Open the secure email link to choose and confirm your password.",
+    login:"Sign in with your Visual Verse team account.",
+    password:"Choose and confirm a strong password to complete your studio access.",
+    complete:"Your password is saved. You can now sign in securely to your studio.",
+    mfa:"Enter the six-digit code from your authenticator app."
+  };
+  const steps={email:"STEP 01 / YOUR EMAIL",sent:"CHECK YOUR INBOX",login:"EXISTING TEAM MEMBER",password:"STEP 02 / CREATE PASSWORD",complete:"STEP 03 / SIGN IN",mfa:"VERIFY YOUR IDENTITY"};
+  $("auth-heading").textContent=headings[mode]??headings.email;
+  $("auth-description").textContent=descriptions[mode]??descriptions.email;
+  $("auth-step").textContent=steps[mode]??steps.email;
 }
 async function loadSession(){
   const {data:{session},error}=await supabase.auth.getSession();
-  if(error||!session){showLogin();return;}
+  if(error||!session){showLogin("email");return;}
   const {data:{user},error:identityError}=await supabase.auth.getUser();
-  if(identityError||!user){showLogin();return;}
+  if(identityError||!user){showLogin("email");return;}
   state.user=user;
   const assurance=await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
   if(assurance.error){showLogin();notify(assurance.error.message);return;}
@@ -233,16 +250,51 @@ $("mfa-login-form").addEventListener("submit",async(e)=>{
   }catch(error){notify(error.message||"Verification failed.");}finally{btn.disabled=false;}
 });
 $("mfa-logout").addEventListener("click",async()=>{await supabase.auth.signOut();showLogin();});
-$("setup-password").addEventListener("click",()=>{$("reset-email").value=$("login-email").value.trim();showLogin("reset");});
-$("back-login").addEventListener("click",()=>showLogin("login"));
-$("reset-form").addEventListener("submit",async(e)=>{e.preventDefault();const email=$("reset-email").value.trim();const {error}=await supabase.auth.resetPasswordForEmail(email,{redirectTo:baseUrl});notify(error?error.message:"If this email has an account, we have sent a secure password setup link.");});
+function openExistingLogin(){
+  $("login-email").value=$("setup-email").value.trim()||$("login-email").value;
+  showLogin("login");
+}
+$("open-login").addEventListener("click",openExistingLogin);
+$("sent-login").addEventListener("click",openExistingLogin);
+$("back-setup").addEventListener("click",()=>{
+  $("setup-email").value=$("login-email").value.trim()||$("setup-email").value;
+  showLogin("email");
+});
+$("return-setup").addEventListener("click",()=>showLogin("email"));
+$("setup-email-form").addEventListener("submit",async(e)=>{
+  e.preventDefault();
+  const button=e.currentTarget.querySelector("button[type=submit]");
+  const email=$("setup-email").value.trim();
+  if(!email)return;
+  button.disabled=true;
+  try {
+    const {error}=await supabase.auth.resetPasswordForEmail(email,{redirectTo:baseUrl});
+    if(error)throw error;
+    $("login-email").value=email;
+    showLogin("sent");
+  }catch(error){notify(error?.message||"Unable to send setup link. Please try again.");}
+  finally{button.disabled=false;}
+});
+$("continue-signin").addEventListener("click",()=>{
+  completingPasswordSetup=false;
+  $("login-email").value=$("setup-email").value.trim()||state.user?.email||$("login-email").value;
+  $("login-password").value="";
+  showLogin("login");
+});
 $("set-password-form").addEventListener("submit",async(e)=>{
   e.preventDefault();const a=$("new-password").value,b=$("confirm-password").value;
   if(a.length<12||a!==b){notify("Passwords must match and contain at least 12 characters.");return;}
   const result=await supabase.auth.updateUser({password:a});
   if(result.error){notify(result.error.message);return;}
-  notify("Password set. Welcome to the studio.");inviteLink=false;recovering=false;history.replaceState(null,"",baseUrl);
-  $("auth-screen").hidden=true;$("workspace").hidden=false;await refresh();
+  const registeredEmail=state.user?.email??"";
+  $("login-email").value=registeredEmail||$("login-email").value;
+  $("setup-email").value=registeredEmail||$("setup-email").value;
+  inviteLink=false;recovering=false;history.replaceState(null,"",baseUrl);
+  completingPasswordSetup=true;
+  const logout=await supabase.auth.signOut();
+  if(logout.error){completingPasswordSetup=false;notify("Password saved. Please sign out before signing in again.");showLogin("login");return;}
+  state.user=null;state.membership=null;
+  showLogin("complete");
 });
 async function signOut(){await supabase.auth.signOut();state.user=null;state.membership=null;showLogin();}
 $("sign-out").addEventListener("click",signOut);
@@ -277,6 +329,6 @@ $("modal-overlay").addEventListener("click",(e)=>{if(e.target===$("modal-overlay
 document.addEventListener("keydown",(e)=>{if(e.key==="Escape")closeModal();});
 supabase.auth.onAuthStateChange((event)=>{
   if(event==="PASSWORD_RECOVERY")setTimeout(()=>showLogin("password"),0);
-  if(event==="SIGNED_OUT")setTimeout(()=>showLogin("login"),0);
+  if(event==="SIGNED_OUT"&&!completingPasswordSetup)setTimeout(()=>showLogin("email"),0);
 });
 loadSession().catch((err)=>{showLogin();notify("Could not load the console: "+(err?.message||"network error"));});

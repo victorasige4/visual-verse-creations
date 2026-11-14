@@ -28,18 +28,32 @@
       <div class="auth-lock">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.7"/></svg>
       </div>
-      <span class="eyebrow">STUDIO CONSOLE</span><h2 id="auth-heading">Welcome back.</h2>
-      <p id="auth-description">Sign in with your Visual Verse team account.</p>
-      <form id="login-form" class="stack">
+      <span class="eyebrow">STUDIO CONSOLE</span>
+      <span class="auth-step" id="auth-step">STEP 01 / YOUR EMAIL</span>
+      <h2 id="auth-heading">Set up your studio access.</h2>
+      <p id="auth-description">Enter the email address where you received your invitation.</p>
+      <form id="setup-email-form" class="stack">
+        <label for="setup-email">Your email address</label>
+        <input id="setup-email" type="email" autocomplete="email" required placeholder="you@example.com"/>
+        <button class="btn primary" type="submit">Set up your password <span class="diagonal-arrow" aria-hidden="true"></span></button>
+        <p class="secondary-note">We'll email you a secure link to create your password. Studio access is invitation-only.</p>
+        <button type="button" class="text-button" id="open-login">Already have a password? Sign in securely</button>
+      </form>
+      <div id="setup-email-sent" class="stack" hidden>
+        <p class="secondary-note">If your email has an invited studio account, you'll receive a secure link. Open it on this device to choose and confirm your password.</p>
+        <button class="btn primary" type="button" id="return-setup">Try another email</button>
+        <button type="button" class="text-button" id="sent-login">I already have a password</button>
+      </div>
+      <form id="login-form" class="stack" hidden>
         <label for="login-email">Email address</label><input id="login-email" type="email" autocomplete="email" required placeholder="you@example.com"/>
         <label for="login-password">Password</label><input id="login-password" type="password" autocomplete="current-password" required placeholder="Your password"/>
         <button class="btn primary" type="submit">Sign in securely <span class="diagonal-arrow" aria-hidden="true"></span></button>
-        <button type="button" class="text-button" id="setup-password">Set up your password</button>
+        <button type="button" class="text-button" id="back-setup">Set up or reset your password</button>
       </form>
       <form id="set-password-form" class="stack" hidden>
         <label for="new-password">Choose your password</label><input id="new-password" type="password" autocomplete="new-password" required minlength="12" placeholder="At least 12 characters"/>
         <label for="confirm-password">Confirm your password</label><input id="confirm-password" type="password" autocomplete="new-password" required minlength="12" placeholder="Re-enter password"/>
-        <button class="btn primary" type="submit">Secure my account</button>
+        <button class="btn primary" type="submit">Confirm and set password</button>
       </form>
       <form id="mfa-login-form" class="stack" hidden>
         <label for="mfa-login-code">Six-digit authenticator code</label>
@@ -47,12 +61,10 @@
         <button class="btn primary" type="submit">Verify and continue</button>
         <button class="text-button" type="button" id="mfa-logout">Sign out</button>
       </form>
-      <form id="reset-form" class="stack" hidden>
-        <label for="reset-email">Email address from your invitation</label><input id="reset-email" type="email" autocomplete="email" required/>
-        <button class="btn primary" type="submit">Email me a setup link</button>
-        <p class="secondary-note">Already have a password? This link can also help you reset it.</p>
-        <button class="text-button" type="button" id="back-login">Back to sign in</button>
-      </form>
+      <div id="setup-complete" class="stack" hidden>
+        <p class="secondary-note">Your password is saved. You're ready to sign in to your private studio workspace.</p>
+        <button class="btn primary" type="button" id="continue-signin">Sign in securely <span class="diagonal-arrow" aria-hidden="true"></span></button>
+      </div>
       <p class="auth-note">Invitation only. Access is restricted to authorized Visual Verse team members.</p>
       <a class="back-site" href="./index.html">Back to Visual Verse website</a>
     </div>
