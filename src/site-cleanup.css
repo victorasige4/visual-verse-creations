@@ -48,3 +48,19 @@
 .vv-founder-head{width:61px;height:72px}
 .vv-founder-note{font-size:9px}
 }
+
+/* Low-key entry point to the private Business HQ workspace. */
+.vv-close-footer-bottom>a.vv-studio-console-link{
+  color:#89c9bf;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.035em;
+  white-space:nowrap;
+  opacity:.8;
+  transition:color .2s ease,opacity .2s ease;
+}
+.vv-close-footer-bottom>a.vv-studio-console-link:hover,
+.vv-close-footer-bottom>a.vv-studio-console-link:focus-visible{
+  color:#2ec4b6;
+  opacity:1;
+}
