@@ -30,6 +30,14 @@ Deno.serve(async (req:Request) => {
   const actor=identity.user.id;
   const {data:membership,error:memberError}=await admin.from("team_memberships").select("role,status").eq("user_id",actor).maybeSingle();
   if (memberError||membership?.status!=="active"||!["super_admin","admin"].includes(membership.role)) return fail("Studio administrator permission required",403);
+  // The caller's JWT has already been verified with Supabase Auth above.
+  // Team administration always requires a step-up TOTP-verified AAL2 session.
+  let assurance = "";
+  try{
+    const segment=jwt.split(".")[1].replace(/-/g,"+").replace(/_/g,"/");
+    assurance=JSON.parse(atob(segment)).aal;
+  }catch{return fail("Invalid authenticator session",401);}
+  if(assurance!=="aal2")return fail("Verify two-factor authentication in Security before managing the team",403);
   const isOwner=membership.role==="super_admin";
   let body:Record<string,unknown>;
   try {body=await req.json()}catch{return fail("Invalid JSON")}
