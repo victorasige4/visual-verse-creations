@@ -1,10 +1,10 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/+esm";
-const URL="https://jajkrkeaatksmleohzif.supabase.co";
+const SUPABASE_URL="https://jajkrkeaatksmleohzif.supabase.co";
 const PUBLISHABLE="sb_publishable_PTHazoDBGgz9Jnjil1SyVQ_XZpvFpsG";
 const baseUrl=new URL("./console-preview.html",location.href).href;
 let inviteLink=location.hash.includes("type=invite");
 let recovering=location.hash.includes("type=recovery");
-const supabase=createClient(URL,PUBLISHABLE,{auth:{flowType:"implicit",detectSessionInUrl:true,persistSession:true,autoRefreshToken:true,storageKey:"vv-studio-console-session"}});
+const supabase=createClient(SUPABASE_URL,PUBLISHABLE,{auth:{flowType:"implicit",detectSessionInUrl:true,persistSession:true,autoRefreshToken:true,storageKey:"vv-studio-console-session"}});
 const $=(id)=>document.getElementById(id);
 const esc=(value)=>String(value??"").replace(/[&<>"']/g,(c)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const state={user:null,membership:null,view:"overview",clients:[],projects:[],tasks:[],documents:[],members:[]};
@@ -267,13 +267,15 @@ $("setup-email-form").addEventListener("submit",async(e)=>{
   const email=$("setup-email").value.trim();
   if(!email)return;
   button.disabled=true;
+  const originalLabel=button.innerHTML;
+  button.textContent="Sending secure link…";
   try {
     const {error}=await supabase.auth.resetPasswordForEmail(email,{redirectTo:baseUrl});
     if(error)throw error;
     $("login-email").value=email;
     showLogin("sent");
   }catch(error){notify(error?.message||"Unable to send setup link. Please try again.");}
-  finally{button.disabled=false;}
+  finally{button.disabled=false;button.innerHTML=originalLabel;}
 });
 $("continue-signin").addEventListener("click",()=>{
   completingPasswordSetup=false;
