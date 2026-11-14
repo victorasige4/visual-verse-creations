@@ -64,3 +64,20 @@
   color:#2ec4b6;
   opacity:1;
 }
+
+/* Decorative event lighting on phones is drawn in CSS, not font glyphs
+   that can become emoji-like on some Android devices. */
+@media(max-width:760px){
+  .vv-event-lights::after{
+    content:"";
+    display:block;
+    height:34px;
+    letter-spacing:normal;
+    background:radial-gradient(circle at 9% 35%,#ffe8ad 0 3px,transparent 5px),
+      radial-gradient(circle at 29% 72%,#ffe8ad 0 2px,transparent 4px),
+      radial-gradient(circle at 51% 25%,#ffe8ad 0 3px,transparent 5px),
+      radial-gradient(circle at 74% 75%,#ffe8ad 0 2px,transparent 4px),
+      radial-gradient(circle at 93% 35%,#ffe8ad 0 3px,transparent 5px);
+    filter:drop-shadow(0 0 5px #ffe0a5);
+  }
+}
