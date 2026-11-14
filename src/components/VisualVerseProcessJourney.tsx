@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { ArrowUpRight, Check, CheckCircle2, Heart, Rocket, Sparkles } from "lucide-react";
+import { ArrowUpRight, Check, CheckCircle2, Circle, Heart, Rocket, Sparkles } from "lucide-react";
 import "../visual-verse-services-page.css";
 
 /**
@@ -51,7 +51,7 @@ function ProcessArtwork({step}:{step:number}) {
     case 3: return <div className="vv-sp-art vv-sp-art-production">
       <div className="vv-sp-window-head"><span><i/><i/><i/> VISUAL VERSE / STUDIO</span><b>IN PRODUCTION</b></div>
       <div className="vv-sp-workspace">
-        <div className="vv-sp-tools"><span>✳</span><span>◯</span><span>↗</span><span>T</span></div>
+        <div className="vv-sp-tools"><span><Sparkles size={14} aria-hidden="true"/></span><span><Circle size={14} aria-hidden="true"/></span><span><ArrowUpRight size={14} aria-hidden="true"/></span><span>T</span></div>
         <div className="vv-sp-artboard"><small>VISUAL VERSE / STORY 01</small><strong>GREAT<br/>IDEAS<br/><em>LIVE HERE.</em></strong><div className="vv-sp-artboard-orbit"/></div>
         <div className="vv-sp-layers"><small>LAYERS</small><span><i/> TYPE</span><span><i/> SHAPE</span><span><i/> IMAGE</span></div>
       </div>
