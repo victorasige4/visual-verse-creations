@@ -103,16 +103,44 @@ function addButton(label,what){return '<button class="btn primary" type="button"
 function empty(title,copy){return '<div class="empty"><strong>'+esc(title)+'</strong>'+esc(copy)+'</div>';}
 function item(title,detail,status){return '<div class="item"><div class="item-main"><strong>'+esc(title)+'</strong><small>'+esc(detail)+'</small></div>'+(status?tag(status):"")+'</div>';}
 function renderOverview(){
-  const today=new Intl.DateTimeFormat("en-KE",{dateStyle:"long",timeZone:"Africa/Nairobi"}).format(new Date());
-  const active=state.projects.filter((p)=>p.status==="in_progress").length;
-  const soon=state.tasks.filter((t)=>t.due_date&&t.status!=="done").slice().sort((a,b)=>a.due_date.localeCompare(b.due_date)).slice(0,5);
-  return heading("YOUR STUDIO AT A GLANCE","Make good work happen.","A clear view of your studio, people, projects and momentum.")+
-  '<span class="page-eyebrow">'+esc(today)+'</span>'+
-  '<div class="kpi-grid"><article class="kpi"><span class="name">Total clients</span><strong>'+state.clients.length+'</strong><small>YOUR NETWORK</small></article>'+
-  '<article class="kpi"><span class="name">Active projects</span><strong>'+active+'</strong><small>IN PROGRESS</small></article>'+
-  '<article class="kpi"><span class="name">Tasks to do</span><strong>'+state.tasks.filter(t=>t.status!=="done").length+'</strong><small>NEXT ACTIONS</small></article></div>'+
-  '<div class="content-grid"><div class="panel"><h3>Recent projects</h3><div class="item-list">'+(state.projects.length?state.projects.slice(0,5).map(p=>item(p.name,findClient(p.client_id),p.status)).join(""):empty("Your next great project starts here.","Add a client and create your first project."))+'</div></div>'+
-  '<div class="panel"><h3>Upcoming work</h3><div class="item-list">'+(soon.length?soon.map(t=>item(t.title,findProject(t.project_id)+" · "+t.due_date,t.status)).join(""):empty("All clear for now.","Your upcoming tasks will appear here."))+'</div></div></div>';
+  const now=new Date(),parts=new Intl.DateTimeFormat("en-GB",{timeZone:"Africa/Nairobi",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(now);
+  const p=(type)=>parts.find(x=>x.type===type)?.value??"";
+  const todayIso=p("year")+"-"+p("month")+"-"+p("day");
+  const today=new Intl.DateTimeFormat("en-KE",{dateStyle:"long",timeZone:"Africa/Nairobi"}).format(now);
+  const hour=Number(new Intl.DateTimeFormat("en-GB",{hour:"2-digit",hour12:false,timeZone:"Africa/Nairobi"}).format(now));
+  const greeting=hour<12?"Good morning":hour<17?"Good afternoon":"Good evening";
+  const active=state.projects.filter(x=>x.status==="in_progress").length;
+  const todo=state.tasks.filter(x=>x.status!=="done"),done=state.tasks.length-todo.length;
+  const rate=state.tasks.length?Math.round(done/state.tasks.length*100):0;
+  const overdue=todo.filter(x=>x.due_date&&x.due_date.slice(0,10)<todayIso).length;
+  const soon=todo.filter(x=>x.due_date).slice().sort((a,b)=>a.due_date.localeCompare(b.due_date)).slice(0,5);
+  const actions=isAdmin()?'<button class="hero-action" type="button" data-create="project">+ New project</button><button class="hero-action" type="button" data-create="client">+ Add client</button>':canEdit()?'<button class="hero-action" type="button" data-create="task">+ New task</button>':"";
+  return '<section class="studio-hero" aria-labelledby="studio-welcome"><div class="studio-hero-copy">'+
+    '<span class="eyebrow">VISUAL VERSE / STUDIO CONSOLE</span><h2 id="studio-welcome">'+esc(greeting)+'.<br/>Let’s make it happen.</h2>'+
+    '<p>Your creative headquarters. Keep projects moving, people connected, and the next big idea within reach.</p>'+
+    '<div class="studio-hero-actions">'+actions+'<button class="hero-action" type="button" data-nav="projects">Explore projects ↗</button></div></div>'+
+    '<div class="studio-hero-date">'+esc(today)+'</div></section>'+
+    '<div class="studio-section-label"><h3>Studio snapshot</h3><span>Based on your workspace data</span></div>'+
+    '<div class="kpi-grid">'+
+    '<article class="kpi"><span class="kpi-mark" aria-hidden="true">◎</span><span class="name">Client relationships</span><strong>'+state.clients.length+'</strong><small>TOTAL CLIENTS</small></article>'+
+    '<article class="kpi"><span class="kpi-mark" aria-hidden="true">↗</span><span class="name">Projects in motion</span><strong>'+active+'</strong><small>ACTIVE PROJECTS</small></article>'+
+    '<article class="kpi"><span class="kpi-mark" aria-hidden="true">✓</span><span class="name">On your to-do list</span><strong>'+todo.length+'</strong><small>'+esc(overdue?overdue+" OVERDUE · REVIEW":"OPEN TASKS")+'</small></article></div>'+
+    '<div class="content-grid">'+
+    '<section class="panel"><div class="panel-head"><h3>Recent projects</h3><button class="panel-link" type="button" data-nav="projects">View all ↗</button></div>'+
+    '<p class="panel-subtitle">The creative work on your radar</p><div class="item-list">'+
+    (state.projects.length?state.projects.slice(0,5).map(x=>item(x.name,findClient(x.client_id),x.status)).join(""):empty("A fresh canvas for what comes next.","Add a client and project to get started."))+'</div></section>'+
+    '<section class="panel"><div class="panel-head"><h3>Up next</h3><button class="panel-link" type="button" data-nav="tasks">All tasks ↗</button></div>'+
+    '<p class="panel-subtitle">Upcoming deadlines, in order</p><div class="item-list">'+
+    (soon.length?soon.map(x=>item(x.title,findProject(x.project_id)+" · "+x.due_date,x.status)).join(""):empty("Nothing pressing right now.","Upcoming work with due dates appears here."))+'</div></section></div>'+
+    '<div class="content-grid"><section class="panel"><div class="panel-head"><h3>Studio momentum</h3><span class="status">TASK PROGRESS</span></div>'+
+    '<div class="studio-pulse"><div class="studio-pulse-text"><strong>'+done+' of '+state.tasks.length+' tasks completed</strong>'+
+    'A clear picture of progress across the tasks you can access.'+
+    '<span class="studio-quick-note">'+esc(overdue?overdue+" overdue task"+(overdue===1?"":"s")+" to review":"Ready for what’s next")+'</span></div>'+
+    '<div class="studio-progress" style="--progress:'+rate+'%" role="img" aria-label="'+rate+' percent of tasks completed"><span>'+rate+'%</span><small>COMPLETE</small></div></div></section>'+
+    '<section class="panel"><div class="panel-head"><h3>Your next move</h3></div>'+
+    '<p class="page-copy">Every good project starts with a clear plan. Review the next task or gather files for your deliverables.</p>'+
+    '<div class="studio-hero-actions"><button class="btn secondary" type="button" data-nav="tasks">Open tasks ↗</button>'+
+    '<button class="btn minimal" type="button" data-nav="documents">Project files ↗</button></div></section></div>';
 }
 function renderClients(){
   return heading("PEOPLE WE CREATE WITH","Clients","Keep every relationship organized and close to the work.",isAdmin()?addButton("Add client","client"):"")+
@@ -365,6 +393,8 @@ $("sign-out").addEventListener("click",signOut);
 $("mobile-sign-out").addEventListener("click",signOut);
 document.querySelectorAll("[data-tab]").forEach(b=>b.addEventListener("click",()=>{state.view=b.dataset.tab;render();window.scrollTo({top:0,behavior:"instant"});}));
 $("screen-content").addEventListener("click",async(e)=>{
+  const jump=e.target.closest("[data-nav]");
+  if(jump){const page=jump.dataset.nav;if(["overview","clients","projects","tasks","documents","security","team"].includes(page)&&(page!=="team"||isAdmin())){state.view=page;render();window.scrollTo({top:0,behavior:"instant"});}return;}
   const create=e.target.closest("[data-create]");
   if(create){
     if(create.dataset.create==="mfa"){
