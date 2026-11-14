@@ -854,3 +854,27 @@
 @media(hover:none),(pointer:coarse){
   .vv-sv-pin-ui-art .vv-ui-preview{filter:brightness(.62) saturate(.8);opacity:.9}
 }
+
+
+/* Final mobile/desktop readability refinement: mockup artwork is atmosphere,
+   while the service title stays clearly readable over interface lettering. */
+.vv-sv-pin-ui-art .vv-ui-preview{
+  filter:brightness(.56) saturate(.75) blur(1.15px);
+}
+.vv-sv-pin-web-ui-ux .vv-sv-pin-center,
+.vv-sv-pin-social-media .vv-sv-pin-center,
+.vv-sv-pin-branding .vv-sv-pin-center{
+  isolation:isolate;
+}
+.vv-sv-pin-web-ui-ux .vv-sv-pin-center::before,
+.vv-sv-pin-social-media .vv-sv-pin-center::before,
+.vv-sv-pin-branding .vv-sv-pin-center::before{
+  content:"";position:absolute;z-index:-1;inset:-13px -16px;
+  background:radial-gradient(ellipse at center,rgba(0,30,46,.7),rgba(0,30,46,.25) 58%,transparent 80%);
+  pointer-events:none;
+}
+@media(hover:none),(pointer:coarse){
+  .vv-sv-pin-ui-art .vv-ui-preview{
+    filter:brightness(.52) saturate(.7) blur(1.3px);
+  }
+}
