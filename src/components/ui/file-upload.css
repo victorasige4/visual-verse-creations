@@ -1,0 +1,24 @@
+/* Shared FileUpload — used by the Console island and any website upload form. */
+.vv-file-upload{font:inherit;color:#183e4b;max-width:100%;width:100%;box-sizing:border-box}
+.vv-file-upload *{box-sizing:border-box}
+.vv-upload-dropzone{min-height:235px;border:1.5px dashed #a9cfc6;border-radius:17px;background:linear-gradient(160deg,#ffffff,#f6fcfa);padding:27px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:9px;cursor:pointer;transition:background .2s,border-color .2s,transform .2s}
+.vv-upload-dropzone:hover,.vv-upload-dropzone:focus-visible,.vv-upload-dragging{border-color:#21b8aa;background:#eafaf4;outline:2px solid transparent;box-shadow:0 0 0 4px #2ec4b61c}
+.vv-upload-dragging{transform:scale(1.01)}
+.vv-upload-icon{width:58px;height:58px;border-radius:18px;background:linear-gradient(135deg,#e3f9f1,#d2f1ed);display:grid;place-items:center;color:#087c76;margin-bottom:5px}
+.vv-upload-icon svg{width:28px;height:28px}
+.vv-upload-dropzone strong{font-size:15px;font-weight:750;letter-spacing:-.025em}
+.vv-upload-dropzone p{font-size:12px;color:#64878e;margin:0}
+.vv-upload-hint{margin-top:8px;color:#76969c;font-size:10px;letter-spacing:.01em}
+.vv-upload-selection{display:grid;gap:9px;margin-top:14px}
+.vv-upload-file{display:flex;align-items:center;gap:11px;background:#f4faf8;border:1px solid #dcefe9;border-radius:12px;padding:11px 12px;min-width:0}
+.vv-upload-file-icon{width:36px;height:36px;display:grid;place-items:center;background:#e0f4ec;border-radius:11px;color:#127d74;flex:0 0 auto;font-size:20px}
+.vv-upload-file-details{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
+.vv-upload-file-details strong{font-size:12px;font-weight:750;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+.vv-upload-file-details small{color:#71939b;font-size:10px}
+.vv-upload-remove{border:0;background:#fff;color:#597781;width:31px;height:31px;border-radius:10px;font-size:21px;line-height:1;cursor:pointer;flex:0 0 auto}
+.vv-upload-remove:hover{background:#dff3ec;color:#105e65}
+.vv-upload-message{min-height:17px;margin:9px 0 0;font-size:11px;color:#317f77;line-height:1.5}
+.vv-file-upload[data-disabled="true"]{opacity:.65;pointer-events:none}
+.vv-file-upload :focus-visible{outline:2px solid #2ec4b6;outline-offset:3px}
+@media(max-width:640px){.vv-upload-dropzone{min-height:215px;padding:21px 15px}.vv-upload-icon{width:52px;height:52px}}
+@media(prefers-reduced-motion:reduce){.vv-upload-dropzone{transition:none;transform:none}}
