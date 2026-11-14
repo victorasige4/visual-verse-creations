@@ -36,7 +36,7 @@
   color:#3f4845;
 }
 .vv-close-marquee-separator{
-  font-size:.55em;color:#2ec4b6;opacity:.86;letter-spacing:0;
+  width:.55em;height:.55em;flex:none;display:block;color:#2ec4b6;opacity:.86;
 }
 @keyframes vv-close-marquee-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .vv-close-marquee:hover .vv-close-marquee-track{animation-play-state:paused}
