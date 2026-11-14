@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import {
   ArrowUpRight, Camera, Clapperboard, Palette, PenTool, MonitorSmartphone,
-  Share2, Play, Instagram, Facebook, Linkedin, Youtube, Check, MousePointer2
+  Share2, Play, Instagram, Facebook, Linkedin, Youtube, Check, MousePointer2,
+  Grid2X2, CircleDot, Type, Diamond
 } from "lucide-react";
 import type { ComponentType } from "react";
 
@@ -72,7 +73,7 @@ export function ServiceArtwork({ kind }: { kind: ServiceKind }) {
   if(kind==="film")return (
     <div className="vv-ui-preview vv-ui-premiere" aria-label="Premiere Pro-inspired video editing workspace illustration">
       <div className="vv-ui-top"><span>● ● ●</span><strong>VV / VIDEO EDITOR</strong><small>Pr · CUT</small></div>
-      <div className="vv-ui-film-workspace"><div className="vv-ui-film-monitor"><div className="vv-ui-film-scene"><div className="vv-ui-film-sun"/><div className="vv-ui-film-hills"/><Play size={34} fill="currentColor" aria-hidden="true"/></div><span>PROGRAM: VISUAL STORY / 01</span></div><div className="vv-ui-film-bin"><small>PROJECT FILES</small>{["Footage","Sound","Graphics"].map(x=><span key={x}>▸ {x}</span>)}</div></div>
+      <div className="vv-ui-film-workspace"><div className="vv-ui-film-monitor"><div className="vv-ui-film-scene"><div className="vv-ui-film-sun"/><div className="vv-ui-film-hills"/><Play size={34} fill="currentColor" aria-hidden="true"/></div><span>PROGRAM: VISUAL STORY / 01</span></div><div className="vv-ui-film-bin"><small>PROJECT FILES</small>{["Footage","Sound","Graphics"].map(x=><span key={x}><Play size={10} aria-hidden="true"/> {x}</span>)}</div></div>
       <div className="vv-ui-video-tracks">{[0,1,2].map(i=><div key={i}><small>{["V1","A1","A2"][i]}</small>{Array.from({length:7},(_,j)=><i key={j} style={{width:(j%3+1)*18+"px"}}/>)}</div>)}</div>
       <div className="vv-ui-bottom">00:12:24 / EDIT / SOUND / COLOR</div>
     </div>
@@ -88,9 +89,9 @@ export function ServiceArtwork({ kind }: { kind: ServiceKind }) {
     <div className="vv-ui-preview vv-ui-illustrator" aria-label="Illustrator and Photoshop-inspired graphic design canvas illustration">
       <div className="vv-ui-top"><span>● ● ●</span><strong>DESIGN / ARTBOARD 01</strong><small>Ai · Ps</small></div>
       <div className="vv-ui-graphics-workspace">
-        <div className="vv-ui-tools">{["▣","◉","✒","T","◇","↗"].map((t,i)=><span key={i}>{t}</span>)}</div>
-        <div className="vv-ui-artboard"><small>THE VISUAL VERSE</small><strong>DESIGN<br/>WITHOUT<br/><em>LIMITS.</em></strong><span>EXPLORE MORE ↗</span><i className="vv-ui-artboard-shape"/></div>
-        <div className="vv-ui-layers"><small>LAYERS</small>{["Artboard 01","Headline","Shapes","Color"].map(x=><span key={x}>◉ {x}</span>)}</div>
+        <div className="vv-ui-tools">{[Grid2X2,CircleDot,PenTool,Type,Diamond,ArrowUpRight].map((Icon,i)=><span key={i}><Icon size={12} strokeWidth={1.7} aria-hidden="true"/></span>)}</div>
+        <div className="vv-ui-artboard"><small>THE VISUAL VERSE</small><strong>DESIGN<br/>WITHOUT<br/><em>LIMITS.</em></strong><span>EXPLORE MORE <ArrowUpRight size={12} aria-hidden="true"/></span><i className="vv-ui-artboard-shape"/></div>
+        <div className="vv-ui-layers"><small>LAYERS</small>{["Artboard 01","Headline","Shapes","Color"].map(x=><span key={x}><CircleDot size={10} aria-hidden="true"/> {x}</span>)}</div>
       </div>
       <div className="vv-ui-bottom">CMYK / VECTOR / CONCEPTS MADE VISIBLE</div>
     </div>
@@ -98,13 +99,13 @@ export function ServiceArtwork({ kind }: { kind: ServiceKind }) {
   if(kind==="web")return (
     <div className="vv-ui-preview vv-ui-webkit" aria-label="Responsive website displayed on desktop and mobile screen">
       <div className="vv-ui-web-desktop"><div className="vv-ui-web-bar">● ● ● <span>visualverse.com / creative experience</span></div><div className="vv-ui-web-screen"><img src={import.meta.env.BASE_URL+"logo-mark.png"} alt="Visual Verse logo in example website design"/><small>THE NEXT DIGITAL STORY</small><strong>Make an<br/>impression.</strong><span>EXPLORE WORK ↗</span><div className="vv-ui-web-orbit"/></div></div>
-      <div className="vv-ui-web-phone"><div className="vv-ui-web-notch"/><span>VV / MOBILE</span><strong>Designed<br/>for every<br/>screen.</strong><div className="vv-ui-mobile-pill">LEARN MORE ↗</div></div>
+      <div className="vv-ui-web-phone"><div className="vv-ui-web-notch"/><span>VV / MOBILE</span><strong>Designed<br/>for every<br/>screen.</strong><div className="vv-ui-mobile-pill">LEARN MORE <ArrowUpRight size={12} aria-hidden="true"/></div></div>
     </div>
   );
   return (
     <div className="vv-ui-preview vv-ui-campaigns" aria-label="Social media campaign creative and performance dashboard illustration">
       <div className="vv-ui-social-feed"><div className="vv-ui-social-top">VV / CAMPAIGN <span>● LIVE</span></div><div className="vv-ui-social-feature"><span>GREAT STORIES<br/>DESERVE<br/><b>A BIGGER STAGE.</b></span><i/></div><div className="vv-ui-social-channel"><span>Instagram</span><span>LinkedIn</span><span>YouTube</span><span>TikTok</span><span>X</span></div></div>
-      <div className="vv-ui-social-float"><span>CAMPAIGN REACH</span><strong>↗ ENGAGEMENT</strong><div className="vv-ui-sparkline">{[30,46,39,60,52,76,94].map((h,i)=><i key={i} style={{height:h+"%"}}/>)}</div><small>STORIES THAT CONNECT</small></div>
+      <div className="vv-ui-social-float"><span>CAMPAIGN REACH</span><strong><ArrowUpRight size={12} aria-hidden="true"/> ENGAGEMENT</strong><div className="vv-ui-sparkline">{[30,46,39,60,52,76,94].map((h,i)=><i key={i} style={{height:h+"%"}}/>)}</div><small>STORIES THAT CONNECT</small></div>
     </div>
   );
 }
