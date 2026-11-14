@@ -1,4 +1,5 @@
 name: Temporary Services 3D pins, process motion and shared CTA verification
+# Final design review: all six cards visible, hover cleanup, 3D pin idle performance
 on:
   push:
     branches: [main]
@@ -55,6 +56,8 @@ jobs:
                 href:node.getAttribute('href')
               })));
               if(cardRects.some(c=>!c.href?.includes('request-quote.html')||c.w<180))throw new Error(view+': wrong 3D card target or width');
+              const visibility=await page.locator('.vv-sv-pin-cell').evaluateAll(nodes=>nodes.map(n=>getComputedStyle(n).opacity));
+              if(visibility.some(value=>Number(value)<.99))throw new Error(view+': pinned service cards hidden after polish '+visibility.join(','));
               let tilt=null;
               if(view!=='mobile'){
                 const first=cards.first();
