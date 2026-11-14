@@ -112,7 +112,7 @@ function showLogin(mode="email"){
   $("auth-description").textContent=descriptions[mode]??descriptions.email;
   $("auth-step").textContent=steps[mode]??steps.email;
 }
-// An invitation/recovery token grants only password-setup access, not a studio session.
+// An invitation/recovery token grants only password-setup access, not a normal signed-in session.
 // Server-side RLS independently checks the Auth JWT method before returning private data.
 function passwordWasEnteredForSession(session){
   try{
@@ -442,7 +442,7 @@ $("setup-email-form").addEventListener("submit",async(e)=>{
       showSetupFeedback("Supabase's email-sending limit has been reached. No new link was sent. Wait until the email quota resets (which may take about an hour), or contact the account administrator to configure a custom SMTP email provider.");
       limitEmailRetries(300);
     }else if(code==="email_address_not_authorized"||/email address not authorized/i.test(message)){
-      showSetupFeedback("Supabase's default email service only sends to authorized organization addresses. A studio administrator must configure custom SMTP before sending setup links to other teammates.");
+      showSetupFeedback("Supabase's default email service only sends to authorized organization addresses. An account administrator must configure custom SMTP before sending setup links to other teammates.");
       limitEmailRetries(90);
     }else{
       showSetupFeedback("We could not request your setup link. "+(message||"Please try again later or contact the account administrator."));
