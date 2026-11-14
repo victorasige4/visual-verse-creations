@@ -2,8 +2,8 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const URL="https://jajkrkeaatksmleohzif.supabase.co";
 const PUBLISHABLE="sb_publishable_PTHazoDBGgz9Jnjil1SyVQ_XZpvFpsG";
 const baseUrl=new URL("./console-preview.html",location.href).href;
-const inviteLink=location.hash.includes("type=invite");
-const recovering=location.hash.includes("type=recovery");
+let inviteLink=location.hash.includes("type=invite");
+let recovering=location.hash.includes("type=recovery");
 const supabase=createClient(URL,PUBLISHABLE,{auth:{flowType:"implicit",detectSessionInUrl:true,persistSession:true,autoRefreshToken:true,storageKey:"vv-studio-console-session"}});
 const $=(id)=>document.getElementById(id);
 const esc=(value)=>String(value??"").replace(/[&<>"']/g,(c)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -21,7 +21,7 @@ function showLogin(mode="login"){
   $("workspace").hidden=true;$("auth-screen").hidden=false;
   $("login-form").hidden=mode!=="login";$("set-password-form").hidden=mode!=="password";$("reset-form").hidden=mode!=="reset";$("mfa-login-form").hidden=mode!=="mfa";
   $("auth-heading").textContent=mode==="password"?"Secure your invitation.":mode==="reset"?"Reset your password.":mode==="mfa"?"One more secure step.":"Welcome back.";
-  $("auth-description").textContent=mode==="password"?"Choose a strong password to complete your studio access.":mode==="reset"?"We'll send a recovery link to your verified email.":"Sign in with your Visual Verse team account.";
+  $("auth-description").textContent=mode==="password"?"Choose a strong password to complete your studio access.":mode==="reset"?"We'll send a recovery link to your verified email.":mode==="mfa"?"Enter the six-digit code from your authenticator app.":"Sign in with your Visual Verse team account.";
 }
 async function loadSession(){
   const {data:{session},error}=await supabase.auth.getSession();
@@ -241,7 +241,7 @@ $("set-password-form").addEventListener("submit",async(e)=>{
   if(a.length<12||a!==b){notify("Passwords must match and contain at least 12 characters.");return;}
   const result=await supabase.auth.updateUser({password:a});
   if(result.error){notify(result.error.message);return;}
-  notify("Password secured. Welcome to the studio.");history.replaceState(null,"",baseUrl);
+  notify("Password secured. Welcome to the studio.");inviteLink=false;recovering=false;history.replaceState(null,"",baseUrl);
   $("auth-screen").hidden=true;$("workspace").hidden=false;await refresh();
 });
 async function signOut(){await supabase.auth.signOut();state.user=null;state.membership=null;showLogin();}
