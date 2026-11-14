@@ -29,6 +29,8 @@ jobs:
       - name: Build website for GitHub Pages
         env:
           GITHUB_PAGES: "true"
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
         run: npm run build
       - name: Adjust page and asset URLs
         run: node scripts/prepare-github-pages.mjs
@@ -39,6 +41,7 @@ jobs:
           done
           test -s dist/brand-wordmark.png
           test -s dist/logo-mark.png
+          test -s dist/studio-console.html
           # Confirm the Studio Console gateway and footer entry survive the Pages build.
           test -s dist/console/index.html
           grep -q 'Studio Console' dist/console/index.html

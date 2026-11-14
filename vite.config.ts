@@ -32,6 +32,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         home: resolve(process.cwd(), "index.html"),
+        studioConsole: resolve(process.cwd(), "studio-console.html"),
         projects: resolve(process.cwd(), "projects.html"),
         about: resolve(process.cwd(), "about.html"),
         services: resolve(process.cwd(), "services.html"),

@@ -1,0 +1,73 @@
+*{box-sizing:border-box}
+:root{--vv-console-navy:#003f5c;--vv-console-deep:#002a40;--vv-console-mint:#2ec4b6;--vv-console-ink:#103b48;--vv-console-muted:#66838a;--vv-console-paper:#f6faf9;--vv-console-border:#dceae7;font-family:"VisualVerse TT Travels","TT Travels",Arial,sans-serif}
+body{margin:0;background:var(--vv-console-paper);color:var(--vv-console-ink);-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.65}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--vv-console-mint);outline-offset:3px}
+.vv-console-gate{min-height:100svh;display:grid;grid-template-columns:minmax(0,1fr) minmax(430px,.93fr);background:#fff}
+.vv-console-gate:has(>.vv-console-auth-card:only-child){grid-template-columns:minmax(0,560px);place-content:center;padding:24px;background:radial-gradient(ellipse at 10% 20%,#deefe9 0,transparent 38%),#f6faf9}
+.vv-console-brand-panel{min-height:100svh;background:linear-gradient(160deg,#003f5c,#002a40 73%);padding:clamp(36px,5vw,84px);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;position:relative;color:white}
+.vv-console-brand-panel:after{content:"V";position:absolute;right:-5vw;bottom:12%;font-weight:800;font-size:clamp(290px,45vw,700px);letter-spacing:-.18em;line-height:.7;color:rgba(46,196,182,.08);pointer-events:none}
+.vv-console-brand-panel>img{width:60px;height:60px;object-fit:contain;position:relative;z-index:1}
+.vv-console-brand-panel>div{position:relative;z-index:1}
+.vv-console-brand-panel span,.vv-console-brand-panel small{font-size:11px;letter-spacing:.18em;font-weight:700;color:#8cd8d1}
+.vv-console-brand-panel h2{font-size:clamp(56px,6vw,118px);line-height:1.05;letter-spacing:-.075em;font-weight:800;margin:24px 0}
+.vv-console-brand-panel h2 em{color:var(--vv-console-mint);font-style:normal}
+.vv-console-brand-panel p{max-width:370px;line-height:1.7;color:#c5dcdf}
+.vv-console-auth-card{width:min(100%,520px);padding:clamp(28px,6vw,72px);margin:auto}
+.vv-console-mark{width:58px;height:58px;object-fit:contain;margin-bottom:38px}
+.vv-console-overline{font-size:11px;font-weight:750;letter-spacing:.14em;color:#237f80;display:flex;align-items:center;gap:8px}
+.vv-console-auth-card h1,.vv-console-main-head h1{font-size:clamp(42px,4.6vw,74px);line-height:1.05;letter-spacing:-.065em;font-weight:800;margin:18px 0}
+.vv-console-auth-card>p,.vv-console-main-head p{font-size:15px;line-height:1.7;color:var(--vv-console-muted);margin-bottom:34px}
+.vv-console-form{display:flex;flex-direction:column;gap:12px}
+.vv-console-form label{font-weight:700;font-size:13px;margin-top:10px}
+.vv-console-form input,.vv-console-form select{border:1px solid #c9dbd8;padding:16px;border-radius:14px;min-height:53px;width:100%;background:#fff;color:var(--vv-console-ink)}
+.vv-console-form input::placeholder{color:#97aaae}
+.vv-console-primary{border:0;background:var(--vv-console-navy);border-radius:99px;color:white;min-height:53px;padding:14px 23px;display:inline-flex;align-items:center;justify-content:center;gap:18px;font-size:14px;font-weight:750;text-decoration:none}
+.vv-console-primary:hover:not(:disabled){background:#005471}
+.vv-console-form .vv-console-primary{margin-top:18px;width:100%}
+.vv-console-link-button,.vv-console-text-link{border:0;background:transparent;color:#097f7d;font-size:13px;font-weight:700;margin:19px 0;padding:0;text-decoration:underline;text-underline-offset:4px}
+.vv-console-note,.vv-console-security{border-top:1px solid var(--vv-console-border);margin-top:36px;padding-top:24px;display:flex;align-items:center;gap:10px;color:var(--vv-console-muted);font-size:12px}
+.vv-console-error{padding:13px 16px!important;border-radius:10px!important;background:#fff0ed;color:#9b2f1b!important;line-height:1.45!important;font-size:13px!important;margin-top:16px}
+.vv-console-success{color:#177667!important;font-size:13px!important}
+.vv-console-loading{min-height:100svh;display:grid;place-items:center;color:var(--vv-console-navy);font-size:18px}
+.vv-console-shell{min-height:100svh;display:grid;grid-template-columns:260px minmax(0,1fr)}
+.vv-console-sidebar{background:var(--vv-console-deep);color:white;min-height:100svh;display:flex;flex-direction:column;padding:32px 20px;gap:32px}
+.vv-console-sidebar-head{display:flex;gap:12px;align-items:center;padding:0 10px 14px}
+.vv-console-sidebar-head img{width:43px;height:43px;object-fit:contain}
+.vv-console-sidebar-head strong{display:block;font-size:18px;letter-spacing:-.055em}
+.vv-console-sidebar-head small{display:block;color:#81d5cb;font-size:9px;letter-spacing:.14em;margin-top:4px}
+.vv-console-menu-label{font-size:10px;letter-spacing:.2em;color:#87a8ac;padding:0 12px}
+.vv-console-sidebar nav{display:grid;gap:6px}
+.vv-console-sidebar nav button,.vv-console-sidebar-foot>button{width:100%;min-height:48px;display:flex;align-items:center;gap:12px;padding:12px;border:0;border-radius:12px;text-align:left;background:transparent;color:#b7d0d2;font-size:14px;font-weight:650}
+.vv-console-sidebar nav button:hover,.vv-console-sidebar nav button.active{background:#145168;color:white}
+.vv-console-sidebar nav button.active{box-shadow:inset 3px 0 0 var(--vv-console-mint)}
+.vv-console-sidebar-foot{margin-top:auto;padding-top:20px;border-top:1px solid #215269}
+.vv-console-member-badge{display:flex;gap:10px;align-items:center;min-width:0;padding:0 4px 12px}
+.vv-console-member-badge>span{width:37px;height:37px;border-radius:50%;background:var(--vv-console-mint);display:grid;place-items:center;color:var(--vv-console-deep);font-weight:800;flex-shrink:0}
+.vv-console-member-badge div{min-width:0}.vv-console-member-badge strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}.vv-console-member-badge small{color:#8aafb6;text-transform:capitalize;font-size:11px}
+.vv-console-main{padding:30px clamp(24px,5vw,85px) 50px;min-width:0}
+.vv-console-topline{display:flex;justify-content:space-between;gap:15px;align-items:center;border-bottom:1px solid var(--vv-console-border);padding-bottom:22px;color:#56858c;font-size:10px;font-weight:750;letter-spacing:.12em}
+.vv-console-topline span{display:flex;gap:8px;align-items:center}
+.vv-console-main-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin:50px 0 38px}
+.vv-console-main-head h1{margin:15px 0 9px}
+.vv-console-main-head p{margin:0}
+.vv-console-add{white-space:nowrap}
+.vv-console-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px;margin-bottom:34px}
+.vv-console-stats article,.vv-console-panel{background:#fff;border:1px solid var(--vv-console-border);border-radius:20px}
+.vv-console-stats article{padding:28px}.vv-console-stats span{font-size:10px;letter-spacing:.14em;font-weight:750;color:#55868b;display:block}
+.vv-console-stats strong{display:block;font-size:52px;line-height:1.1;letter-spacing:-.08em;margin:19px 0 9px;color:var(--vv-console-navy)}
+.vv-console-stats small{font-size:12px;color:#799498}
+.vv-console-panel{padding:30px}.vv-console-panel-head{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:22px}.vv-console-panel h2{margin:8px 0;font-size:25px;letter-spacing:-.05em}
+.vv-console-panel-head button{background:transparent;border:0;display:flex;align-items:center;gap:7px;color:#007d75;font-weight:750;font-size:13px}
+.vv-console-panel-head>span{font-size:13px;color:#799498}
+.vv-console-empty{background:#f3f9f8;border:1px dashed #c5ded9;padding:36px 24px;border-radius:12px;font-size:14px;color:#608188;line-height:1.65}
+.vv-console-data-row{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) 120px;align-items:center;gap:18px;padding:19px 5px;border-bottom:1px solid #eaf1ef;font-size:13px}
+.vv-console-data-row:last-child{border:0}.vv-console-data-row strong{font-size:14px}.vv-console-data-row>span{color:#5d878a}.vv-console-data-row small{text-align:right;color:#8aa4a7}
+.vv-console-pill{background:#edf8f6;border-radius:100px;padding:5px 12px;justify-self:start}
+.vv-console-footer{display:flex;align-items:center;gap:10px;color:#759297;font-size:12px;margin-top:40px;line-height:1.7}
+.vv-console-overlay{position:fixed;inset:0;background:rgba(0,27,40,.6);display:grid;place-items:center;padding:20px;z-index:200}
+.vv-console-modal{position:relative;background:white;border-radius:22px;padding:34px;width:min(100%,480px);box-shadow:0 30px 90px rgba(0,20,30,.2)}
+.vv-console-modal h2{font-size:38px;letter-spacing:-.06em;margin:13px 0 22px}.vv-console-close{position:absolute;right:22px;top:20px;border:0;background:#eef5f3;border-radius:50%;width:37px;height:37px;display:grid;place-items:center}
+@media(max-width:920px){.vv-console-shell{grid-template-columns:210px minmax(0,1fr)}.vv-console-main{padding:25px}.vv-console-stats{gap:10px}.vv-console-stats article{padding:20px}.vv-console-gate{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.vv-console-gate{grid-template-columns:1fr}.vv-console-brand-panel{min-height:210px;padding:24px;justify-content:space-between}.vv-console-brand-panel>img{width:36px;height:36px}.vv-console-brand-panel h2{font-size:38px;margin:10px 0}.vv-console-brand-panel h2 br:nth-of-type(1),.vv-console-brand-panel h2 br:nth-of-type(2){display:none}.vv-console-brand-panel h2 br:after{content:" "}.vv-console-brand-panel p,.vv-console-brand-panel>small{display:none}.vv-console-auth-card{padding:32px 24px 48px}.vv-console-mark{margin-bottom:24px}.vv-console-shell{display:block}.vv-console-sidebar{min-height:unset;padding:15px 18px;gap:12px}.vv-console-sidebar-head{padding:0}.vv-console-sidebar nav{display:flex;gap:5px}.vv-console-sidebar nav button{flex:1;justify-content:center;gap:6px;font-size:12px;padding:9px 4px;min-height:43px}.vv-console-sidebar-foot,.vv-console-menu-label{display:none}.vv-console-main{padding:25px 18px 45px}.vv-console-main-head{margin:30px 0;display:block}.vv-console-main-head h1{font-size:43px}.vv-console-add{margin-top:20px}.vv-console-stats{grid-template-columns:1fr 1fr}.vv-console-stats article:last-child{grid-column:1/-1}.vv-console-panel{padding:20px 16px}.vv-console-data-row{grid-template-columns:1fr auto;gap:7px}.vv-console-data-row strong{grid-column:1/-1}.vv-console-data-row small{grid-column:2;grid-row:2}.vv-console-footer{font-size:11px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
