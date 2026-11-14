@@ -38,6 +38,12 @@ export default defineConfig({
         audiences: resolve(process.cwd(), "who-we-serve.html"),
         contact: resolve(process.cwd(), "contact.html"),
         quote: resolve(process.cwd(), "request-quote.html"),
+        "console-uploader": resolve(process.cwd(), "src/console-file-upload.tsx"),
+      },
+      output: {
+        entryFileNames: (chunk) => chunk.name === "console-uploader"
+          ? "console-assets/console-file-upload.js"
+          : "assets/[name]-[hash].js",
       },
     },
   },
