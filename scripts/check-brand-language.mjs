@@ -23,6 +23,7 @@ const uiPaths = [
   "src/components/VisualVerseKenyaMap.tsx",
   "src/components/VisualVersePortfolio.tsx",
   "src/components/VisualVerseProcessJourney.tsx",
+  "src/components/ui/resizable-navbar-demo.tsx",
   "src/components/ui/floating-dock.tsx",
 ];
 
