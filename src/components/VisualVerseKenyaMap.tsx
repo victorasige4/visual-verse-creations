@@ -133,7 +133,10 @@ export function VisualVerseKenyaMap(){
             {!compact&&<g className="vv-atlas-dot-overlay" pointerEvents="none">
               {outlines.map(c=><path key={"dots-"+c.id} d={c.path} fill="url(#vv-atlas-dots)" fillRule="evenodd" opacity=".25"/>)}
             </g>}
-            {!compact&&cityPoints.slice(1).map((_,i)=><path key={"possible-"+i} className="vv-atlas-ghost-route" d={routeTo(i+1)} fill="none"/>)}
+            {/* Keep the Nairobi-to-city connection network visible on mobile, without continuous animations. */}
+            <g pointerEvents="none" aria-hidden="true">
+              {cityPoints.slice(1).map((_,i)=><path key={"possible-"+i} className="vv-atlas-ghost-route" d={routeTo(i+1)} fill="none"/>)}
+            </g>
             <circle cx={cityPoints[selected][0]} cy={cityPoints[selected][1]} r="75" fill="url(#vv-atlas-spotlight)" pointerEvents="none"/>
             {route&&<g key={"live-"+selected} pointerEvents="none">
               {!compact&&<path d={route} className="vv-atlas-route-glow" filter="url(#vv-atlas-glow)"/>}
