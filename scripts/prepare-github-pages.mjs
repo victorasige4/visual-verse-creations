@@ -9,7 +9,7 @@ import { join, extname } from "node:path";
 const base = "/visual-verse-creations/";
 const dist = "dist";
 const textual = new Set([".html", ".js", ".css"]);
-const knownPaths = /^(?:#|(?:about|services|projects|portfolio|contact|request-quote|quote|lets-talk|who-we-serve)(?:[.#/?]|$)|(?:brand-|logo-|favicon|portfolio-|about-|visual-|vv-)[\w./-]*|assets\/|images\/|fonts\/|src\/)/i;
+const knownPaths = /^(?:#|(?:about|services|projects|portfolio|contact|request-quote|quote|lets-talk|who-we-serve|console)(?:[.#/?]|$)|(?:brand-|logo-|favicon|portfolio-|about-|visual-|vv-)[\w./-]*|assets\/|images\/|fonts\/|src\/)/i;
 let touched = 0;
 
 function patch(contents) {
