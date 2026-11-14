@@ -18,6 +18,54 @@ const findClient=(id)=>state.clients.find((c)=>c.id===id)?.name??"Private client
 const tag=(value)=>'<span class="badge '+(value==="suspended"?"suspended":"")+'">'+esc(nice(value))+"</span>";
 let toastTimer;
 function notify(message){const el=$("notice");el.className="notice-toast";el.textContent=message;el.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.hidden=true,6000);}
+// Enforce a seven-minute inactivity limit inside this tab, including page reloads.
+const IDLE_LIMIT_MS=7*60*1000;
+const IDLE_STAMP_KEY="vv-studio-last-user-activity-v1";
+const AUTH_SESSION_KEY="vv-studio-console-session-v2";
+let idleTracking=false;
+let idleSigningOut=false;
+let lastIdleWrite=0;
+function readLastActivity(){try{return Number(sessionStorage.getItem(IDLE_STAMP_KEY)||0);}catch{return 0;}}
+function writeLastActivity(now=Date.now()){
+  if(!idleTracking||now-lastIdleWrite<1000)return;
+  lastIdleWrite=now;
+  try{sessionStorage.setItem(IDLE_STAMP_KEY,String(now));}catch{}
+}
+function clearIdleTracking(){idleTracking=false;try{sessionStorage.removeItem(IDLE_STAMP_KEY);}catch{}}
+function isPastIdleDeadline(now=Date.now()){
+  const last=readLastActivity();
+  return !last||!Number.isFinite(last)||now-last>=IDLE_LIMIT_MS||last>now+60000;
+}
+async function enforceIdleLogout(){
+  if(idleSigningOut||!idleTracking)return;
+  idleSigningOut=true;
+  clearIdleTracking();
+  state.user=null;state.membership=null;state.clients=[];state.projects=[];state.tasks=[];state.documents=[];state.members=[];
+  $("login-password").value="";
+  $("modal-overlay").hidden=true;
+  showLogin("login");
+  notify("Signed out after 7 minutes without activity. Please sign in again.");
+  try{await supabase.auth.signOut({scope:"local"});}catch{}
+  finally{try{sessionStorage.removeItem(AUTH_SESSION_KEY);}catch{}idleSigningOut=false;}
+}
+function startIdleTracking(){
+  idleTracking=true;
+  const last=readLastActivity();
+  if(!last){clearIdleTracking();return false;}
+  if(isPastIdleDeadline()){void enforceIdleLogout();return false;}
+  return true;
+}
+function recordStudioActivity(){
+  if(!idleTracking||$("workspace").hidden||idleSigningOut)return;
+  if(isPastIdleDeadline()){void enforceIdleLogout();return;}
+  if(document.visibilityState==="visible")writeLastActivity();
+}
+for(const eventName of ["pointerdown","keydown","touchstart","wheel"]){
+  document.addEventListener(eventName,recordStudioActivity,{passive:true,capture:true});
+}
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)recordStudioActivity();});
+window.addEventListener("focus",recordStudioActivity);
+setInterval(()=>{if(idleTracking&&isPastIdleDeadline())void enforceIdleLogout();},10000);
 let completingPasswordSetup=false;
 function showLogin(mode="email"){
   $("workspace").hidden=true;$("auth-screen").hidden=false;
@@ -77,6 +125,10 @@ async function loadSession(){
     return;
   }
   state.membership=member;
+  if(!startIdleTracking()){
+    if(!idleSigningOut){await supabase.auth.signOut({scope:"local"});showLogin("login");notify("Please sign in again to open your studio.");}
+    return;
+  }
   $("auth-screen").hidden=true;$("workspace").hidden=false;
   $("signed-in-email").textContent=user.email??"";
   $("profile-circle").textContent=(user.email??"VV").slice(0,2).toUpperCase();
@@ -280,6 +332,7 @@ $("login-form").addEventListener("submit",async(e)=>{
   const email=$("login-email").value.trim(),password=$("login-password").value;
   const result=await supabase.auth.signInWithPassword({email,password});
   b.disabled=false;if(result.error){notify(result.error.message);return;}
+  idleTracking=true;writeLastActivity();
   await loadSession();
 });
 $("mfa-login-form").addEventListener("submit",async(e)=>{
@@ -291,6 +344,7 @@ $("mfa-login-form").addEventListener("submit",async(e)=>{
     if(!factor)throw new Error("No verified authenticator was found for this account.");
     const verified=await supabase.auth.mfa.challengeAndVerify({factorId:factor.id,code:$("mfa-login-code").value.trim()});
     if(verified.error)throw verified.error;
+    idleTracking=true;writeLastActivity();
     await loadSession();
   }catch(error){notify(error.message||"Verification failed.");}finally{btn.disabled=false;}
 });
@@ -385,10 +439,10 @@ $("set-password-form").addEventListener("submit",async(e)=>{
   completingPasswordSetup=true;
   const logout=await supabase.auth.signOut();
   if(logout.error){completingPasswordSetup=false;notify("Password saved. Please sign out before signing in again.");showLogin("login");return;}
-  state.user=null;state.membership=null;
+  clearIdleTracking();state.user=null;state.membership=null;
   showLogin("complete");
 });
-async function signOut(){await supabase.auth.signOut();state.user=null;state.membership=null;showLogin();}
+async function signOut(){clearIdleTracking();state.user=null;state.membership=null;showLogin("login");await supabase.auth.signOut({scope:"local"});}
 $("sign-out").addEventListener("click",signOut);
 $("mobile-sign-out").addEventListener("click",signOut);
 document.querySelectorAll("[data-tab]").forEach(b=>b.addEventListener("click",()=>{state.view=b.dataset.tab;render();window.scrollTo({top:0,behavior:"instant"});}));
@@ -423,6 +477,6 @@ $("modal-overlay").addEventListener("click",(e)=>{if(e.target===$("modal-overlay
 document.addEventListener("keydown",(e)=>{if(e.key==="Escape")closeModal();});
 supabase.auth.onAuthStateChange((event)=>{
   if(event==="PASSWORD_RECOVERY")setTimeout(()=>showLogin("password"),0);
-  if(event==="SIGNED_OUT"&&!completingPasswordSetup)setTimeout(()=>showLogin("email"),0);
+  if(event==="SIGNED_OUT"&&!completingPasswordSetup)setTimeout(()=>showLogin("login"),0);
 });
 loadSession().catch((err)=>{showLogin();notify("Could not load the console: "+(err?.message||"network error"));});
