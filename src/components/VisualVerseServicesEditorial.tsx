@@ -82,29 +82,22 @@ function useRevealSections() {
 export function VisualVerseServicesEditorial() {
   const ref = useRevealSections();
   return <div className="vv-services-editorial" ref={ref}>
-    <section className="vv-sv-hero" aria-labelledby="vv-sv-title" id="services-top">
-      <div className="vv-sv-hero-dots" aria-hidden="true"/>
+    <section className="vv-sv-hero vv-sv-hero--potadot" aria-labelledby="vv-sv-title" id="services-top">
       <div className="vv-sv-container">
         <nav className="vv-sv-breadcrumb" aria-label="Breadcrumb">
-          <a href={import.meta.env.BASE_URL}>Home</a><span aria-hidden="true">·</span><span>Services</span>
+          <a href={import.meta.env.BASE_URL}>Home</a><span aria-hidden="true">·</span><span aria-current="page">Services</span>
         </nav>
-        <div className="vv-sv-hero-grid">
-          <div className="vv-sv-hero-copy vv-sv-reveal">
-            <span className="vv-sv-kicker"><i/><i/> VISUAL VERSE / OUR SERVICES</span>
-            <h1 id="vv-sv-title">Six ways we create. <em>Every one made for your story.</em></h1>
-          </div>
-          <div className="vv-sv-hero-summary vv-sv-reveal">
-            <span>ONE CREATIVE STUDIO. ENDLESS POSSIBILITIES.</span>
-            <p>From the first concept to the final frame, we bring branding, photography, film, design and digital experiences together. No generic templates—just work shaped around you.</p>
-            <a href={import.meta.env.BASE_URL+"request-quote.html"}>Let's create something <ArrowUpRight size={17}/></a>
-          </div>
+        <div className="vv-sv-hero-main vv-sv-reveal">
+          <h1 id="vv-sv-title">Six ways we create, <em>all of them yours.</em></h1>
+          <p>Every creative solution is shaped around your story, your audience and what you want to achieve. No one-size-fits-all ideas. Just thoughtful work made for you.</p>
         </div>
-        <nav className="vv-sv-nav" aria-label="Explore creative services">
+        <nav className="vv-sv-nav vv-sv-hero-services vv-sv-reveal" aria-label="Jump to a creative service">
           {services.map(s=><a key={s.id} href={"#service-"+s.id}>
-            <span>{s.number}</span>{s.name}<ArrowUpRight size={13} aria-hidden="true"/>
+            <span className="vv-sv-hero-nav-number">{s.number}</span>
+            <span className="vv-sv-hero-nav-name">{s.id==="social-media"?"Social Media":s.id==="web-ui-ux"?"Web & UI/UX":s.id==="branding"?"Branding":s.name}</span>
+            <ArrowUpRight size={16} strokeWidth={1.8} aria-hidden="true"/>
           </a>)}
         </nav>
-        <div className="vv-sv-hero-footer"><span>IMAGINE. CREATE. CONNECT.</span><a href="#our-process">DISCOVER OUR PROCESS <ArrowRight size={14}/></a></div>
       </div>
     </section>
 

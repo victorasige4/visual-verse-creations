@@ -890,3 +890,158 @@
   .vv-sp-step{min-height:62px}
   .vv-sp-step.is-active{min-height:95px}
 }
+
+/* POTADOT-INSPIRED SERVICES LANDING / Visual Verse original content.
+   Faithful editorial composition: breadcrumb -> monumental statement ->
+   short supporting copy -> numbered service navigation -> work immediately.
+   Intentionally leaves the Aceternity cards and the pinned process untouched. */
+.vv-services-editorial .vv-sv-hero--potadot{
+  display:block;
+  min-height:0;
+  padding:clamp(138px,13svh,164px) 0 clamp(65px,6vw,88px);
+  background:#f7fcfb;
+  overflow:visible;
+}
+.vv-services-editorial .vv-sv-hero--potadot>.vv-sv-container{
+  display:block;
+}
+.vv-sv-hero--potadot .vv-sv-breadcrumb{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  margin:0 0 clamp(49px,6vw,72px);
+  font-size:13px;
+  font-weight:600;
+  color:#69858a;
+}
+.vv-sv-hero--potadot .vv-sv-breadcrumb a{
+  color:var(--sv-deep);
+}
+.vv-sv-hero-main{
+  max-width:1090px;
+}
+.vv-sv-hero--potadot .vv-sv-hero-main h1{
+  max-width:1070px;
+  margin:0;
+  color:var(--sv-deep)!important;
+  font-size:clamp(58px,7.15vw,108px);
+  font-weight:850;
+  line-height:1.035;
+  letter-spacing:-.082em;
+  text-wrap:balance;
+}
+.vv-sv-hero--potadot .vv-sv-hero-main h1 em{
+  display:block;
+  font-style:normal;
+  color:#11a99d;
+}
+.vv-sv-hero-main>p{
+  max-width:740px;
+  margin:clamp(25px,3vw,37px) 0 0;
+  color:#556f77;
+  font-size:clamp(17px,1.52vw,21px);
+  font-weight:400;
+  line-height:1.65;
+}
+.vv-sv-hero--potadot .vv-sv-hero-services{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:12px;
+  margin-top:clamp(54px,5.3vw,74px);
+}
+.vv-sv-hero--potadot .vv-sv-hero-services a{
+  display:grid;
+  grid-template-columns:1fr auto;
+  grid-template-rows:auto 1fr;
+  align-items:end;
+  column-gap:8px;
+  row-gap:19px;
+  min-width:0;
+  min-height:113px;
+  padding:18px 16px;
+  border:1px solid rgba(0,63,92,.14);
+  border-radius:15px;
+  color:var(--sv-deep);
+  background:rgba(255,255,255,.84);
+  box-shadow:none;
+  font-weight:700;
+  text-decoration:none;
+  transition:background-color .26s ease,transform .38s cubic-bezier(.22,1,.36,1),border-color .26s ease,box-shadow .26s ease!important;
+}
+.vv-sv-hero--potadot .vv-sv-hero-services a:hover,
+.vv-sv-hero--potadot .vv-sv-hero-services a:focus-visible{
+  background:#ffffff;
+  border-color:#2ec4b6;
+  box-shadow:0 15px 36px rgba(0,63,92,.1);
+  transform:translateY(-5px);
+}
+.vv-sv-hero--potadot .vv-sv-hero-services a:focus-visible{
+  outline:2px solid #2ec4b6;outline-offset:3px;
+}
+.vv-sv-hero-services .vv-sv-hero-nav-number{
+  grid-column:1;
+  align-self:start;
+  color:#149a91;
+  font-weight:800;
+  font-size:12px;
+  letter-spacing:.08em;
+}
+.vv-sv-hero-services .vv-sv-hero-nav-name{
+  grid-column:1;
+  grid-row:2;
+  align-self:end;
+  color:var(--sv-deep);
+  font-size:clamp(12px,1vw,14px);
+  font-weight:800;
+  line-height:1.28;
+  letter-spacing:-.025em;
+}
+.vv-sv-hero--potadot .vv-sv-hero-services a svg{
+  grid-column:2;
+  grid-row:2;
+  margin:0;
+  color:#119b90;
+  transition:transform .28s ease;
+}
+.vv-sv-hero--potadot .vv-sv-hero-services a:hover svg{
+  transform:translate(2px,-2px);
+}
+@media(max-width:1100px){
+  .vv-sv-hero--potadot .vv-sv-hero-services{grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+  .vv-sv-hero--potadot .vv-sv-hero-services a{min-height:92px}
+  .vv-sv-hero--potadot .vv-sv-hero-main h1{font-size:clamp(56px,8.4vw,91px)}
+}
+@media(max-width:760px){
+  .vv-services-editorial .vv-sv-hero--potadot{padding:112px 0 55px}
+  .vv-sv-hero--potadot .vv-sv-breadcrumb{margin-bottom:38px;font-size:12px}
+  .vv-sv-hero--potadot .vv-sv-hero-main h1{
+    font-size:clamp(43px,10.5vw,70px);
+    line-height:1.07;
+    letter-spacing:-.075em;
+  }
+  .vv-sv-hero-main>p{margin-top:22px;font-size:16px;line-height:1.65}
+  .vv-sv-hero--potadot .vv-sv-hero-services{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+    margin-top:36px;
+  }
+  .vv-sv-hero--potadot .vv-sv-hero-services a{
+    min-height:88px;
+    padding:14px 13px;
+    row-gap:10px;
+    border-radius:13px;
+  }
+  .vv-sv-hero-services .vv-sv-hero-nav-name{font-size:12px}
+  .vv-sv-hero-services .vv-sv-hero-nav-number{font-size:11px}
+}
+@media(max-width:360px){
+  .vv-services-editorial .vv-sv-hero--potadot{padding-top:104px}
+  .vv-sv-hero--potadot .vv-sv-hero-main h1{font-size:40px}
+  .vv-sv-hero--potadot .vv-sv-hero-services a{min-height:86px;padding:12px}
+}
+@media(prefers-reduced-motion:reduce){
+  .vv-sv-hero--potadot .vv-sv-hero-services a{
+    transition:none!important;
+    transform:none!important;
+  }
+}
