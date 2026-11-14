@@ -98,13 +98,13 @@ function showLogin(mode="email"){
   $("set-password-form").hidden=mode!=="password";
   $("setup-complete").hidden=mode!=="complete";
   $("mfa-login-form").hidden=mode!=="mfa";
-  const headings={email:"Set up your studio access.",sent:"Check your email.",login:"Welcome back.",password:"Create your password.",complete:"Password set successfully.",mfa:"One more secure step."};
+  const headings={email:"Set up your console access.",sent:"Check your email.",login:"Welcome back.",password:"Create your password.",complete:"Password set successfully.",mfa:"One more secure step."};
   const descriptions={
     email:"Enter the email address where you received your invitation.",
     sent:"Open the secure email link to choose and confirm your password.",
     login:"Sign in with your Visual Verse team account.",
-    password:"Choose and confirm a strong password to complete your studio access.",
-    complete:"Your password is saved. You can now sign in securely to your studio.",
+    password:"Choose and confirm a strong password to complete your console access.",
+    complete:"Your password is saved. You can now sign in securely to your console.",
     mfa:"Enter the six-digit code from your authenticator app."
   };
   const steps={email:"STEP 01 / YOUR EMAIL",sent:"CHECK YOUR INBOX",login:"EXISTING TEAM MEMBER",password:"STEP 02 / CREATE PASSWORD",complete:"STEP 03 / SIGN IN",mfa:"VERIFY YOUR IDENTITY"};
@@ -144,12 +144,12 @@ async function loadSession(){
   const {data:member,error:memberError}=await supabase.from("team_memberships").select("role,status,user_id").eq("user_id",user.id).maybeSingle();
   if(memberError||!member||member.status!=="active"){
     await supabase.auth.signOut();showLogin();
-    notify("Your account is not authorized for this workspace. Contact the Studio Console owner.");
+    notify("Your account is not authorized for this workspace. Contact the Visual Verse Console owner.");
     return;
   }
   state.membership=member;
   if(!startIdleTracking()){
-    if(!idleSigningOut){await supabase.auth.signOut({scope:"local"});showLogin("login");notify("Please sign in again to open your studio.");}
+    if(!idleSigningOut){await supabase.auth.signOut({scope:"local"});showLogin("login");notify("Please sign in again to open your workspace.");}
     return;
   }
   $("auth-screen").hidden=true;$("workspace").hidden=false;
@@ -190,11 +190,11 @@ function renderOverview(){
   const soon=todo.filter(x=>x.due_date).slice().sort((a,b)=>a.due_date.localeCompare(b.due_date)).slice(0,5);
   const actions=isAdmin()?'<button class="hero-action" type="button" data-create="project">+ New project</button><button class="hero-action" type="button" data-create="client">+ Add client</button>':canEdit()?'<button class="hero-action" type="button" data-create="task">+ New task</button>':"";
   return '<section class="studio-hero" aria-labelledby="studio-welcome"><div class="studio-hero-copy">'+
-    '<span class="eyebrow">VISUAL VERSE / STUDIO CONSOLE</span><h2 id="studio-welcome">'+esc(greeting)+'.<br/>Let’s make it happen.</h2>'+
+    '<span class="eyebrow">VISUAL VERSE / CONSOLE</span><h2 id="studio-welcome">'+esc(greeting)+'.<br/>Let’s make it happen.</h2>'+
     '<p>Your creative headquarters. Keep projects moving, people connected, and the next big idea within reach.</p>'+
     '<div class="studio-hero-actions">'+actions+'<button class="hero-action" type="button" data-nav="projects">Explore projects</button></div></div>'+
     '<div class="studio-hero-date">'+esc(today)+'</div></section>'+
-    '<div class="studio-section-label"><h3>Studio snapshot</h3><span>Based on your workspace data</span></div>'+
+    '<div class="studio-section-label"><h3>Workspace snapshot</h3><span>Based on your workspace data</span></div>'+
     '<div class="kpi-grid">'+
     '<article class="kpi"><span class="kpi-mark" aria-hidden="true"><svg class="kpi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span class="name">Client relationships</span><strong>'+state.clients.length+'</strong><small>TOTAL CLIENTS</small></article>'+
     '<article class="kpi"><span class="kpi-mark" aria-hidden="true"><svg class="kpi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18l6-6 4 3 6-8M15 7h5v5"/></svg></span><span class="name">Projects in motion</span><strong>'+active+'</strong><small>ACTIVE PROJECTS</small></article>'+
@@ -206,7 +206,7 @@ function renderOverview(){
     '<section class="panel"><div class="panel-head"><h3>Up next</h3><button class="panel-link" type="button" data-nav="tasks">All tasks</button></div>'+
     '<p class="panel-subtitle">Upcoming deadlines, in order</p><div class="item-list">'+
     (soon.length?soon.map(x=>item(x.title,findProject(x.project_id)+" · "+x.due_date,x.status)).join(""):empty("Nothing pressing right now.","Upcoming work with due dates appears here."))+'</div></section></div>'+
-    '<div class="content-grid"><section class="panel"><div class="panel-head"><h3>Studio momentum</h3><span class="status">TASK PROGRESS</span></div>'+
+    '<div class="content-grid"><section class="panel"><div class="panel-head"><h3>Project momentum</h3><span class="status">TASK PROGRESS</span></div>'+
     '<div class="studio-pulse"><div class="studio-pulse-text"><strong>'+done+' of '+state.tasks.length+' tasks completed</strong>'+
     'A clear picture of progress across the tasks you can access.'+
     '<span class="studio-quick-note">'+esc(overdue?overdue+" overdue task"+(overdue===1?"":"s")+" to review":"Ready for what’s next")+'</span></div>'+
@@ -238,22 +238,22 @@ function renderDocuments(){
   '<p class="secondary-note">Private storage · Up to 25 MB per file · Access follows project assignments.</p>';
 }
 function renderSecurity(){
-  return heading("PROTECT YOUR STUDIO","Security","Keep your studio account and client information protected.")+
+  return heading("PROTECT YOUR WORKSPACE","Security","Keep your workspace account and client information protected.")+
    '<div class="content-grid"><div class="panel"><h3>Authenticator protection</h3><p class="page-copy">Use an authenticator app for a second verification step. Team invitations and permission changes require this extra protection.</p>'+
    '<p class="secondary-note">Current session: <strong>'+esc(state.mfaAal==="aal2"?"Two-factor verified":"Password verified")+'</strong></p>'+
    (state.mfaAal==="aal2"?'<span class="status">Two-factor authentication is active for this session.</span>':addButton("Set up authenticator","mfa"))+
    '</div><div class="panel"><h3>Private by design</h3><div class="item-list">'+
-   item("Invitation-only membership","Access is assigned by a studio administrator","active")+
+   item("Invitation-only membership","Access is assigned by an administrator","active")+
    item("Project-level permissions","Only assigned projects and documents are visible","active")+
    item("Private file storage","Your creative files are not publicly browsable","active")+
    '</div></div></div>';
 }
 function renderTeam(){
-  if(!isAdmin())return empty("Restricted area","Only studio administrators can access the team directory.");
-  return heading("THE PEOPLE BEHIND THE WORK","Team & access","Invite trusted collaborators and manage their studio permissions.",addButton("Invite teammate","invite"))+
+  if(!isAdmin())return empty("Restricted area","Only administrators can access the team directory.");
+  return heading("THE PEOPLE BEHIND THE WORK","Team & access","Invite trusted collaborators and manage their console permissions.",addButton("Invite teammate","invite"))+
   '<div class="table-card"><div class="table-row heading"><span>Member</span><span>Role</span><span>Status</span><span></span></div>'+
-  (state.members.length?state.members.map(m=>'<div class="table-row"><strong>'+esc(m.email||m.display_name||m.user_id)+'</strong><span>'+esc(nice(m.role))+'</span><span>'+tag(m.status)+'</span><span>'+(m.role==="super_admin"?"Owner":'<div class="row-actions"><button type="button" data-role="'+esc(m.user_id)+'">Change role</button><button type="button" data-member="'+esc(m.user_id)+'" data-change="'+(m.status==="active"?"suspend":"reactivate")+'">'+(m.status==="active"?"Suspend":"Reactivate")+'</button></div>')+'</span></div>').join(""):empty("The studio team","Invite collaborators to build together."))+'</div>'+
-  '<p class="secondary-note">Each person has individual credentials. Suspended accounts lose access to protected studio data immediately.</p>';
+  (state.members.length?state.members.map(m=>'<div class="table-row"><strong>'+esc(m.email||m.display_name||m.user_id)+'</strong><span>'+esc(nice(m.role))+'</span><span>'+tag(m.status)+'</span><span>'+(m.role==="super_admin"?"Owner":'<div class="row-actions"><button type="button" data-role="'+esc(m.user_id)+'">Change role</button><button type="button" data-member="'+esc(m.user_id)+'" data-change="'+(m.status==="active"?"suspend":"reactivate")+'">'+(m.status==="active"?"Suspend":"Reactivate")+'</button></div>')+'</span></div>').join(""):empty("Your team","Invite collaborators to build together."))+'</div>'+
+  '<p class="secondary-note">Each person has individual credentials. Suspended accounts lose access to protected project data immediately.</p>';
 }
 function render(){
   if($("workspace").hidden)return;
@@ -287,7 +287,7 @@ function openModal(kind){
     name="Create task";content=field("Task title","title")+selectField("Project","project_id",options(state.projects,p=>p.name))+field("Due date","due_date","date",false);
   }else if(kind==="upload"){
     if(!state.projects.length){notify("Create a project first.");return;}
-    name="Upload document";content=selectField("Project","project_id",options(state.projects,p=>p.name))+'<label>Choose a file (max 25 MB)</label><div id="vv-upload-mount"><input id="upload-file" type="file" required accept=".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx,.ppt,.pptx,.txt,.zip" aria-label="Choose a document to upload"/></div><p class="secondary-note">Files are privately stored against the chosen project. Only authorized studio members can access them.</p>';
+    name="Upload document";content=selectField("Project","project_id",options(state.projects,p=>p.name))+'<label>Choose a file (max 25 MB)</label><div id="vv-upload-mount"><input id="upload-file" type="file" required accept=".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx,.ppt,.pptx,.txt,.zip" aria-label="Choose a document to upload"/></div><p class="secondary-note">Files are privately stored against the chosen project. Only authorized team members can access them.</p>';
   }else if(kind==="assign"){
     const candidates=state.members.filter(m=>m.role!=="super_admin"&&m.status==="active");
     if(!state.projects.length||!candidates.length){notify("Create a project and invite a teammate first.");return;}
@@ -439,13 +439,13 @@ $("setup-email-form").addEventListener("submit",async(e)=>{
     const code=String(error?.code||"");
     const message=String(error?.message||"");
     if(error?.status===429||code==="over_email_send_rate_limit"||/email rate limit|too many requests/i.test(message)){
-      showSetupFeedback("Supabase's email-sending limit has been reached. No new link was sent. Wait until the email quota resets (which may take about an hour), or contact the studio administrator to configure a custom SMTP email provider.");
+      showSetupFeedback("Supabase's email-sending limit has been reached. No new link was sent. Wait until the email quota resets (which may take about an hour), or contact the account administrator to configure a custom SMTP email provider.");
       limitEmailRetries(300);
     }else if(code==="email_address_not_authorized"||/email address not authorized/i.test(message)){
       showSetupFeedback("Supabase's default email service only sends to authorized organization addresses. A studio administrator must configure custom SMTP before sending setup links to other teammates.");
       limitEmailRetries(90);
     }else{
-      showSetupFeedback("We could not request your setup link. "+(message||"Please try again later or contact the studio administrator."));
+      showSetupFeedback("We could not request your setup link. "+(message||"Please try again later or contact the account administrator."));
       renderEmailCooldown();
     }
   }finally{renderEmailCooldown();}
