@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="robots" content="noindex,nofollow"/>
+<meta name="theme-color" content="#003f5c"/>
+<title>Studio Console | Visual Verse Creations</title>
+<link rel="icon" href="./favicon.ico"/>
+<link rel="apple-touch-icon" href="./logo-mark.png"/>
+<link rel="stylesheet" href="./console-assets/console.css"/>
+</head>
+<body>
+<div class="ambient ambient-one" aria-hidden="true"></div><div class="ambient ambient-two" aria-hidden="true"></div>
+<div id="notice" role="status" aria-live="polite" hidden></div>
+<section id="auth-screen" class="auth-layout">
+  <div class="auth-left">
+    <div class="brand-row"><img src="./logo-mark.png" alt="Visual Verse logo" width="58" height="58"/><span>VISUAL VERSE <small>CREATIONS</small></span></div>
+    <div class="auth-pitch"><span class="eyebrow">THE CREATIVE STUDIO, ORGANIZED</span>
+      <h1>Big ideas.<br/><em>One clear space.</em></h1>
+      <p>Manage your clients, projects, deadlines and people from one beautifully connected workspace.</p>
+      <div class="auth-visual" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><img src="./logo-mark.png" alt=""/></div>
+    </div>
+    <span class="auth-footer">PRIVATE TEAM WORKSPACE · VISUAL VERSE</span>
+  </div>
+  <div class="auth-right">
+    <div class="auth-card">
+      <div class="auth-lock">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.7"/></svg>
+      </div>
+      <span class="eyebrow">STUDIO CONSOLE</span><h2 id="auth-heading">Welcome back.</h2>
+      <p id="auth-description">Sign in with your Visual Verse team account.</p>
+      <form id="login-form" class="stack">
+        <label for="login-email">Email address</label><input id="login-email" type="email" autocomplete="email" required placeholder="you@example.com"/>
+        <label for="login-password">Password</label><input id="login-password" type="password" autocomplete="current-password" required placeholder="Your password"/>
+        <button class="btn primary" type="submit">Sign in securely <span aria-hidden="true">↗</span></button>
+        <button type="button" class="text-button" id="forgot-password">Forgot password?</button>
+      </form>
+      <form id="set-password-form" class="stack" hidden>
+        <label for="new-password">Choose your password</label><input id="new-password" type="password" autocomplete="new-password" required minlength="12" placeholder="At least 12 characters"/>
+        <label for="confirm-password">Confirm your password</label><input id="confirm-password" type="password" autocomplete="new-password" required minlength="12" placeholder="Re-enter password"/>
+        <button class="btn primary" type="submit">Secure my account</button>
+      </form>
+      <form id="reset-form" class="stack" hidden>
+        <label for="reset-email">Your invited email</label><input id="reset-email" type="email" autocomplete="email" required/>
+        <button class="btn primary" type="submit">Send password reset</button>
+        <button class="text-button" type="button" id="back-login">Back to sign in</button>
+      </form>
+      <p class="auth-note">Invitation only. Access is restricted to authorized Visual Verse team members.</p>
+      <a class="back-site" href="./index.html">Back to Visual Verse website</a>
+    </div>
+  </div>
+</section>
+<div id="workspace" class="workspace" hidden>
+  <aside class="sidebar">
+    <div class="sidebar-head"><img src="./logo-mark.png" alt="" width="38" height="38"/><div><strong>Visual Verse</strong><small>STUDIO CONSOLE</small></div></div>
+    <span class="sidebar-label">YOUR WORKSPACE</span>
+    <nav id="side-nav" aria-label="Console sections">
+      <button data-tab="overview" class="active"><span class="nav-icon" aria-hidden="true">◫</span>Overview</button>
+      <button data-tab="clients"><span class="nav-icon" aria-hidden="true">▤</span>Clients</button>
+      <button data-tab="projects"><span class="nav-icon" aria-hidden="true">◈</span>Projects</button>
+      <button data-tab="tasks"><span class="nav-icon" aria-hidden="true">☷</span>Tasks & deadlines</button>
+      <button data-tab="documents"><span class="nav-icon" aria-hidden="true">▣</span>Documents</button>
+      <button data-tab="team" id="team-nav"><span class="nav-icon" aria-hidden="true">♙</span>Team & access</button>
+    </nav>
+    <div class="sidebar-bottom">
+      <span class="private-pill"><span></span> PRIVATE · ENCRYPTED</span>
+      <p>Creative work, thoughtfully managed.</p>
+      <button id="sign-out" class="sign-out" type="button">Sign out <span aria-hidden="true">↗</span></button>
+    </div>
+  </aside>
+  <div class="shell">
+    <header class="topbar">
+      <div class="topbar-left"><img src="./logo-mark.png" alt="Visual Verse" width="30" height="30" class="mobile-mark"/><span class="crumb">STUDIO <b>/</b> <strong id="page-crumb">OVERVIEW</strong></span></div>
+      <div class="profile"><span class="profile-label" id="signed-in-email"></span><span id="profile-circle">VV</span></div>
+    </header>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile console sections">
+      <button class="active" data-tab="overview">Overview</button><button data-tab="clients">Clients</button><button data-tab="projects">Projects</button><button data-tab="tasks">Tasks</button><button data-tab="documents">Files</button><button data-tab="team" id="mobile-team-nav">Team</button>
+    </nav>
+    <main id="screen-content" class="screen-content" tabindex="-1"></main>
+  </div>
+</div>
+<div id="modal-overlay" class="modal-overlay" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-heading"><div class="modal-head"><h2 id="modal-heading"></h2><button type="button" id="modal-close" class="icon-button" aria-label="Close dialog">×</button></div><form id="modal-form" class="stack"></form></div></div>
+<script type="module" src="./console-assets/console.js"></script>
+</body></html>
