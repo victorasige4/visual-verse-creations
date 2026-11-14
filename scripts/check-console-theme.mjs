@@ -21,7 +21,12 @@ for (const [name, css] of [["console.css", base], ["console-modern.css", modern]
 assert(html.includes("console-theme.css"), "theme stylesheet must be loaded");
 assert(html.indexOf("console-modern.css") < html.indexOf("console-theme.css"), "theme overrides must load last");
 assert(html.includes("vv-console-theme"), "early theme initialization prevents a light-mode flash");
-assert.equal((html.match(/class="console-theme-toggle"/g) || []).length, 1, "pre-login theme toggle must be retained; signed-in theme lives in the dock");
+assert.equal((html.match(/class="console-theme-toggle"/g) || []).length, 2, "login and signed-in header each require a theme toggle");
+assert(html.indexOf('id="auth-theme-toggle"') < html.indexOf('class="auth-pitch"'), "login appearance icon must be beside brand logo, above the form");
+assert(!html.includes("APPEARANCE"), "remove appearance label from login");
+assert(html.includes('<div class="profile" aria-label="Signed in account">') && html.includes('id="console-theme-toggle"'), "signed-in appearance icon must be next to account indicator");
+assert(!dockApp.includes('key: "theme"') && !dockApp.includes("vv:console-toggle-theme"), "floating dock must not duplicate appearance icon");
+assert(dockApp.includes('key: "sign-out"'), "keep secure sign out in dock");
 assert(html.includes('id="vv-console-dock-root"') && html.includes("console-floating-dock.js"), "horizontal React dock must mount in Console");
 assert(!html.includes('id="console-menu-toggle"') && !html.includes('id="profile-menu-toggle"') && !html.includes('class="sidebar"'), "remove duplicate menus and sidebar");
 assert(dock.includes("backdrop-filter") && dock.includes(".vv-dock-scroll") && dock.includes('[data-console-theme="dark"]'), "glass dock must support mobile and dark mode");
