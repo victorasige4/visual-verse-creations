@@ -19,8 +19,8 @@ let toastTimer;
 function notify(message){const el=$("notice");el.className="notice-toast";el.textContent=message;el.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.hidden=true,6000);}
 function showLogin(mode="login"){
   $("workspace").hidden=true;$("auth-screen").hidden=false;
-  $("login-form").hidden=mode!=="login";$("set-password-form").hidden=mode!=="password";$("reset-form").hidden=mode!=="reset";
-  $("auth-heading").textContent=mode==="password"?"Secure your invitation.":mode==="reset"?"Reset your password.":"Welcome back.";
+  $("login-form").hidden=mode!=="login";$("set-password-form").hidden=mode!=="password";$("reset-form").hidden=mode!=="reset";$("mfa-login-form").hidden=mode!=="mfa";
+  $("auth-heading").textContent=mode==="password"?"Secure your invitation.":mode==="reset"?"Reset your password.":mode==="mfa"?"One more secure step.":"Welcome back.";
   $("auth-description").textContent=mode==="password"?"Choose a strong password to complete your studio access.":mode==="reset"?"We'll send a recovery link to your verified email.":"Sign in with your Visual Verse team account.";
 }
 async function loadSession(){
@@ -29,6 +29,12 @@ async function loadSession(){
   const {data:{user},error:identityError}=await supabase.auth.getUser();
   if(identityError||!user){showLogin();return;}
   state.user=user;
+  const assurance=await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+  if(assurance.error){showLogin();notify(assurance.error.message);return;}
+  state.mfaAal=assurance.data?.currentLevel??"aal1";
+  if(assurance.data?.currentLevel==="aal1"&&assurance.data?.nextLevel==="aal2"){
+    showLogin("mfa");return;
+  }
   const {data:member,error:memberError}=await supabase.from("team_memberships").select("role,status,user_id").eq("user_id",user.id).maybeSingle();
   if(memberError||!member||member.status!=="active"){
     await supabase.auth.signOut();showLogin();
@@ -95,6 +101,17 @@ function renderDocuments(){
   (state.documents.length?state.documents.map(d=>'<div class="table-row"><strong>'+esc(d.file_name)+'</strong><span>'+esc(findProject(d.project_id))+'</span><span>'+esc(d.created_at?.slice(0,10))+'</span><button type="button" data-download="'+esc(d.id)+'">Open file</button></div>').join(""):empty("No documents yet.","Upload a file to a project to keep your team in sync."))+'</div>'+
   '<p class="secondary-note">Private storage · Up to 25 MB per file · Access follows project assignments.</p>';
 }
+function renderSecurity(){
+  return heading("PROTECT YOUR STUDIO","Security","Keep your studio account and client information protected.")+
+   '<div class="content-grid"><div class="panel"><h3>Authenticator protection</h3><p class="page-copy">Use an authenticator app for a second verification step. Team invitations and permission changes require this extra protection.</p>'+
+   '<p class="secondary-note">Current session: <strong>'+esc(state.mfaAal==="aal2"?"Two-factor verified":"Password verified")+'</strong></p>'+
+   (state.mfaAal==="aal2"?'<span class="status">Two-factor authentication is active for this session.</span>':addButton("Set up authenticator","mfa"))+
+   '</div><div class="panel"><h3>Private by design</h3><div class="item-list">'+
+   item("Invitation-only membership","Access is assigned by a studio administrator","active")+
+   item("Project-level permissions","Only assigned projects and documents are visible","active")+
+   item("Private file storage","Your creative files are not publicly browsable","active")+
+   '</div></div></div>';
+}
 function renderTeam(){
   if(!isAdmin())return empty("Restricted area","Only studio administrators can access the team directory.");
   return heading("THE PEOPLE BEHIND THE WORK","Team & access","Invite trusted collaborators and manage their studio permissions.",addButton("Invite teammate","invite"))+
@@ -104,10 +121,10 @@ function renderTeam(){
 }
 function render(){
   if($("workspace").hidden)return;
-  const titles={overview:"Overview",clients:"Clients",projects:"Projects",tasks:"Tasks & deadlines",documents:"Documents",team:"Team & access"};
+  const titles={overview:"Overview",clients:"Clients",projects:"Projects",tasks:"Tasks & deadlines",documents:"Documents",team:"Team & access",security:"Security"};
   $("page-crumb").textContent=(titles[state.view]??"Overview").toUpperCase();
   document.querySelectorAll("[data-tab]").forEach(b=>{b.classList.toggle("active",b.dataset.tab===state.view);b.setAttribute("aria-current",b.dataset.tab===state.view?"page":"false");});
-  const pages={overview:renderOverview,clients:renderClients,projects:renderProjects,tasks:renderTasks,documents:renderDocuments,team:renderTeam};
+  const pages={overview:renderOverview,clients:renderClients,projects:renderProjects,tasks:renderTasks,documents:renderDocuments,team:renderTeam,security:renderSecurity};
   $("screen-content").innerHTML=(pages[state.view]??renderOverview)();
 }
 function options(rows,mapper){return rows.map(r=>'<option value="'+esc(r.id)+'">'+esc(mapper(r))+'</option>').join("");}
@@ -115,7 +132,13 @@ function field(label,name,type="text",required=true){return '<label for="field-'
 function selectField(label,name,opts){return '<label for="field-'+name+'">'+esc(label)+'</label><select id="field-'+name+'" name="'+name+'" required>'+opts+'</select>';}
 function openModal(kind){
   let content="",name="";
-  if(kind==="client"){
+  if(kind==="mfa"){
+    if(!state.mfaPending){notify("Start authenticator setup first.");return;}
+    name="Set up two-factor authentication";
+    content='<p class="secondary-note">Scan this QR code with an authenticator app, or enter the setup key manually.</p>'+
+      '<div class="mfa-setup"><img id="mfa-setup-qr" alt="Authenticator QR code"/><code>'+esc(state.mfaSecret||"")+'</code></div>'+
+      field("Six-digit verification code","code");
+  }else if(kind==="client"){
     name="Add client";content=field("Client or company name","name")+field("Email address","email","email",false)+field("Phone number","phone","tel",false);
   }else if(kind==="project"){
     if(!state.clients.length){notify("Create a client first.");return;}
@@ -146,7 +169,7 @@ function openModal(kind){
   }else return;
   $("modal-heading").textContent=name;
   const form=$("modal-form");form.innerHTML=content+'<button class="btn primary" type="submit">'+(kind==="invite"?"Send invitation":kind==="upload"?"Upload securely":"Save")+'</button>';form.dataset.kind=kind;
-  $("modal-overlay").hidden=false;form.querySelector("input,select")?.focus();
+  $("modal-overlay").hidden=false;if(kind==="mfa")$("mfa-setup-qr").src=state.mfaQr;form.querySelector("input,select")?.focus();
 }
 function closeModal(){$("modal-overlay").hidden=true;$("modal-form").innerHTML="";}
 async function submitModal(event){
@@ -154,7 +177,12 @@ async function submitModal(event){
   const submit=form.querySelector("button[type=submit]");submit.disabled=true;
   try{
     const raw=Object.fromEntries(new FormData(form).entries());
-    if(kind==="assign"){
+    if(kind==="mfa"){
+      const result=await supabase.auth.mfa.challengeAndVerify({factorId:state.mfaPending,code:String(raw.code??"").trim()});
+      if(result.error)throw result.error;
+      state.mfaPending=null;state.mfaSecret=null;state.mfaQr=null;
+      closeModal();notify("Two-factor authentication enabled.");await loadSession();return;
+    }else if(kind==="assign"){
       const result=await supabase.from("project_members").insert({project_id:raw.project_id,user_id:raw.user_id});
       if(result.error)throw result.error;
     }else if(kind==="role"){
@@ -192,6 +220,19 @@ $("login-form").addEventListener("submit",async(e)=>{
   b.disabled=false;if(result.error){notify(result.error.message);return;}
   await loadSession();
 });
+$("mfa-login-form").addEventListener("submit",async(e)=>{
+  e.preventDefault();const btn=e.currentTarget.querySelector("button[type=submit]");btn.disabled=true;
+  try{
+    const factors=await supabase.auth.mfa.listFactors();
+    if(factors.error)throw factors.error;
+    const factor=factors.data?.totp?.find(f=>f.status==="verified")??factors.data?.totp?.[0];
+    if(!factor)throw new Error("No verified authenticator was found for this account.");
+    const verified=await supabase.auth.mfa.challengeAndVerify({factorId:factor.id,code:$("mfa-login-code").value.trim()});
+    if(verified.error)throw verified.error;
+    await loadSession();
+  }catch(error){notify(error.message||"Verification failed.");}finally{btn.disabled=false;}
+});
+$("mfa-logout").addEventListener("click",async()=>{await supabase.auth.signOut();showLogin();});
 $("forgot-password").addEventListener("click",()=>showLogin("reset"));
 $("back-login").addEventListener("click",()=>showLogin("login"));
 $("reset-form").addEventListener("submit",async(e)=>{e.preventDefault();const email=$("reset-email").value.trim();const {error}=await supabase.auth.resetPasswordForEmail(email,{redirectTo:baseUrl});notify(error?error.message:"If the email is registered, a recovery link has been sent.");});
@@ -208,7 +249,15 @@ $("sign-out").addEventListener("click",signOut);
 $("mobile-sign-out").addEventListener("click",signOut);
 document.querySelectorAll("[data-tab]").forEach(b=>b.addEventListener("click",()=>{state.view=b.dataset.tab;render();window.scrollTo({top:0,behavior:"instant"});}));
 $("screen-content").addEventListener("click",async(e)=>{
-  const create=e.target.closest("[data-create]");if(create){openModal(create.dataset.create);return;}
+  const create=e.target.closest("[data-create]");
+  if(create){
+    if(create.dataset.create==="mfa"){
+      const factor=await supabase.auth.mfa.enroll({factorType:"totp",friendlyName:"Visual Verse Console"});
+      if(factor.error){notify(factor.error.message);return;}
+      state.mfaPending=factor.data.id;state.mfaQr=factor.data.totp.qr_code;state.mfaSecret=factor.data.totp.secret;openModal("mfa");
+    }else openModal(create.dataset.create);
+    return;
+  }
   const task=e.target.closest("[data-task]");
   if(task){const t=state.tasks.find(x=>x.id===task.dataset.task);if(!t)return;const status=t.status==="done"?"todo":"done";
     const res=await supabase.from("tasks").update({status}).eq("id",t.id);if(res.error)notify(res.error.message);else{notify("Task updated.");await refresh();}return;}
