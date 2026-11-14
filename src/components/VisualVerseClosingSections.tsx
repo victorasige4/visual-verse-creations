@@ -2,7 +2,7 @@ import { PolicyLinks } from "./VisualVersePolicies";
 import { VisualVerseAboutCta } from "./VisualVerseAboutCta";
 import {
   ArrowRight, ArrowUpRight, CheckCircle2, Mail,
-  MapPin, ArrowUp, Asterisk
+  MapPin, ArrowUp
 } from "lucide-react";
 
 const creativeWords = [
@@ -16,7 +16,9 @@ export function VisualVerseMarquee() {
   const renderWords = (prefix: string) => creativeWords.map((word, index) => (
     <span className="vv-close-marquee-word" key={prefix + index}>
       {word}
-      <Asterisk className="vv-close-marquee-separator" aria-hidden="true" strokeWidth={2.4}/>
+      <svg className="vv-close-marquee-separator" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none">
+        <path d="M12 2.75v18.5M2.75 12h18.5M5.46 5.46l13.08 13.08M18.54 5.46 5.46 18.54" stroke="currentColor" strokeWidth="3.25" strokeLinecap="round"/>
+      </svg>
     </span>
   ));
 
