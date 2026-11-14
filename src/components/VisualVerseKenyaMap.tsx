@@ -182,7 +182,7 @@ export function VisualVerseKenyaMap(){
             </div>
           </div>
           <a href="/contact.html" className="vv-atlas-cta" data-cursor="LET'S TALK">LET'S CREATE SOMETHING <span><ArrowUpRight size={18}/></span></a>
-          <p className="vv-atlas-disclaimer">Routes are illustrative. Nairobi is our studio base; other cities are enquiry locations, not claims of existing offices or clients.</p>
+          <p className="vv-atlas-disclaimer">Routes are illustrative. Nairobi is our home base; other cities are enquiry locations, not claims of existing offices or clients.</p>
         </aside>
       </div>
       <div className="vv-atlas-bottom-bar"><span><i/> NAIROBI / OUR BASE</span><span>DESIGN · FILM · DIGITAL</span><span>ALL OF KENYA / OPEN TO IDEAS</span></div>

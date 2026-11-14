@@ -72,7 +72,7 @@ export function VisualVerseFooter(){
           <a className="vv-close-footer-brand" href="/#top" aria-label="Visual Verse Creations, back to home">
             <img src="/brand-logo.png" alt="Visual Verse Creations" loading="lazy"/>
           </a>
-          <p>Thoughtful design. Lasting stories. A creative studio bringing ideas to life through imagery, identity and digital experiences.</p>
+          <p>Thoughtful design. Lasting stories. A creative company bringing ideas to life through imagery, identity and digital experiences.</p>
           <span className="vv-close-footer-location"><MapPin size={15} aria-hidden="true"/> Based in Nairobi, Kenya</span>
         </div>
         <nav aria-label="Footer pages" className="vv-close-footer-col">
@@ -95,7 +95,7 @@ export function VisualVerseFooter(){
       <div className="vv-close-footer-bottom">
         <span>© {new Date().getFullYear()} VISUAL VERSE CREATIONS. ALL RIGHTS RESERVED.</span>
         <PolicyLinks />
-        <a className="vv-studio-console-link" href="/console/" aria-label="Open the private Studio Console">Studio Console <ArrowUpRight size={13} aria-hidden="true"/></a>
+        <a className="vv-studio-console-link" href="/console/" aria-label="Open the private Visual Verse Console">Visual Verse Console <ArrowUpRight size={13} aria-hidden="true"/></a>
         <a href="/#top">BACK TO TOP <ArrowUp size={14} aria-hidden="true"/></a>
       </div>
     </div>

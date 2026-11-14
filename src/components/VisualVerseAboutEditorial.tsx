@@ -75,12 +75,12 @@ function StudioNumber({value}:{value:string}) {
 }
 
 const strengths = [
-  {value:"06",label:"creative disciplines",detail:"One studio for strategy, design, film and digital experiences"},
+  {value:"06",label:"creative disciplines",detail:"One creative partner for strategy, design, film and digital experiences"},
   {value:"01",label:"connected creative process",detail:"Your idea moves from discovery to delivery with clarity"},
   {value:"∞",label:"stories worth telling",detail:"From independent creators to brands and organisations"}
 ];
 const detail = [
-  ["Studio","Visual Verse Creations"],
+  ["Company","Visual Verse Creations"],
   ["Our world","Branding · Graphic design · Photography · Film · UI/UX · Digital marketing"],
   ["Home base","Nairobi, Kenya"],
   ["Working with","Brands, businesses, creators, communities and organisations"],
@@ -107,9 +107,9 @@ export function VisualVerseAboutEditorial() {
         <div className="vv-about-breadcrumb"><a href="/#top">HOME</a><span>/</span><span>ABOUT VISUAL VERSE</span></div>
         <div className="vv-about-hero-grid">
           <div className="vv-about-hero-copy">
-            <span className="vv-about-kicker"><span className="vv-about-dot"/> INDEPENDENT CREATIVE STUDIO · NAIROBI</span>
+            <span className="vv-about-kicker"><span className="vv-about-dot"/> INDEPENDENT CREATIVE COMPANY · NAIROBI</span>
             <h1><span className="vv-about-hero-title-line">We turn</span><span className="vv-about-hero-title-line">your ideas</span><span className="vv-about-hero-title-line">into <em>experiences.</em></span></h1>
-            <p>Visual Verse is a multidisciplinary creative studio bringing branding, photography, filmmaking, graphic design and digital experiences together. We shape every project around the people, purpose and possibility behind it.</p>
+            <p>Visual Verse is a multidisciplinary creative company bringing branding, photography, filmmaking, graphic design and digital experiences together. We shape every project around the people, purpose and possibility behind it.</p>
           </div>
           <div className="vv-about-hero-visual vv-about-hero-visual--card-stack" aria-label="Visual Verse: Imagine, Create, Connect">
             <CardStackDemo />

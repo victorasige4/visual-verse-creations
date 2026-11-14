@@ -140,7 +140,7 @@ export function ResizableNavbarDemo() {
           transition={{duration:reduced?0:.24,ease:[.22,1,.36,1]}}>
           <div className="vv-nav-resize-mega-heading">
             <div><span>{open==="services"?"WHAT WE DO / 06 CREATIVE DISCIPLINES":"WHO WE CREATE WITH / 04 AUDIENCES"}</span>
-              <h2>{open==="services"?"One studio. Many ways to create.":"Creative work, made around you."}</h2></div>
+              <h2>{open==="services"?"One creative partner. Many ways to create.":"Creative work, made around you."}</h2></div>
             <a href={open==="services"?"/services.html":"/who-we-serve.html"} onClick={()=>setOpen(null)}>
               Explore all <ArrowUpRight size={15} aria-hidden="true"/>
             </a>

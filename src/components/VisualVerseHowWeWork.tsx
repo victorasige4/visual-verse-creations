@@ -115,7 +115,7 @@ export function VisualVerseHowWeWork() {
 
       <div className="vv-hww-console">
         <div className="vv-hww-console-bar">
-          <div><span className="vv-hww-console-led"/><strong>VISUAL VERSE / CREATIVE STUDIO</strong></div>
+          <div><span className="vv-hww-console-led"/><strong>VISUAL VERSE / CREATIVE PROCESS</strong></div>
           <div className="vv-hww-console-bar-right"><AudioLines size={17} aria-hidden="true"/> LIVE CREATIVE EXPERIMENT</div>
         </div>
 
@@ -189,7 +189,7 @@ export function VisualVerseHowWeWork() {
               <div className="vv-hww-bridge" aria-hidden="true"><span/><span/><i/></div>
               <div className="vv-hww-art-stamp" aria-hidden="true">MADE<br/>TOGETHER ✳</div>
             </div>
-            <div className="vv-hww-output-bottom"><span><Check size={13}/> NO TWO STORIES ARE THE SAME</span><span>STUDIO OUTPUT / LIVE</span></div>
+            <div className="vv-hww-output-bottom"><span><Check size={13}/> NO TWO STORIES ARE THE SAME</span><span>CREATIVE OUTPUT / LIVE</span></div>
           </div>
         </div>
 

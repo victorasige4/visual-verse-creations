@@ -30,7 +30,9 @@ jobs:
         env:
           GITHUB_PAGES: "true"
         run: npm run build
-      - name: Validate Studio Console light/dark appearance
+      - name: Check Visual Verse public-facing business language
+        run: node scripts/check-brand-language.mjs
+      - name: Validate Visual Verse Console light/dark appearance
         run: node scripts/check-console-theme.mjs
       - name: Adjust page and asset URLs
         run: node scripts/prepare-github-pages.mjs
@@ -51,9 +53,9 @@ jobs:
           grep -q "console-file-upload.js" dist/console-preview.html
           test -s dist/console-preview.html
           test -s dist/console-assets/console.css
-          # Confirm the Studio Console gateway and footer entry survive the Pages build.
+          # Confirm the Visual Verse Console gateway and footer entry survive the Pages build.
           test -s dist/console/index.html
-          grep -q 'Studio Console' dist/console/index.html
+          grep -q 'Visual Verse Console' dist/console/index.html
           grep -q '../console-preview.html' dist/console/index.html
           grep -q 'Set up your password' dist/console-preview.html
           grep -q '/visual-verse-creations/console/' dist/assets/*.js

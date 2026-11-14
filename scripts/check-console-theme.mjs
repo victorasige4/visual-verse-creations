@@ -42,4 +42,4 @@ assert(theme.includes("@media(max-width:760px)"), "theme should cover responsive
 assert(theme.includes(".table-row:not(.heading)>span:nth-child(2)"), "mobile table columns must remain visible");
 assert(!/[↗↘↖↙➜➔⇢➝⟶→←]/u.test(html + js), "no Unicode decorative arrows in console content");
 assert(!html.includes('class="diagonal-arrow"') && !js.includes('class="diagonal-arrow"'), "replace decorative CSS arrow markup");
-console.log("Studio Console themes, alignment, and glyph checks passed.");
+console.log("Visual Verse Console themes, alignment, and glyph checks passed.");

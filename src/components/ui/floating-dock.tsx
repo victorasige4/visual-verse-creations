@@ -45,7 +45,7 @@ export function FloatingDock({
     <div className="vv-dock-positioner">
       <nav
         className={["vv-floating-dock", desktopClassName, mobileClassName].filter(Boolean).join(" ")}
-        aria-label="Studio Console navigation"
+        aria-label="Visual Verse Console navigation"
         onPointerMove={(event) => {
           if (event.pointerType === "mouse") mouseX.set(event.clientX);
         }}
@@ -56,7 +56,7 @@ export function FloatingDock({
           }
         }}
       >
-        <div className="vv-dock-scroll" role="group" aria-label="Studio sections">
+        <div className="vv-dock-scroll" role="group" aria-label="Console sections">
           {items.map((item) => <DockIcon key={item.key ?? item.title} item={item} mouseX={mouseX} />)}
         </div>
         {utilities.length > 0 && (

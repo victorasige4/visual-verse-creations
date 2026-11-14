@@ -49,7 +49,7 @@ function ProcessArtwork({step}:{step:number}) {
       <div className="vv-sp-mood-bottom"><span>FEELING / PURPOSE / STORY</span><span>VV · 03</span></div>
     </div>;
     case 3: return <div className="vv-sp-art vv-sp-art-production">
-      <div className="vv-sp-window-head"><span><i/><i/><i/> VISUAL VERSE / STUDIO</span><b>IN PRODUCTION</b></div>
+      <div className="vv-sp-window-head"><span><i/><i/><i/> VISUAL VERSE / CREATIONS</span><b>IN PRODUCTION</b></div>
       <div className="vv-sp-workspace">
         <div className="vv-sp-tools"><span><Sparkles size={14} aria-hidden="true"/></span><span><Circle size={14} aria-hidden="true"/></span><span><ArrowUpRight size={14} aria-hidden="true"/></span><span>T</span></div>
         <div className="vv-sp-artboard"><small>VISUAL VERSE / STORY 01</small><strong>GREAT<br/>IDEAS<br/><em>LIVE HERE.</em></strong><div className="vv-sp-artboard-orbit"/></div>
