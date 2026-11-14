@@ -20,8 +20,8 @@ function notify(message){const el=$("notice");el.className="notice-toast";el.tex
 function showLogin(mode="login"){
   $("workspace").hidden=true;$("auth-screen").hidden=false;
   $("login-form").hidden=mode!=="login";$("set-password-form").hidden=mode!=="password";$("reset-form").hidden=mode!=="reset";$("mfa-login-form").hidden=mode!=="mfa";
-  $("auth-heading").textContent=mode==="password"?"Secure your invitation.":mode==="reset"?"Reset your password.":mode==="mfa"?"One more secure step.":"Welcome back.";
-  $("auth-description").textContent=mode==="password"?"Choose a strong password to complete your studio access.":mode==="reset"?"We'll send a recovery link to your verified email.":mode==="mfa"?"Enter the six-digit code from your authenticator app.":"Sign in with your Visual Verse team account.";
+  $("auth-heading").textContent=mode==="password"?"Secure your invitation.":mode==="reset"?"Set up your password.":mode==="mfa"?"One more secure step.":"Welcome back.";
+  $("auth-description").textContent=mode==="password"?"Choose a strong password to complete your studio access.":mode==="reset"?"Enter the email address from your studio invitation. We'll send a secure link so you can create a password, or change an existing one.":mode==="mfa"?"Enter the six-digit code from your authenticator app.":"Sign in with your Visual Verse team account.";
 }
 async function loadSession(){
   const {data:{session},error}=await supabase.auth.getSession();
@@ -233,15 +233,15 @@ $("mfa-login-form").addEventListener("submit",async(e)=>{
   }catch(error){notify(error.message||"Verification failed.");}finally{btn.disabled=false;}
 });
 $("mfa-logout").addEventListener("click",async()=>{await supabase.auth.signOut();showLogin();});
-$("forgot-password").addEventListener("click",()=>showLogin("reset"));
+$("setup-password").addEventListener("click",()=>{$("reset-email").value=$("login-email").value.trim();showLogin("reset");});
 $("back-login").addEventListener("click",()=>showLogin("login"));
-$("reset-form").addEventListener("submit",async(e)=>{e.preventDefault();const email=$("reset-email").value.trim();const {error}=await supabase.auth.resetPasswordForEmail(email,{redirectTo:baseUrl});notify(error?error.message:"If the email is registered, a recovery link has been sent.");});
+$("reset-form").addEventListener("submit",async(e)=>{e.preventDefault();const email=$("reset-email").value.trim();const {error}=await supabase.auth.resetPasswordForEmail(email,{redirectTo:baseUrl});notify(error?error.message:"If this email has an account, we have sent a secure password setup link.");});
 $("set-password-form").addEventListener("submit",async(e)=>{
   e.preventDefault();const a=$("new-password").value,b=$("confirm-password").value;
   if(a.length<12||a!==b){notify("Passwords must match and contain at least 12 characters.");return;}
   const result=await supabase.auth.updateUser({password:a});
   if(result.error){notify(result.error.message);return;}
-  notify("Password secured. Welcome to the studio.");inviteLink=false;recovering=false;history.replaceState(null,"",baseUrl);
+  notify("Password set. Welcome to the studio.");inviteLink=false;recovering=false;history.replaceState(null,"",baseUrl);
   $("auth-screen").hidden=true;$("workspace").hidden=false;await refresh();
 });
 async function signOut(){await supabase.auth.signOut();state.user=null;state.membership=null;showLogin();}
