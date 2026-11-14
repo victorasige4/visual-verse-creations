@@ -21,7 +21,7 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Type-check and build
         run: npm run build
-      - name: Validate Studio Console light/dark appearance
+      - name: Validate Visual Verse Console light/dark appearance
         run: node scripts/check-console-theme.mjs
       - name: Check homepage assets
         run: |
@@ -42,7 +42,7 @@ jobs:
           grep -q vv-about-pixel-root dist/index.html
           grep -q vv-react-nav-root dist/index.html
 
-      - name: Validate private Studio Console shell
+      - name: Validate private Visual Verse Console shell
         run: |
           node --check public/console-assets/console.js
           test -s dist/console-preview.html
@@ -54,7 +54,7 @@ jobs:
           node --check dist/console-assets/console-floating-dock.js
           grep -q "vv-console-dock-root" dist/console-preview.html
           grep -q "console-floating-dock.js" dist/console-preview.html
-          grep -q 'STUDIO CONSOLE' dist/console-preview.html
+          grep -q 'VISUAL VERSE CONSOLE' dist/console-preview.html
 
       - name: Check GitHub Pages subpath build
         env:
