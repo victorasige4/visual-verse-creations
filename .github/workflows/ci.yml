@@ -40,6 +40,14 @@ jobs:
           grep -q vv-about-pixel-root dist/index.html
           grep -q vv-react-nav-root dist/index.html
 
+      - name: Validate private Studio Console shell
+        run: |
+          node --check public/console-assets/console.js
+          test -s dist/console-preview.html
+          test -s dist/console-assets/console.js
+          test -s dist/console-assets/console.css
+          grep -q 'STUDIO CONSOLE' dist/console-preview.html
+
       - name: Check GitHub Pages subpath build
         env:
           GITHUB_PAGES: "true"
