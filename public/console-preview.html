@@ -73,7 +73,8 @@
   </div>
 </section>
 <div id="workspace" class="workspace" hidden>
-  <aside class="sidebar">
+  <button type="button" id="console-nav-backdrop" class="console-nav-backdrop" aria-label="Close navigation" hidden></button>
+  <aside class="sidebar" id="console-sidebar">
     <div class="sidebar-head"><img src="./logo-mark.png" alt="" width="38" height="38"/><div><strong>Visual Verse</strong><small>STUDIO CONSOLE</small></div></div>
     <span class="sidebar-label">YOUR WORKSPACE</span>
     <nav id="side-nav" aria-label="Console sections">
@@ -93,15 +94,38 @@
   </aside>
   <div class="shell">
     <header class="topbar">
-      <div class="topbar-left"><img src="./logo-mark.png" alt="Visual Verse" width="30" height="30" class="mobile-mark"/><span class="crumb">STUDIO <b>/</b> <strong id="page-crumb">OVERVIEW</strong></span><span class="topbar-status">PRIVATE WORKSPACE</span></div>
-      <div class="profile"><button id="mobile-sign-out" class="mobile-sign-out" type="button">Sign out</button><span class="profile-label" id="signed-in-email"></span><span id="profile-circle">VV</span></div>
+      <div class="topbar-left">
+        <button id="console-menu-toggle" class="console-menu-toggle" type="button" aria-label="Open navigation" aria-controls="console-sidebar" aria-expanded="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+        <img src="./logo-mark.png" alt="Visual Verse" width="30" height="30" class="mobile-mark"/>
+        <span class="crumb">STUDIO <b>/</b> <strong id="page-crumb">OVERVIEW</strong></span>
+        <span class="topbar-status">PRIVATE WORKSPACE</span>
+      </div>
+      <div class="profile" id="console-profile-wrap">
+        <button id="profile-menu-toggle" class="profile-menu-toggle" type="button" aria-expanded="false" aria-controls="profile-menu" aria-label="Open account and navigation options">
+          <span class="profile-label" id="signed-in-email"></span>
+          <span id="profile-circle">VV</span>
+          <svg class="profile-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>
+        </button>
+        <div class="profile-menu" id="profile-menu" hidden>
+          <div class="profile-menu-intro"><strong>Studio workspace</strong><span>Signed in securely</span></div>
+          <nav class="profile-menu-list" aria-label="Account and workspace shortcuts">
+            <button type="button" data-tab="overview">Overview</button>
+            <button type="button" data-tab="clients">Clients</button>
+            <button type="button" data-tab="projects">Projects</button>
+            <button type="button" data-tab="tasks">Tasks & deadlines</button>
+            <button type="button" data-tab="documents">Documents</button>
+            <button type="button" data-tab="team" id="mobile-team-nav">Team & access</button>
+            <button type="button" data-tab="security">Security settings</button>
+          </nav>
+          <button type="button" id="profile-sign-out" class="profile-menu-signout">Sign out securely <span aria-hidden="true">↗</span></button>
+        </div>
+      </div>
     </header>
-    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile console sections">
-      <button class="active" data-tab="overview">Overview</button><button data-tab="clients">Clients</button><button data-tab="projects">Projects</button><button data-tab="tasks">Tasks</button><button data-tab="documents">Files</button><button data-tab="team" id="mobile-team-nav">Team</button><button data-tab="security">Security</button>
-    </nav>
     <main id="screen-content" class="screen-content" tabindex="-1"></main>
   </div>
 </div>
 <div id="modal-overlay" class="modal-overlay" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-heading"><div class="modal-head"><h2 id="modal-heading"></h2><button type="button" id="modal-close" class="icon-button" aria-label="Close dialog">×</button></div><form id="modal-form" class="stack"></form></div></div>
-<script type="module" src="./console-assets/console.js?v=20261115-idle"></script>
+<script type="module" src="./console-assets/console.js?v=20261115-nav"></script>
 </body></html>
