@@ -31,11 +31,11 @@ function BrandUniverse({active}:{active:boolean}) {
   return <div className="vvcr-brand vvcr-scene" style={{"--scene-bg":m.bg,"--scene-fg":m.fg,"--scene-accent":m.accent} as CSSProperties}>
     <div className="vvcr-brand-grid" aria-hidden="true"/>
     <div className="vvcr-scene-top"><span className="vvcr-live"><i/> IDENTITY EXPERIMENT / LIVE</span><span>CREATIVE LAB / LIVE</span></div>
-    <div className="vvcr-brand-orbit" aria-hidden="true"><span/><span/><span/><b>✳</b></div>
-    <div className="vvcr-brand-cross vvcr-brand-cross-one" aria-hidden="true">✣</div>
-    <div className="vvcr-brand-cross vvcr-brand-cross-two" aria-hidden="true">✳</div>
+    <div className="vvcr-brand-orbit" aria-hidden="true"><span/><span/><span/><b><Sparkles size={24} strokeWidth={1.6}/></b></div>
+    <div className="vvcr-brand-cross vvcr-brand-cross-one" aria-hidden="true"><Sparkles size={22} strokeWidth={1.7}/></div>
+    <div className="vvcr-brand-cross vvcr-brand-cross-two" aria-hidden="true"><Sparkles size={22} strokeWidth={1.7}/></div>
     <div className="vvcr-brand-content">
-      <div className="vvcr-brand-tiny">YOUR BRAND, BUT WITH FEELING. <span>↗</span></div>
+      <div className="vvcr-brand-tiny">YOUR BRAND, BUT WITH FEELING. <span><ArrowUpRight size={16} aria-hidden="true"/></span></div>
       <div className="vvcr-brand-word-wrap"><AnimatePresence mode="wait"><motion.strong key={mood+"-"+remix} className="vvcr-brand-word" initial={{y:75,opacity:0,rotate:-5,filter:"blur(12px)"}} animate={{y:0,opacity:1,rotate:0,filter:"blur(0px)"}} exit={{y:-65,opacity:0,rotate:5,filter:"blur(10px)"}} transition={{duration:.67,ease:[.2,.95,.2,1]}}>{m.word}</motion.strong></AnimatePresence></div>
       <span className="vvcr-brand-underline"/><p>{m.sub}</p>
       <div className="vvcr-brand-stamp" aria-hidden="true">GOOD IDEAS<br/>LOOK GOOD<br/>ON YOU. <Sparkles size={22}/></div>
@@ -76,18 +76,18 @@ function CreatorsUniverse({active}:{active:boolean}) {
   const [saved,setSaved]=useState(false);
   useEffect(()=>{if(!active)return;const id=window.setInterval(()=>setScreen(v=>(v+1)%3),5000);return ()=>clearInterval(id);},[active]);
   return <div className="vvcr-creators vvcr-scene">
-    <div className="vvcr-scene-top"><span className="vvcr-live"><i/> THE IDEA PLAYGROUND / LIVE</span><span>DRAG IDEAS INTO REALITY ↗</span></div>
+    <div className="vvcr-scene-top"><span className="vvcr-live"><i/> THE IDEA PLAYGROUND / LIVE</span><span>DRAG IDEAS INTO REALITY <ArrowUpRight size={14} aria-hidden="true"/></span></div>
     <div className="vvcr-creators-grid" aria-hidden="true"/>
     <div className="vvcr-creators-word" aria-hidden="true">WHAT<br/>IF?</div>
-    <div className="vvcr-creators-scribble" aria-hidden="true">↝</div>
+    <div className="vvcr-creators-scribble" aria-hidden="true"><ArrowUpRight size={34} strokeWidth={1.4}/></div>
     <div className="vvcr-creators-sticker vvcr-creators-sticker-one"><Sparkles size={14}/> MAKE SOMETHING NEW</div>
-    <div className="vvcr-creators-sticker vvcr-creators-sticker-two">IDEA → INTERNET <Rocket size={15}/></div>
+    <div className="vvcr-creators-sticker vvcr-creators-sticker-two">IDEA <ArrowUpRight size={14} aria-hidden="true"/> INTERNET <Rocket size={15}/></div>
     <div className="vvcr-creators-phone">
       <div className="vvcr-creators-phone-top"><span>● ● ●</span><span>VISUAL VERSE / LAB</span><span>•••</span></div>
       <AnimatePresence mode="wait"><motion.div key={screen} className="vvcr-creators-screen" initial={{opacity:0,y:30,scale:.91}} animate={{opacity:1,y:0,scale:1}} exit={{opacity:0,y:-23,scale:.95}} transition={{duration:.42,ease:[.16,1,.3,1]}}>
-        {screen===0?<><div className="vvcr-phone-tag">✦ YOUR NEXT BIG IDEA</div><h3>Make it<br/><em>happen.</em></h3><div className="vvcr-phone-doodle"><span/><span/><span/><i>✳</i></div><p>Every great thing starts somewhere.</p><button type="button" onClick={()=>setScreen(1)}>START BUILDING <ArrowUpRight size={13}/></button></>:
-        screen===1?<><div className="vvcr-phone-tag">◈ WORK IN PROGRESS</div><h3>Watch it<br/><em>come alive.</em></h3><div className="vvcr-phone-wireframe"><div/><section><span/><span/><span/></section><small/><small/></div><p>Shapes, screens and a little magic.</p><button type="button" onClick={()=>setScreen(2)}>PREVIEW THE IDEA <ArrowUpRight size={13}/></button></>:
-        <><div className="vvcr-phone-tag">↗ READY FOR THE WORLD</div><h3>It’s<br/><em>alive!</em></h3><div className="vvcr-phone-success"><Rocket size={37}/><div className="vvcr-phone-success-orbit"/></div><p>{saved?"Saved to your inspiration board.":"This is what possible looks like."}</p><button type="button" onClick={()=>setSaved(v=>!v)}><Heart size={13} fill={saved?"currentColor":"none"}/> {saved?"SAVED TO YOUR BOARD":"SAVE THIS IDEA"}</button></>}
+        {screen===0?<><div className="vvcr-phone-tag"><Sparkles size={13} aria-hidden="true"/> YOUR NEXT BIG IDEA</div><h3>Make it<br/><em>happen.</em></h3><div className="vvcr-phone-doodle"><span/><span/><span/><i><Sparkles size={17} aria-hidden="true"/></i></div><p>Every great thing starts somewhere.</p><button type="button" onClick={()=>setScreen(1)}>START BUILDING <ArrowUpRight size={13}/></button></>:
+        screen===1?<><div className="vvcr-phone-tag"><CircleDot size={13} aria-hidden="true"/> WORK IN PROGRESS</div><h3>Watch it<br/><em>come alive.</em></h3><div className="vvcr-phone-wireframe"><div/><section><span/><span/><span/></section><small/><small/></div><p>Shapes, screens and a little magic.</p><button type="button" onClick={()=>setScreen(2)}>PREVIEW THE IDEA <ArrowUpRight size={13}/></button></>:
+        <><div className="vvcr-phone-tag"><ArrowUpRight size={13} aria-hidden="true"/> READY FOR THE WORLD</div><h3>It’s<br/><em>alive!</em></h3><div className="vvcr-phone-success"><Rocket size={37}/><div className="vvcr-phone-success-orbit"/></div><p>{saved?"Saved to your inspiration board.":"This is what possible looks like."}</p><button type="button" onClick={()=>setSaved(v=>!v)}><Heart size={13} fill={saved?"currentColor":"none"}/> {saved?"SAVED TO YOUR BOARD":"SAVE THIS IDEA"}</button></>}
       </motion.div></AnimatePresence>
       <div className="vvcr-creators-home-indicator"/>
     </div>
@@ -123,7 +123,7 @@ function EventUniverse({active}:{active:boolean}) {
     </div>
     <div className="vvcr-event-filmstrip">{memories.map((v,i)=><button type="button" aria-label={"Show scene "+(i+1)} aria-pressed={scene===i} key={v.title} onClick={()=>{setScene(i);setPlay(false)}} className={"vvcr-event-thumb vvcr-event-thumb-"+v.tone+(scene===i?" active":"")}><span>0{i+1}</span></button>)}</div>
     <div className="vvcr-event-controls"><div className="vvcr-event-control-label"><Film size={17}/><span>{captured.length?captured.length+" MOMENT"+(captured.length>1?"S":"")+" CAPTURED":"EVERY FRAME TELLS A STORY"}</span></div><button type="button" className="vvcr-event-play" onClick={()=>setPlay(v=>!v)} aria-label={play?"Pause scene rotation":"Resume scene rotation"}><Play size={15} fill={play?"currentColor":"none"}/>{play?"AUTO SCENES":"PAUSED"}</button><button type="button" className="vvcr-shutter" onClick={capture} aria-label="Capture this moment"><Aperture size={21}/> CAPTURE MOMENT</button></div>
-    {captured.length>0&&<div className="vvcr-event-memories" aria-label="Your captured moments">{captured.map((s,i)=><motion.div key={i+"-"+s} initial={{y:-45,opacity:0,rotate:-25}} animate={{y:0,opacity:1,rotate:i===0?8:i%2?-9:4}} transition={{type:"spring",stiffness:210,damping:16}} className={"vvcr-memory vvcr-memory-"+memories[s].tone}><span>✳</span><small>{memories[s].title}</small></motion.div>)}</div>}
+    {captured.length>0&&<div className="vvcr-event-memories" aria-label="Your captured moments">{captured.map((s,i)=><motion.div key={i+"-"+s} initial={{y:-45,opacity:0,rotate:-25}} animate={{y:0,opacity:1,rotate:i===0?8:i%2?-9:4}} transition={{type:"spring",stiffness:210,damping:16}} className={"vvcr-memory vvcr-memory-"+memories[s].tone}><span><Sparkles size={13} aria-hidden="true"/></span><small>{memories[s].title}</small></motion.div>)}</div>}
   </div>;
 }
 
@@ -164,10 +164,10 @@ export function VisualVerseAudiences(){
   
   const rotationRunning=autoPlay&&visible&&pageActive;
   return <div className="vvcr-root" ref={sectionRef}>
-    <div className="vvcr-intro"><span className="vv-label"><span className="vvcr-intro-spark">✳</span> THE PEOPLE WE CREATE WITH</span><h2 className="vvcr-title">Every story<br/>has its <em>people.</em></h2><p>Different ambitions. Different worlds. One creative obsession: making your story impossible to ignore.</p><div className="vvcr-small-instruction"><MousePointerClick size={15}/> Pick a world, or watch them come alive.</div></div>
+    <div className="vvcr-intro"><span className="vv-label"><span className="vvcr-intro-spark"><Sparkles size={17} aria-hidden="true"/></span> THE PEOPLE WE CREATE WITH</span><h2 className="vvcr-title">Every story<br/>has its <em>people.</em></h2><p>Different ambitions. Different worlds. One creative obsession: making your story impossible to ignore.</p><div className="vvcr-small-instruction"><MousePointerClick size={15}/> Pick a world, or watch them come alive.</div></div>
     <div className="vvcr-experience">
       <div className="vvcr-selector" role="group" aria-label="Explore four creative audiences; switches automatically every 11 seconds">{categories.map(({kind,title,line,Icon})=><button key={kind} type="button" className={"vvcr-category"+(selected===kind?" active":"")} onClick={()=>chooseAudience(kind)} aria-pressed={selected===kind}><span className="vvcr-category-icon"><Icon size={20} strokeWidth={1.6}/></span><span className="vvcr-category-text"><strong>{title}</strong><small>{line}</small></span><span className="vvcr-category-arrow"><ArrowUpRight size={18}/></span>{selected===kind&&<span className="vvcr-category-progress-track" aria-hidden="true">{rotationRunning&&<motion.span key={kind+"-"+cycle} className="vvcr-category-progress-fill" initial={{scaleX:0}} animate={{scaleX:1}} transition={{duration:AUDIENCE_ROTATION_MS/1000,ease:"linear"}}/>}</span>}</button>)}</div>
-      <div className="vvcr-stage-wrap"><div className="vvcr-stage-caption"><span>VISUAL VERSE / CREATIVE UNIVERSES</span><span>EXPLORE THE WORLDS <span className="vvcr-caption-arrow">↗</span></span></div><AnimatePresence mode="wait">
+      <div className="vvcr-stage-wrap"><div className="vvcr-stage-caption"><span>VISUAL VERSE / CREATIVE UNIVERSES</span><span>EXPLORE THE WORLDS <span className="vvcr-caption-arrow"><ArrowUpRight size={15} aria-hidden="true"/></span></span></div><AnimatePresence mode="wait">
         <motion.div key={selected} className="vvcr-transition" initial={{opacity:0,y:20,scale:.97,filter:"blur(8px)"}} animate={{opacity:1,y:0,scale:1,filter:"blur(0px)"}} exit={{opacity:0,y:-17,scale:1.015,filter:"blur(8px)"}} transition={{duration:.44,ease:[.22,1,.36,1]}} onPointerMove={e=>{if(e.pointerType!=="mouse")return;const b=e.currentTarget.getBoundingClientRect();e.currentTarget.style.setProperty("--vvcr-x",String((e.clientX-b.left)/b.width-.5));e.currentTarget.style.setProperty("--vvcr-y",String((e.clientY-b.top)/b.height-.5));}}>
           {selected==="brands"?<BrandUniverse active={visible}/>:selected==="business"?<BusinessUniverse active={visible}/>:selected==="creators"?<CreatorsUniverse active={visible}/>:<EventUniverse active={visible}/>}
         </motion.div>
