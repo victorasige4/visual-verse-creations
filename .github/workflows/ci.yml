@@ -25,6 +25,7 @@ jobs:
         run: |
           test -f dist/index.html
           test -f dist/projects.html
+          test -f dist/studio-console.html
           test -f dist/about.html
           test -f dist/services.html
           test -f dist/who-we-serve.html
