@@ -21,6 +21,8 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Type-check and build
         run: npm run build
+      - name: Validate Studio Console light/dark appearance
+        run: node scripts/check-console-theme.mjs
       - name: Check homepage assets
         run: |
           test -f dist/index.html

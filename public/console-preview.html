@@ -5,11 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <meta name="robots" content="noindex,nofollow"/>
 <meta name="theme-color" content="#003f5c"/>
+<script>try{const saved=localStorage.getItem("vv-console-theme");document.documentElement.dataset.consoleTheme=saved==="dark"||saved==="light"?saved:(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");}catch{document.documentElement.dataset.consoleTheme="light";}</script>
 <title>Studio Console | Visual Verse Creations</title>
 <link rel="icon" href="./favicon.ico"/>
 <link rel="apple-touch-icon" href="./logo-mark.png"/>
 <link rel="stylesheet" href="./console-assets/console.css"/>
 <link rel="stylesheet" href="./console-assets/console-modern.css?v=20261115-modern"/>
+<link rel="stylesheet" href="./console-assets/console-theme.css?v=20261115-dark-polish"/>
 </head>
 <body>
 <div class="ambient ambient-one" aria-hidden="true"></div><div class="ambient ambient-two" aria-hidden="true"></div>
@@ -26,6 +28,7 @@
   </div>
   <div class="auth-right">
     <div class="auth-card">
+      <div class="auth-appearance-controls"><span>APPEARANCE</span><button type="button" id="auth-theme-toggle" class="console-theme-toggle" aria-label="Switch to dark mode" aria-pressed="false" title="Toggle light or dark mode"><svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 15.5A8.6 8.6 0 0 1 8.5 3.8a8.6 8.6 0 1 0 11.7 11.7Z"/></svg><svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button></div>
       <div class="auth-lock">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.7"/></svg>
       </div>
@@ -36,7 +39,7 @@
       <form id="setup-email-form" class="stack">
         <label for="setup-email">Your email address</label>
         <input id="setup-email" type="email" autocomplete="email" required placeholder="you@example.com"/>
-        <button class="btn primary" type="submit">Set up your password <span class="diagonal-arrow" aria-hidden="true"></span></button>
+        <button class="btn primary" type="submit">Set up your password</button>
         <p id="setup-email-feedback" class="setup-email-feedback" role="status" aria-live="polite" hidden></p>
         <p class="secondary-note">We'll email you a secure link to create your password. Studio access is invitation-only.</p>
         <button type="button" class="text-button" id="open-login">Already have a password? Sign in securely</button>
@@ -49,7 +52,7 @@
       <form id="login-form" class="stack" hidden>
         <label for="login-email">Email address</label><input id="login-email" type="email" autocomplete="email" required placeholder="you@example.com"/>
         <label for="login-password">Password</label><input id="login-password" type="password" autocomplete="current-password" required placeholder="Your password"/>
-        <button class="btn primary" type="submit">Sign in securely <span class="diagonal-arrow" aria-hidden="true"></span></button>
+        <button class="btn primary" type="submit">Sign in securely</button>
         <button type="button" class="text-button" id="back-setup">Set up or reset your password</button>
       </form>
       <form id="set-password-form" class="stack" hidden>
@@ -65,7 +68,7 @@
       </form>
       <div id="setup-complete" class="stack" hidden>
         <p class="secondary-note">Your password is saved. You're ready to sign in to your private studio workspace.</p>
-        <button class="btn primary" type="button" id="continue-signin">Sign in securely <span class="diagonal-arrow" aria-hidden="true"></span></button>
+        <button class="btn primary" type="button" id="continue-signin">Sign in securely</button>
       </div>
       <p class="auth-note">Invitation only. Access is restricted to authorized Visual Verse team members.</p>
       <a class="back-site" href="./index.html">Back to Visual Verse website</a>
@@ -89,7 +92,7 @@
     <div class="sidebar-bottom">
       <span class="private-pill"><span></span> PRIVATE · ENCRYPTED</span>
       <p>Creative work, thoughtfully managed.</p>
-      <button id="sign-out" class="sign-out" type="button">Sign out <span class="diagonal-arrow" aria-hidden="true"></span></button>
+      <button id="sign-out" class="sign-out" type="button">Sign out</button>
     </div>
   </aside>
   <div class="shell">
@@ -102,7 +105,12 @@
         <span class="crumb">STUDIO <b>/</b> <strong id="page-crumb">OVERVIEW</strong></span>
         <span class="topbar-status">PRIVATE WORKSPACE</span>
       </div>
-      <div class="profile" id="console-profile-wrap">
+      <div class="console-topbar-actions">
+        <button type="button" id="console-theme-toggle" class="console-theme-toggle" aria-label="Switch to dark mode" aria-pressed="false" title="Toggle light or dark mode">
+          <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 15.5A8.6 8.6 0 0 1 8.5 3.8a8.6 8.6 0 1 0 11.7 11.7Z"/></svg>
+          <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+        <div class="profile" id="console-profile-wrap">
         <button id="profile-menu-toggle" class="profile-menu-toggle" type="button" aria-expanded="false" aria-controls="profile-menu" aria-label="Open account and navigation options">
           <span class="profile-label" id="signed-in-email"></span>
           <span id="profile-circle">VV</span>
@@ -119,8 +127,9 @@
             <button type="button" data-tab="team" id="mobile-team-nav">Team & access</button>
             <button type="button" data-tab="security">Security settings</button>
           </nav>
-          <button type="button" id="profile-sign-out" class="profile-menu-signout">Sign out securely <span aria-hidden="true">↗</span></button>
+          <button type="button" id="profile-sign-out" class="profile-menu-signout">Sign out securely</button>
         </div>
+      </div>
       </div>
     </header>
     <main id="screen-content" class="screen-content" tabindex="-1"></main>
@@ -128,5 +137,5 @@
 </div>
 <div id="modal-overlay" class="modal-overlay" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-heading"><div class="modal-head"><h2 id="modal-heading"></h2><button type="button" id="modal-close" class="icon-button" aria-label="Close dialog">×</button></div><form id="modal-form" class="stack"></form></div></div>
 <script type="module" src="./console-assets/console-file-upload.js?v=20261115-react-uploader"></script>
-<script type="module" src="./console-assets/console.js?v=20261115-react-uploader"></script>
+<script type="module" src="./console-assets/console.js?v=20261115-dark-polish"></script>
 </body></html>

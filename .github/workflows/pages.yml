@@ -30,6 +30,8 @@ jobs:
         env:
           GITHUB_PAGES: "true"
         run: npm run build
+      - name: Validate Studio Console light/dark appearance
+        run: node scripts/check-console-theme.mjs
       - name: Adjust page and asset URLs
         run: node scripts/prepare-github-pages.mjs
       - name: Validate all page entrypoints

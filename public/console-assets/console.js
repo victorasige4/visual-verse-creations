@@ -7,6 +7,25 @@ let recovering=location.hash.includes("type=recovery");
 // Keep console sessions in this tab only. Previous long-lived browser sessions must authenticate again.
 const supabase=createClient(SUPABASE_URL,PUBLISHABLE,{auth:{flowType:"implicit",detectSessionInUrl:true,persistSession:true,autoRefreshToken:true,storage:window.sessionStorage,storageKey:"vv-studio-console-session-v2"}});
 const $=(id)=>document.getElementById(id);
+// Console appearance is local to this browser; no account or auth details are stored.
+const THEME_KEY="vv-console-theme";
+function applyConsoleTheme(mode,save=true){
+  const next=mode==="dark"?"dark":"light";
+  document.documentElement.dataset.consoleTheme=next;
+  document.querySelectorAll(".console-theme-toggle").forEach(button=>{
+    button.setAttribute("aria-pressed",String(next==="dark"));
+    button.setAttribute("aria-label",next==="dark"?"Switch to light mode":"Switch to dark mode");
+    button.title=next==="dark"?"Switch to light mode":"Switch to dark mode";
+  });
+  const meta=document.querySelector('meta[name="theme-color"]');
+  if(meta)meta.content=next==="dark"?"#0b1720":"#003f5c";
+  if(save){try{localStorage.setItem(THEME_KEY,next);}catch{}}
+}
+document.querySelectorAll(".console-theme-toggle").forEach(button=>{
+  button.addEventListener("click",()=>applyConsoleTheme(document.documentElement.dataset.consoleTheme==="dark"?"light":"dark"));
+});
+applyConsoleTheme(document.documentElement.dataset.consoleTheme,false);
+
 const esc=(value)=>String(value??"").replace(/[&<>"']/g,(c)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const state={user:null,membership:null,view:"overview",clients:[],projects:[],tasks:[],documents:[],members:[]};
 const nice=(s)=>String(s??"").replaceAll("_"," ").replace(/\b\w/g,(c)=>c.toUpperCase());
@@ -172,7 +191,7 @@ async function refresh(){
   render();
 }
 function heading(kicker,title,description,button=""){return '<div class="page-heading"><div><span class="page-eyebrow">'+esc(kicker)+'</span><h1 class="page-title">'+esc(title)+'</h1><p class="page-copy">'+esc(description)+'</p></div>'+button+'</div>';}
-function addButton(label,what){return '<button class="btn primary" type="button" data-create="'+esc(what)+'">'+esc(label)+' <span class="diagonal-arrow" aria-hidden="true"></span></button>';}
+function addButton(label,what){return '<button class="btn primary" type="button" data-create="'+esc(what)+'">'+esc(label)+'</button>';}
 function empty(title,copy){return '<div class="empty"><strong>'+esc(title)+'</strong>'+esc(copy)+'</div>';}
 function item(title,detail,status){return '<div class="item"><div class="item-main"><strong>'+esc(title)+'</strong><small>'+esc(detail)+'</small></div>'+(status?tag(status):"")+'</div>';}
 function renderOverview(){
@@ -191,18 +210,18 @@ function renderOverview(){
   return '<section class="studio-hero" aria-labelledby="studio-welcome"><div class="studio-hero-copy">'+
     '<span class="eyebrow">VISUAL VERSE / STUDIO CONSOLE</span><h2 id="studio-welcome">'+esc(greeting)+'.<br/>Let’s make it happen.</h2>'+
     '<p>Your creative headquarters. Keep projects moving, people connected, and the next big idea within reach.</p>'+
-    '<div class="studio-hero-actions">'+actions+'<button class="hero-action" type="button" data-nav="projects">Explore projects ↗</button></div></div>'+
+    '<div class="studio-hero-actions">'+actions+'<button class="hero-action" type="button" data-nav="projects">Explore projects</button></div></div>'+
     '<div class="studio-hero-date">'+esc(today)+'</div></section>'+
     '<div class="studio-section-label"><h3>Studio snapshot</h3><span>Based on your workspace data</span></div>'+
     '<div class="kpi-grid">'+
-    '<article class="kpi"><span class="kpi-mark" aria-hidden="true">◎</span><span class="name">Client relationships</span><strong>'+state.clients.length+'</strong><small>TOTAL CLIENTS</small></article>'+
-    '<article class="kpi"><span class="kpi-mark" aria-hidden="true">↗</span><span class="name">Projects in motion</span><strong>'+active+'</strong><small>ACTIVE PROJECTS</small></article>'+
-    '<article class="kpi"><span class="kpi-mark" aria-hidden="true">✓</span><span class="name">On your to-do list</span><strong>'+todo.length+'</strong><small>'+esc(overdue?overdue+" OVERDUE · REVIEW":"OPEN TASKS")+'</small></article></div>'+
+    '<article class="kpi"><span class="kpi-mark" aria-hidden="true"><svg class="kpi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span class="name">Client relationships</span><strong>'+state.clients.length+'</strong><small>TOTAL CLIENTS</small></article>'+
+    '<article class="kpi"><span class="kpi-mark" aria-hidden="true"><svg class="kpi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18l6-6 4 3 6-8M15 7h5v5"/></svg></span><span class="name">Projects in motion</span><strong>'+active+'</strong><small>ACTIVE PROJECTS</small></article>'+
+    '<article class="kpi"><span class="kpi-mark" aria-hidden="true"><svg class="kpi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><span class="name">On your to-do list</span><strong>'+todo.length+'</strong><small>'+esc(overdue?overdue+" OVERDUE · REVIEW":"OPEN TASKS")+'</small></article></div>'+
     '<div class="content-grid">'+
-    '<section class="panel"><div class="panel-head"><h3>Recent projects</h3><button class="panel-link" type="button" data-nav="projects">View all ↗</button></div>'+
+    '<section class="panel"><div class="panel-head"><h3>Recent projects</h3><button class="panel-link" type="button" data-nav="projects">View all</button></div>'+
     '<p class="panel-subtitle">The creative work on your radar</p><div class="item-list">'+
     (state.projects.length?state.projects.slice(0,5).map(x=>item(x.name,findClient(x.client_id),x.status)).join(""):empty("A fresh canvas for what comes next.","Add a client and project to get started."))+'</div></section>'+
-    '<section class="panel"><div class="panel-head"><h3>Up next</h3><button class="panel-link" type="button" data-nav="tasks">All tasks ↗</button></div>'+
+    '<section class="panel"><div class="panel-head"><h3>Up next</h3><button class="panel-link" type="button" data-nav="tasks">All tasks</button></div>'+
     '<p class="panel-subtitle">Upcoming deadlines, in order</p><div class="item-list">'+
     (soon.length?soon.map(x=>item(x.title,findProject(x.project_id)+" · "+x.due_date,x.status)).join(""):empty("Nothing pressing right now.","Upcoming work with due dates appears here."))+'</div></section></div>'+
     '<div class="content-grid"><section class="panel"><div class="panel-head"><h3>Studio momentum</h3><span class="status">TASK PROGRESS</span></div>'+
@@ -212,8 +231,8 @@ function renderOverview(){
     '<div class="studio-progress" style="--progress:'+rate+'%" role="img" aria-label="'+rate+' percent of tasks completed"><span>'+rate+'%</span><small>COMPLETE</small></div></div></section>'+
     '<section class="panel"><div class="panel-head"><h3>Your next move</h3></div>'+
     '<p class="page-copy">Every good project starts with a clear plan. Review the next task or gather files for your deliverables.</p>'+
-    '<div class="studio-hero-actions"><button class="btn secondary" type="button" data-nav="tasks">Open tasks ↗</button>'+
-    '<button class="btn minimal" type="button" data-nav="documents">Project files ↗</button></div></section></div>';
+    '<div class="studio-hero-actions"><button class="btn secondary" type="button" data-nav="tasks">Open tasks</button>'+
+    '<button class="btn minimal" type="button" data-nav="documents">Project files</button></div></section></div>';
 }
 function renderClients(){
   return heading("PEOPLE WE CREATE WITH","Clients","Keep every relationship organized and close to the work.",isAdmin()?addButton("Add client","client"):"")+
