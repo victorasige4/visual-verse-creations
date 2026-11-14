@@ -25,7 +25,7 @@ const questions = [
     category: "THE CREATIVE MENU",
     question: "What services does Visual Verse offer?",
     answer: "We bring together photography, videography, branding, graphic design, web and UI/UX design, and social media and digital marketing. We can focus on one service or combine disciplines around a broader creative brief.",
-    takeaway: "One studio. Many ways to tell your story.",
+    takeaway: "One creative partner. Many ways to tell your story.",
   },
   {
     card: "Beyond Nairobi?",
@@ -156,7 +156,7 @@ export function VisualVerseFaqLab() {
 
         <div className="vv-faq-lab-answer-stage">
           <div className="vv-faq-lab-answer-head">
-            <span><span className="vv-faq-lab-live-led"/> THE ANSWER STUDIO</span>
+            <span><span className="vv-faq-lab-live-led"/> THE ANSWER DESK</span>
             <span className="vv-faq-lab-answer-status">SIGNAL RECEIVED <Sparkles size={14} aria-hidden="true"/></span>
           </div>
           <div className="vv-faq-lab-answer-orbit" aria-hidden="true"><i/><i/><i/></div>
@@ -164,7 +164,7 @@ export function VisualVerseFaqLab() {
           <div className="vv-faq-lab-answer-paper">
             <div className="vv-faq-lab-paper-top">
               <img src={import.meta.env.BASE_URL+"logo-mark.png"} alt="" aria-hidden="true" loading="lazy"/>
-              <span>A NOTE FROM OUR STUDIO</span>
+              <span>A NOTE FROM OUR TEAM</span>
               <span aria-hidden="true"><Asterisk size={16}/></span>
             </div>
             <div className="vv-faq-lab-perforation" aria-hidden="true"/>
