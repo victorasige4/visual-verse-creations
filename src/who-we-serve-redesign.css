@@ -158,7 +158,7 @@
 .vvx-signal-pulse{width:7px;height:7px;flex:0 0 7px;border-radius:50%;
   background:#2ec4b6;box-shadow:0 0 0 4px #2ec4b625}
 .vvx-world-visual{position:relative;isolation:isolate;overflow:hidden;
-  min-height:370px;height:clamp(355px,40vw,525px);border-radius:17px;
+  min-height:320px;height:clamp(320px,40svh,480px);border-radius:17px;
   background:linear-gradient(150deg,#0a6370,#003b57);perspective:1100px}
 .vvx-world-mint{--world-color:#59e5c2}
 .vvx-world-blue{--world-color:#96d7f8}
