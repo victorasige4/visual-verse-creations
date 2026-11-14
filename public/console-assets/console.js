@@ -477,6 +477,6 @@ $("modal-overlay").addEventListener("click",(e)=>{if(e.target===$("modal-overlay
 document.addEventListener("keydown",(e)=>{if(e.key==="Escape")closeModal();});
 supabase.auth.onAuthStateChange((event)=>{
   if(event==="PASSWORD_RECOVERY")setTimeout(()=>showLogin("password"),0);
-  if(event==="SIGNED_OUT"&&!completingPasswordSetup)setTimeout(()=>showLogin("email"),0);
+  if(event==="SIGNED_OUT"&&!completingPasswordSetup)setTimeout(()=>showLogin("login"),0);
 });
 loadSession().catch((err)=>{showLogin();notify("Could not load the console: "+(err?.message||"network error"));});
