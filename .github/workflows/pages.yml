@@ -39,6 +39,11 @@ jobs:
           done
           test -s dist/brand-wordmark.png
           test -s dist/logo-mark.png
+          # Confirm the Studio Console gateway and footer entry survive the Pages build.
+          test -s dist/console/index.html
+          grep -q 'Studio Console' dist/console/index.html
+          grep -q 'visual-verse-business-hq.risenhymn8.chatgpt.site' dist/console/index.html
+          grep -q '/visual-verse-creations/console/' dist/assets/*.js
           grep -q '/visual-verse-creations/assets/' dist/index.html
       - name: Configure Pages
         uses: actions/configure-pages@v5
