@@ -85,7 +85,7 @@ export function PortfolioArtwork({ kind }: { kind: PortfolioCollection["id"] }) 
   if (kind === "digital") return (
     <div className="vv-pf-art vv-pf-art-web">
       <div className="vv-pf-browser">
-        <div className="vv-pf-browser-top"><span className="vv-pf-browser-dots">● ● ●</span><span className="vv-pf-browser-url">visualverse / studio</span><MonitorSmartphone size={13} aria-hidden="true"/></div>
+        <div className="vv-pf-browser-top"><span className="vv-pf-browser-dots">● ● ●</span><span className="vv-pf-browser-url">visualverse / creative</span><MonitorSmartphone size={13} aria-hidden="true"/></div>
         <div className="vv-pf-browser-body">
           <img src="/logo-mark.png" alt="Visual Verse mark in a website concept" />
           <span>DESIGN FOR PEOPLE</span>
