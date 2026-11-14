@@ -241,3 +241,43 @@
  .vv-projects-focus-card,.vv-projects-focus-image>img,.vv-projects-archive-strip img{transition:none}
  .vv-projects-focus-card:hover{transform:none}
 }
+
+/* Keep portfolio information and navigation as legible on phones as desktop. */
+@media (max-width: 610px) {
+  .vv-pf-grid,
+  .vv-pf-card,
+  .vv-pf-card-content,
+  .vv-pf-card-details { min-width: 0; }
+  .vv-pf-card-details h3 {
+    font-size: clamp(25px, 6.6vw, 31px);
+    text-wrap: balance;
+  }
+  .vv-pf-card-details p {
+    overflow-wrap: anywhere;
+    line-height: 1.65;
+  }
+  .vv-pf-card-action {
+    min-height: 44px;
+    align-items: center;
+    touch-action: manipulation;
+  }
+  .vv-projects-filters {
+    overscroll-behavior-x: contain;
+    scroll-padding-inline: 8px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .vv-projects-filters button {
+    min-height: 42px;
+    touch-action: manipulation;
+  }
+  .vv-projects-archive-strip figcaption {
+    font-size: 10px;
+    line-height: 1.4;
+  }
+  .vv-projects-focus-card:focus-visible,
+  .vv-projects-filters button:focus-visible,
+  .vv-pf-card-action:focus-visible {
+    outline: 3px solid #2ec4b6;
+    outline-offset: 3px;
+  }
+}
