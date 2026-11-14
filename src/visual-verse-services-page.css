@@ -1062,3 +1062,42 @@
     opacity:1;
   }
 }
+
+/* Mobile/desktop visual parity — preserve the editorial hierarchy and
+   readable text on service pins without relying on hover. */
+@media (max-width: 760px) {
+  .vv-services-editorial .vv-sv-hero--potadot {
+    padding-top: clamp(128px, 26vw, 154px);
+  }
+  .vv-sv-hero--potadot .vv-sv-hero-main h1 {
+    max-width: 100%;
+    overflow-wrap: break-word;
+    text-wrap: balance;
+  }
+  .vv-sv-hero-services a,
+  .vv-sv-pin-service a {
+    touch-action: manipulation;
+  }
+  .vv-sv-pin-cell { min-width: 0; }
+  .vv-sv-service-pin { -webkit-tap-highlight-color: transparent; }
+  .vv-sv-pin-center {
+    left: 20px;
+    right: 20px;
+  }
+  .vv-sv-pin-center h3 {
+    font-size: clamp(24px, 7vw, 30px);
+    overflow-wrap: break-word;
+    text-wrap: balance;
+  }
+  .vv-sv-service-pin .vv-sv-pin-center p {
+    max-height: 130px;
+    margin-top: 12px;
+    opacity: 1;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .vv-sv-service-pin:focus-visible {
+    outline: 3px solid #2ec4b6;
+    outline-offset: 3px;
+  }
+}
