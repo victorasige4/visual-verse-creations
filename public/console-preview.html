@@ -11,14 +11,14 @@
 <link rel="apple-touch-icon" href="./logo-mark.png"/>
 <link rel="stylesheet" href="./console-assets/console.css"/>
 <link rel="stylesheet" href="./console-assets/console-modern.css?v=20261115-modern"/>
-<link rel="stylesheet" href="./console-assets/console-theme.css?v=20261115-dark-polish"/>
+<link rel="stylesheet" href="./console-assets/console-theme.css?v=20261115-toggles-topbar"/>
 </head>
 <body>
 <div class="ambient ambient-one" aria-hidden="true"></div><div class="ambient ambient-two" aria-hidden="true"></div>
 <div id="notice" role="status" aria-live="polite" hidden></div>
 <section id="auth-screen" class="auth-layout">
   <div class="auth-left">
-    <div class="brand-row"><img src="./logo-mark.png" alt="Visual Verse logo" width="58" height="58"/><span>VISUAL VERSE <small>CREATIONS</small></span></div>
+    <div class="brand-row"><img src="./logo-mark.png" alt="Visual Verse logo" width="58" height="58"/><span>VISUAL VERSE <small>CREATIONS</small></span><button type="button" id="auth-theme-toggle" class="console-theme-toggle" aria-label="Switch to dark mode" aria-pressed="false" title="Toggle light or dark mode"><svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 15.5A8.6 8.6 0 0 1 8.5 3.8a8.6 8.6 0 1 0 11.7 11.7Z"/></svg><svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button></div>
     <div class="auth-pitch"><span class="eyebrow">THE CREATIVE STUDIO, ORGANIZED</span>
       <h1>Big ideas.<br/><em>One clear space.</em></h1>
       <p>Manage your clients, projects, deadlines and people from one beautifully connected workspace.</p>
@@ -28,7 +28,6 @@
   </div>
   <div class="auth-right">
     <div class="auth-card">
-      <div class="auth-appearance-controls"><span>APPEARANCE</span><button type="button" id="auth-theme-toggle" class="console-theme-toggle" aria-label="Switch to dark mode" aria-pressed="false" title="Toggle light or dark mode"><svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 15.5A8.6 8.6 0 0 1 8.5 3.8a8.6 8.6 0 1 0 11.7 11.7Z"/></svg><svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button></div>
       <div class="auth-lock">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.7"/></svg>
       </div>
@@ -86,6 +85,7 @@
       <div class="profile" aria-label="Signed in account">
         <span class="profile-label" id="signed-in-email"></span>
         <span id="profile-circle">VV</span>
+        <button type="button" id="console-theme-toggle" class="console-theme-toggle" aria-label="Switch to dark mode" aria-pressed="false" title="Toggle light or dark mode"><svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 15.5A8.6 8.6 0 0 1 8.5 3.8a8.6 8.6 0 1 0 11.7 11.7Z"/></svg><svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
       </div>
     </header>
     <main id="screen-content" class="screen-content" tabindex="-1"></main>
@@ -94,6 +94,6 @@
 </div>
 <div id="modal-overlay" class="modal-overlay" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-heading"><div class="modal-head"><h2 id="modal-heading"></h2><button type="button" id="modal-close" class="icon-button" aria-label="Close dialog">×</button></div><form id="modal-form" class="stack"></form></div></div>
 <script type="module" src="./console-assets/console-file-upload.js?v=20261115-react-uploader"></script>
-<script type="module" src="./console-assets/console-floating-dock.js?v=20261115-glass-dock"></script>
+<script type="module" src="./console-assets/console-floating-dock.js?v=20261115-compact"></script>
 <script type="module" src="./console-assets/console.js?v=20261115-glass-dock"></script>
 </body></html>
