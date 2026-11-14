@@ -4,7 +4,8 @@ const PUBLISHABLE="sb_publishable_PTHazoDBGgz9Jnjil1SyVQ_XZpvFpsG";
 const baseUrl=new URL("./console-preview.html",location.href).href;
 let inviteLink=location.hash.includes("type=invite");
 let recovering=location.hash.includes("type=recovery");
-const supabase=createClient(SUPABASE_URL,PUBLISHABLE,{auth:{flowType:"implicit",detectSessionInUrl:true,persistSession:true,autoRefreshToken:true,storageKey:"vv-studio-console-session"}});
+// Keep console sessions in this tab only. Previous long-lived browser sessions must authenticate again.
+const supabase=createClient(SUPABASE_URL,PUBLISHABLE,{auth:{flowType:"implicit",detectSessionInUrl:true,persistSession:true,autoRefreshToken:true,storage:window.sessionStorage,storageKey:"vv-studio-console-session-v2"}});
 const $=(id)=>document.getElementById(id);
 const esc=(value)=>String(value??"").replace(/[&<>"']/g,(c)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const state={user:null,membership:null,view:"overview",clients:[],projects:[],tasks:[],documents:[],members:[]};
@@ -40,12 +41,29 @@ function showLogin(mode="email"){
   $("auth-description").textContent=descriptions[mode]??descriptions.email;
   $("auth-step").textContent=steps[mode]??steps.email;
 }
+// An invitation/recovery token grants only password-setup access, not a studio session.
+// Server-side RLS independently checks the Auth JWT method before returning private data.
+function passwordWasEnteredForSession(session){
+  try{
+    const payload=session?.access_token?.split(".")[1];
+    if(!payload)return false;
+    const base64=payload.replace(/-/g,"+").replace(/_/g,"/");
+    const jwt=JSON.parse(atob(base64.padEnd(Math.ceil(base64.length/4)*4,"=")));
+    return Array.isArray(jwt.amr)&&jwt.amr.some(factor=>factor.method==="password");
+  }catch{return false;}
+}
 async function loadSession(){
   const {data:{session},error}=await supabase.auth.getSession();
   if(error||!session){showLogin("email");return;}
   const {data:{user},error:identityError}=await supabase.auth.getUser();
   if(identityError||!user){showLogin("email");return;}
   state.user=user;
+  // Auth can establish a temporary session when an invitation or recovery email is opened.
+  // Require the user to create a password, then sign out and sign in with that password.
+  if(inviteLink||recovering||!passwordWasEnteredForSession(session)){
+    showLogin("password");
+    return;
+  }
   const assurance=await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
   if(assurance.error){showLogin();notify(assurance.error.message);return;}
   state.mfaAal=assurance.data?.currentLevel??"aal1";
@@ -59,7 +77,6 @@ async function loadSession(){
     return;
   }
   state.membership=member;
-  if(inviteLink||recovering){showLogin("password");return;}
   $("auth-screen").hidden=true;$("workspace").hidden=false;
   $("signed-in-email").textContent=user.email??"";
   $("profile-circle").textContent=(user.email??"VV").slice(0,2).toUpperCase();
