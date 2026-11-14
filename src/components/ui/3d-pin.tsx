@@ -76,8 +76,8 @@ export function PinPerspective({
             key={index}
             className="vv-pin-halo-ring"
             initial={{opacity:0,scale:0,x:"-50%",y:"-50%"}}
-            animate={reduced?{opacity:0,scale:0}:{opacity:[0,.85,.55,0],scale:[0,1,1.18,1.32]}}
-            transition={reduced?{duration:0}:{duration:6,repeat:Infinity,delay,ease:"easeOut"}}
+            animate={(reduced || !active)?{opacity:0,scale:0}:{opacity:[0,.85,.55,0],scale:[0,1,1.18,1.32]}}
+            transition={(reduced || !active)?{duration:.12}:{duration:6,repeat:Infinity,delay,ease:"easeOut"}}
           />
         ))}
       </div>
