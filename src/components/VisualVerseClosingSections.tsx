@@ -93,6 +93,7 @@ export function VisualVerseFooter(){
       <div className="vv-close-footer-bottom">
         <span>© {new Date().getFullYear()} VISUAL VERSE CREATIONS. ALL RIGHTS RESERVED.</span>
         <PolicyLinks />
+        <a className="vv-studio-console-link" href="/console/" aria-label="Open the private Studio Console">Studio Console <ArrowUpRight size={13} aria-hidden="true"/></a>
         <a href="/#top">BACK TO TOP <ArrowUp size={14} aria-hidden="true"/></a>
       </div>
     </div>
