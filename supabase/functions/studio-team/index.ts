@@ -35,7 +35,13 @@ Deno.serve(async (req:Request) => {
   let assurance = "";
   try{
     const segment=jwt.split(".")[1].replace(/-/g,"+").replace(/_/g,"/");
-    assurance=JSON.parse(atob(segment)).aal;
+    const claims=JSON.parse(atob(segment));
+    // A one-time invitation or recovery token is not a completed password sign-in.
+    // This is in addition to the verified account, active membership and MFA checks.
+    if(!Array.isArray(claims.amr)||!claims.amr.some((factor:{method?:string})=>factor.method==="password")){
+      return fail("Sign in with your password before managing the team",403);
+    }
+    assurance=claims.aal;
   }catch{return fail("Invalid authenticator session",401);}
   if(assurance!=="aal2")return fail("Verify two-factor authentication in Security before managing the team",403);
   const isOwner=membership.role==="super_admin";
