@@ -158,7 +158,7 @@ export function VisualVerseServicesEditorial() {
             </article>;
           })}
         </div>
-        <p className="vv-sv-pin-outro">One studio. Many disciplines. <a href={import.meta.env.BASE_URL+"request-quote.html"}>Let's shape yours <ArrowUpRight size={14}/></a></p>
+        <p className="vv-sv-pin-outro">One creative partner. Many disciplines. <a href={import.meta.env.BASE_URL+"request-quote.html"}>Let's shape yours <ArrowUpRight size={14}/></a></p>
       </div>
     </section>
 
