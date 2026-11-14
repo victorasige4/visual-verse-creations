@@ -243,7 +243,7 @@ function WorldAtlas() {
           <div className="vvx-world-stage-top"><span><span className="vvx-signal-pulse"/> NOW EXPLORING / {world.name.toUpperCase()}</span><span>{world.number}—06</span></div>
           <WorldStage world={world}/>
           <div className="vvx-world-stage-bottom" key={world.id}>
-            <div className="vvx-world-stage-summary"><span>WHAT WE BRING</span><p>{world.promise}</p></div>
+            <div className="vvx-world-stage-summary"><span>THE CREATIVE BRIEF</span><h3>{world.headline}</h3><p>{world.blurb}</p><span className="vvx-world-stage-promise">{world.promise}</span></div>
             <div className="vvx-world-stage-tags">{world.offerings.map(x=><span key={x}>{x}</span>)}</div>
             <a href={inquire(world.name)} className="vvx-world-stage-link">Create with us <ArrowUpRight size={16}/></a>
           </div>
