@@ -13,3 +13,6 @@
 .diagonal-arrow:after{content:"";position:absolute;right:-1px;top:-1px;width:15px;border-top:1.7px solid currentColor;transform:rotate(-45deg);transform-origin:top right}
 .mobile-sign-out{display:none;border:1px solid #cbe5e0;background:white;color:#003f5c;border-radius:9px;padding:8px 12px;font-size:11px;font-weight:700}
 @media(max-width:760px){.mobile-sign-out{display:inline-flex;align-items:center;min-height:34px}.profile{gap:8px}}
+
+.page-actions{display:flex;gap:10px;flex-wrap:wrap}.row-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.row-actions button{white-space:nowrap}
+@media(max-width:760px){.page-actions{width:100%}.page-actions .btn{flex:1}.row-actions{flex-direction:column}.row-actions button{min-height:34px}}
