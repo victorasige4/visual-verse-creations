@@ -1,35 +1,47 @@
-# Visual Verse — Permanent Animated Homepage Preview
+# Visual Verse Creations
 
-This repository contains the **existing** Visual Verse animated homepage, continued from the November 10, 2026 prototype and updated with the official logos, favicon, and TT Travels typography specification. This is NOT a new redesign or replacement for the original React site.
+The active Visual Verse Creations website. **Always continue from the latest existing build rather than starting a separate design.**
 
-## Contents
-- `index.html` — current responsive homepage, six-service particle transitions, About, Services, Portfolio, Approach, and Contact
-- `brand-wordmark.png` — logo used in navigation
-- `brand-logo.png` — full logo used in footer
-- `logo-mark.png`, `favicon.ico` — brand icon and favicon
-- `netlify.toml` — publish this static site from the repository root with **no build command**
+## Current stack
+React 19, TypeScript 5.9, Vite 7, Tailwind CSS v4, shadcn/ui configuration, Aceternity-inspired components, Motion and Lucide icons.
 
-## One-time GitHub setup
-1. Create a new empty repository on your GitHub account, e.g. `visualverse-animated-preview`. Set visibility as desired.
-2. Extract the **contents** of the ZIP (do not upload the ZIP as one file).
-3. In GitHub, choose **Add file > Upload files** and upload all the extracted files to the root of `main` (GitHub may require dragging the extracted folder contents). Then **Commit changes**.
-4. Confirm the repository root contains `index.html`, `netlify.toml`, `brand-wordmark.png`, `brand-logo.png`, `logo-mark.png`, `favicon.ico`, and `README.md`.
+## Pages and entrypoints
+- Home — `index.html` / `src/main.tsx` (preserves the established animated homepage)
+- About, Services, Who We Serve, Contact, Let's Talk — their own HTML entrypoints with `src/pages-main.tsx`
+- Projects — `projects.html` / `src/projects-main.tsx`
 
-## One-time Netlify setup
-1. Log in to https://app.netlify.com/. Go to **Add new project > Import an existing project**.
-2. Choose GitHub, authorize Netlify for this **new** repository, and select it.
-3. Use `main` as the production/deploy branch **of the preview site**.
-4. Build command: **leave blank**; publish directory: `.` (repository root). The `netlify.toml` also sets the publish directory.
-5. Publish the project. Netlify assigns a persistent `*.netlify.app` URL, which can be bookmarked.
-6. Subsequent pushes to this repository's `main` trigger automatic redeployments at that same URL. Refresh the browser to see updates.
+About, Services and Who We Serve feature code is loaded only for the relevant inner page. The About-page CTA is reused sitewide. Shared components and brand assets must be preserved.
 
-**Note:** This Netlify project is separate from the existing Visual Verse public website. No changes are pushed to `victorasige4/visual-verse-studio`.
+## Development
+```bash
+npm install
+npm run typecheck
+npm run dev
+npm run build
+```
 
-## GitHub permissions / Codex
-Your ChatGPT GitHub integration may support reading but not writing. To enable a supported code-editing workflow, connect this new repository to **Codex** and grant the required repository access through its GitHub app authorization screen. Review access under https://github.com/settings/installations. The user, not the assistant, must approve access.
+## Deployment
+**GitHub Pages is the production target** (not Netlify).
 
-## Typography
-TT Travels is configured as the base font with variable weights across the interface. Licensed TT Travels webfont files are **not included** in this package; until added, compatible fallback fonts display. Add valid licensed webfont files to `assets/fonts/` per the HTML's declared `@font-face` paths when available.
+- `.github/workflows/ci.yml` validates the TypeScript build and page assets on push.
+- `.github/workflows/pages.yml` builds and deploys the `main` branch.
+- Vite uses `/visual-verse-creations/` as the base with `GITHUB_PAGES=true`.
+- `scripts/prepare-github-pages.mjs` adjusts root links in the generated `dist` output.
 
-## Workflow
-All future revisions should modify this same `index.html` and its existing assets on this same repository. Do not create another visual concept or replace the particle service animation unless explicitly requested.
+Production: https://victorasige4.github.io/visual-verse-creations/
+
+To replicate the Pages build locally:
+```bash
+GITHUB_PAGES=true npm run build
+node scripts/prepare-github-pages.mjs
+```
+
+## Safeguards
+- Preserve navy `#003F5C`, deep navy `#002A40`, mint `#2EC4B6`, and the existing branding/assets.
+- TT Travels is specified through `src/tt-travels.css`. The available trial font is **not licensed for public embedding**; no font binaries are committed. A licensed webfont is needed for identical typography on every device.
+- Do not add scraped reference-site bundles or saved browser resources to the project root. The Vite pipeline builds the actual source.
+- Don't remove working homepage islands, process animations, 3D pins, or the shared CTA without an explicit design decision.
+- For the November 14 maintenance checkpoint, the untouched pre-sweep state is on `backup/pre-sweep-2026-11-14`. See `docs/site-maintenance-2026-11-14.md`.
+
+## Known limitations
+No lockfile is currently committed; `npm install` resolves the declared dependency ranges. Form submissions open an email draft rather than sending mail automatically. A full interactive browser regression sweep should accompany future major UI changes.

@@ -1,10 +1,6 @@
-import { lazy, Suspense, useEffect, useState, type FormEvent } from "react";
-import { AnimatePresence, motion } from "motion/react";
-import {
-  ArrowUpRight, ArrowRight, ArrowLeft, Camera, Clapperboard, Palette, PenTool,
-  MonitorSmartphone, Share2, Phone, Mail, MapPin, MessageCircle, CheckCircle2,
-  Instagram, Linkedin, Facebook, Lightbulb, HeartHandshake, Layers3, CalendarDays,
-  Rocket, Building2, Sparkles, UsersRound, Target, Film, Clock3, FileText, Send
+import { lazy, Suspense, useEffect, useState, ArrowRight, Camera, Clapperboard, Palette, PenTool,
+  MonitorSmartphone, Share2, Phone, Mail, MapPin, MessageCircle, Instagram, Linkedin, Facebook, CalendarDays,
+  Rocket, Building2, Sparkles, UsersRound, Target, Film, FileText, Send
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { VisualVerseNavbar } from "./VisualVerseNavbar";
@@ -52,21 +48,6 @@ const services:Service[]=[
   {id:"branding",title:"Branding",label:"Identity & direction",summary:"A consistent brand world built from the logo all the way to how it speaks and shows up.",deliverables:["Brand discovery and positioning","Logo and visual identity systems","Guidelines and brand applications","Rebrands and campaign direction"],Icon:Palette},
 ];
 
-const values=[
-  {title:"Cinematic vision",text:"Whether it's a photograph, film or interface, every detail has a part to play in the story.",Icon:Film},
-  {title:"Bold creativity",text:"We look beyond the obvious to create visuals with character and fresh thinking.",Icon:Lightbulb},
-  {title:"Authentic connection",text:"We design for real people, their communities and the conversations that matter.",Icon:HeartHandshake},
-  {title:"Premium craft",text:"Strong concepts mean little without careful execution. We care about both.",Icon:Sparkles},
-];
-const reasons=[
-  {title:"Story-led creativity",text:"We don't just design or shoot. We help the story feel real.",Icon:Film},
-  {title:"Tailored solutions",text:"Every brief has a different audience, context and ambition.",Icon:Target},
-  {title:"Care in every detail",text:"From the smallest crop to the final deliverable.",Icon:Sparkles},
-  {title:"One creative hub",text:"Photography, film, brand and digital disciplines work together.",Icon:Layers3},
-  {title:"Client-centered",text:"Your direction and feedback remain part of the process.",Icon:HeartHandshake},
-  {title:"Clear delivery",text:"Agreed milestones, communication and realistic schedules.",Icon:CheckCircle2}
-];
-
 function PageHero({kind}:{kind:Kind}){
   const page=pages[kind];
   return (
@@ -94,52 +75,6 @@ function PageHero({kind}:{kind:Kind}){
 
 function SectionTitle({eyebrow,children,description}:{eyebrow:string;children:React.ReactNode;description?:string}){
   return <header className="vv-inner-section-head"><span className="vv-inner-eyebrow">{eyebrow}</span><h2>{children}</h2>{description&&<p>{description}</p>}</header>;
-}
-
-function AboutPage(){
-  return <>
-    <section className="vv-inner-mission" aria-labelledby="vv-about-mission-title">
-      <span className="vv-inner-eyebrow">OUR MISSION / THE REASON BEHIND THE WORK</span>
-      <h2 id="vv-about-mission-title">To create work that doesn't just look beautiful, but <em>leaves an impression.</em></h2>
-      <p>Every project is an opportunity to shape an idea into a visual story that resonates, captivates and inspires.</p>
-      <img className="vv-inner-mission-watermark" src="/logo-mark.png" alt="" aria-hidden="true"/>
-    </section>
-    <section className="vv-inner-section" id="our-story">
-      <div className="vv-inner-split vv-inner-story">
-        <div className="vv-inner-story-copy">
-          <SectionTitle eyebrow="BORN FROM PASSION / OUR STORY">A one-stop<br/>creative hub.</SectionTitle>
-          <p>Every brand, every event and every moment has a story waiting to be told. Visual Verse brings together a love for compelling imagery, creative problem-solving and digital experiences.</p>
-          <p>From striking visuals to engaging websites, we create work that doesn't just look good—it has something to say. We listen to the people behind the project and craft around what matters most to them.</p>
-          <a className="vv-inner-text-link" href="/services.html">Discover what we do <ArrowUpRight size={17}/></a>
-        </div>
-        <div className="vv-inner-about-img"><img src="/about-photographer.webp" alt="Photographer holding a camera" loading="lazy"/><span>CREATIVITY, FRAME BY FRAME</span></div>
-      </div>
-    </section>
-    <section className="vv-inner-section vv-inner-values-section" id="our-values">
-      <SectionTitle eyebrow="WHAT GUIDES US / OUR VALUES" description="Four principles behind the creative choices we make.">Creativity with<br/><em>a point of view.</em></SectionTitle>
-      <div className="vv-inner-values">
-        {values.map(({title,text,Icon},i)=><article key={title}><span className="vv-inner-values-top"><Icon size={25}/></span><h3>{title}</h3><p>{text}</p></article>)}
-      </div>
-    </section>
-    <section className="vv-inner-team-section">
-      <div className="vv-inner-split">
-        <div><span className="vv-inner-eyebrow">THE PEOPLE BEHIND THE WORK</span><h2>Good creative work<br/>is better <em>together.</em></h2><p>Visual Verse approaches each brief with the right mix of creative direction, design thinking, photography and production. We collaborate with skilled creative partners as projects require.</p><p>Real team profiles and credits will be introduced with permission, rather than filling the site with placeholder names.</p><a href="/contact.html">Meet us through a conversation <ArrowUpRight size={17}/></a></div>
-        <div className="vv-inner-team-visual"><div><img src="/logo-mark.png" alt="Visual Verse identity mark"/><strong>CREATORS.<br/>STORYTELLERS.<br/><em>COLLABORATORS.</em></strong></div></div>
-      </div>
-    </section>
-    <section className="vv-inner-section vv-inner-reasons">
-      <SectionTitle eyebrow="WHY CHOOSE VISUAL VERSE">One creative partner.<br/>Many ways to tell a story.</SectionTitle>
-      <div className="vv-inner-reasons-grid">{reasons.slice(0,3).map((reason,i)=><article key={reason.title}><reason.Icon size={22}/><small>0{i+1}</small><h3>{reason.title}</h3><p>{reason.text}</p></article>)}</div>
-    </section>
-    <section className="vv-inner-section vv-inner-reasons" aria-label="Where we work and frequently asked questions">
-      <SectionTitle eyebrow="A LITTLE MORE ABOUT US" description="Everything you need to know about working together, with more to explore on the homepage.">Rooted in Nairobi.<br/><em>Creating beyond borders.</em></SectionTitle>
-      <div className="vv-inner-reasons-grid">
-        <article><MapPin size={22}/><h3>Where we create</h3><p>Visual Verse is based in Nairobi and collaborates with clients across Kenya. We work remotely where possible and plan travel for on-location photography and film projects.</p><a className="vv-inner-text-link" href="/#where-we-serve">Explore our locations <ArrowUpRight size={17}/></a></article>
-        <article><HeartHandshake size={22}/><h3>How we work</h3><p>We listen first, agree on the creative direction, then shape the right design, film and digital solutions around your goals.</p><a className="vv-inner-text-link" href="/#process">See why Visual Verse <ArrowUpRight size={17}/></a></article>
-        <article><MessageCircle size={22}/><h3>Questions before we begin?</h3><p>Wondering about pricing, timelines, collaboration or getting started? Our homepage answers the questions we hear most often.</p><a className="vv-inner-text-link" href="/#faqs">Read the FAQs <ArrowUpRight size={17}/></a></article>
-      </div>
-    </section>
-  </>;
 }
 
 function ServicesPage(){
@@ -255,11 +190,22 @@ function ContactPage(){
 const budgets=["Not decided yet","Below KSh 15,000","KSh 15,000–50,000","KSh 50,000–100,000","KSh 100,000–250,000","Above KSh 250,000"];
 
 function QuotePage(){
-  const initialService=typeof window!=="undefined"?new URLSearchParams(window.location.search).get("service")??"":"";
-  const [name,setName]=useState(""),[email,setEmail]=useState(""),[company,setCompany]=useState(""),[phone,setPhone]=useState(""),[service,setService]=useState(initialService||"Photography"),[budget,setBudget]=useState("Not decided yet"),[timeline,setTimeline]=useState(""),[description,setDescription]=useState("");
+  const quoteParams=typeof window!=="undefined"?new URLSearchParams(window.location.search):new URLSearchParams();
+  const requestedService=quoteParams.get("service")??"";
+  const requestedAudience=quoteParams.get("audience")??"";
+  // Card headings can be more descriptive than the canonical quote options.
+  const serviceAliases:Record<string,string>={
+    "Branding & Identity":"Branding",
+    "Web & UI/UX Design":"Web & UI/UX"
+  };
+  const normalizedService=serviceAliases[requestedService]??requestedService;
+  const initialService=services.some(item=>item.title===normalizedService)
+    ? normalizedService
+    : requestedService||requestedAudience ? "Several services / Other" : "Photography";
+  const [name,setName]=useState(""),[email,setEmail]=useState(""),[company,setCompany]=useState(""),[phone,setPhone]=useState(""),[service,setService]=useState(initialService),[budget,setBudget]=useState("Not decided yet"),[timeline,setTimeline]=useState(""),[description,setDescription]=useState("");
   function submit(event:FormEvent<HTMLFormElement>){
     event.preventDefault();
-    const body=["Hello Visual Verse,","I'd like to discuss a project quotation.","","YOUR INFORMATION","Name: "+name,"Email: "+email,"Phone: "+(phone||"Not provided"),"Company: "+(company||"Individual"),"","PROJECT DETAILS","Service: "+service,"Budget range: "+budget,"Timeline: "+(timeline||"To be discussed"),"","Brief: "+description,"","I can attach any relevant reference files to this email."].join("\n");
+    const body=["Hello Visual Verse,","I'd like to discuss a project quotation.","","YOUR INFORMATION","Name: "+name,"Email: "+email,"Phone: "+(phone||"Not provided"),"Company: "+(company||"Individual"),"","PROJECT DETAILS","Service: "+service,"Audience: "+(requestedAudience||"Not specified"),"Budget range: "+budget,"Timeline: "+(timeline||"To be discussed"),"","Brief: "+description,"","I can attach any relevant reference files to this email."].join("\n");
     openMailDraft("Visual Verse quote request — "+service,body);
   }
   return <>
@@ -290,6 +236,7 @@ function QuotePage(){
             <label>Budget range <select value={budget} onChange={e=>setBudget(e.target.value)}>{budgets.map(b=><option key={b}>{b}</option>)}</select></label>
             <label>Preferred timeline <input value={timeline} onChange={e=>setTimeline(e.target.value)} placeholder="e.g. next month"/></label>
           </div>
+          {requestedAudience&&<p className="vv-inner-audience-context">Enquiring as: <strong>{requestedAudience}</strong></p>}
           <label>Tell us about the project * <textarea required minLength={15} rows={6} value={description} onChange={e=>setDescription(e.target.value)} placeholder="What are you working on, who is it for, and what would success look like?"/></label>
           <div className="vv-inner-file-note"><FileText size={20}/><span><strong>Need to share references?</strong> You can attach logos, moodboards or briefs to the email draft after opening it. Files can't be attached automatically from this form.</span></div>
           <p>Submitting opens your email application with the project brief filled in. No form submission is claimed until you send the email yourself.</p>
