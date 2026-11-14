@@ -33,9 +33,6 @@ button{font-weight:650}
 .console-theme-toggle .theme-icon-sun{display:none}
 :root[data-console-theme="dark"] .console-theme-toggle .theme-icon-moon{display:none}
 :root[data-console-theme="dark"] .console-theme-toggle .theme-icon-sun{display:block}
-.auth-appearance-controls{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-bottom:21px}
-.auth-appearance-controls>span{font-size:10px;font-weight:750;letter-spacing:.12em;color:#658b94}
-.auth-appearance-controls .console-theme-toggle{width:39px;height:39px;min-width:39px;border-radius:11px}
 .auth-card{width:min(460px,100%);margin-inline:auto}
 .auth-card h2{line-height:1.12;overflow-wrap:break-word}
 .auth-card>p{margin:10px 0 20px}
@@ -259,7 +256,6 @@ html[data-console-theme="dark"] body{
 [data-console-theme="dark"] .auth-note{border-top-color:#2e4b55}
 [data-console-theme="dark"] .auth-step,[data-console-theme="dark"] .eyebrow{color:#8cddcb}
 [data-console-theme="dark"] .auth-lock{background:#1e424b;border-color:#35616a;color:#b7f5e5}
-[data-console-theme="dark"] .auth-appearance-controls>span{color:#a7c5ca}
 [data-console-theme="dark"] .stack label{color:#c8e0e2}
 [data-console-theme="dark"] input,[data-console-theme="dark"] select,[data-console-theme="dark"] textarea,
 [data-console-theme="dark"] .stack input,[data-console-theme="dark"] .stack select,[data-console-theme="dark"] .stack textarea{
@@ -294,4 +290,35 @@ html[data-console-theme="dark"] body{
   [data-console-theme="dark"] .workspace .sidebar{box-shadow:16px 0 46px #0008}
   [data-console-theme="dark"] .profile-menu-toggle{background:transparent;border-color:transparent}
   [data-console-theme="dark"] .profile-menu-toggle:hover{background:#21414a}
+}
+
+/* Theme controls live on the same row as the brand or signed-in account.
+   The auth icon stays visible above the sign-in form on narrow screens. */
+.auth-left .brand-row{align-items:center;justify-content:flex-start;flex-wrap:nowrap;gap:12px}
+.auth-left .brand-row>span{min-width:0;flex:0 1 auto;line-height:1.24}
+.auth-left .brand-row .console-theme-toggle{
+  flex:0 0 40px;width:40px;height:40px;min-width:40px;
+  margin-left:clamp(5px,1vw,16px);border-radius:12px;
+  border:1px solid rgba(239,255,252,.32);background:rgba(255,255,255,.11);
+  color:#e7fff9;box-shadow:inset 0 1px 0 rgba(255,255,255,.09);
+}
+.auth-left .brand-row .console-theme-toggle:hover{
+  background:rgba(255,255,255,.2);border-color:rgba(239,255,252,.56)
+}
+.workspace .topbar .profile .console-theme-toggle{
+  width:41px;height:41px;min-width:41px;border-radius:13px;margin-left:2px;flex:0 0 41px
+}
+@media(max-width:760px){
+  .auth-left .brand-row{gap:10px}
+  .auth-left .brand-row .console-theme-toggle{
+    width:38px;height:38px;min-width:38px;flex-basis:38px;margin-left:4px
+  }
+  .workspace .topbar .profile{gap:7px}
+  .workspace .topbar .profile .console-theme-toggle{
+    width:38px;height:38px;min-width:38px;flex-basis:38px;margin-left:0;border-radius:11px
+  }
+}
+@media(max-width:390px){
+  .auth-left .brand-row .console-theme-toggle{width:36px;height:36px;min-width:36px;flex-basis:36px}
+  .workspace .topbar .profile .console-theme-toggle{width:35px;height:35px;min-width:35px;flex-basis:35px}
 }
