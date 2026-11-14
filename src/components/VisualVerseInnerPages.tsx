@@ -72,7 +72,7 @@ function PageHero({kind}:{kind:Kind}){
           <span>VISUAL VERSE / IMAGINE. CREATE. CONNECT.</span>
         </div>
       </div>
-      <div className="vv-inner-hero-bottom"><span>NAIROBI, KENYA · CREATIVE MEDIA STUDIO</span><span>SCROLL TO EXPLORE ↓</span></div>
+      <div className="vv-inner-hero-bottom"><span>NAIROBI, KENYA · CREATIVE MEDIA STUDIO</span><span>SCROLL TO EXPLORE <ArrowRight size={14} style={{transform:"rotate(90deg)"}} aria-hidden="true"/></span></div>
     </section>
   );
 }
@@ -115,7 +115,7 @@ function AudiencePage(){
                 <div className="vv-industry-board-art">
                   {selected.id==="events"?<img src="/portfolio-graduations.jpg" loading="lazy" alt="Graduation photography from Visual Verse's original website"/>:selected.id==="businesses"?<img src="/portfolio-corporate-events.jpg" loading="lazy" alt="Corporate event photograph from the original Visual Verse website"/>:selected.id==="creators"?<img src="/portfolio-social-design.jpg" loading="lazy" alt="Graphic design work from the original Visual Verse website"/>:<img src="/logo-mark.png" loading="lazy" alt="Visual Verse identity mark"/>}
                 </div>
-                <span>MAKE SOMETHING MATTER ↗</span>
+                <span>MAKE SOMETHING MATTER <ArrowUpRight size={15} aria-hidden="true"/></span>
               </div>
             </div>
             <div className="vv-industry-copy">
