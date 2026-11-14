@@ -477,3 +477,9 @@
     animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important;
   }
 }
+
+/* Visible stage context on both scroll-driven desktop and tab-driven mobile. */
+.vvx-world-stage-summary h3{font-size:clamp(17px,1.8vw,24px);line-height:1.2;letter-spacing:-.05em;
+  margin:8px 0 3px;color:#004153;font-weight:850}
+.vvx-world-stage-summary p{font-size:12px;font-weight:500;color:#668389;line-height:1.6;margin:0}
+.vvx-world-stage-promise{display:block;font-size:11px;font-weight:800;color:#129386;margin-top:10px;line-height:1.5}
