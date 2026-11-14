@@ -261,21 +261,66 @@ $("back-setup").addEventListener("click",()=>{
   showLogin("email");
 });
 $("return-setup").addEventListener("click",()=>showLogin("email"));
+// Email delivery is rate-limited by the Auth provider, not by the browser.
+// Keep the existing password and invitation flows intact; never create an account here.
+const setupSubmit=$("setup-email-form").querySelector('button[type="submit"]');
+const setupLabel=setupSubmit.innerHTML;
+const setupFeedback=$("setup-email-feedback");
+const COOLDOWN_KEY="vv-studio-email-setup-cooldown";
+let emailCooldownUntil=0;
+try{emailCooldownUntil=Number(sessionStorage.getItem(COOLDOWN_KEY)||0);}catch{}
+function showSetupFeedback(message,kind="warning"){
+  setupFeedback.textContent=message;
+  setupFeedback.dataset.kind=kind;
+  setupFeedback.hidden=false;
+}
+function renderEmailCooldown(){
+  const seconds=Math.max(0,Math.ceil((emailCooldownUntil-Date.now())/1000));
+  if(seconds){
+    setupSubmit.disabled=true;
+    const mm=Math.floor(seconds/60),ss=String(seconds%60).padStart(2,"0");
+    setupSubmit.textContent="Retry available in "+mm+":"+ss;
+  }else{
+    setupSubmit.disabled=false;
+    setupSubmit.innerHTML=setupLabel;
+  }
+}
+function limitEmailRetries(seconds){
+  emailCooldownUntil=Date.now()+seconds*1000;
+  try{sessionStorage.setItem(COOLDOWN_KEY,String(emailCooldownUntil));}catch{}
+  renderEmailCooldown();
+}
+renderEmailCooldown();
+setInterval(renderEmailCooldown,1000);
 $("setup-email-form").addEventListener("submit",async(e)=>{
   e.preventDefault();
-  const button=e.currentTarget.querySelector("button[type=submit]");
+  if(Date.now()<emailCooldownUntil)return;
   const email=$("setup-email").value.trim();
   if(!email)return;
-  button.disabled=true;
-  const originalLabel=button.innerHTML;
-  button.textContent="Sending secure link…";
-  try {
+  setupFeedback.hidden=true;
+  setupSubmit.disabled=true;
+  setupSubmit.textContent="Requesting secure email…";
+  try{
     const {error}=await supabase.auth.resetPasswordForEmail(email,{redirectTo:baseUrl});
     if(error)throw error;
     $("login-email").value=email;
+    // A successful API request may be intentionally generic for unknown emails.
+    limitEmailRetries(75);
     showLogin("sent");
-  }catch(error){notify(error?.message||"Unable to send setup link. Please try again.");}
-  finally{button.disabled=false;button.innerHTML=originalLabel;}
+  }catch(error){
+    const code=String(error?.code||"");
+    const message=String(error?.message||"");
+    if(error?.status===429||code==="over_email_send_rate_limit"||/email rate limit|too many requests/i.test(message)){
+      showSetupFeedback("Supabase's email-sending limit has been reached. No new link was sent. Wait until the email quota resets (which may take about an hour), or contact the studio administrator to configure a custom SMTP email provider.");
+      limitEmailRetries(300);
+    }else if(code==="email_address_not_authorized"||/email address not authorized/i.test(message)){
+      showSetupFeedback("Supabase's default email service only sends to authorized organization addresses. A studio administrator must configure custom SMTP before sending setup links to other teammates.");
+      limitEmailRetries(90);
+    }else{
+      showSetupFeedback("We could not request your setup link. "+(message||"Please try again later or contact the studio administrator."));
+      renderEmailCooldown();
+    }
+  }finally{renderEmailCooldown();}
 });
 $("continue-signin").addEventListener("click",()=>{
   completingPasswordSetup=false;
