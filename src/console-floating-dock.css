@@ -165,3 +165,21 @@
 @media(prefers-reduced-motion:reduce){
   .vv-dock-item,.vv-dock-tooltip{transition:none}
 }
+
+/* Compact dock after moving the appearance switch to the account header.
+   Maintain accessible 44px touch targets; never hide or shrink section icons. */
+.vv-floating-dock{gap:10px;max-width:min(100%,755px)}
+.vv-dock-scroll{gap:7px}
+.vv-dock-utilities{gap:0}
+@media(max-width:760px){
+  .vv-floating-dock{min-height:64px;padding:7px 9px;gap:5px}
+  .vv-dock-scroll{gap:3px;padding:2px 0}
+  .vv-dock-utilities{gap:0}
+  .vv-dock-divider{margin:0;height:26px}
+  .vv-dock-item{min-width:44px}
+  .vv-dock-mobile-label{font-size:8px}
+}
+@media(max-width:390px){
+  .vv-floating-dock{padding:7px 7px;gap:4px}
+  .vv-dock-scroll{gap:2px}
+}
