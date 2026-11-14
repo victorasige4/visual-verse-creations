@@ -42,7 +42,10 @@ async function enforceIdleLogout(){
   clearIdleTracking();
   state.user=null;state.membership=null;state.clients=[];state.projects=[];state.tasks=[];state.documents=[];state.members=[];
   $("login-password").value="";
+  document.dispatchEvent(new Event("vv:unmount-upload"));
+  state.uploadFiles=[];
   $("modal-overlay").hidden=true;
+  $("modal-form").innerHTML="";
   showLogin("login");
   notify("Signed out after 7 minutes without activity. Please sign in again.");
   try{await supabase.auth.signOut({scope:"local"});}catch{}
@@ -336,7 +339,7 @@ async function submitModal(event){
         project_id:raw.project_id,storage_path:path,file_name:file.name,
         content_type:file.type||"application/octet-stream",size_bytes:file.size,uploaded_by:state.user.id,
       });
-      if(result.error)throw result.error;
+      if(result.error){await supabase.storage.from("studio-documents").remove([path]);throw result.error;}
     }else{
       const map={client:"clients",project:"projects",task:"tasks"};
       const table=map[kind];if(!table)throw new Error("Unknown action");
@@ -464,7 +467,7 @@ $("set-password-form").addEventListener("submit",async(e)=>{
   clearIdleTracking();state.user=null;state.membership=null;
   showLogin("complete");
 });
-async function signOut(){clearIdleTracking();state.user=null;state.membership=null;showLogin("login");await supabase.auth.signOut({scope:"local"});}
+async function signOut(){clearIdleTracking();closeModal();state.user=null;state.membership=null;showLogin("login");await supabase.auth.signOut({scope:"local"});}
 $("sign-out").addEventListener("click",signOut);
 $("profile-sign-out").addEventListener("click",()=>{closeNavigationMenus();void signOut();});
 $("profile-menu-toggle").addEventListener("click",()=>{
