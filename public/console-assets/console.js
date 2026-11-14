@@ -42,7 +42,10 @@ async function enforceIdleLogout(){
   clearIdleTracking();
   state.user=null;state.membership=null;state.clients=[];state.projects=[];state.tasks=[];state.documents=[];state.members=[];
   $("login-password").value="";
+  document.dispatchEvent(new Event("vv:unmount-upload"));
+  state.uploadFiles=[];
   $("modal-overlay").hidden=true;
+  $("modal-form").innerHTML="";
   showLogin("login");
   notify("Signed out after 7 minutes without activity. Please sign in again.");
   try{await supabase.auth.signOut({scope:"local"});}catch{}
@@ -280,7 +283,7 @@ function openModal(kind){
     name="Create task";content=field("Task title","title")+selectField("Project","project_id",options(state.projects,p=>p.name))+field("Due date","due_date","date",false);
   }else if(kind==="upload"){
     if(!state.projects.length){notify("Create a project first.");return;}
-    name="Upload document";content=selectField("Project","project_id",options(state.projects,p=>p.name))+'<label for="upload-file">Choose a file (max 25 MB)</label><input id="upload-file" type="file" required accept=".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx,.ppt,.pptx,.txt,.zip"/>';
+    name="Upload document";content=selectField("Project","project_id",options(state.projects,p=>p.name))+'<label>Choose a file (max 25 MB)</label><div id="vv-upload-mount"><input id="upload-file" type="file" required accept=".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx,.ppt,.pptx,.txt,.zip" aria-label="Choose a document to upload"/></div><p class="secondary-note">Files are privately stored against the chosen project. Only authorized studio members can access them.</p>';
   }else if(kind==="assign"){
     const candidates=state.members.filter(m=>m.role!=="super_admin"&&m.status==="active");
     if(!state.projects.length||!candidates.length){notify("Create a project and invite a teammate first.");return;}
@@ -301,9 +304,11 @@ function openModal(kind){
   }else return;
   $("modal-heading").textContent=name;
   const form=$("modal-form");form.innerHTML=content+'<button class="btn primary" type="submit">'+(kind==="invite"?"Send invitation":kind==="upload"?"Upload securely":"Save")+'</button>';form.dataset.kind=kind;
-  $("modal-overlay").hidden=false;if(kind==="mfa")$("mfa-setup-qr").src=state.mfaQr;form.querySelector("input,select")?.focus();
+  $("modal-overlay").hidden=false;if(kind==="mfa")$("mfa-setup-qr").src=state.mfaQr;
+  if(kind==="upload"){state.uploadFiles=[];document.dispatchEvent(new Event("vv:mount-upload"));}
+  form.querySelector("select,input")?.focus();
 }
-function closeModal(){$("modal-overlay").hidden=true;$("modal-form").innerHTML="";}
+function closeModal(){document.dispatchEvent(new Event("vv:unmount-upload"));state.uploadFiles=[];$("modal-overlay").hidden=true;$("modal-form").innerHTML="";}
 async function submitModal(event){
   event.preventDefault();const form=$("modal-form"),kind=form.dataset.kind;
   const submit=form.querySelector("button[type=submit]");submit.disabled=true;
@@ -324,7 +329,9 @@ async function submitModal(event){
       const res=await supabase.functions.invoke("studio-team",{body:{action:"invite",email:raw.email,role:raw.role}});
       if(res.error||!res.data?.ok)throw new Error(res.data?.error||res.error?.message||"Invitation failed");
     }else if(kind==="upload"){
-      const file=$("upload-file").files?.[0];if(!file||file.size>26214400)throw new Error("Please select a file smaller than 25 MB.");
+      const file=state.uploadFiles?.[0]??$("upload-file")?.files?.[0];
+      if(!file||file.size<=0||file.size>26214400)throw new Error("Please choose a document under 25 MB.");
+      if(!/\.(pdf|png|jpe?g|webp|docx?|pptx?|txt|zip)$/i.test(file.name))throw new Error("That file type is not supported.");
       const path=raw.project_id+"/"+crypto.randomUUID()+"-"+file.name.replace(/[^A-Za-z0-9._-]/g,"_").slice(-100);
       const upload=await supabase.storage.from("studio-documents").upload(path,file,{upsert:false});
       if(upload.error)throw upload.error;
@@ -332,7 +339,7 @@ async function submitModal(event){
         project_id:raw.project_id,storage_path:path,file_name:file.name,
         content_type:file.type||"application/octet-stream",size_bytes:file.size,uploaded_by:state.user.id,
       });
-      if(result.error)throw result.error;
+      if(result.error){await supabase.storage.from("studio-documents").remove([path]);throw result.error;}
     }else{
       const map={client:"clients",project:"projects",task:"tasks"};
       const table=map[kind];if(!table)throw new Error("Unknown action");
@@ -460,7 +467,7 @@ $("set-password-form").addEventListener("submit",async(e)=>{
   clearIdleTracking();state.user=null;state.membership=null;
   showLogin("complete");
 });
-async function signOut(){clearIdleTracking();state.user=null;state.membership=null;showLogin("login");await supabase.auth.signOut({scope:"local"});}
+async function signOut(){clearIdleTracking();closeModal();state.user=null;state.membership=null;showLogin("login");await supabase.auth.signOut({scope:"local"});}
 $("sign-out").addEventListener("click",signOut);
 $("profile-sign-out").addEventListener("click",()=>{closeNavigationMenus();void signOut();});
 $("profile-menu-toggle").addEventListener("click",()=>{
@@ -506,6 +513,7 @@ $("screen-content").addEventListener("click",async(e)=>{
     const res=await supabase.functions.invoke("studio-team",{body:{action,user_id:member.dataset.member}});
     if(res.error||!res.data?.ok)notify(res.data?.error||res.error?.message||"Update failed");else{notify("Team updated.");await refresh();}}
 });
+document.addEventListener("vv:upload-selection",(event)=>{state.uploadFiles=Array.from(event.detail?.files??[]);});
 $("modal-form").addEventListener("submit",submitModal);
 $("modal-close").addEventListener("click",closeModal);
 $("modal-overlay").addEventListener("click",(e)=>{if(e.target===$("modal-overlay"))closeModal();});

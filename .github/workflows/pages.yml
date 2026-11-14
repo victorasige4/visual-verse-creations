@@ -40,6 +40,9 @@ jobs:
           test -s dist/brand-wordmark.png
           test -s dist/logo-mark.png
           node --check dist/console-assets/console.js
+          test -s dist/console-assets/console-file-upload.js
+          node --check dist/console-assets/console-file-upload.js
+          grep -q "console-file-upload.js" dist/console-preview.html
           test -s dist/console-preview.html
           test -s dist/console-assets/console.css
           # Confirm the Studio Console gateway and footer entry survive the Pages build.
