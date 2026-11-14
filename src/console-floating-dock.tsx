@@ -48,7 +48,6 @@ function ConsoleDock() {
       setState({
         view: dockRoot.dataset.view as View,
         admin: dockRoot.dataset.admin === "true",
-        theme: document.documentElement.dataset.consoleTheme === "dark" ? "dark" : "light",
       });
     }
     return () => {
