@@ -18,3 +18,7 @@
 @media(max-width:760px){.page-actions{width:100%}.page-actions .btn{flex:1}.row-actions{flex-direction:column}.row-actions button{min-height:34px}}
 
 .mfa-setup{display:grid;justify-items:center;gap:12px;padding:16px;background:#f0f8f5;border-radius:13px;border:1px solid #d8eae5}.mfa-setup img{width:min(250px,100%);aspect-ratio:1;object-fit:contain;background:#fff;border-radius:8px;padding:9px}.mfa-setup code{max-width:100%;overflow-wrap:anywhere;background:#fff;padding:10px 12px;border:1px dashed #c7e1db;border-radius:8px;color:#1d5761;font-size:12px}.mfa-setup+.stack label{margin-top:15px}
+
+/* Auth email delivery feedback: make provider throttling obvious and stop repeat submissions. */
+.setup-email-feedback{margin:2px 0 4px;padding:12px 14px;border-radius:11px;background:#fff3df;color:#65471d;border:1px solid #f0d8a7;font-size:12px;line-height:1.65}
+#setup-email-form button:disabled{opacity:.7;cursor:not-allowed;transform:none}
