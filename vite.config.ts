@@ -39,11 +39,14 @@ export default defineConfig({
         contact: resolve(process.cwd(), "contact.html"),
         quote: resolve(process.cwd(), "request-quote.html"),
         "console-uploader": resolve(process.cwd(), "src/console-file-upload.tsx"),
+        "console-dock": resolve(process.cwd(), "src/console-floating-dock.tsx"),
       },
       output: {
         entryFileNames: (chunk) => chunk.name === "console-uploader"
           ? "console-assets/console-file-upload.js"
-          : "assets/[name]-[hash].js",
+          : chunk.name === "console-dock"
+            ? "console-assets/console-floating-dock.js"
+            : "assets/[name]-[hash].js",
       },
     },
   },
