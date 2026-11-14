@@ -11,6 +11,8 @@ import { VisualVerseCollaborators } from "./VisualVerseCollaborators";
 import { VisualVerseAboutCta } from "./VisualVerseAboutCta";
 import { useAboutScrollWords } from "../hooks/useAboutScrollWords";
 import "../about-scroll-words.css";
+import "../about-editorial.css";
+import "../about-card-stack.css";
 
 /** Motion cues reproduced from the supplied About walkthroughs. Effects are scoped to this page. */
 function useAboutReveal() {

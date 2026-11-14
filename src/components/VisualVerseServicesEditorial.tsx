@@ -117,7 +117,7 @@ export function VisualVerseServicesEditorial() {
           </div>
         </header>
         <div className="vv-sv-pin-grid">
-          {services.map((s,index)=>{
+          {services.map((s)=>{
             const Icon=s.Icon;
             const photo: Record<string,string> = {
               photography:"about-photographer.webp",
@@ -137,7 +137,7 @@ export function VisualVerseServicesEditorial() {
                 <div className={"vv-sv-pin-card vv-sv-pin-"+s.id}>
                   {image?<img className="vv-sv-pin-photo"
                     src={import.meta.env.BASE_URL+image}
-                    alt="" loading={index>2?"lazy":"eager"} decoding="async"
+                    alt="" loading="lazy" decoding="async"
                   />:<div className="vv-sv-pin-ui-art" aria-hidden="true"><ServiceArtwork kind={s.kind}/></div>}
                   <div className="vv-sv-pin-wash" aria-hidden="true"/>
                   <div className="vv-sv-pin-top">

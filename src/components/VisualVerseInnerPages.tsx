@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { lazy, Suspense, useEffect, useState, type FormEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import {
   ArrowUpRight, ArrowRight, ArrowLeft, Camera, Clapperboard, Palette, PenTool,
@@ -9,11 +9,25 @@ import {
 import type { LucideIcon } from "lucide-react";
 import { VisualVerseNavbar } from "./VisualVerseNavbar";
 import { VisualVerseFooter } from "./VisualVerseClosingSections";
-import { VisualVerseServicesEditorial } from "./VisualVerseServicesEditorial";
-import { VisualVerseAudiences } from "./VisualVerseAudiences";
 import { WhatsAppFloating } from "./VisualVersePolicies";
-import { VisualVerseAboutEditorial } from "./VisualVerseAboutEditorial";
 import { VisualVerseAboutCta } from "./VisualVerseAboutCta";
+
+/* Load the heavier About, Services, and audience experiences only on the
+   matching page. This also lets Vite split their page-specific CSS. */
+const VisualVerseAboutEditorial = lazy(async () => ({
+  default: (await import("./VisualVerseAboutEditorial")).VisualVerseAboutEditorial
+}));
+const VisualVerseServicesEditorial = lazy(async () => ({
+  default: (await import("./VisualVerseServicesEditorial")).VisualVerseServicesEditorial
+}));
+const VisualVerseAudiences = lazy(async () => ({
+  default: (await import("./VisualVerseAudiences")).VisualVerseAudiences
+}));
+const PageLoading = () => (
+  <div role="status" aria-label="Loading page content"
+    style={{minHeight:"60svh",background:"#f7fcfb"}} />
+);
+
 
 type Kind = "about" | "services" | "audiences" | "contact" | "quote";
 const EMAIL = "hello@visualverse.com";
@@ -297,9 +311,9 @@ export function VisualVerseInnerPage({kind}:{kind:Kind}){
     <VisualVerseNavbar/>
     <main id="top">
       {kind!=="about"&&kind!=="services"&&<PageHero kind={kind}/>}
-      {kind==="about"&&<VisualVerseAboutEditorial/>}
-      {kind==="services"&&<ServicesPage/>}
-      {kind==="audiences"&&<AudiencePage/>}
+      {kind==="about"&&<Suspense fallback={<PageLoading/>}><VisualVerseAboutEditorial/></Suspense>}
+      {kind==="services"&&<Suspense fallback={<PageLoading/>}><ServicesPage/></Suspense>}
+      {kind==="audiences"&&<Suspense fallback={<PageLoading/>}><AudiencePage/></Suspense>}
       {kind==="contact"&&<ContactPage/>}
       {kind==="quote"&&<QuotePage/>}
       {kind!=="about"&&<VisualVerseAboutCta/>}

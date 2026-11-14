@@ -14,11 +14,6 @@ const root = document.getElementById("vv-inner-page-root");
 if (root) {
   createRoot(root).render(<StrictMode><VisualVerseInnerPage kind={pageKind()} /></StrictMode>);
 }
-import "./about-editorial.css";
-import "./about-card-stack.css";
-import "./vision-mission.css";
-import "./how-we-work-studio.css";
-import "./potadot-toolbox.css";
 import "./visual-verse-cta.css";
 import "./visual-verse-industries.css";
 
