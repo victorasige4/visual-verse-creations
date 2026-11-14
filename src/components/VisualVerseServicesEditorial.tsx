@@ -126,7 +126,7 @@ export function VisualVerseServicesEditorial() {
               "graphic-design":"portfolio-social-design.jpg",
             };
             const image=photo[s.id];
-            return <article className="vv-sv-pin-cell vv-sv-reveal" id={"details-"+s.id} key={s.id}
+            return <article className="vv-sv-pin-cell" id={"details-"+s.id} key={s.id}
               aria-labelledby={"sv-"+s.id}>
               <span id={"service-"+s.id} className="vv-sv-pin-anchor" aria-hidden="true"/>
               <PinContainer

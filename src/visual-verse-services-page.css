@@ -823,3 +823,34 @@
  }
  .vv-sp-art-growth .vv-sp-chart path:last-child{stroke-dashoffset:0!important}
 }
+
+
+/* Final card polish: all six pins are visible immediately; their own
+   Aceternity hover animations supply motion. This avoids empty cards while
+   a long section is being scroll-captured or entered from anchor links. */
+.vv-sv-pin-cell{opacity:1!important;filter:none!important;transform:none!important}
+.vv-sv-pin-ui-art .vv-ui-preview{
+  filter:brightness(.67) saturate(.84) blur(.35px);
+  opacity:.9;
+}
+.vv-sv-pin-wash{
+  background:linear-gradient(180deg,
+    rgba(0,27,42,.51) 0%,rgba(0,29,43,.38) 37%,
+    rgba(0,29,43,.55) 62%,rgba(0,25,39,.94) 100%);
+}
+.vv-sv-pin-center h3{
+  text-shadow:0 2px 15px rgba(0,17,29,.85),0 0 16px rgba(0,17,29,.5);
+}
+@media (hover:hover) and (pointer:fine){
+  body:has(.vv-sv-service-pin:hover) .vv-cursor-orbit.is-interactive,
+  body:has(.vv-sv-service-pin:focus-visible) .vv-cursor-orbit.is-interactive{
+    width:27px;height:27px;border:1.5px solid rgba(46,196,182,.75);
+    background:rgba(46,196,182,.1);box-shadow:none;
+    -webkit-backdrop-filter:none;backdrop-filter:none;
+  }
+  body:has(.vv-sv-service-pin:hover) .vv-cursor-orbit-label,
+  body:has(.vv-sv-service-pin:focus-visible) .vv-cursor-orbit-label{opacity:0!important}
+}
+@media(hover:none),(pointer:coarse){
+  .vv-sv-pin-ui-art .vv-ui-preview{filter:brightness(.62) saturate(.8);opacity:.9}
+}
