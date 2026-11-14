@@ -20,6 +20,7 @@ function applyConsoleTheme(mode,save=true){
   const meta=document.querySelector('meta[name="theme-color"]');
   if(meta)meta.content=next==="dark"?"#0b1720":"#003f5c";
   if(save){try{localStorage.setItem(THEME_KEY,next);}catch{}}
+  document.dispatchEvent(new Event("vv:console-dock-theme"));
 }
 document.querySelectorAll(".console-theme-toggle").forEach(button=>{
   button.addEventListener("click",()=>applyConsoleTheme(document.documentElement.dataset.consoleTheme==="dark"?"light":"dark"));
@@ -88,26 +89,8 @@ for(const eventName of ["pointerdown","keydown","touchstart","wheel"]){
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)recordStudioActivity();});
 window.addEventListener("focus",recordStudioActivity);
 setInterval(()=>{if(idleTracking&&isPastIdleDeadline())void enforceIdleLogout();},10000);
-// Lightweight, accessible workspace navigation with no extra dependencies.
-function setProfileMenu(open){
-  const menu=$("profile-menu"),trigger=$("profile-menu-toggle");
-  if(!menu||!trigger)return;
-  menu.hidden=!open;
-  trigger.setAttribute("aria-expanded",String(open));
-}
-function setNavigationDrawer(open){
-  const workspace=$("workspace"),trigger=$("console-menu-toggle"),backdrop=$("console-nav-backdrop");
-  if(!workspace||!trigger||!backdrop)return;
-  const show=open&&!workspace.hidden;
-  workspace.classList.toggle("nav-open",show);
-  backdrop.hidden=!show;
-  trigger.setAttribute("aria-expanded",String(show));
-  trigger.setAttribute("aria-label",show?"Close navigation":"Open navigation");
-}
-function closeNavigationMenus(){setProfileMenu(false);setNavigationDrawer(false);}
 let completingPasswordSetup=false;
 function showLogin(mode="email"){
-  closeNavigationMenus();
   $("workspace").hidden=true;$("auth-screen").hidden=false;
   $("setup-email-form").hidden=mode!=="email";
   $("setup-email-sent").hidden=mode!=="sent";
@@ -172,7 +155,6 @@ async function loadSession(){
   $("auth-screen").hidden=true;$("workspace").hidden=false;
   $("signed-in-email").textContent=user.email??"";
   $("profile-circle").textContent=(user.email??"VV").slice(0,2).toUpperCase();
-  $("team-nav").hidden=!isAdmin();$("mobile-team-nav").hidden=!isAdmin();
   await refresh();
 }
 async function refresh(){
@@ -277,9 +259,12 @@ function render(){
   if($("workspace").hidden)return;
   const titles={overview:"Overview",clients:"Clients",projects:"Projects",tasks:"Tasks & deadlines",documents:"Documents",team:"Team & access",security:"Security"};
   $("page-crumb").textContent=(titles[state.view]??"Overview").toUpperCase();
-  document.querySelectorAll("[data-tab]").forEach(b=>{b.classList.toggle("active",b.dataset.tab===state.view);b.setAttribute("aria-current",b.dataset.tab===state.view?"page":"false");});
+
   const pages={overview:renderOverview,clients:renderClients,projects:renderProjects,tasks:renderTasks,documents:renderDocuments,team:renderTeam,security:renderSecurity};
   $("screen-content").innerHTML=(pages[state.view]??renderOverview)();
+  const dock=$("vv-console-dock-root");
+  if(dock){dock.dataset.view=state.view;dock.dataset.admin=String(isAdmin());dock.dataset.theme=document.documentElement.dataset.consoleTheme==="dark"?"dark":"light";}
+  document.dispatchEvent(new CustomEvent("vv:console-dock-state",{detail:{view:state.view,admin:isAdmin(),theme:document.documentElement.dataset.consoleTheme==="dark"?"dark":"light"}}));
 }
 function options(rows,mapper){return rows.map(r=>'<option value="'+esc(r.id)+'">'+esc(mapper(r))+'</option>').join("");}
 function field(label,name,type="text",required=true){return '<label for="field-'+name+'">'+esc(label)+'</label><input id="field-'+name+'" name="'+name+'" type="'+type+'" '+(required?"required":"")+'/>';}
@@ -487,26 +472,20 @@ $("set-password-form").addEventListener("submit",async(e)=>{
   showLogin("complete");
 });
 async function signOut(){clearIdleTracking();closeModal();state.user=null;state.membership=null;showLogin("login");await supabase.auth.signOut({scope:"local"});}
-$("sign-out").addEventListener("click",signOut);
-$("profile-sign-out").addEventListener("click",()=>{closeNavigationMenus();void signOut();});
-$("profile-menu-toggle").addEventListener("click",()=>{
-  const open=$("profile-menu").hidden;
-  setNavigationDrawer(false);
-  setProfileMenu(open);
+// The React FloatingDock is the single navigation and account-control surface.
+document.addEventListener("vv:console-sign-out",()=>{void signOut();});
+document.addEventListener("vv:console-toggle-theme",()=>{
+  applyConsoleTheme(document.documentElement.dataset.consoleTheme==="dark"?"light":"dark");
 });
-$("console-menu-toggle").addEventListener("click",()=>{
-  const open=!$("workspace").classList.contains("nav-open");
-  setProfileMenu(false);
-  setNavigationDrawer(open);
+document.addEventListener("vv:console-navigate",(event)=>{
+  if($("workspace").hidden||!state.membership)return;
+  const section=event.detail?.section;
+  const allowed=["overview","clients","projects","tasks","documents","team","security"];
+  if(!allowed.includes(section)||(section==="team"&&!isAdmin()))return;
+  state.view=section;
+  render();
+  window.scrollTo({top:0,behavior:"instant"});
 });
-$("console-nav-backdrop").addEventListener("click",()=>setNavigationDrawer(false));
-document.addEventListener("pointerdown",(event)=>{
-  if(!$("profile-menu").hidden&&!event.target.closest("#console-profile-wrap"))setProfileMenu(false);
-});
-document.addEventListener("keydown",(event)=>{
-  if(event.key==="Escape")closeNavigationMenus();
-});
-document.querySelectorAll("[data-tab]").forEach(b=>b.addEventListener("click",()=>{state.view=b.dataset.tab;render();closeNavigationMenus();window.scrollTo({top:0,behavior:"instant"});}));
 $("screen-content").addEventListener("click",async(e)=>{
   const jump=e.target.closest("[data-nav]");
   if(jump){const page=jump.dataset.nav;if(["overview","clients","projects","tasks","documents","security","team"].includes(page)&&(page!=="team"||isAdmin())){state.view=page;render();window.scrollTo({top:0,behavior:"instant"});}return;}
