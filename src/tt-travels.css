@@ -1,9 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
 /* Visual Verse typography system
  * The supplied ZIP is TypeType's TRIAL release. Its licence forbids embedding
  * the fonts on public web pages. No proprietary font binaries are included.
  * These local() declarations use legitimately installed TT Travels when present.
- * Plus Jakarta Sans is a freely hosted, visually compatible fallback for other visitors.
  * To render it for every visitor, obtain a suitable webfont licence and deliver
  * the licensed webfont through an appropriately licensed web hosting setup.
  */
@@ -53,7 +51,7 @@
   font-style:normal;font-weight:900;font-display:swap;
 }
 :root{
-  --vv-typeface:"VisualVerse TT Travels","TT Travels","Plus Jakarta Sans",Arial,sans-serif;
+  --vv-typeface:"VisualVerse TT Travels","TT Travels",Arial,sans-serif;
   --vv-island-font:var(--vv-typeface);
   --vv-font-heading-weight:800;
   --vv-font-subheading-weight:700;
