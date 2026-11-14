@@ -1045,3 +1045,20 @@
     transform:none!important;
   }
 }
+
+/* The original Visual Verse hover pin is layered above the tilted card.
+   Let the tooltip, service highlights and perspective light escape card rows. */
+.vv-sv-pin-cell:hover,.vv-sv-pin-cell:focus-within {z-index:12}
+.vv-sv-pin-grid {isolation:isolate}
+.vv-sv-service-pin[data-pin-highlights="true"]:is(:hover,:focus-visible) .vv-sv-pin-center p {
+  max-height:0;
+  margin-top:0;
+  opacity:0;
+}
+@media(hover:none),(pointer:coarse) {
+  .vv-sv-service-pin .vv-sv-pin-center p {
+    max-height:115px;
+    margin-top:10px;
+    opacity:1;
+  }
+}

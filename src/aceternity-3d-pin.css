@@ -1,97 +1,215 @@
 /*
- * Aceternity UI 3D Pin component — Visual Verse edition.
- * Source study: https://ui.aceternity.com/registry/3d-pin-demo.json
- * Recreates card lift/tilt, expanding perspective rings, pin beams and
- * floating label with our exclusive navy (#003F5C)/mint (#2EC4B6) palette.
- * Our accessible single-anchor PinContainer replaces upstream nested links.
+ * Original Visual Verse / Aceternity 3D Pin visual behavior.
+ * Geometry mirrors the old user-owned implementation: tilt on hover,
+ * floating zinc title + highlights, cyan laser, sky pulse rings (0/2/4s).
+ * This stylesheet is self-contained because the migrated page disables
+ * Tailwind Preflight to protect the rest of Visual Verse.
  */
-.vv-pin-container{
-  position:relative;display:block;width:100%;height:100%;
-  isolation:isolate;perspective:1100px;
-  text-decoration:none;color:inherit;
+.vv-pin-container {
+  position:relative;
+  display:block;
+  width:100%;
+  height:100%;
+  isolation:isolate;
+  z-index:1;
+  perspective:1000px;
   cursor:pointer;
+  text-decoration:none;
+  color:inherit;
   -webkit-tap-highlight-color:transparent;
 }
-.vv-pin-platform{
-  width:100%;height:100%;
-  position:relative;z-index:3;
-  transform-style:preserve-3d;will-change:transform;
+.vv-pin-platform {
+  position:relative;
+  z-index:2;
+  width:100%;
+  height:100%;
+  transform-style:preserve-3d;
+  transform-origin:50% 50%;
+  will-change:transform;
 }
-.vv-pin-face{
-  height:100%;width:100%;border-radius:23px;overflow:hidden;
-  position:relative;isolation:isolate;
+.vv-pin-face {
+  position:relative;
+  isolation:isolate;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,.12);
   background:#002a40;
-  border:1px solid rgba(46,196,182,.20);
-  box-shadow:0 18px 35px rgba(0,22,35,.28),inset 0 0 0 1px rgba(255,255,255,.035);
-  transition:box-shadow .65s cubic-bezier(.22,1,.36,1),border-color .45s ease;
+  box-shadow:0 8px 16px rgba(0,0,0,.4);
+  transition:border-color .7s ease,box-shadow .7s ease;
 }
-.vv-pin-container:hover .vv-pin-face,
-.vv-pin-container:focus-visible .vv-pin-face{
-  border-color:rgba(46,196,182,.72);
-  box-shadow:0 34px 58px rgba(0,17,29,.52),0 0 42px rgba(46,196,182,.18);
+.vv-pin-container[data-pin-active="true"] .vv-pin-face {
+  border-color:rgba(255,255,255,.24);
+  box-shadow:0 30px 52px rgba(0,0,0,.42),0 10px 25px rgba(0,0,0,.28);
 }
-.vv-pin-container:focus-visible{
-  outline:3px solid #2ec4b6;outline-offset:6px;border-radius:25px;
+.vv-pin-container:focus-visible {
+  outline:3px solid #2ec4b6;
+  outline-offset:4px;
+  border-radius:23px;
 }
-.vv-pin-perspective{
-  position:absolute;inset:0;z-index:2;pointer-events:none;
-  opacity:0;transform:translateY(16px);
-  transition:opacity .48s ease,transform .6s cubic-bezier(.22,1,.36,1);
+.vv-pin-perspective {
+  position:absolute;
+  inset:0;
+  z-index:5;
+  pointer-events:none;
+  opacity:0;
+  transform:translateY(14px);
+  transition:opacity .5s ease,transform .7s cubic-bezier(.22,1,.36,1);
 }
-.vv-pin-perspective.is-active{opacity:1;transform:translateY(0)}
-.vv-pin-floating-label{
-  position:absolute;z-index:7;top:-33px;left:50%;
-  display:inline-flex;align-items:center;justify-content:center;
-  background:#003f5c;color:#fff;border:1px solid rgba(46,196,182,.48);
-  min-width:122px;padding:8px 16px;white-space:nowrap;
-  border-radius:99px;font-size:11px;font-weight:700;letter-spacing:.05em;
-  box-shadow:0 12px 24px rgba(0,20,35,.32);
-  translate:-50% 0;
+.vv-pin-perspective.is-active {
+  opacity:1;
+  transform:translateY(0);
 }
-.vv-pin-floating-label:after{
-  content:"";position:absolute;bottom:-2px;left:18%;right:18%;
-  height:2px;border-radius:50%;
-  background:linear-gradient(90deg,transparent,#2ec4b6,transparent);
-}
-.vv-pin-halo-plane{
-  position:absolute;left:50%;bottom:-75px;
-  width:170px;height:170px;transform:translateX(-50%) rotateX(70deg);
-  perspective:800px;
-}
-.vv-pin-halo-ring{
-  position:absolute;top:50%;left:50%;
-  display:block;width:165px;height:165px;border-radius:50%;
-  background:rgba(46,196,182,.05);
-  border:1px solid rgba(46,196,182,.33);
-  box-shadow:0 0 20px rgba(46,196,182,.15),inset 0 0 25px rgba(46,196,182,.045);
-}
-.vv-pin-beam,.vv-pin-beam-core{
-  position:absolute;left:50%;bottom:-29px;
-  width:1px;height:122px;
-  background:linear-gradient(0deg,rgba(46,196,182,0),#2ec4b6);
+.vv-pin-tooltip {
+  position:absolute;
+  z-index:8;
+  top:-28px;
+  left:50%;
+  width:min(240px,94%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
   transform:translateX(-50%);
-  transform-origin:bottom;
-  opacity:.72;
-  transition:height .65s cubic-bezier(.22,1,.36,1);
 }
-.vv-pin-beam{width:8px;filter:blur(9px);opacity:.46}
-.vv-pin-beam-core{width:1px}
-.vv-pin-perspective.is-active .vv-pin-beam,
-.vv-pin-perspective.is-active .vv-pin-beam-core{height:157px}
-.vv-pin-beam-point{
-  position:absolute;left:50%;bottom:-29px;
-  width:6px;height:6px;border-radius:50%;
-  background:#2ec4b6;box-shadow:0 0 8px 3px rgba(46,196,182,.35);
-  transform:translate(-50%,0);
+.vv-pin-floating-label {
+  position:relative;
+  z-index:2;
+  display:block;
+  max-width:100%;
+  padding:7px 17px;
+  border-radius:999px;
+  background:#09090b;
+  color:white;
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 12px 27px rgba(0,0,0,.32);
+  font-size:12px;
+  font-weight:750;
+  line-height:1.25;
+  text-align:center;
+  text-wrap:balance;
+  letter-spacing:.008em;
 }
-@media (hover:none),(pointer:coarse){
-  .vv-pin-floating-label,.vv-pin-halo-plane,.vv-pin-beam,
-  .vv-pin-beam-core,.vv-pin-beam-point{display:none}
-  .vv-pin-container .vv-pin-face{box-shadow:0 14px 28px rgba(0,22,35,.2)}
+.vv-pin-floating-label:after {
+  content:"";
+  position:absolute;
+  bottom:0;
+  left:18%;
+  right:18%;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(52,211,153,.9),transparent);
 }
-@media(prefers-reduced-motion:reduce){
-  .vv-pin-platform,.vv-pin-perspective,.vv-pin-face{
-    transform:none!important;transition:none!important;
+.vv-pin-highlights {
+  display:grid;
+  gap:7px;
+  width:min(222px,100%);
+  margin:0;
+  padding:12px 14px;
+  list-style:none;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:12px;
+  background:rgba(9,9,11,.91);
+  box-shadow:0 16px 34px rgba(0,0,0,.32);
+  backdrop-filter:blur(9px);
+  -webkit-backdrop-filter:blur(9px);
+}
+.vv-pin-highlights li {
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  list-style:none;
+  margin:0;
+  padding:0;
+  color:rgba(255,255,255,.86);
+  font-size:11px;
+  line-height:1.32;
+  font-weight:500;
+}
+.vv-pin-highlight-dot {
+  flex:0 0 6px;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  margin-top:4px;
+  background:rgba(52,211,153,.78);
+  box-shadow:0 0 8px rgba(52,211,153,.36);
+}
+.vv-pin-halo-plane {
+  position:absolute;
+  z-index:1;
+  top:60%;
+  left:50%;
+  width:180px;
+  height:180px;
+  perspective:1000px;
+  transform:translate(-50%,-50%) rotateX(70deg) translateZ(0);
+  transform-style:preserve-3d;
+}
+.vv-pin-halo-ring {
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  background:rgba(14,165,233,.08);
+  box-shadow:0 8px 16px rgba(0,0,0,.4);
+  border:1px solid rgba(14,165,233,.12);
+}
+.vv-pin-beam {
+  position:absolute;
+  z-index:3;
+  top:0;
+  left:50%;
+  height:60%;
+  transform:translateX(-50%);
+  background:linear-gradient(to bottom,transparent,rgba(6,182,212,.96));
+  transition:height .7s ease;
+}
+.vv-pin-beam--glow {
+  width:5px;
+  filter:blur(4px);
+  opacity:.9;
+}
+.vv-pin-beam--core {
+  width:1px;
+}
+.vv-pin-beam-point {
+  position:absolute;
+  top:60%;
+  left:50%;
+  z-index:4;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:#67e8f9;
+}
+.vv-pin-beam-point--glow {
+  width:7px;
+  height:7px;
+  filter:blur(3px);
+  opacity:.9;
+}
+.vv-pin-beam-point--core {
+  width:3px;
+  height:3px;
+  box-shadow:0 0 9px rgba(103,232,249,.82);
+}
+@media(hover:hover) and (pointer:fine){
+  .vv-pin-container[data-pin-active="true"] .vv-pin-platform {
+    filter:drop-shadow(0 10px 16px rgba(0,0,0,.14));
   }
-  .vv-pin-halo-plane,.vv-pin-beam,.vv-pin-beam-core{display:none!important}
+}
+@media(hover:none),(pointer:coarse) {
+  .vv-pin-perspective {display:none}
+  .vv-pin-container .vv-pin-platform {transform:none!important;filter:none!important}
+  .vv-pin-container .vv-pin-face {box-shadow:0 13px 24px rgba(0,0,0,.24)}
+}
+@media(prefers-reduced-motion:reduce) {
+  .vv-pin-platform,.vv-pin-perspective,.vv-pin-face {
+    transform:none!important;
+    transition:none!important;
+    animation:none!important;
+  }
+  .vv-pin-perspective {display:none}
 }
