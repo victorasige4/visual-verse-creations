@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
 import {
   LayoutDashboard,
@@ -53,6 +53,15 @@ function ConsoleDock() {
     };
     document.addEventListener("vv:console-dock-state", update);
     document.addEventListener("vv:console-dock-theme", themeUpdated);
+    // Hydrate from the vanilla Console's last render, even if it ran before
+    // the React island mounted or before this effect subscribed.
+    if(dockRoot?.dataset.view) {
+      setState({
+        view: dockRoot.dataset.view as View,
+        admin: dockRoot.dataset.admin === "true",
+        theme: document.documentElement.dataset.consoleTheme === "dark" ? "dark" : "light",
+      });
+    }
     return () => {
       document.removeEventListener("vv:console-dock-state", update);
       document.removeEventListener("vv:console-dock-theme", themeUpdated);
@@ -62,7 +71,7 @@ function ConsoleDock() {
   const navigate = (section: View) => {
     document.dispatchEvent(new CustomEvent("vv:console-navigate", { detail: { section } }));
   };
-  const sections: { id: View; title: string; icon: React.ReactNode }[] = [
+  const sections: { id: View; title: string; icon: ReactNode }[] = [
     { id: "overview", title: "Overview", icon: <LayoutDashboard /> },
     { id: "clients", title: "Clients", icon: <UsersRound /> },
     { id: "projects", title: "Projects", icon: <FolderKanban /> },
