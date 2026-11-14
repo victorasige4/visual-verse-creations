@@ -30,6 +30,8 @@ jobs:
         env:
           GITHUB_PAGES: "true"
         run: npm run build
+      - name: Validate redesigned Who We Serve experience
+        run: node scripts/check-who-we-serve.mjs
       - name: Check Visual Verse public-facing business language
         run: node scripts/check-brand-language.mjs
       - name: Validate Visual Verse Console light/dark appearance
