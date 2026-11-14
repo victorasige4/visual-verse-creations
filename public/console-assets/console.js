@@ -80,7 +80,7 @@ function renderClients(){
     (state.clients.length?state.clients.map(c=>'<div class="table-row"><strong>'+esc(c.name)+'</strong><span>'+esc(c.email??"—")+'</span><span>'+esc(c.phone??"—")+'</span><span>'+tag("Active")+'</span></div>').join(""):empty("No clients yet.","Add a client to start planning work together."))+'</div>';
 }
 function renderProjects(){
-  return heading("THE WORK IN MOTION","Projects","Your creative work, organized from first idea to delivery.",isAdmin()?addButton("New project","project"):"")+
+  return heading("THE WORK IN MOTION","Projects","Your creative work, organized from first idea to delivery.",isAdmin()?'<div class="page-actions">'+addButton("New project","project")+addButton("Assign teammate","assign")+"</div>":"")+
   '<div class="table-card"><div class="table-row heading"><span>Project</span><span>Client</span><span>Status</span><span>Deadline</span></div>'+
   (state.projects.length?state.projects.map(p=>'<div class="table-row"><strong>'+esc(p.name)+'</strong><span>'+esc(findClient(p.client_id))+'</span><span>'+tag(p.status)+'</span><span>'+esc(p.due_date??"Not set")+'</span></div>').join(""):empty("No projects yet.","Create your first project to track its work."))+'</div>';
 }
@@ -99,7 +99,7 @@ function renderTeam(){
   if(!isAdmin())return empty("Restricted area","Only studio administrators can access the team directory.");
   return heading("THE PEOPLE BEHIND THE WORK","Team & access","Invite trusted collaborators and manage their studio permissions.",addButton("Invite teammate","invite"))+
   '<div class="table-card"><div class="table-row heading"><span>Member</span><span>Role</span><span>Status</span><span></span></div>'+
-  (state.members.length?state.members.map(m=>'<div class="table-row"><strong>'+esc(m.email||m.display_name||m.user_id)+'</strong><span>'+esc(nice(m.role))+'</span><span>'+tag(m.status)+'</span><span>'+(m.role==="super_admin"?"Owner":'<button type="button" data-member="'+esc(m.user_id)+'" data-change="'+(m.status==="active"?"suspend":"reactivate")+'">'+(m.status==="active"?"Suspend":"Reactivate")+'</button>')+'</span></div>').join(""):empty("The studio team","Invite collaborators to build together."))+'</div>'+
+  (state.members.length?state.members.map(m=>'<div class="table-row"><strong>'+esc(m.email||m.display_name||m.user_id)+'</strong><span>'+esc(nice(m.role))+'</span><span>'+tag(m.status)+'</span><span>'+(m.role==="super_admin"?"Owner":'<div class="row-actions"><button type="button" data-role="'+esc(m.user_id)+'">Change role</button><button type="button" data-member="'+esc(m.user_id)+'" data-change="'+(m.status==="active"?"suspend":"reactivate")+'">'+(m.status==="active"?"Suspend":"Reactivate")+'</button></div>')+'</span></div>').join(""):empty("The studio team","Invite collaborators to build together."))+'</div>'+
   '<p class="secondary-note">Each person has individual credentials. Suspended accounts lose access to protected studio data immediately.</p>';
 }
 function render(){
@@ -126,6 +126,20 @@ function openModal(kind){
   }else if(kind==="upload"){
     if(!state.projects.length){notify("Create a project first.");return;}
     name="Upload document";content=selectField("Project","project_id",options(state.projects,p=>p.name))+'<label for="upload-file">Choose a file (max 25 MB)</label><input id="upload-file" type="file" required accept=".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx,.ppt,.pptx,.txt,.zip"/>';
+  }else if(kind==="assign"){
+    const candidates=state.members.filter(m=>m.role!=="super_admin"&&m.status==="active");
+    if(!state.projects.length||!candidates.length){notify("Create a project and invite a teammate first.");return;}
+    name="Assign teammate to project";
+    content=selectField("Project","project_id",options(state.projects,p=>p.name))+
+      selectField("Team member","user_id",candidates.map(m=>'<option value="'+esc(m.user_id)+'">'+esc(m.email||m.display_name||m.user_id)+" · "+esc(nice(m.role))+'</option>').join(""));
+  }else if(kind==="role"){
+    const member=state.members.find(m=>m.user_id===state.roleTarget);
+    if(!member){notify("Select a teammate.");return;}
+    const allowed=state.membership.role==="super_admin"?["admin","project_manager","creative","viewer"]:["project_manager","creative","viewer"];
+    if(member.role==="super_admin"||(state.membership.role!=="super_admin"&&member.role==="admin")){notify("This role cannot be changed.");return;}
+    name="Change team role";
+    content='<p class="secondary-note">Update access for '+esc(member.email||member.display_name||"teammate")+'</p>'+
+      selectField("New role","role",allowed.map(r=>'<option value="'+esc(r)+'" '+(r===member.role?"selected":"")+'>'+esc(nice(r))+'</option>').join(""));
   }else if(kind==="invite"){
     name="Invite a teammate";const allowed=state.membership.role==="super_admin"?["admin","project_manager","creative","viewer"]:["project_manager","creative","viewer"];
     content=field("Email address","email","email")+selectField("Team role","role",allowed.map(r=>'<option value="'+r+'">'+nice(r)+'</option>').join(""));
@@ -140,7 +154,13 @@ async function submitModal(event){
   const submit=form.querySelector("button[type=submit]");submit.disabled=true;
   try{
     const raw=Object.fromEntries(new FormData(form).entries());
-    if(kind==="invite"){
+    if(kind==="assign"){
+      const result=await supabase.from("project_members").insert({project_id:raw.project_id,user_id:raw.user_id});
+      if(result.error)throw result.error;
+    }else if(kind==="role"){
+      const result=await supabase.functions.invoke("studio-team",{body:{action:"change_role",user_id:state.roleTarget,role:raw.role}});
+      if(result.error||!result.data?.ok)throw new Error(result.data?.error||result.error?.message||"Role update failed");
+    }else if(kind==="invite"){
       const res=await supabase.functions.invoke("studio-team",{body:{action:"invite",email:raw.email,role:raw.role}});
       if(res.error||!res.data?.ok)throw new Error(res.data?.error||res.error?.message||"Invitation failed");
     }else if(kind==="upload"){
@@ -196,6 +216,7 @@ $("screen-content").addEventListener("click",async(e)=>{
   if(download){const d=state.documents.find(x=>x.id===download.dataset.download);if(!d)return;
     const res=await supabase.storage.from("studio-documents").createSignedUrl(d.storage_path,60);
     if(res.error)notify(res.error.message);else window.open(res.data.signedUrl,"_blank","noopener,noreferrer");return;}
+  const role=e.target.closest("[data-role]");if(role){state.roleTarget=role.dataset.role;openModal("role");return;}
   const member=e.target.closest("[data-member]");
   if(member){const action=member.dataset.change;if(!confirm(action==="suspend"?"Suspend this teammate?":"Reactivate this teammate?"))return;
     const res=await supabase.functions.invoke("studio-team",{body:{action,user_id:member.dataset.member}});
