@@ -72,7 +72,7 @@ function PageHero({kind}:{kind:Kind}){
           <span>VISUAL VERSE / IMAGINE. CREATE. CONNECT.</span>
         </div>
       </div>
-      <div className="vv-inner-hero-bottom"><span>NAIROBI, KENYA · CREATIVE MEDIA STUDIO</span><span>SCROLL TO EXPLORE <ArrowRight size={14} style={{transform:"rotate(90deg)"}} aria-hidden="true"/></span></div>
+      <div className="vv-inner-hero-bottom"><span>NAIROBI, KENYA · CREATIVE MEDIA COMPANY</span><span>SCROLL TO EXPLORE <ArrowRight size={14} style={{transform:"rotate(90deg)"}} aria-hidden="true"/></span></div>
     </section>
   );
 }
