@@ -98,5 +98,18 @@
   .vv-map-v3 .vv-atlas-led,
   .vv-map-v3 .vv-atlas-compass svg,
   .vv-map-v3 .vv-atlas-ghost-route{animation:none}
+  /* Static, legible connections stay visible without continually repainting SVG paths. */
+  .vv-map-v3 .vv-atlas-ghost-route{
+    stroke:#6adbd0;
+    stroke-width:1.9;
+    stroke-dasharray:4 9;
+    opacity:.52;
+    filter:none;
+  }
+  .vv-map-v3 .vv-atlas-active-route{
+    stroke:#d4ffec;
+    stroke-width:3.2;
+    opacity:1;
+  }
   .vv-map-v3 .vv-atlas-map > svg .vv-atlas-counties path{transition:none}
 }
