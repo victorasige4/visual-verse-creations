@@ -1,443 +1,383 @@
-import { useEffect, useState, type KeyboardEvent, type ReactNode } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
+import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
 import {
-  ArrowDown, ArrowUpRight, Aperture, BadgeCheck, Building2,
-  Camera, Check, ChevronDown, Clapperboard, Compass,
-  Globe2, HeartHandshake, Lightbulb, MonitorSmartphone,
-  MoveUpRight, Palette, Play, Rocket, Sparkles, WandSparkles,
+  ArrowDown, ArrowRight, ArrowUpRight, Aperture, BadgeCheck, Building2,
+  Camera, Check, Clapperboard, Compass, ExternalLink, Fingerprint,
+  Globe2, Lightbulb, Megaphone, MonitorSmartphone, MousePointer2,
+  Palette, Play, Rocket, Sparkles, UsersRound, WandSparkles,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import "../who-we-serve-redesign.css";
 
 const BASE = import.meta.env.BASE_URL;
-const image = (name: string) => BASE + name;
-const quote = (audience?: string) =>
+const asset = (file: string) => BASE + file;
+const inquire = (audience?: string) =>
   BASE + "request-quote.html" + (audience ? "?audience=" + encodeURIComponent(audience) : "");
 
-type Audience = {
-  id: string; number: string; group: string; title: string; description: string;
-  focus: string; offers: string[]; Icon: LucideIcon; image?: string;
-  imageAlt?: string; visual: "photo" | "idea" | "creator" | "digital";
+type World = {
+  id: string; number: string; name: string; eyebrow: string; headline: string;
+  blurb: string; promise: string; offerings: string[]; image: string;
+  visualWord: string; tone: string; Icon: LucideIcon;
 };
-
-const audiences: Audience[] = [
-  {
-    id: "brands", number: "01", group: "BRANDS & IDENTITY",
-    title: "Brands ready to be noticed.",
-    description: "For businesses building an identity people can recognise, remember and connect with.",
-    focus: "A distinct identity, expressed consistently.",
-    offers: ["Brand strategy & visual identity", "Campaign design", "Packaging & brand applications"],
-    Icon: Palette, image: "portfolio-social-design.jpg",
-    imageAlt: "An example of Visual Verse graphic design work", visual: "photo",
-  },
-  {
-    id: "businesses", number: "02", group: "BUSINESSES & ORGANISATIONS",
-    title: "Teams with big things to say.",
-    description: "For organisations that need complex ideas to feel clear, human and compelling.",
-    focus: "One clear story across every touchpoint.",
-    offers: ["Corporate photography & film", "Websites & presentations", "Marketing & communications"],
-    Icon: Building2, image: "portfolio-corporate-moment.jpg",
-    imageAlt: "Photography documenting a corporate event", visual: "photo",
-  },
-  {
-    id: "founders", number: "03", group: "STARTUPS & FOUNDERS",
-    title: "First movers. Bold thinkers.",
-    description: "For entrepreneurs turning a promising idea into something the world can experience.",
-    focus: "A confident first impression from day one.",
-    offers: ["Launch identity & assets", "Landing pages & prototypes", "Pitch visuals & digital content"],
-    Icon: Rocket, visual: "idea",
-  },
-  {
-    id: "creators", number: "04", group: "CREATORS & PERSONAL BRANDS",
-    title: "People with a point of view.",
-    description: "For artists, makers and storytellers ready to make their work unmistakably theirs.",
-    focus: "A personal brand with room to grow.",
-    offers: ["Photography & personal branding", "Motion & video editing", "Social content & portfolios"],
-    Icon: Aperture, visual: "creator",
-  },
-  {
-    id: "events", number: "05", group: "EVENTS & COMMUNITIES",
-    title: "Moments worth keeping.",
-    description: "For gatherings, milestones and communities with memories that deserve to last.",
-    focus: "Images and films that keep the feeling alive.",
-    offers: ["Event coverage & portraits", "Highlight films", "Event graphics & print design"],
-    Icon: Camera, image: "portfolio-graduations.jpg",
-    imageAlt: "Visual Verse graduation photography", visual: "photo",
-  },
-  {
-    id: "digital", number: "06", group: "DIGITAL PRODUCTS & PLATFORMS",
-    title: "Ideas made to live on screens.",
-    description: "For product teams and digital businesses who believe useful can also feel beautiful.",
-    focus: "Digital experiences people enjoy using.",
-    offers: ["UI/UX & interaction design", "Responsive websites", "Digital product visuals"],
-    Icon: MonitorSmartphone, visual: "digital",
-  },
+const worlds: World[] = [
+  {id:"brands",number:"01",name:"Growing brands",eyebrow:"IDENTITIES WITH A POINT OF VIEW",
+    headline:"Be the brand they remember.",blurb:"For ambitious brands that want to stop blending in and start being unmistakable.",
+    promise:"Branding that looks, sounds and feels like you.",offerings:["Brand identity","Campaign creative","Art direction"],
+    image:"portfolio-social-design.jpg",visualWord:"BE / SEEN.",tone:"mint",Icon:Palette},
+  {id:"businesses",number:"02",name:"Businesses & teams",eyebrow:"CLARITY FOR BIG IDEAS",
+    headline:"Make the complex feel simple.",blurb:"For organisations with a lot to say, and an audience that deserves a clearer story.",
+    promise:"Communications with focus and personality.",offerings:["Corporate film","Web experiences","Campaign assets"],
+    image:"portfolio-corporate-moment.jpg",visualWord:"MAKE / SENSE.",tone:"blue",Icon:Building2},
+  {id:"founders",number:"03",name:"Founders & startups",eyebrow:"THE NEXT BIG THING STARTS SMALL",
+    headline:"Make your first move count.",blurb:"For people building something new before the rest of the world can see it.",
+    promise:"Launch-ready ideas made visible.",offerings:["Launch branding","Pitch visuals","Landing pages"],
+    image:"portfolio-event-detail.jpg",visualWord:"WHAT / IF?",tone:"amber",Icon:Rocket},
+  {id:"creators",number:"04",name:"Creators & talent",eyebrow:"FOR THE PEOPLE MAKING CULTURE",
+    headline:"Let your point of view lead.",blurb:"For artists, makers and personal brands whose work deserves its own world.",
+    promise:"A creative presence that feels like your signature.",offerings:["Portraits","Video & motion","Digital portfolios"],
+    image:"portfolio-social-design.jpg",visualWord:"BE / YOU.",tone:"lilac",Icon:Aperture},
+  {id:"events",number:"05",name:"Events & communities",eyebrow:"SOME MOMENTS DESERVE MORE",
+    headline:"Keep the feeling alive.",blurb:"For the people, milestones and gatherings you never want to forget.",
+    promise:"Images and films that take you right back.",offerings:["Event photography","Highlight films","Event graphics"],
+    image:"portfolio-graduations.jpg",visualWord:"FEEL / IT.",tone:"coral",Icon:Camera},
+  {id:"digital",number:"06",name:"Digital products",eyebrow:"A BETTER WAY TO EXPERIENCE",
+    headline:"Make every click feel right.",blurb:"For products and platforms where beautiful design needs to actually work.",
+    promise:"Human-centred interfaces with clarity and craft.",offerings:["UI/UX design","Responsive websites","Prototypes"],
+    image:"portfolio-corporate-events.jpg",visualWord:"BUILD / BETTER.",tone:"sea",Icon:MonitorSmartphone},
 ];
 
-const stages = [
-  {
-    step: "01", title: "Starting something", short: "I have an idea.",
-    lead: "Give your next big idea a great first impression.",
-    description: "When the vision is clear in your head but hasn't found its visual language yet, we can help you shape the foundations.",
-    output: ["Identity & launch direction", "Pitch and campaign assets", "Web presence & prototypes"],
-    Icon: Lightbulb,
-  },
-  {
-    step: "02", title: "Finding momentum", short: "I'm growing.",
-    lead: "Make every new touchpoint feel unmistakably you.",
-    description: "Growth brings new audiences, bigger expectations and more places to show up. We help your creative presence keep pace.",
-    output: ["Content & campaign systems", "Photography, film & social", "Website and brand expansion"],
-    Icon: Rocket,
-  },
-  {
-    step: "03", title: "Changing direction", short: "Time to evolve.",
-    lead: "A fresh chapter deserves a clearer creative direction.",
-    description: "New strategy, new market or simply a stronger story: bring what you've learned, and we'll help you express what's next.",
-    output: ["Rebrand & art direction", "Digital redesign", "Messaging and campaign refresh"],
-    Icon: Compass,
-  },
-  {
-    step: "04", title: "Making a memory", short: "It matters to me.",
-    lead: "Some stories deserve to be kept, not just told.",
-    description: "Whether it's a celebration, a gathering or a milestone, the right images and film bring you back to how it felt.",
-    output: ["Event & portrait photography", "Highlight videos", "Keepsakes and event design"],
-    Icon: Camera,
-  },
+const matches = [
+  {id:"launch",icon:Rocket,title:"I'm launching something",label:"STARTING FROM ZERO",
+    headline:"Give your big idea a first impression worth keeping.",
+    text:"From the first logo to the page that introduces you to the world, build a clear creative foundation.",
+    services:["Brand identity","Launch content","Landing pages"]},
+  {id:"evolve",icon:Compass,title:"It's time for a refresh",label:"READY FOR WHAT'S NEXT",
+    headline:"Look as good as the business you've become.",
+    text:"Bring your next chapter into focus with a stronger identity, digital presence and creative direction.",
+    services:["Rebranding","Web redesign","Campaign direction"]},
+  {id:"content",icon:Megaphone,title:"I need content that hits",label:"LET'S GET ATTENTION",
+    headline:"Turn the scroll into a real connection.",
+    text:"Create imagery and stories built to stand out, communicate something and stay with people.",
+    services:["Photography","Video & motion","Social creative"]},
+  {id:"moment",icon:Camera,title:"I have a moment to capture",label:"MAKE IT LAST",
+    headline:"Because the best moments deserve a second life.",
+    text:"Thoughtful coverage and keepsakes that keep the people and atmosphere at the centre.",
+    services:["Event photography","Highlight films","Event design"]},
 ];
 
-const questions = [
-  {
-    q: "Do you work with small businesses or individual clients?",
-    a: "Yes. We create for growing businesses, founders, creators and individuals, as well as larger teams. We shape each project around what you actually need.",
-  },
-  {
-    q: "What if my project doesn't fit one category?",
-    a: "It doesn't have to. A project can combine branding, design, photography, video and digital experiences. Tell us your goal and we'll help identify the right mix.",
-  },
-  {
-    q: "Can I request just one service?",
-    a: "Absolutely. You can start with a single shoot, graphic design project, brand identity or website. There is no need to bundle services that aren't relevant.",
-  },
-  {
-    q: "Do we need to be based in Nairobi?",
-    a: "Visual Verse Creations is based in Nairobi, Kenya. Remote-friendly creative work can be discussed from other locations; location-based shoots depend on timing, logistics and availability.",
-  },
+const faqs = [
+  {question:"What if I don't fit a category?",answer:"Good. These are starting points, not limits. Tell us what you're working on and we'll help shape a creative approach around it."},
+  {question:"Do I need to book a full package?",answer:"No. You can come to us for one design, a photo shoot, a website or a broader project. We'll focus on what your idea needs."},
+  {question:"Can we work together outside Nairobi?",answer:"Yes, depending on the project. Design and digital work can often happen remotely. For on-location photography and video, we can discuss logistics and availability."},
 ];
 
-function Reveal({
-  children, className = "", delay = 0, as = "div",
-}: { children: ReactNode; className?: string; delay?: number; as?: "div" | "section" }) {
-  const reduced = useReducedMotion();
-  const Element = as === "section" ? motion.section : motion.div;
-  return <Element className={className}
-    initial={reduced ? false : { opacity: 0, y: 28 }}
-    whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
-    viewport={{ once: true, amount: .1 }}
-    transition={{ duration: .65, delay, ease: [.18, 1, .3, 1] }}
-  >{children}</Element>;
+function Eyebrow({children,dark=false}:{children:React.ReactNode;dark?:boolean}) {
+  return <span className={"vvx-eyebrow"+(dark?" vvx-eyebrow-dark":"")}><span className="vvx-eyebrow-pip" aria-hidden="true"/>{children}</span>;
 }
 
-function SectionIntro({
-  eyebrow, title, highlighted, description,
-}: { eyebrow: string; title: string; highlighted: string; description: string }) {
-  return <Reveal className="vvws-section-intro">
-    <div>
-      <span className="vvws-eyebrow"><span className="vvws-indicator" aria-hidden="true" />{eyebrow}</span>
-      <h2>{title}<br /><em>{highlighted}</em></h2>
-    </div>
-    <p>{description}</p>
-  </Reveal>;
+function Reveal({children,className="",delay=0}:{children:React.ReactNode;className?:string;delay?:number}) {
+  const reduced=useReducedMotion();
+  return <motion.div className={className}
+    initial={reduced?false:{opacity:0,y:32}}
+    whileInView={reduced?undefined:{opacity:1,y:0}}
+    viewport={{once:true,amount:.12}}
+    transition={{duration:.7,delay,ease:[.2,.9,.2,1]}}>{children}</motion.div>;
 }
 
-function AudienceArt({ item }: { item: Audience }) {
-  const Icon = item.Icon;
-  if (item.visual === "photo") return <div className="vvws-card-photo">
-    <img src={image(item.image!)} alt={item.imageAlt ?? ""} loading="lazy" decoding="async" />
-    <span className="vvws-card-photo-sheen" aria-hidden="true" />
-    <span className="vvws-card-art-caption"><Icon size={15} aria-hidden="true" /> VISUAL STORYTELLING</span>
-  </div>;
-  if (item.visual === "idea") return <div className="vvws-art-idea" aria-hidden="true">
-    <div className="vvws-art-grid" />
-    <span className="vvws-idea-mini">THE NEXT CHAPTER IS YOURS</span>
-    <div className="vvws-idea-orbit"><span /><span /><Rocket size={56} strokeWidth={1.2}/></div>
-    <strong>WHAT<br/>IF?</strong>
-    <span className="vvws-idea-trail"><Sparkles size={14}/> IDEA TO IMPACT <ArrowUpRight size={14}/></span>
-  </div>;
-  if (item.visual === "creator") return <div className="vvws-art-creator" aria-hidden="true">
-    <div className="vvws-creator-disc"><Aperture size={116} strokeWidth={.9}/></div>
-    <div className="vvws-creator-label vvws-creator-label-one"><Play size={13} fill="currentColor"/> MAKE SOMETHING REAL</div>
-    <div className="vvws-creator-label vvws-creator-label-two">YOUR POV / YOUR RULES</div>
-    <strong>BE<br/><em>YOU.</em></strong>
-    <span className="vvws-creator-asterisk"><Sparkles size={38}/></span>
-  </div>;
-  return <div className="vvws-art-digital" aria-hidden="true">
-    <div className="vvws-digital-browser">
-      <div className="vvws-digital-browser-bar"><span/><span/><span/><i>visualverse / digital</i></div>
-      <div className="vvws-digital-browser-content">
-        <span>BUILD FOR PEOPLE</span>
-        <strong>Make it<br/><em>click.</em></strong>
-        <div className="vvws-digital-pill">DESIGNED TO FEEL RIGHT <ArrowUpRight size={13}/></div>
-      </div>
-      <div className="vvws-digital-skeleton"><i/><i/><i/></div>
-    </div>
-    <span className="vvws-digital-cursor"><MoveUpRight size={26}/></span>
-  </div>;
-}
-
-function AudienceCard({
-  item, expanded, toggle, index,
-}: { item: Audience; expanded: boolean; toggle: () => void; index: number }) {
-  const Icon = item.Icon;
-  const reduced = useReducedMotion();
-  const panelId = "vvws-card-panel-" + item.id;
-  return <motion.article className={"vvws-world vvws-world-" + item.id + (expanded ? " is-expanded" : "")}
-    id={"audience-" + item.id}
-    initial={reduced ? false : { opacity: 0, y: 28 }}
-    whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
-    viewport={{ once: true, amount: .12 }}
-    transition={{ duration: .55, delay: Math.min(index % 2 * .07, .2), ease: [.2, 1, .3, 1] }}>
-    <div className="vvws-world-visual">
-      <AudienceArt item={item}/>
-      <span className="vvws-world-number">{item.number} / 06</span>
-    </div>
-    <div className="vvws-world-body">
-      <div className="vvws-world-meta"><span><Icon size={15} aria-hidden="true"/>{item.group}</span><ArrowUpRight size={18} aria-hidden="true"/></div>
-      <h3>{item.title}</h3>
-      <p>{item.description}</p>
-      <button className="vvws-world-toggle" type="button"
-        aria-expanded={expanded} aria-controls={panelId} onClick={toggle}>
-        <span>{expanded ? "Show less" : "Explore the possibilities"}</span>
-        <span className="vvws-world-toggle-icon"><ChevronDown size={17} aria-hidden="true"/></span>
-      </button>
-      <div id={panelId} className="vvws-world-details">
-        <AnimatePresence initial={false}>
-          {expanded && <motion.div className="vvws-world-details-inner"
-            initial={reduced ? false : {height:0,opacity:0}}
-            animate={{height:"auto",opacity:1}}
-            exit={reduced ? undefined : {height:0,opacity:0}}
-            transition={{duration:.33,ease:[.2,.8,.2,1]}}>
-            <span className="vvws-details-label">WHAT WE CAN CREATE TOGETHER</span>
-            <strong>{item.focus}</strong>
-            <div className="vvws-offer-chips">{item.offers.map(offer=><span key={offer}><Check size={13} aria-hidden="true"/>{offer}</span>)}</div>
-            <a className="vvws-card-cta" href={quote(item.title)}>Let's talk about your project <ArrowUpRight size={17} aria-hidden="true"/></a>
-          </motion.div>}
-        </AnimatePresence>
-      </div>
-    </div>
-  </motion.article>;
-}
-
-function JourneySelector() {
-  const [active, setActive] = useState(0);
-  const reduced = useReducedMotion();
-  const current = stages[active];
-  const Icon = current.Icon;
-  const onKey = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
-    const moves = ["ArrowRight","ArrowLeft","Home","End"];
-    if (!moves.includes(event.key)) return;
-    event.preventDefault();
-    const next = event.key === "Home" ? 0 : event.key === "End" ? stages.length - 1
-      : (index + (event.key === "ArrowRight" ? 1 : -1) + stages.length) % stages.length;
-    setActive(next);
-    const tabs = event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="tab"]');
-    tabs?.[next]?.focus();
+function Hero() {
+  const reduced=useReducedMotion();
+  const mouseX=useMotionValue(0),mouseY=useMotionValue(0);
+  const smoothX=useSpring(mouseX,{stiffness:120,damping:23});
+  const smoothY=useSpring(mouseY,{stiffness:120,damping:23});
+  const rotateY=useTransform(smoothX,[-1,1],[-10,10]);
+  const rotateX=useTransform(smoothY,[-1,1],[8,-8]);
+  const onPointer=(event:PointerEvent<HTMLElement>)=>{
+    if(reduced||event.pointerType!=="mouse")return;
+    const rect=event.currentTarget.getBoundingClientRect();
+    const x=(event.clientX-rect.left)/rect.width;
+    const y=(event.clientY-rect.top)/rect.height;
+    mouseX.set((x-.5)*2);mouseY.set((y-.5)*2);
+    event.currentTarget.style.setProperty("--vvx-pointer-x",(x*100).toFixed(2)+"%");
+    event.currentTarget.style.setProperty("--vvx-pointer-y",(y*100).toFixed(2)+"%");
   };
-  return <section className="vvws-journey" id="your-journey" aria-labelledby="vvws-journey-heading">
-    <div className="vvws-container">
-      <Reveal className="vvws-journey-top">
-        <span className="vvws-eyebrow"><span className="vvws-indicator"/> THE NEXT CHAPTER</span>
-        <h2 id="vvws-journey-heading">Wherever you are,<br/><em>we'll meet you there.</em></h2>
-        <p>No two creative journeys begin in the same place. Choose the stage that sounds most like yours.</p>
-      </Reveal>
-      <div className="vvws-journey-shell">
-        <div className="vvws-journey-rail" role="tablist" aria-label="Choose the stage of your project">
-          {stages.map((stage,i)=>{const StageIcon=stage.Icon;return <button key={stage.step}
-            type="button" role="tab" id={"vvws-stage-tab-"+i}
-            aria-controls="vvws-stage-panel" aria-selected={i===active}
-            tabIndex={i===active?0:-1} className={"vvws-journey-tab"+(active===i?" is-active":"")}
-            onClick={()=>setActive(i)} onKeyDown={event=>onKey(event,i)}>
-            <span className="vvws-journey-tab-num">{stage.step}</span>
-            <span className="vvws-journey-tab-name"><StageIcon size={20} aria-hidden="true"/><b>{stage.short}</b></span>
-            <span className="vvws-journey-tab-dot" aria-hidden="true"/>
-          </button>})}
+  return <section className="vvx-hero" id="who-we-serve" aria-labelledby="vvx-hero-title"
+    onPointerMove={onPointer}
+    onPointerLeave={()=>{mouseX.set(0);mouseY.set(0);}}>
+    <div className="vvx-hero-grid" aria-hidden="true"/>
+    <div className="vvx-hero-spotlight" aria-hidden="true"/>
+    <div className="vvx-container vvx-hero-inner">
+      <div className="vvx-hero-copy">
+        <motion.div initial={reduced?false:{opacity:0,y:20}} animate={{opacity:1,y:0}}
+          transition={{duration:.65,delay:.08}} className="vvx-hero-eyebrow">
+          <span className="vvx-hero-id">VV — 003</span><span className="vvx-hero-line"/>
+          WHO WE CREATE WITH
+        </motion.div>
+        <h1 id="vvx-hero-title" className="vvx-hero-heading">
+          {["NO TWO","STORIES","ALIKE."].map((text,index)=>
+            <span className={"vvx-hero-heading-row vvx-hero-heading-"+index} key={text}>
+              <motion.span initial={reduced?false:{y:"115%",opacity:0}} animate={{y:"0%",opacity:1}}
+                transition={{duration:.85,delay:.14+index*.13,ease:[.16,1,.3,1]}}>{text}</motion.span>
+            </span>)}
+        </h1>
+        <motion.div initial={reduced?false:{opacity:0,y:20}} animate={{opacity:1,y:0}}
+          transition={{delay:.62,duration:.7}} className="vvx-hero-bottom">
+          <p>Some people build brands. Others build movements, moments, or the next big thing. We make creative work that feels like <em>yours.</em></p>
+          <div className="vvx-hero-buttons">
+            <a className="vvx-pill vvx-pill-primary" href="#explore">Find your people <ArrowDown size={17} aria-hidden="true"/></a>
+            <a className="vvx-pill vvx-pill-ghost" href={inquire()}>Let's create <ArrowUpRight size={17} aria-hidden="true"/></a>
+          </div>
+        </motion.div>
+      </div>
+      <motion.div className="vvx-hero-stage" initial={reduced?false:{opacity:0,scale:.9,x:70}}
+        animate={{opacity:1,scale:1,x:0}} transition={{duration:1,delay:.28,ease:[.2,1,.3,1]}}
+        aria-label="A collage of original Visual Verse creative work">
+        <motion.div className="vvx-hero-stage-perspective" style={reduced?undefined:{rotateX,rotateY}}>
+          <div className="vvx-hero-orbit vvx-hero-orbit-one" aria-hidden="true"/>
+          <div className="vvx-hero-orbit vvx-hero-orbit-two" aria-hidden="true"/>
+          <figure className="vvx-float-photo vvx-float-photo-a">
+            <img src={asset("portfolio-event-story.jpg")} alt="Event photography from Visual Verse" decoding="async" fetchPriority="high"/>
+            <figcaption>PEOPLE / MOMENTS</figcaption>
+          </figure>
+          <figure className="vvx-float-photo vvx-float-photo-b">
+            <img src={asset("portfolio-social-design.jpg")} alt="Visual Verse design artwork" decoding="async"/>
+            <figcaption>BRANDS / IDEAS</figcaption>
+          </figure>
+          <figure className="vvx-float-photo vvx-float-photo-c">
+            <img src={asset("portfolio-corporate-moment.jpg")} alt="Visual Verse corporate event photography" decoding="async"/>
+          </figure>
+          <span className="vvx-hero-disc" aria-hidden="true"><Sparkles size={26}/> MADE FOR YOU</span>
+          <span className="vvx-hero-counter" aria-hidden="true"><strong>06</strong><small>WORLDS.<br/>ENDLESS IDEAS.</small></span>
+        </motion.div>
+      </motion.div>
+    </div>
+    <div className="vvx-container vvx-hero-footer"><span>VISUAL VERSE CREATIONS / NAIROBI, KENYA</span><a href="#explore">SCROLL TO EXPLORE <ArrowDown size={15}/></a></div>
+  </section>;
+}
+
+function Marquee() {
+  const words=["BRANDS","FOUNDERS","CREATORS","BUSINESSES","EVENTS","DIGITAL DREAMERS"];
+  return <div className="vvx-ribbon" aria-label="Creative work for brands, founders, creators, businesses, events and digital teams">
+    <div className="vvx-ribbon-track">{[0,1].map(i=><div className="vvx-ribbon-set" key={i} aria-hidden={i===1}>
+      {words.map(word=><span key={word}>{word}<Aperture size={21} strokeWidth={1.4} aria-hidden="true"/></span>)}
+    </div>)}</div>
+  </div>;
+}
+
+function WorldStage({world}:{world:World}) {
+  const reduced=useReducedMotion();
+  const Icon=world.Icon;
+  return <div className={"vvx-world-visual vvx-world-"+world.tone}>
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.div key={world.id} className="vvx-world-poster"
+        initial={reduced?false:{opacity:0,y:24,rotateY:-7,filter:"blur(12px)"}}
+        animate={{opacity:1,y:0,rotateY:0,filter:"blur(0px)"}}
+        exit={reduced?undefined:{opacity:0,y:-16,filter:"blur(7px)"}}
+        transition={{duration:.48,ease:[.2,.9,.25,1]}}>
+        <img className="vvx-world-photo" src={asset(world.image)} alt="" loading="lazy" decoding="async" />
+        <div className="vvx-world-scrim" aria-hidden="true"/>
+        <div className="vvx-world-poster-top"><span>VISUAL VERSE / {world.number}</span><Icon size={28} strokeWidth={1.25}/></div>
+        <strong className="vvx-world-poster-word">{world.visualWord.split(" / ").map((part,i)=><span key={i}>{part}</span>)}</strong>
+        <div className="vvx-world-poster-bottom"><span>{world.eyebrow}</span><span>MADE TO MATTER. <ArrowUpRight size={15}/></span></div>
+      </motion.div>
+    </AnimatePresence>
+    <span className="vvx-world-stamp" aria-hidden="true"><span>VV</span><small>CREATIVE<br/>PARTNERS</small></span>
+    <span className="vvx-world-spark" aria-hidden="true"><Sparkles size={40}/></span>
+  </div>;
+}
+
+function WorldAtlas() {
+  const [active,setActive]=useState(0);
+  const root=useRef<HTMLElement|null>(null);
+  const reduced=useReducedMotion();
+  useEffect(()=>{
+    const scope=root.current;
+    if(!scope||typeof IntersectionObserver==="undefined")return;
+    const desktop=window.matchMedia("(min-width: 901px)");
+    let observer:IntersectionObserver|null=null;
+    const setup=()=>{
+      observer?.disconnect();observer=null;
+      if(!desktop.matches)return;
+      observer=new IntersectionObserver((entries)=>{
+        const candidates=entries.filter(x=>x.isIntersecting);
+        if(!candidates.length)return;
+        const choice=candidates.sort((a,b)=>Math.abs(a.boundingClientRect.top+a.boundingClientRect.height/2-innerHeight*.52)-Math.abs(b.boundingClientRect.top+b.boundingClientRect.height/2-innerHeight*.52))[0];
+        const index=Number((choice.target as HTMLElement).dataset.worldIndex);
+        if(Number.isInteger(index))setActive(index);
+      },{rootMargin:"-35% 0px -35% 0px",threshold:0});
+      scope.querySelectorAll<HTMLElement>(".vvx-world-chapter").forEach(el=>observer?.observe(el));
+    };
+    setup();
+    desktop.addEventListener("change",setup);
+    return ()=>{observer?.disconnect();desktop.removeEventListener("change",setup);};
+  },[]);
+  const world=worlds[active];
+  const Icon=world.Icon;
+  return <section className="vvx-atlas" id="explore" aria-labelledby="vvx-atlas-heading" ref={root}>
+    <div className="vvx-container">
+      <Reveal className="vvx-section-header">
+        <Eyebrow>THE PEOPLE / THE POSSIBILITIES</Eyebrow>
+        <div className="vvx-section-header-grid">
+          <h2 id="vvx-atlas-heading">FIND YOUR<br/><em>FREQUENCY.</em></h2>
+          <p>Six different worlds. One thing in common: a story worth bringing to life. Scroll through them—or choose your own.</p>
         </div>
-        <div className="vvws-journey-stage" role="tabpanel" id="vvws-stage-panel" aria-labelledby={"vvws-stage-tab-"+active} tabIndex={0}>
+      </Reveal>
+      <div className="vvx-atlas-layout">
+        <div className="vvx-world-chapters" aria-label="Creative audiences">
+          {worlds.map((item,i)=>{
+            const ChapterIcon=item.Icon;
+            return <button type="button" key={item.id}
+              className={"vvx-world-chapter"+(active===i?" is-active":"")}
+              data-world-index={i}
+              onClick={()=>setActive(i)} aria-pressed={active===i}>
+              <span className="vvx-world-chapter-number">{item.number} / 06</span>
+              <span className="vvx-world-chapter-content"><span className="vvx-world-chapter-eyebrow"><ChapterIcon size={16} aria-hidden="true"/>{item.name}</span><strong>{item.headline}</strong><span className="vvx-world-chapter-blurb">{item.blurb}</span><span className="vvx-world-chapter-hint">EXPLORE THIS WORLD <ArrowRight size={16}/></span></span>
+            </button>;
+          })}
+        </div>
+        <div className="vvx-world-mobile-tabs" role="group" aria-label="Choose who we serve">
+          {worlds.map((item,i)=><button key={item.id} type="button"
+            aria-pressed={active===i} className={active===i?"is-active":""}
+            onClick={()=>setActive(i)}>{item.number} <span>{item.name}</span></button>)}
+        </div>
+        <div className="vvx-world-sticky">
+          <div className="vvx-world-stage-top"><span><span className="vvx-signal-pulse"/> NOW EXPLORING / {world.name.toUpperCase()}</span><span>{world.number}—06</span></div>
+          <WorldStage world={world}/>
+          <div className="vvx-world-stage-bottom" key={world.id}>
+            <div className="vvx-world-stage-summary"><span>THE CREATIVE BRIEF</span><h3>{world.headline}</h3><p>{world.blurb}</p><span className="vvx-world-stage-promise">{world.promise}</span></div>
+            <div className="vvx-world-stage-tags">{world.offerings.map(x=><span key={x}>{x}</span>)}</div>
+            <a href={inquire(world.name)} className="vvx-world-stage-link">Create with us <ArrowUpRight size={16}/></a>
+          </div>
+        </div>
+      </div>
+      <Reveal className="vvx-atlas-note"><Sparkles size={20}/><p>Don't see yourself in a category? Even better. We like ideas that don't fit neatly into a box.</p><a href={inquire()}>Tell us yours <ArrowUpRight size={16}/></a></Reveal>
+    </div>
+  </section>;
+}
+
+function Wobble({children,className=""}:{children:React.ReactNode;className?:string}) {
+  const reduced=useReducedMotion();
+  const mouseX=useMotionValue(0),mouseY=useMotionValue(0);
+  const smoothX=useSpring(mouseX,{stiffness:165,damping:24});
+  const smoothY=useSpring(mouseY,{stiffness:165,damping:24});
+  const rotateY=useTransform(smoothX,[-1,1],[-3.6,3.6]);
+  const rotateX=useTransform(smoothY,[-1,1],[3,-3]);
+  return <motion.div className={"vvx-wobble "+className} style={reduced?undefined:{rotateX,rotateY}}
+    onPointerMove={event=>{
+      if(reduced||event.pointerType!=="mouse")return;
+      const box=event.currentTarget.getBoundingClientRect();
+      mouseX.set(((event.clientX-box.left)/box.width-.5)*2);
+      mouseY.set(((event.clientY-box.top)/box.height-.5)*2);
+    }}
+    onPointerLeave={()=>{mouseX.set(0);mouseY.set(0);}}>{children}</motion.div>;
+}
+
+function Collaboration() {
+  return <section className="vvx-collab" id="possibilities" aria-labelledby="vvx-collab-heading">
+    <div className="vvx-container">
+      <Reveal className="vvx-collab-heading">
+        <Eyebrow dark>THE GOOD STUFF HAPPENS TOGETHER</Eyebrow>
+        <h2 id="vvx-collab-heading">YOUR WORLD.<br/><em>OUR TOOLBOX.</em></h2>
+        <p>A little of this. A lot of that. We mix the right creative disciplines for the story, not the other way around.</p>
+      </Reveal>
+      <div className="vvx-collab-bento">
+        <Wobble className="vvx-wobble-photo">
+          <img src={asset("portfolio-event-story.jpg")} loading="lazy" alt="Visual Verse event storytelling in action"/>
+          <div className="vvx-wobble-photo-shade"/>
+          <span className="vvx-bento-kicker">01 / THROUGH THE LENS</span>
+          <strong>MAKE IT<br/>FEEL REAL.</strong>
+          <div className="vvx-bento-foot"><span>PHOTOGRAPHY + FILM</span><Camera size={28}/></div>
+        </Wobble>
+        <Wobble className="vvx-wobble-type">
+          <span className="vvx-bento-kicker">02 / FROM A BLANK CANVAS</span>
+          <div className="vvx-wobble-orbit" aria-hidden="true"><Fingerprint size={170} strokeWidth={.6}/></div>
+          <strong>STAND<br/><em>OUT.</em></strong>
+          <p>Identity. Campaigns. Design that has something to say.</p>
+          <div className="vvx-bento-foot"><span>BRANDING + GRAPHIC DESIGN</span><Palette size={26}/></div>
+        </Wobble>
+        <Wobble className="vvx-wobble-device">
+          <span className="vvx-bento-kicker">03 / THE DIGITAL WORLD</span>
+          <div className="vvx-wobble-browser" aria-hidden="true"><div className="vvx-wobble-browser-header"><i/><i/><i/><span>VISUALVERSE / INTERACTIVE</span></div><div className="vvx-wobble-browser-body"><span>YOU ARE HERE</span><strong>GOOD DESIGN<br/>IS FELT.</strong><span className="vvx-wobble-screen-button">LET'S BUILD IT <ArrowUpRight size={12}/></span></div></div>
+          <div className="vvx-bento-foot"><span>WEB + UI/UX</span><MonitorSmartphone size={26}/></div>
+        </Wobble>
+      </div>
+      <Reveal className="vvx-collab-bottom"><p>No one-size-fits-all packages. Just work that's made for where you are and where you're headed.</p><a href={BASE+"services.html"}>Explore the toolbox <ArrowUpRight size={17}/></a></Reveal>
+    </div>
+  </section>;
+}
+
+function FitFinder() {
+  const [active,setActive]=useState(0);
+  const reduced=useReducedMotion();
+  const selected=matches[active];
+  const SelectedIcon=selected.icon;
+  return <section className="vvx-match" id="find-your-fit" aria-labelledby="vvx-match-heading">
+    <div className="vvx-container">
+      <Reveal className="vvx-match-heading"><Eyebrow>YOUR NEXT MOVE</Eyebrow><h2 id="vvx-match-heading">SO, WHAT ARE<br/>WE <em>MAKING?</em></h2><p>Not sure what to ask for? Start with what you're trying to do. We'll help connect the dots.</p></Reveal>
+      <div className="vvx-match-shell">
+        <div className="vvx-match-options" role="tablist" aria-label="What do you want to create?">
+          {matches.map((item,i)=>{
+            const Icon=item.icon;
+            return <button key={item.id} type="button" role="tab" id={"vvx-option-"+i}
+              aria-controls="vvx-match-result" aria-selected={active===i}
+              tabIndex={active===i?0:-1}
+              onClick={()=>setActive(i)}
+              onKeyDown={event=>{
+                const index=event.key==="ArrowDown"?(i+1)%matches.length:event.key==="ArrowUp"?(i-1+matches.length)%matches.length:event.key==="Home"?0:event.key==="End"?matches.length-1:-1;
+                if(index>=0){event.preventDefault();setActive(index);(event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="tab"]'))?.[index]?.focus();}
+              }} className={"vvx-match-option"+(active===i?" is-active":"")}>
+              <span className="vvx-match-option-icon"><Icon size={22}/></span><span>{item.title}</span><ArrowUpRight size={18} className="vvx-match-option-arrow"/>
+            </button>;
+          })}
+        </div>
+        <div className="vvx-match-result" id="vvx-match-result" role="tabpanel" aria-labelledby={"vvx-option-"+active} tabIndex={0}>
           <AnimatePresence mode="wait" initial={false}>
-            <motion.div key={active} className="vvws-journey-panel"
-              initial={reduced?false:{opacity:0,y:14,filter:"blur(5px)"}}
+            <motion.div key={selected.id} className="vvx-match-inner"
+              initial={reduced?false:{opacity:0,y:17,filter:"blur(6px)"}}
               animate={{opacity:1,y:0,filter:"blur(0px)"}}
-              exit={reduced?undefined:{opacity:0,y:-10,filter:"blur(3px)"}}
-              transition={{duration:.28,ease:[.2,.85,.2,1]}}>
-              <div className="vvws-journey-copy">
-                <span className="vvws-journey-kicker"><span/> {current.title.toUpperCase()}</span>
-                <h3>{current.lead}</h3>
-                <p>{current.description}</p>
-                <div className="vvws-journey-checks">
-                  {current.output.map(line=><span key={line}><Check size={14} aria-hidden="true"/>{line}</span>)}
-                </div>
-                <a href={quote(current.title)} className="vvws-journey-link">Let's build your next chapter <ArrowUpRight size={17} aria-hidden="true"/></a>
-              </div>
-              <div className="vvws-journey-poster" aria-hidden="true">
-                <div className="vvws-journey-poster-ring vvws-journey-poster-ring-one"/>
-                <div className="vvws-journey-poster-ring vvws-journey-poster-ring-two"/>
-                <Icon size={73} strokeWidth={1.05}/>
-                <span className="vvws-journey-poster-top">VISUAL VERSE / {current.step}</span>
-                <strong>{current.short}</strong>
-                <span className="vvws-journey-poster-bottom">POSSIBILITIES / UNLIMITED</span>
-              </div>
+              exit={reduced?undefined:{opacity:0,y:-14,filter:"blur(4px)"}}
+              transition={{duration:.28,ease:[.2,.8,.2,1]}}>
+              <div className="vvx-match-result-top"><span>{selected.label}</span><SelectedIcon size={35} strokeWidth={1.5}/></div>
+              <h3>{selected.headline}</h3><p>{selected.text}</p>
+              <div className="vvx-match-services">{selected.services.map(service=><span key={service}><Check size={14}/>{service}</span>)}</div>
+              <a className="vvx-pill vvx-pill-primary" href={inquire(selected.title)}>Talk to us about it <ArrowUpRight size={17}/></a>
             </motion.div>
           </AnimatePresence>
         </div>
       </div>
-      <span className="vvws-journey-caption">A CREATIVE PARTNERSHIP ISN'T ONE-SIZE-FITS-ALL.</span>
     </div>
   </section>;
 }
 
-function ProcessSection() {
-  const steps = [
-    {no:"01",title:"We listen first.",body:"We get to know your world, your audience and what success looks like to you.",Icon:HeartHandshake,label:"DISCOVER"},
-    {no:"02",title:"We find the angle.",body:"We connect the right ideas, formats and creative disciplines to your goals.",Icon:WandSparkles,label:"SHAPE"},
-    {no:"03",title:"We make it matter.",body:"We design, capture and refine with care, keeping you involved along the way.",Icon:Clapperboard,label:"CREATE"},
-  ];
-  return <section className="vvws-process" id="how-we-work" aria-labelledby="vvws-process-heading">
-    <div className="vvws-container">
-      <SectionIntro eyebrow="HOW WE WORK TOGETHER" title="Different needs." highlighted="One thoughtful process."
-        description="You bring the perspective. We bring the creative thinking, tools and attention to detail to help make it happen."/>
-      <div className="vvws-process-rows">
-        {steps.map((step,i)=>{const Icon=step.Icon;return <Reveal key={step.no} className="vvws-process-row" delay={i*.06}>
-          <span className="vvws-process-no">{step.no}</span>
-          <div className="vvws-process-title"><Icon size={22} strokeWidth={1.6} aria-hidden="true"/><h3>{step.title}</h3></div>
-          <p>{step.body}</p>
-          <span className="vvws-process-tag">{step.label}<ArrowUpRight size={15} aria-hidden="true"/></span>
-        </Reveal>})}
-      </div>
-      <Reveal className="vvws-process-note">
-        <span className="vvws-process-note-icon"><BadgeCheck size={23} aria-hidden="true"/></span>
-        <p>One service or a full creative collaboration — we'll shape the approach around your project, not a template.</p>
-        <a href={BASE+"services.html"}>See our services <ArrowUpRight size={17} aria-hidden="true"/></a>
-      </Reveal>
-    </div>
-  </section>;
-}
-
-function FaqSection() {
-  return <section className="vvws-faq" aria-labelledby="vvws-faq-heading">
-    <div className="vvws-container vvws-faq-layout">
-      <Reveal className="vvws-faq-heading">
-        <span className="vvws-eyebrow"><span className="vvws-indicator"/> GOOD QUESTIONS</span>
-        <h2 id="vvws-faq-heading">Curious?<br/><em>We get it.</em></h2>
-        <p>Every project starts with a conversation. Here are a few things you might be wondering about.</p>
-        <a href={BASE+"contact.html"}>Ask us anything <ArrowUpRight size={16} aria-hidden="true"/></a>
-      </Reveal>
-      <div className="vvws-faq-list">
-        {questions.map((item,i)=><Reveal key={item.q} className="vvws-faq-entry" delay={i*.05}>
-          <details>
-            <summary><span className="vvws-faq-num">0{i+1}</span><span className="vvws-faq-question">{item.q}</span><span className="vvws-faq-plus" aria-hidden="true"><ChevronDown size={19}/></span></summary>
-            <div className="vvws-faq-answer"><p>{item.a}</p></div>
-          </details>
-        </Reveal>)}
-      </div>
+function FinalStatement() {
+  const reduced=useReducedMotion();
+  return <section className="vvx-finale" aria-labelledby="vvx-finale-heading">
+    <div className="vvx-container vvx-finale-inner">
+      <Reveal className="vvx-finale-kicker"><Eyebrow dark>AT THE END OF THE DAY</Eyebrow></Reveal>
+      <h2 id="vvx-finale-heading"><span>IT'S NOT ABOUT</span><span>THE <em>INDUSTRY.</em></span><span>IT'S ABOUT</span><span><em>YOUR STORY.</em></span></h2>
+      <motion.div className="vvx-finale-row" initial={reduced?false:{opacity:0,y:20}}
+        whileInView={reduced?undefined:{opacity:1,y:0}} viewport={{once:true}}
+        transition={{duration:.6}}>
+        <p>Whether you're starting, growing, changing or celebrating—great creative work starts with understanding what matters to you.</p>
+        <a href={inquire()} className="vvx-finale-link">Let's make something matter <ArrowUpRight size={21}/></a>
+      </motion.div>
+      <div className="vvx-finale-watermark" aria-hidden="true">VV.</div>
     </div>
   </section>;
 }
 
 export function VisualVerseWhoWeServePage() {
-  const [expanded, setExpanded] = useState<string | null>(null);
-  useEffect(() => {
-    // Restore direct links from the existing homepage, including #industries.
-    const target = window.location.hash.slice(1);
-    if (!["people", "industries", "who-we-serve", "your-journey", "how-we-work"].includes(target)) return;
-    const frame = window.requestAnimationFrame(() => document.getElementById(target)?.scrollIntoView({ block: "start" }));
-    return () => window.cancelAnimationFrame(frame);
-  }, []);
-  const reduced = useReducedMotion();
-  return <div className="vvws-page">
-    <section className="vvws-hero" id="who-we-serve" aria-labelledby="vvws-hero-title">
-      <div className="vvws-hero-grid" aria-hidden="true"/>
-      <div className="vvws-hero-glow" aria-hidden="true"/>
-      <div className="vvws-container vvws-hero-layout">
-        <div className="vvws-hero-copy">
-          <motion.div className="vvws-hero-kicker"
-            initial={reduced?false:{opacity:0,y:16}} animate={{opacity:1,y:0}} transition={{duration:.65}}>
-            <span className="vvws-hero-kicker-dot"/><span>WHO WE CREATE WITH</span><span className="vvws-hero-kicker-index">03 / THE PEOPLE</span>
-          </motion.div>
-          <motion.h1 id="vvws-hero-title" initial={reduced?false:{opacity:0,y:35}}
-            animate={{opacity:1,y:0}} transition={{duration:.9,delay:.1,ease:[.2,1,.3,1]}}>
-            We create for<br/>people going<br/><em>somewhere.</em>
-          </motion.h1>
-          <motion.p className="vvws-hero-description" initial={reduced?false:{opacity:0,y:23}}
-            animate={{opacity:1,y:0}} transition={{duration:.75,delay:.25}}>
-            The bold brands. The ambitious teams. The ideas waiting to happen. And the moments you never want to forget. There's a place for your story here.
-          </motion.p>
-          <motion.div className="vvws-hero-actions" initial={reduced?false:{opacity:0,y:17}}
-            animate={{opacity:1,y:0}} transition={{duration:.7,delay:.36}}>
-            <a className="vvws-button vvws-button-mint" href="#people">Find your people <ArrowDown size={17} aria-hidden="true"/></a>
-            <a className="vvws-button vvws-button-outline" href={quote()}>Start a project <ArrowUpRight size={17} aria-hidden="true"/></a>
-          </motion.div>
-          <div className="vvws-hero-footnote"><span>NAIROBI, KENYA / CREATIVITY WITHOUT THE BOXES</span><span className="vvws-hero-footnote-line"/></div>
-        </div>
-        <motion.div className="vvws-hero-collage" initial={reduced?false:{opacity:0,scale:.95,x:22}}
-          animate={{opacity:1,scale:1,x:0}} transition={{duration:1,delay:.18,ease:[.2,1,.3,1]}}
-          aria-hidden="true">
-          <div className="vvws-collage-ring vvws-collage-ring-a"/>
-          <div className="vvws-collage-ring vvws-collage-ring-b"/>
-          <div className="vvws-collage-photo-main">
-            <img src={image("portfolio-event-story.jpg")} alt="" decoding="async" fetchPriority="high"/>
-            <span>REAL PEOPLE. REAL STORIES.</span>
-          </div>
-          <div className="vvws-collage-photo-small">
-            <img src={image("portfolio-social-design.jpg")} alt="" decoding="async"/>
-          </div>
-          <div className="vvws-collage-sticker vvws-collage-sticker-top"><Sparkles size={18}/> YOUR WORLD / OUR PERSPECTIVE</div>
-          <div className="vvws-collage-sticker vvws-collage-sticker-bottom"><span>06</span><small>CREATIVE<br/>WORLDS</small></div>
-          <div className="vvws-collage-asterisk"><Sparkles size={63} strokeWidth={1.1}/></div>
-        </motion.div>
-      </div>
-      <div className="vvws-hero-bottom"><span>IMAGINE. CREATE. CONNECT.</span><a href="#people">KEEP EXPLORING <ArrowDown size={17} aria-hidden="true"/></a></div>
-    </section>
-
-    <div className="vvws-marquee" aria-label="We create for growing brands, businesses, founders, creators, communities and digital teams">
-      <div className="vvws-marquee-track">
-        {[0,1].map(copy=><div className="vvws-marquee-set" key={copy} aria-hidden={copy===1}>
-          {["Growing brands","Ambitious teams","First-time founders","Bold creators","Meaningful moments","Digital thinkers"].map(word=>
-            <span key={word}>{word}<Sparkles size={18} strokeWidth={1.4} aria-hidden="true"/></span>)}
-        </div>)}
-      </div>
-    </div>
-
-    <section className="vvws-people" id="people" aria-labelledby="vvws-people-heading">
-      <span className="vvws-anchor" id="industries" aria-hidden="true"/>
-      <div className="vvws-container">
-        <Reveal className="vvws-section-intro vvws-people-intro">
-          <div>
-            <span className="vvws-eyebrow"><span className="vvws-indicator" aria-hidden="true"/> THE WORLDS WE CREATE FOR</span>
-            <h2 id="vvws-people-heading">Different stories.<br/><em>Same creative spark.</em></h2>
-          </div>
-          <p>No rigid boxes. Just thoughtful creative solutions for the people and projects making their mark. Pick a world to explore what we can make together.</p>
-        </Reveal>
-        <div className="vvws-world-grid">
-          {audiences.map((item,index)=><AudienceCard key={item.id} item={item} index={index}
-            expanded={expanded===item.id} toggle={()=>setExpanded(old=>old===item.id?null:item.id)}/>)}
-        </div>
-        <Reveal className="vvws-people-bottom">
-          <span><Sparkles size={18} aria-hidden="true"/> DON'T SEE YOURSELF IN A BOX?</span>
-          <p>That's the point. Good ideas don't need a label.</p>
-          <a href={quote()}>Tell us what you're imagining <ArrowUpRight size={17} aria-hidden="true"/></a>
-        </Reveal>
+  return <div className="vvx-page">
+    <Hero/>
+    <Marquee/>
+    <WorldAtlas/>
+    <Collaboration/>
+    <FitFinder/>
+    <section className="vvx-questions" aria-label="Questions about working with us">
+      <div className="vvx-container">
+        <Reveal className="vvx-questions-head"><Eyebrow>GOOD TO KNOW</Eyebrow><h2>NO PRESSURE.<br/><em>JUST POSSIBILITIES.</em></h2></Reveal>
+        <div className="vvx-questions-list">{faqs.map((faq,i)=><details key={faq.question} className="vvx-faq"><summary><span>0{i+1}</span><strong>{faq.question}</strong><span className="vvx-faq-toggle" aria-hidden="true">+</span></summary><p>{faq.answer}</p></details>)}</div>
       </div>
     </section>
-
-    <JourneySelector/>
-    <ProcessSection/>
-    <FaqSection/>
-    <section className="vvws-closing-thought" aria-label="Creative collaboration">
-      <div className="vvws-container vvws-closing-thought-layout">
-        <span>DIFFERENT PEOPLE. ENDLESS POSSIBILITY.</span>
-        <h2>Your story is<br/><em>the interesting part.</em></h2>
-        <p>Whoever you are, whatever you're building, there's always a more meaningful way to tell it.</p>
-        <span className="vvws-closing-mark"><Globe2 size={63} strokeWidth={.8} aria-hidden="true"/></span>
-      </div>
-    </section>
+    <FinalStatement/>
   </div>;
 }

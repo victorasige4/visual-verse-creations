@@ -8,27 +8,37 @@ const styles = read("src/who-we-serve-redesign.css");
 const router = read("src/components/VisualVerseInnerPages.tsx");
 const html = read("who-we-serve.html");
 
-assert.doesNotThrow(() => postcss.parse(styles, { from: "who-we-serve-redesign.css" }), "page CSS must parse");
-assert(router.includes('import("./VisualVerseWhoWeServePage")'), "new page must be lazy-loaded");
-assert(router.includes('kind==="audiences"&&<Suspense'), "Who We Serve must be rendered by the site route");
-assert(!router.includes("function AudiencePage()"), "old duplicate audience page must not remain");
-assert(router.includes("<VisualVerseAboutCta/>") && router.includes("<VisualVerseFooter/>"), "shared CTA and footer must remain");
-assert(html.includes("Who We Serve | Visual Verse Creations"), "page title must match route");
-for (const id of ["brands","businesses","founders","creators","events","digital"]) {
-  assert(page.includes('id: "'+id+'"'), "missing audience: "+id);
+assert.doesNotThrow(() => postcss.parse(styles, { from: "who-we-serve-redesign.css" }), "audience CSS must parse");
+assert(router.includes('import("./VisualVerseWhoWeServePage")'), "audience page must be lazy loaded");
+assert(router.includes('kind==="audiences"&&<Suspense'), "route must render the audience page");
+assert(!router.includes("function AudiencePage()"), "old duplicate audience page must be removed");
+assert(router.includes("<VisualVerseAboutCta/>") && router.includes("<VisualVerseFooter/>"), "shared CTA and footer remain");
+assert(html.includes("Who We Serve | Visual Verse Creations"), "page SEO must be intact");
+for (const id of ["brands", "businesses", "founders", "creators", "events", "digital"]) {
+  assert(page.includes('id:"' + id + '"'), "missing audience: " + id);
 }
-assert(page.includes("role=\"tablist\"") && page.includes("aria-selected={i===active}"),
-  "journey selector must be accessible");
-assert(page.includes("aria-expanded={expanded}") && page.includes("aria-controls={panelId}"),
-  "audience cards must expose expansion state");
-assert(page.includes("<details>") && page.includes("<summary>"), "native accessible FAQ controls required");
+for (const name of ["function Hero()", "function WorldAtlas()", "function Collaboration()", "function FitFinder()", "function FinalStatement()"]) {
+  assert(page.includes(name), "missing experience section: " + name);
+}
+assert(page.includes('className="vvx-hero-spotlight"') && page.includes("useMotionValue"),
+  "hero must provide spotlight and spring-driven 3D parallax");
+assert(page.includes("IntersectionObserver") && styles.includes("position:sticky"),
+  "sticky scroll-reveal chapter experience must remain");
+assert(page.includes("role=\"tablist\"") && page.includes("aria-selected={active===i}"),
+  "creative matchmaker must have accessible tab navigation");
+assert(page.includes("aria-pressed={active===i}"), "audience selector must expose state");
+assert(page.includes("event.key===" + '"ArrowDown"') && page.includes("event.key===" + '"ArrowUp"'),
+  "matchmaker must support arrow keys");
+assert(page.includes("<details") && page.includes("<summary>"), "FAQ must work without JavaScript state");
 assert(page.includes("useReducedMotion") && styles.includes("prefers-reduced-motion"),
-  "respect reduced motion settings");
-assert(styles.includes("@media(max-width:690px)") && styles.includes("@media(max-width:390px)"),
-  "layout must support phones");
-assert(page.includes("BASE + \"request-quote.html\""), "project CTA links must be base-path safe");
-for (const photo of ["portfolio-event-story.jpg","portfolio-social-design.jpg","portfolio-corporate-moment.jpg","portfolio-graduations.jpg"]) {
-  assert(existsSync("public/"+photo), "missing first-party visual: "+photo);
+  "motion preferences must be respected");
+assert(styles.includes("@media(max-width:900px)") && styles.includes("@media(max-width:680px)") &&
+  styles.includes("@media(max-width:385px)"), "responsive desktop/tablet/small phone treatments must remain");
+assert(page.includes('BASE + "request-quote.html"'), "enquiry links must respect GitHub Pages base path");
+for (const photo of ["portfolio-event-story.jpg","portfolio-social-design.jpg","portfolio-corporate-moment.jpg",
+  "portfolio-graduations.jpg","portfolio-event-detail.jpg","portfolio-corporate-events.jpg"]) {
+  assert(existsSync("public/"+photo), "missing own-brand visual: "+photo);
 }
-assert(!page.includes("studio") && !page.includes("Studio"), "use Visual Verse Creations language");
-console.log("Who We Serve page structure, SEO, media and accessibility checks passed.");
+assert(!page.includes("studio") && !page.includes("Studio"), "business naming must stay consistent");
+assert(!page.includes("Inspired by Potadot"), "no internal inspiration notes in visitor copy");
+console.log("Who We Serve v2: storytelling, interaction, media, accessibility and responsiveness verified.");
