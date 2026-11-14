@@ -66,8 +66,26 @@ for(const eventName of ["pointerdown","keydown","touchstart","wheel"]){
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)recordStudioActivity();});
 window.addEventListener("focus",recordStudioActivity);
 setInterval(()=>{if(idleTracking&&isPastIdleDeadline())void enforceIdleLogout();},10000);
+// Lightweight, accessible workspace navigation with no extra dependencies.
+function setProfileMenu(open){
+  const menu=$("profile-menu"),trigger=$("profile-menu-toggle");
+  if(!menu||!trigger)return;
+  menu.hidden=!open;
+  trigger.setAttribute("aria-expanded",String(open));
+}
+function setNavigationDrawer(open){
+  const workspace=$("workspace"),trigger=$("console-menu-toggle"),backdrop=$("console-nav-backdrop");
+  if(!workspace||!trigger||!backdrop)return;
+  const show=open&&!workspace.hidden;
+  workspace.classList.toggle("nav-open",show);
+  backdrop.hidden=!show;
+  trigger.setAttribute("aria-expanded",String(show));
+  trigger.setAttribute("aria-label",show?"Close navigation":"Open navigation");
+}
+function closeNavigationMenus(){setProfileMenu(false);setNavigationDrawer(false);}
 let completingPasswordSetup=false;
 function showLogin(mode="email"){
+  closeNavigationMenus();
   $("workspace").hidden=true;$("auth-screen").hidden=false;
   $("setup-email-form").hidden=mode!=="email";
   $("setup-email-sent").hidden=mode!=="sent";
@@ -444,8 +462,25 @@ $("set-password-form").addEventListener("submit",async(e)=>{
 });
 async function signOut(){clearIdleTracking();state.user=null;state.membership=null;showLogin("login");await supabase.auth.signOut({scope:"local"});}
 $("sign-out").addEventListener("click",signOut);
-$("mobile-sign-out").addEventListener("click",signOut);
-document.querySelectorAll("[data-tab]").forEach(b=>b.addEventListener("click",()=>{state.view=b.dataset.tab;render();window.scrollTo({top:0,behavior:"instant"});}));
+$("profile-sign-out").addEventListener("click",()=>{closeNavigationMenus();void signOut();});
+$("profile-menu-toggle").addEventListener("click",()=>{
+  const open=$("profile-menu").hidden;
+  setNavigationDrawer(false);
+  setProfileMenu(open);
+});
+$("console-menu-toggle").addEventListener("click",()=>{
+  const open=!$("workspace").classList.contains("nav-open");
+  setProfileMenu(false);
+  setNavigationDrawer(open);
+});
+$("console-nav-backdrop").addEventListener("click",()=>setNavigationDrawer(false));
+document.addEventListener("pointerdown",(event)=>{
+  if(!$("profile-menu").hidden&&!event.target.closest("#console-profile-wrap"))setProfileMenu(false);
+});
+document.addEventListener("keydown",(event)=>{
+  if(event.key==="Escape")closeNavigationMenus();
+});
+document.querySelectorAll("[data-tab]").forEach(b=>b.addEventListener("click",()=>{state.view=b.dataset.tab;render();closeNavigationMenus();window.scrollTo({top:0,behavior:"instant"});}));
 $("screen-content").addEventListener("click",async(e)=>{
   const jump=e.target.closest("[data-nav]");
   if(jump){const page=jump.dataset.nav;if(["overview","clients","projects","tasks","documents","security","team"].includes(page)&&(page!=="team"||isAdmin())){state.view=page;render();window.scrollTo({top:0,behavior:"instant"});}return;}
