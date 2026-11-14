@@ -185,3 +185,41 @@ button{transition:transform .2s ease,background .2s ease,box-shadow .2s ease}
 @media (prefers-reduced-motion:reduce){
   .kpi,.studio-hero .hero-action{transform:none!important;transition:none!important}
 }
+
+/* Workspace navigation — lightweight account popover and compact mobile drawer. */
+.profile{position:relative}
+.profile-menu-toggle{border:1px solid #e0ede9;border-radius:999px;min-height:49px;padding:5px 10px 5px 14px;background:#ffffffd9;display:flex;align-items:center;gap:11px;color:#154658;box-shadow:0 8px 22px -18px #003f5c;cursor:pointer}
+.profile-menu-toggle:hover{background:#f6fcfa;border-color:#b9e3db}
+.profile-menu-toggle[aria-expanded="true"]{box-shadow:0 0 0 3px #2ec4b620}
+.profile-menu-toggle #profile-circle{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:linear-gradient(145deg,#c3f1e8,#dcfaf2);color:#07515b;font-weight:800;font-size:11px;border:1px solid white}
+.profile-chevron{width:17px;height:17px;color:#608a91;transition:transform .2s ease}
+.profile-menu-toggle[aria-expanded="true"] .profile-chevron{transform:rotate(180deg)}
+.profile-menu{position:absolute;right:0;top:calc(100% + 14px);width:min(300px,calc(100vw - 26px));padding:13px;background:#fff;border:1px solid #dcebe8;box-shadow:0 24px 75px -30px #00384a59;border-radius:20px;z-index:180;animation:vv-menu-enter .18s ease-out}
+.profile-menu-intro{padding:10px 13px 14px;border-bottom:1px solid #e6f1ee;display:grid;gap:5px}
+.profile-menu-intro strong{font-size:14px;color:#124957}
+.profile-menu-intro span{font-size:11px;color:#78969a}
+.profile-menu-list{padding:7px 0;display:grid;gap:2px;max-height:46vh;overflow-y:auto}
+.profile-menu-list button{border:0;background:transparent;color:#345f69;text-align:left;min-height:40px;padding:9px 13px;border-radius:11px;font-weight:650;font-size:12px}
+.profile-menu-list button:hover,.profile-menu-list button.active{background:#eaf8f3;color:#075764}
+.profile-menu-signout{display:flex;align-items:center;justify-content:space-between;width:100%;border:0;border-top:1px solid #e6f1ee;background:transparent;text-align:left;color:#074f5f;padding:14px 13px 7px;font-size:12px;font-weight:750}
+.profile-menu-signout:hover{color:#068478}
+.console-menu-toggle{display:none;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid #dcece6;border-radius:12px;background:#fff;color:#084b5d}
+.console-menu-toggle svg{width:20px;height:20px}
+.console-nav-backdrop{position:fixed;inset:0;background:#001e2c8f;border:0;width:100vw;height:100dvh;z-index:100;cursor:default;backdrop-filter:blur(2px)}
+.mobile-nav{display:none!important}
+@keyframes vv-menu-enter{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:760px){
+  .console-menu-toggle{display:inline-flex;flex:0 0 40px}
+  .topbar-left{gap:12px;min-width:0}
+  .topbar-left .crumb{white-space:nowrap;font-size:10px;letter-spacing:.07em}
+  .mobile-mark{width:26px;height:26px}
+  .profile-menu-toggle{min-height:42px;padding:4px 5px 4px 6px;gap:5px;border-color:transparent;background:transparent;box-shadow:none}
+  .profile-menu-toggle .profile-label{display:none}
+  .profile-menu-toggle #profile-circle{width:35px;height:35px}
+  .profile-chevron{width:14px;height:14px}
+  .profile-menu{top:calc(100% + 10px);right:0;max-height:calc(100dvh - 85px);overflow:auto}
+  .workspace .sidebar{display:flex;position:fixed;top:0;bottom:0;left:0;width:min(288px,86vw);height:100dvh;z-index:120;padding:28px 18px 22px;transform:translateX(-106%);transition:transform .26s ease;overscroll-behavior:contain;overflow-y:auto}
+  .workspace.nav-open .sidebar{transform:translateX(0)}
+  .workspace .screen-content{padding-top:30px}
+}
+@media(prefers-reduced-motion:reduce){.profile-menu{animation:none}.profile-chevron,.workspace .sidebar{transition:none}}
