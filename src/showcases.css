@@ -445,3 +445,39 @@
 /* Full audience category page link stays legible within the carousel footer. */
 .vv-aud-stage-bottom .vv-aud-stage-collection-link{display:inline-flex;align-items:center;gap:7px;color:inherit;text-decoration:none;font-size:inherit;font-weight:800;letter-spacing:inherit}
 .vv-aud-stage-bottom .vv-aud-stage-collection-link:hover{color:#119e94}
+
+/* Mobile parity: preserve every desktop service label instead of reducing
+   the six disciplines to unlabeled icons. 3 x 2 touch-friendly tabs. */
+@media (max-width: 620px) {
+  #services .vv-svc-stack {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+  }
+  #services .vv-svc-slice:nth-child(-n+3) .vv-svc-slice-tab { grid-row: 1; }
+  #services .vv-svc-slice:nth-child(n+4) .vv-svc-slice-tab { grid-row: 2; }
+  #services .vv-svc-slice .vv-svc-slice-tab,
+  #services .vv-svc-slice.is-active .vv-svc-slice-tab {
+    min-width: 0;
+    min-height: 72px;
+    padding: 9px 5px;
+    gap: 4px;
+  }
+  #services .vv-svc-slice-tab-label {
+    display: block;
+    max-width: 100%;
+    font-size: clamp(10px, 2.8vw, 12px);
+    line-height: 1.2;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+    text-align: center;
+  }
+  #services .vv-svc-slice-tab svg { display: none; }
+  #services .vv-svc-active-panel { grid-row: 3; }
+  #services .vv-svc-panel-copy h3 { font-size: clamp(27px, 7vw, 33px); }
+  #services .vv-svc-panel-inner { min-width: 0; }
+  #services .vv-svc-art { max-width: 100%; }
+  #services .vv-svc-slice-tab:focus-visible {
+    outline: 3px solid #2ec4b6;
+    outline-offset: 2px;
+  }
+}
