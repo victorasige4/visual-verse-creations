@@ -31,22 +31,45 @@ This is an original implementation of the layout and scroll behaviour, keeping t
 
 ### Page architecture
 1. Dedicated visual-services hero and 6 numbered navigation pills.
-2. Six full-width alternating split service sections, each with original Visual Verse content and portfolio/creative-tool previews.
-3. Seven-stage interactive, pinned scroll process with original mini-scenes.
-4. Three next-step guide cards.
-5. Existing site's final CTA, navigation, footer and WhatsApp contact.
+2. Six services in a **3-column × 2-row Aceternity 3D Pin grid**, 2 columns on tablet and 1 on mobile, using Visual Verse photography and creative-software mockups. Legacy service anchor links remain.
+3. Seven-stage pinned scroll process with original mini-scenes, a moving beacon, and per-stage visual animations.
+4. Three **Before You Decide** guide cards.
+5. The reusable About-page CTA across Services and every other page, retaining navigation, footer and WhatsApp contact.
 
 ### Creative journey
 01 The First Conversation → 02 Discovery & Planning → 03 Creative Direction → 04 Design & Production → 05 Review & Refinement → 06 Delivery & Launch → 07 Beyond the Launch.
 
-The process uses an RAF-throttled scroll observer to update an active step and CSS progress variable. An accessible button for each step scrolls to the corresponding portion of the runway. Stage artwork crossfades with a quick easing; reduced-motion users get a nonanimated transition.
+The process uses an RAF-throttled scroll observer to update an active step and CSS progress variable. An accessible button for each step scrolls to the corresponding portion of the runway. Stage artwork has a blurred, 3D entrance and exit. Each step animates its own content: conversation bubbles, roadmap bars, moodboard tiles, a moving design cursor, review checks, launch pulses, and the final growth chart. Reduced-motion users see static content.
 
+## Aceternity 3D Pin implementation
+
+- Verified shadcn/ui configuration, Tailwind CSS 4.1, TypeScript 5.9, React 19, Motion, clsx, and tailwind-merge in the current repository.
+- Downloaded and inspected the exact official registry entries at https://ui.aceternity.com/registry/3d-pin-demo.json and https://ui.aceternity.com/registry/3d-pin.json.
+- The official demo supplies `components/3d-pin-demo.tsx` and `components/ui/3d-pin.tsx`; the base component requires `motion`.
+- Rebuilt its `PinContainer` / `PinPerspective` composition in `src/components/ui/3d-pin.tsx`, with tilt, light beam, floating label and pulsing orbits. Used brand navy/mint instead of the upstream cyan/emerald and one accessible anchor instead of nested links.
+- The ring animation only runs on hover; coarse-pointer and reduced-motion devices show stable, readable cards.
+- The cards use available Visual Verse portfolio photographs or in-project creative-workspace illustrations, not proprietary third-party assets.
+
+## Animation inventory
+
+| Trigger | Target | Behaviour |
+| --- | --- | --- |
+| Hover/focus | 3D service cards | Tilt, lift, floating label, orbiting mint rings, image zoom |
+| Scroll | Pinned process | Active step and connected progress line with moving beacon |
+| Stage 01 | Conversation | Staggered speech bubbles |
+| Stage 02 | Discovery | Planning bars fill sequentially |
+| Stage 03 | Direction | Moodboard tiles and colour chips reveal |
+| Stage 04 | Production | Design artboard assembles with a moving cursor |
+| Stage 05 | Refinement | Review items check in one after another |
+| Stage 06 | Launch | Ring pulses and labels enter |
+| Stage 07 | Support | Growth graph draws itself |
+| CTA enters viewport | All pages | About-style word-by-word text, magnetic buttons and floating ring |
 ## Verification
 
 - Build check: TypeScript + production build + GitHub Pages build, successful after integration.
-- Desktop/tablet/mobile smoke test: 6 services present, 01 → 04 → 07 scrolled timeline numbers verified, no page errors, no missing referenced assets or horizontal overflow.
+- Browser QA at 1440×900, 820×1024 and 390×844: six pins present; mouse hover produces a 3D tilt; stage 01 → 04 → 07 transitions passed; no browser errors, missing assets or horizontal overflow.
 - Visual polish: mobile process headline adjusted to clear the fixed glass navigation.
-- Full final QA re-run after mobile adjustment.
+- Sitewide QA: Home, About, Services, Who We Serve, Contact, Quote, and Projects each render exactly one shared CTA. Headline word animations ran in all tested viewports. Reduced motion passed.
 
 ## Further iteration
 
