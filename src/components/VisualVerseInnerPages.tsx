@@ -1,10 +1,8 @@
 import { lazy, Suspense, useEffect, useState, type FormEvent } from "react";
-import { AnimatePresence, motion } from "motion/react";
 import {
   ArrowUpRight, ArrowRight, Camera, Clapperboard, Palette, PenTool,
   MonitorSmartphone, Share2, Phone, Mail, MapPin, MessageCircle,
-  Instagram, Linkedin, Facebook, CalendarDays, Rocket, Building2,
-  Sparkles, UsersRound, Target, Film, FileText, Send
+  Instagram, Linkedin, Facebook, Film, FileText, Send
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { VisualVerseNavbar } from "./VisualVerseNavbar";
@@ -20,8 +18,8 @@ const VisualVerseAboutEditorial = lazy(async () => ({
 const VisualVerseServicesEditorial = lazy(async () => ({
   default: (await import("./VisualVerseServicesEditorial")).VisualVerseServicesEditorial
 }));
-const VisualVerseAudiences = lazy(async () => ({
-  default: (await import("./VisualVerseAudiences")).VisualVerseAudiences
+const VisualVerseWhoWeServePage = lazy(async () => ({
+  default: (await import("./VisualVerseWhoWeServePage")).VisualVerseWhoWeServePage
 }));
 const PageLoading = () => (
   <div role="status" aria-label="Loading page content"
@@ -83,63 +81,6 @@ function SectionTitle({eyebrow,children,description}:{eyebrow:string;children:Re
 
 function ServicesPage(){
   return <VisualVerseServicesEditorial/>;
-}
-
-type AudienceInfo={id:string;title:string;subtitle:string;challenge:string;outcome:string;deliverables:string[];Icon:LucideIcon;stat:string};
-const industries:AudienceInfo[]=[
-  {id:"brands",title:"Growing brands",subtitle:"From first impression to unmistakable identity",challenge:"A promising business needs a visual identity that feels coherent across every touchpoint.",outcome:"A recognizable look and voice that makes the brand easier to understand and remember.",deliverables:["Brand discovery","Visual identities","Brand applications","Campaign creative"],Icon:Sparkles,stat:"IDENTITY / CONTENT"},
-  {id:"businesses",title:"Businesses & teams",subtitle:"Clear stories for established organisations",challenge:"Different departments, products and campaigns compete for attention without one creative direction.",outcome:"Joined-up design, video and digital communication that make complex offerings easier to see.",deliverables:["Corporate films","Marketing materials","Web experiences","Presentation systems"],Icon:Building2,stat:"STRATEGY / COMMUNICATION"},
-  {id:"creators",title:"Creators & founders",subtitle:"Big thinking at the beginning of the journey",challenge:"The idea is exciting but the pitch, launch assets and online presence don't yet show its potential.",outcome:"A clear creative launch kit that gives the next chapter shape and personality.",deliverables:["Launch visuals","Personal branding","Portfolio websites","Content direction"],Icon:Rocket,stat:"IDEA / LAUNCH"},
-  {id:"events",title:"People & events",subtitle:"The moments and people worth remembering",challenge:"A special day goes by quickly, and ordinary documentation can miss what made it meaningful.",outcome:"Photographs, films and printed keepsakes that help people revisit the feeling.",deliverables:["Event photography","Highlight films","Portrait sessions","Event design"],Icon:CalendarDays,stat:"PEOPLE / STORIES"},
-];
-
-function AudiencePage(){
-  const [active,setActive]=useState(0);
-  const selected=industries[active];
-  return <>
-    <section className="vv-inner-section vv-inner-audience-overview" id="who-we-serve"><VisualVerseAudiences/></section>
-    <section className="vv-inner-section vv-industry-section" id="industries">
-      <SectionTitle eyebrow="THE INDUSTRIES & PEOPLE WE CREATE WITH" description="Inspired by Potadot's interactive business-type approach, shaped around the stories Visual Verse helps tell.">See where your<br/><em>story fits.</em></SectionTitle>
-      <div className="vv-industry-tabs" role="tablist" aria-label="Who Visual Verse serves">
-        {industries.map(({title,Icon},i)=><button role="tab" key={title} type="button" id={"vv-industry-tab-"+i} aria-controls={"vv-industry-panel-"+i} aria-selected={i===active} onClick={()=>setActive(i)}><Icon size={17}/>{title}<span>{String(i+1).padStart(2,"0")}</span></button>)}
-      </div>
-      <div className="vv-industry-stage">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div key={selected.id} id={"vv-industry-panel-"+active} role="tabpanel" aria-labelledby={"vv-industry-tab-"+active} className="vv-industry-panel"
-            initial={{opacity:0,y:14}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-14}} transition={{duration:.26}}>
-            <div className={"vv-industry-visual vv-industry-"+selected.id}>
-              <div className="vv-industry-board">
-                <div className="vv-industry-board-top"><span>VISUAL VERSE / {selected.stat}</span><selected.Icon size={22}/></div>
-                <span className="vv-industry-board-kicker">CREATIVE POSSIBILITIES</span>
-                <strong>{selected.subtitle}</strong>
-                <div className="vv-industry-board-art">
-                  {selected.id==="events"?<img src="/portfolio-graduations.jpg" loading="lazy" alt="Graduation photography from Visual Verse's original website"/>:selected.id==="businesses"?<img src="/portfolio-corporate-events.jpg" loading="lazy" alt="Corporate event photograph from the original Visual Verse website"/>:selected.id==="creators"?<img src="/portfolio-social-design.jpg" loading="lazy" alt="Graphic design work from the original Visual Verse website"/>:<img src="/logo-mark.png" loading="lazy" alt="Visual Verse identity mark"/>}
-                </div>
-                <span>MAKE SOMETHING MATTER <ArrowUpRight size={15} aria-hidden="true"/></span>
-              </div>
-            </div>
-            <div className="vv-industry-copy">
-              <span className="vv-inner-eyebrow">CREATIVE PARTNERSHIPS</span>
-              <h3>{selected.title}</h3><p>{selected.subtitle}</p>
-              <div className="vv-industry-before-after"><div><small>THE CHALLENGE</small><p>{selected.challenge}</p></div><div><small>WHAT WE CAN CREATE</small><p>{selected.outcome}</p></div></div>
-              <span className="vv-industry-deliverable-label">RELEVANT SERVICES</span>
-              <div className="vv-industry-tags">{selected.deliverables.map(d=><span key={d}>{d}</span>)}</div>
-              <a className="vv-inner-text-link" href={"/request-quote.html?audience="+encodeURIComponent(selected.title)}>Let's tell your story <ArrowUpRight size={17}/></a>
-            </div>
-          </motion.div>
-        </AnimatePresence>
-      </div>
-      <p className="vv-industry-note">Examples above show possible creative solutions, not claimed client results or completed commissions.</p>
-    </section>
-    <section className="vv-inner-section vv-inner-reasons">
-      <SectionTitle eyebrow="HOW WE WORK TOGETHER">A flexible creative process,<br/><em>whatever your industry.</em></SectionTitle>
-      <div className="vv-inner-reasons-grid">{[
-        {title:"Listen to your world",text:"Understand your goals, audience and what makes this story different.",Icon:UsersRound},
-        {title:"Shape the direction",text:"Define the right disciplines, deliverables and creative approach.",Icon:Target},
-        {title:"Make it real",text:"Design, capture and refine work with you through each stage.",Icon:Sparkles}
-      ].map((x,i)=><article key={x.title}><x.Icon size={22}/><small>0{i+1}</small><h3>{x.title}</h3><p>{x.text}</p></article>)}</div>
-    </section>
-  </>;
 }
 
 const socials=[
@@ -261,10 +202,10 @@ export function VisualVerseInnerPage({kind}:{kind:Kind}){
   return <div className="vv-inner-page">
     <VisualVerseNavbar/>
     <main id="top">
-      {kind!=="about"&&kind!=="services"&&<PageHero kind={kind}/>}
+      {kind!=="about"&&kind!=="services"&&kind!=="audiences"&&<PageHero kind={kind}/>}
       {kind==="about"&&<Suspense fallback={<PageLoading/>}><VisualVerseAboutEditorial/></Suspense>}
       {kind==="services"&&<Suspense fallback={<PageLoading/>}><ServicesPage/></Suspense>}
-      {kind==="audiences"&&<Suspense fallback={<PageLoading/>}><AudiencePage/></Suspense>}
+      {kind==="audiences"&&<Suspense fallback={<PageLoading/>}><VisualVerseWhoWeServePage/></Suspense>}
       {kind==="contact"&&<ContactPage/>}
       {kind==="quote"&&<QuotePage/>}
       {kind!=="about"&&<VisualVerseAboutCta/>}
