@@ -1,6 +1,10 @@
-import { lazy, Suspense, useEffect, useState, ArrowRight, Camera, Clapperboard, Palette, PenTool,
-  MonitorSmartphone, Share2, Phone, Mail, MapPin, MessageCircle, Instagram, Linkedin, Facebook, CalendarDays,
-  Rocket, Building2, Sparkles, UsersRound, Target, Film, FileText, Send
+import { lazy, Suspense, useEffect, useState, type FormEvent } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import {
+  ArrowUpRight, ArrowRight, Camera, Clapperboard, Palette, PenTool,
+  MonitorSmartphone, Share2, Phone, Mail, MapPin, MessageCircle,
+  Instagram, Linkedin, Facebook, CalendarDays, Rocket, Building2,
+  Sparkles, UsersRound, Target, Film, FileText, Send
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { VisualVerseNavbar } from "./VisualVerseNavbar";
