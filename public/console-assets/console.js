@@ -31,7 +31,7 @@ async function loadSession(){
   state.user=user;
   const {data:member,error:memberError}=await supabase.from("team_memberships").select("role,status,user_id").eq("user_id",user.id).maybeSingle();
   if(memberError||!member||member.status!=="active"){
-    showLogin();
+    await supabase.auth.signOut();showLogin();
     notify("Your account is not authorized for this workspace. Contact the Studio Console owner.");
     return;
   }
@@ -59,7 +59,7 @@ async function refresh(){
   render();
 }
 function heading(kicker,title,description,button=""){return '<div class="page-heading"><div><span class="page-eyebrow">'+esc(kicker)+'</span><h1 class="page-title">'+esc(title)+'</h1><p class="page-copy">'+esc(description)+'</p></div>'+button+'</div>';}
-function addButton(label,what){return '<button class="btn primary" type="button" data-create="'+esc(what)+'">'+esc(label)+' <span aria-hidden="true">↗</span></button>';}
+function addButton(label,what){return '<button class="btn primary" type="button" data-create="'+esc(what)+'">'+esc(label)+' <span class="diagonal-arrow" aria-hidden="true"></span></button>';}
 function empty(title,copy){return '<div class="empty"><strong>'+esc(title)+'</strong>'+esc(copy)+'</div>';}
 function item(title,detail,status){return '<div class="item"><div class="item-main"><strong>'+esc(title)+'</strong><small>'+esc(detail)+'</small></div>'+(status?tag(status):"")+'</div>';}
 function renderOverview(){
@@ -183,7 +183,9 @@ $("set-password-form").addEventListener("submit",async(e)=>{
   notify("Password secured. Welcome to the studio.");history.replaceState(null,"",baseUrl);
   $("auth-screen").hidden=true;$("workspace").hidden=false;await refresh();
 });
-$("sign-out").addEventListener("click",async()=>{await supabase.auth.signOut();state.user=null;state.membership=null;showLogin();});
+async function signOut(){await supabase.auth.signOut();state.user=null;state.membership=null;showLogin();}
+$("sign-out").addEventListener("click",signOut);
+$("mobile-sign-out").addEventListener("click",signOut);
 document.querySelectorAll("[data-tab]").forEach(b=>b.addEventListener("click",()=>{state.view=b.dataset.tab;render();window.scrollTo({top:0,behavior:"instant"});}));
 $("screen-content").addEventListener("click",async(e)=>{
   const create=e.target.closest("[data-create]");if(create){openModal(create.dataset.create);return;}
