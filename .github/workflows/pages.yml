@@ -30,6 +30,8 @@ jobs:
         env:
           GITHUB_PAGES: "true"
         run: npm run build
+      - name: Check Visual Verse public-facing business language
+        run: node scripts/check-brand-language.mjs
       - name: Validate Visual Verse Console light/dark appearance
         run: node scripts/check-console-theme.mjs
       - name: Adjust page and asset URLs
