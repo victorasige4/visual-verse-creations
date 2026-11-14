@@ -45,7 +45,8 @@ jobs:
           # Confirm the Studio Console gateway and footer entry survive the Pages build.
           test -s dist/console/index.html
           grep -q 'Studio Console' dist/console/index.html
-          grep -q 'visual-verse-business-hq.risenhymn8.chatgpt.site' dist/console/index.html
+          grep -q '../console-preview.html' dist/console/index.html
+          grep -q 'Set up your password' dist/console-preview.html
           grep -q '/visual-verse-creations/console/' dist/assets/*.js
           grep -q '/visual-verse-creations/assets/' dist/index.html
       - name: Configure Pages
