@@ -179,3 +179,53 @@
 @media(prefers-reduced-motion:reduce){
  .vv-nav2.vv-nav-resizable,.vv-nav-resize-body,.vv-nav-resize-preview-orbit,.vv-nav-resize-mega-item{animation:none!important;transition:none!important}
 }
+
+/* Mobile parity: retain the floating desktop island, with legible,
+   swipeable destinations and properly sized touch/focus targets. */
+@media (max-width: 900px) {
+  .vv-nav2.vv-nav-resizable,
+  .vv-nav2.vv-nav-resizable.is-compact {
+    max-width: calc(100vw - 18px);
+  }
+  .vv-nav-resize-body .vv-nav-resize-links {
+    min-width: 0;
+    justify-content: flex-start;
+    overscroll-behavior-x: contain;
+    scroll-padding-inline: 10px;
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
+  }
+  .vv-nav-resize-links > a.vv-nav-resize-link,
+  .vv-nav-resize-links .vv-nav-resize-group > a.vv-nav-resize-link,
+  .vv-nav-resizable.is-compact .vv-nav-resize-links > a.vv-nav-resize-link,
+  .vv-nav-resizable.is-compact .vv-nav-resize-links .vv-nav-resize-group > a.vv-nav-resize-link {
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+    padding-block: 8px;
+    font-size: 11px;
+  }
+  .vv-nav-resize-chevron {
+    flex-basis: 34px;
+    width: 34px;
+    height: 38px;
+    touch-action: manipulation;
+  }
+  .vv-nav-resize-cta {
+    min-height: 40px;
+    touch-action: manipulation;
+  }
+  .vv-nav-resize-mega {
+    max-height: min(74svh, 610px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .vv-nav-resize-link:focus-visible,
+  .vv-nav-resize-chevron:focus-visible,
+  .vv-nav-resize-cta:focus-visible,
+  .vv-nav-resize-mega-item:focus-visible {
+    outline: 3px solid #2ec4b6;
+    outline-offset: 2px;
+  }
+}
