@@ -13,6 +13,12 @@ import "../faq-question-lab.css";
  * Every answer is present in the underlying source data and available without
  * timers, dragging or hover-only interaction.
  */
+const noteIcons = [Asterisk, ArrowUpRight, Sparkles, CircleHelp, WandSparkles, Shuffle, Sparkles] as const;
+function NoteMark({ index }: { index: number }) {
+  const Icon = noteIcons[index] ?? Sparkles;
+  return <Icon size={16} strokeWidth={1.8} aria-hidden="true"/>;
+}
+
 const questions = [
   {
     card: "What's in your creative toolkit?",
@@ -20,7 +26,6 @@ const questions = [
     question: "What services does Visual Verse offer?",
     answer: "We bring together photography, videography, branding, graphic design, web and UI/UX design, and social media and digital marketing. We can focus on one service or combine disciplines around a broader creative brief.",
     takeaway: "One studio. Many ways to tell your story.",
-    symbol: "✳",
   },
   {
     card: "Beyond Nairobi?",
@@ -28,7 +33,6 @@ const questions = [
     question: "Do you work with clients outside Nairobi?",
     answer: "Yes. We can collaborate remotely with clients across Kenya. For photography, videography and other work that requires an on-site presence, travel and scheduling are discussed during project planning.",
     takeaway: "Nairobi is home. Creativity travels.",
-    symbol: "↗",
   },
   {
     card: "I have an idea. Now what?",
@@ -36,7 +40,6 @@ const questions = [
     question: "How do we start a project?",
     answer: "Share what you are building, the outcome you need, your timeline and any reference material. We can then clarify the scope, creative direction and next steps before confirming the project.",
     takeaway: "Start with an idea. We'll shape the next step.",
-    symbol: "✦",
   },
   {
     card: "Let's talk numbers.",
@@ -44,7 +47,6 @@ const questions = [
     question: "How is a project priced?",
     answer: "Every quote depends on the deliverables, scope, complexity, usage needs and turnaround time. We prepare an appropriate quotation after discussing your requirements; there is no universal price for every project.",
     takeaway: "Made for your brief, not a one-size-fits-all price.",
-    symbol: "◈",
   },
   {
     card: "Already got a brand?",
@@ -52,7 +54,6 @@ const questions = [
     question: "Can you work with an existing logo or brand identity?",
     answer: "Absolutely. We can work within your current guidelines, refresh selected elements or discuss a complete identity project if that is what your brand needs.",
     takeaway: "Your identity, thoughtfully taken further.",
-    symbol: "✣",
   },
   {
     card: "How soon can we make magic?",
@@ -60,7 +61,6 @@ const questions = [
     question: "How long does a project usually take?",
     answer: "Timelines vary depending on the service, complexity, feedback rounds and assets required. We agree on realistic milestones before production begins.",
     takeaway: "Clear milestones. Room for great work.",
-    symbol: "⌁",
   },
   {
     card: "Can I get involved?",
@@ -68,7 +68,6 @@ const questions = [
     question: "Will I be involved in the creative process?",
     answer: "Yes. We begin by understanding your brief and include feedback points throughout the project so the final work reflects your vision and the agreed creative direction.",
     takeaway: "The best ideas happen together.",
-    symbol: "♡",
   },
 ];
 
@@ -109,7 +108,7 @@ export function VisualVerseFaqLab() {
       <header className="vv-faq-lab-header">
         <div className="vv-faq-lab-header-copy">
           <span className="vv-faq-lab-eyebrow"><span aria-hidden="true" className="vv-faq-lab-blink"/> THE QUESTION LAB · VISUAL VERSE</span>
-          <h2 id="vv-faq-lab-heading">Curious?<br/><em>We love that.</em><span className="vv-faq-lab-header-asterisk" aria-hidden="true">✳</span></h2>
+          <h2 id="vv-faq-lab-heading">Curious?<br/><em>We love that.</em><span className="vv-faq-lab-header-asterisk" aria-hidden="true"><Asterisk size={30} strokeWidth={1.6}/></span></h2>
         </div>
         <div className="vv-faq-lab-intro">
           <p>Every great collaboration starts with a good question. Pick one from the board and see what we have to say — or let curiosity choose for you.</p>
@@ -129,7 +128,7 @@ export function VisualVerseFaqLab() {
           <div className="vv-faq-lab-ambient" aria-hidden="true">
             <span className="vv-faq-lab-ambient-ring"/><span className="vv-faq-lab-ambient-ring second"/>
             <span className="vv-faq-lab-ambient-center">?</span>
-            <span className="vv-faq-lab-ambient-scribble">↝</span>
+            <span className="vv-faq-lab-ambient-scribble"><MoveUpRight size={32} strokeWidth={1.5}/></span>
           </div>
           <div className="vv-faq-lab-note-grid" role="group" aria-label="Frequently asked questions">
             {questions.map((item,index) => (
@@ -145,13 +144,13 @@ export function VisualVerseFaqLab() {
                 <span className="vv-faq-lab-note-pin" aria-hidden="true"/>
                 <span className="vv-faq-lab-note-label">{item.category}</span>
                 <span className="vv-faq-lab-note-text">{item.card}</span>
-                <span className="vv-faq-lab-note-mark" aria-hidden="true">{selected===index?<Check size={15}/>:item.symbol}</span>
+                <span className="vv-faq-lab-note-mark" aria-hidden="true">{selected===index?<Check size={15}/>:<NoteMark index={index}/>}</span>
               </button>
             ))}
           </div>
           <div className="vv-faq-lab-wall-bottom">
             <span><MousePointer2 size={15} aria-hidden="true"/> YOUR QUESTIONS. OUR WORLD.</span>
-            <span className="vv-faq-lab-wall-star" aria-hidden="true">✦ ✳ ✦</span>
+            <span className="vv-faq-lab-wall-star" aria-hidden="true"><Sparkles size={16}/><Asterisk size={15}/><Sparkles size={16}/></span>
           </div>
         </div>
 
@@ -166,7 +165,7 @@ export function VisualVerseFaqLab() {
             <div className="vv-faq-lab-paper-top">
               <img src={import.meta.env.BASE_URL+"logo-mark.png"} alt="" aria-hidden="true" loading="lazy"/>
               <span>A NOTE FROM OUR STUDIO</span>
-              <span aria-hidden="true">✳</span>
+              <span aria-hidden="true"><Asterisk size={16}/></span>
             </div>
             <div className="vv-faq-lab-perforation" aria-hidden="true"/>
             <div className="vv-faq-lab-answer-content" role="region" aria-label="Selected FAQ answer" aria-live="polite" aria-atomic="true">
@@ -185,7 +184,7 @@ export function VisualVerseFaqLab() {
                 </motion.div>
               </AnimatePresence>
             </div>
-            <div className="vv-faq-lab-paper-footer"><span>WITH CARE, VISUAL VERSE</span><span>✳</span></div>
+            <div className="vv-faq-lab-paper-footer"><span>WITH CARE, VISUAL VERSE</span><span><Asterisk size={15} aria-hidden="true"/></span></div>
           </div>
 
           <div className="vv-faq-lab-control-bar">
