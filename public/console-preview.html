@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex,nofollow"/>
 <meta name="theme-color" content="#003f5c"/>
 <script>try{const saved=localStorage.getItem("vv-console-theme");document.documentElement.dataset.consoleTheme=saved==="dark"||saved==="light"?saved:(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");}catch{document.documentElement.dataset.consoleTheme="light";}</script>
-<title>Studio Console | Visual Verse Creations</title>
+<title>Visual Verse Console | Visual Verse Creations</title>
 <link rel="icon" href="./favicon.ico"/>
 <link rel="apple-touch-icon" href="./logo-mark.png"/>
 <link rel="stylesheet" href="./console-assets/console.css"/>
@@ -19,7 +19,7 @@
 <section id="auth-screen" class="auth-layout">
   <div class="auth-left">
     <div class="brand-row"><img src="./logo-mark.png" alt="Visual Verse logo" width="58" height="58"/><span>VISUAL VERSE <small>CREATIONS</small></span><button type="button" id="auth-theme-toggle" class="console-theme-toggle" aria-label="Switch to dark mode" aria-pressed="false" title="Toggle light or dark mode"><svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 15.5A8.6 8.6 0 0 1 8.5 3.8a8.6 8.6 0 1 0 11.7 11.7Z"/></svg><svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button></div>
-    <div class="auth-pitch"><span class="eyebrow">THE CREATIVE STUDIO, ORGANIZED</span>
+    <div class="auth-pitch"><span class="eyebrow">YOUR CREATIVE WORK, ORGANIZED</span>
       <h1>Big ideas.<br/><em>One clear space.</em></h1>
       <p>Manage your clients, projects, deadlines and people from one beautifully connected workspace.</p>
       <div class="auth-visual" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><img src="./logo-mark.png" alt=""/></div>
@@ -31,20 +31,20 @@
       <div class="auth-lock">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.7"/></svg>
       </div>
-      <span class="eyebrow">STUDIO CONSOLE</span>
+      <span class="eyebrow">VISUAL VERSE CONSOLE</span>
       <span class="auth-step" id="auth-step">STEP 01 / YOUR EMAIL</span>
-      <h2 id="auth-heading">Set up your studio access.</h2>
+      <h2 id="auth-heading">Set up your console access.</h2>
       <p id="auth-description">Enter the email address where you received your invitation.</p>
       <form id="setup-email-form" class="stack">
         <label for="setup-email">Your email address</label>
         <input id="setup-email" type="email" autocomplete="email" required placeholder="you@example.com"/>
         <button class="btn primary" type="submit">Set up your password</button>
         <p id="setup-email-feedback" class="setup-email-feedback" role="status" aria-live="polite" hidden></p>
-        <p class="secondary-note">We'll email you a secure link to create your password. Studio access is invitation-only.</p>
+        <p class="secondary-note">We'll email you a secure link to create your password. Console access is invitation-only.</p>
         <button type="button" class="text-button" id="open-login">Already have a password? Sign in securely</button>
       </form>
       <div id="setup-email-sent" class="stack" hidden>
-        <p class="secondary-note">If your email has an invited studio account, you'll receive a secure link. Open it on this device to choose and confirm your password.</p>
+        <p class="secondary-note">If your email has an invited team account, you'll receive a secure link. Open it on this device to choose and confirm your password.</p>
         <button class="btn primary" type="button" id="return-setup">Try another email</button>
         <button type="button" class="text-button" id="sent-login">I already have a password</button>
       </div>
@@ -66,7 +66,7 @@
         <button class="text-button" type="button" id="mfa-logout">Sign out</button>
       </form>
       <div id="setup-complete" class="stack" hidden>
-        <p class="secondary-note">Your password is saved. You're ready to sign in to your private studio workspace.</p>
+        <p class="secondary-note">Your password is saved. You're ready to sign in to your private Visual Verse workspace.</p>
         <button class="btn primary" type="button" id="continue-signin">Sign in securely</button>
       </div>
       <p class="auth-note">Invitation only. Access is restricted to authorized Visual Verse team members.</p>
@@ -79,7 +79,7 @@
     <header class="topbar">
       <div class="topbar-left">
         <img src="./logo-mark.png" alt="Visual Verse" width="36" height="36" class="vv-console-topbar-logo"/>
-        <span class="crumb">VISUAL VERSE <b>/</b> STUDIO <b>/</b> <strong id="page-crumb">OVERVIEW</strong></span>
+        <span class="crumb">VISUAL VERSE <b>/</b> CONSOLE <b>/</b> <strong id="page-crumb">OVERVIEW</strong></span>
         <span class="topbar-status">PRIVATE WORKSPACE</span>
       </div>
       <div class="profile" aria-label="Signed in account">
