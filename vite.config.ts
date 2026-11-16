@@ -25,6 +25,47 @@ function copyVisualVerseAssets(): Plugin {
   };
 }
 
+/** Run before React and before the browser restores the previous scroll offset.
+ * Only a true reload returns to the page's hero. Normal anchors, query-string
+ * service routes and history navigation keep their existing behavior. */
+function resetScrollOnReload(): Plugin {
+  return {
+    name: "visual-verse-reload-to-hero",
+    transformIndexHtml() {
+      return [{
+        tag: "script",
+        attrs: { id: "vv-reload-to-hero" },
+        injectTo: "head-prepend",
+        children: `(function () {
+  var navigation = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+  var isReload = navigation ? navigation.type === 'reload' : performance.navigation && performance.navigation.type === 1;
+  if (!isReload) return;
+  var previous = 'scrollRestoration' in history ? history.scrollRestoration : null;
+  if (previous !== null) history.scrollRestoration = 'manual';
+  if (location.hash) history.replaceState(history.state, '', location.pathname + location.search);
+  function goTop() {
+    var root = document.documentElement;
+    var previousBehavior = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    window.scrollTo(0, 0);
+    root.style.scrollBehavior = previousBehavior;
+  }
+  goTop();
+  window.addEventListener('pageshow', function () {
+    goTop();
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        goTop();
+        if (previous !== null) history.scrollRestoration = previous;
+      });
+    });
+  }, { once: true });
+})();`,
+      }];
+    },
+  };
+}
+
 export default defineConfig({
   // GitHub Pages projects live under /<repository>/; Netlify keeps its root build.
   base: process.env.GITHUB_PAGES === "true" ? "/visual-verse-creations/" : "/",
@@ -50,7 +91,7 @@ export default defineConfig({
       },
     },
   },
-  plugins: [react(), tailwindcss(), copyVisualVerseAssets()],
+  plugins: [react(), tailwindcss(), resetScrollOnReload(), copyVisualVerseAssets()],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
