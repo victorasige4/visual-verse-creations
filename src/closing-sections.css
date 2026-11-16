@@ -433,6 +433,7 @@
   color:#eef8f4;
 }
 .vv-close-footer{position:relative;isolation:isolate;max-width:1220px;margin:0 auto}
+.vv-close-footer .vv-footer-boxes{z-index:-1;inset:0 -5vw}
 .vv-close-footer-watermark{
   position:absolute;z-index:-1;
   width:clamp(280px,42vw,620px);

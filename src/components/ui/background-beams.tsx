@@ -13,7 +13,7 @@ const paths = Array.from({ length: 58 }, (_, i) => {
   const y = i * 8;
   return `M${-380 + x} ${-189 - y}C${-380 + x} ${-189 - y} ${-312 + x} ${216 - y} ${152 + x} ${343 - y}C${616 + x} ${470 - y} ${684 + x} ${875 - y} ${684 + x} ${875 - y}`;
 });
-const animatedPaths = paths.filter((_, i) => i % 5 === 1);
+const animatedPaths = paths.filter((_, i) => i % 12 === 1);
 const basePath = paths.join("");
 
 export const BackgroundBeams = memo(function BackgroundBeams({ className }: { className?: string }) {
@@ -21,6 +21,7 @@ export const BackgroundBeams = memo(function BackgroundBeams({ className }: { cl
   const ref = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
   const [visible, setVisible] = useState(false);
+  const [near, setNear] = useState(false);
   const [width, setWidth] = useState(1168);
   useEffect(() => {
     const node = ref.current;
@@ -31,14 +32,19 @@ export const BackgroundBeams = memo(function BackgroundBeams({ className }: { cl
     resize?.observe(node);
     if (!resize) window.addEventListener("resize", measure);
     const observer = typeof IntersectionObserver === "undefined" ? undefined :
-      new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { rootMargin: "80px" });
+      new IntersectionObserver(([entry]) => {
+        setNear(entry.isIntersecting);
+        setVisible(entry.isIntersecting && !document.hidden);
+      }, { rootMargin: "80px" });
     if (observer) observer.observe(node);
-    else setVisible(true);
-    return () => { resize?.disconnect(); observer?.disconnect(); window.removeEventListener("resize", measure); };
+    else {setNear(true);setVisible(true);}
+    const onVisibility=()=>setVisible(!document.hidden);
+    document.addEventListener("visibilitychange",onVisibility);
+    return () => { resize?.disconnect(); observer?.disconnect(); window.removeEventListener("resize", measure);document.removeEventListener("visibilitychange",onVisibility); };
   }, []);
   const tileWidth = Math.max(760, width);
   const tileHeight = Math.max(380, Math.round(tileWidth * 316 / 696));
-  const moving = visible && !reducedMotion;
+  const moving = near && visible && !reducedMotion;
   return (
     <div ref={ref} className={cn("vv-background-beams", className)} aria-hidden="true">
       <svg width="100%" height="100%" fill="none" focusable="false" xmlns="http://www.w3.org/2000/svg">

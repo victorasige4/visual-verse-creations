@@ -39,6 +39,7 @@ export function VisualVerseCursor() {
         return;
       }
       setVisible(true);
+      if(!frame)frame=window.requestAnimationFrame(tick);
       core.style.transform="translate3d("+px+"px,"+py+"px,0) translate(-50%,-50%)";
       const interactive=target?.closest(interactiveSelector)||null;
       if(interactive!==lastTarget){
@@ -53,12 +54,12 @@ export function VisualVerseCursor() {
     const onLeave=()=>setVisible(false);
     const onEnter=()=>{if(enabled)setVisible(true)};
     const tick=()=>{
+      frame=0;
       ox+=(px-ox)*.19;
       oy+=(py-oy)*.19;
       orbit.style.transform="translate3d("+ox+"px,"+oy+"px,0) translate(-50%,-50%)";
-      frame=window.requestAnimationFrame(tick);
+      if(Math.abs(px-ox)+Math.abs(py-oy)>.3 && !document.hidden)frame=window.requestAnimationFrame(tick);
     };
-    frame=window.requestAnimationFrame(tick);
     window.addEventListener("pointermove",onMove,{passive:true});
     window.addEventListener("pointerdown",onDown,{passive:true});
     window.addEventListener("pointerup",onUp,{passive:true});

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useMotionValueEvent } from "motion/react";
+import { Boxes } from "./ui/background-boxes";
 import type { PointerEvent as ReactPointerEvent, FocusEvent as ReactFocusEvent } from "react";
 
 const reasons = [
@@ -85,6 +86,7 @@ export function VisualVerseWhyUs() {
     >
       <div className="vv-why-ambient vv-why-ambient-one" aria-hidden="true" />
       <div className="vv-why-ambient vv-why-ambient-two" aria-hidden="true" />
+      <Boxes />
 
       <div className="vv-why-inner">
         <motion.div
@@ -159,6 +161,7 @@ export function VisualVerseWhyUs() {
                     }}
                     transition={reducedMotion ? { duration: 0 } : { duration: 0.36, ease: [0.22, 1, 0.36, 1] }}
                   >
+                    {reason.number}
                   </motion.span>
                 </span>
                 <strong className="vv-why-step-heading">{reason.title}</strong>

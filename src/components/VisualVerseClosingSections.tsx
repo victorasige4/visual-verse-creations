@@ -1,6 +1,7 @@
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { PolicyLinks } from "./VisualVersePolicies";
 import { VisualVerseAboutCta } from "./VisualVerseAboutCta";
+import { Boxes } from "./ui/background-boxes";
 import {
   ArrowRight, ArrowUpRight, CheckCircle2, Mail,
   MapPin, ArrowUp
@@ -67,6 +68,7 @@ const navigation=[
 export function VisualVerseFooter(){
   return (
     <div className="vv-close-footer">
+      <Boxes className="vv-footer-boxes" />
       <img className="vv-close-footer-watermark" src="/logo-mark.png" alt="" aria-hidden="true" loading="lazy"/>
       <div className="vv-close-footer-grid">
         <div className="vv-close-footer-about">
