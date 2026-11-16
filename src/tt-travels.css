@@ -1,57 +1,16 @@
-/* Visual Verse typography system
- * The supplied ZIP is TypeType's TRIAL release. Its licence forbids embedding
- * the fonts on public web pages. No proprietary font binaries are included.
- * These local() declarations use legitimately installed TT Travels when present.
- * To render it for every visitor, obtain a suitable webfont licence and deliver
- * the licensed webfont through an appropriately licensed web hosting setup.
- */
+/* Visual Verse typography — self-hosted Montserrat, SIL Open Font License 1.1. */
 @font-face{
-  font-family:"VisualVerse TT Travels";
-  src:local("TT Travels Thin"),local("TTTravels-Thin");
-  font-style:normal;font-weight:100;font-display:swap;
+  font-family:"Montserrat";
+  src:url("/fonts/montserrat-variable.woff2") format("woff2");
+  font-style:normal;font-weight:100 900;font-display:swap;
 }
 @font-face{
-  font-family:"VisualVerse TT Travels";
-  src:local("TT Travels ExtraLight"),local("TTTravels-ExtraLight");
-  font-style:normal;font-weight:200;font-display:swap;
-}
-@font-face{
-  font-family:"VisualVerse TT Travels";
-  src:local("TT Travels Light"),local("TTTravels-Light");
-  font-style:normal;font-weight:300;font-display:swap;
-}
-@font-face{
-  font-family:"VisualVerse TT Travels";
-  src:local("TT Travels Regular"),local("TTTravels-Regular"),local("TT Travels");
-  font-style:normal;font-weight:400;font-display:swap;
-}
-@font-face{
-  font-family:"VisualVerse TT Travels";
-  src:local("TT Travels Medium"),local("TTTravels-Medium");
-  font-style:normal;font-weight:500;font-display:swap;
-}
-@font-face{
-  font-family:"VisualVerse TT Travels";
-  src:local("TT Travels DemiBold"),local("TTTravels-DemiBold");
-  font-style:normal;font-weight:600;font-display:swap;
-}
-@font-face{
-  font-family:"VisualVerse TT Travels";
-  src:local("TT Travels Bold"),local("TTTravels-Bold");
-  font-style:normal;font-weight:700;font-display:swap;
-}
-@font-face{
-  font-family:"VisualVerse TT Travels";
-  src:local("TT Travels ExtraBold"),local("TTTravels-ExtraBold");
-  font-style:normal;font-weight:800;font-display:swap;
-}
-@font-face{
-  font-family:"VisualVerse TT Travels";
-  src:local("TT Travels Black"),local("TTTravels-Black");
-  font-style:normal;font-weight:900;font-display:swap;
+  font-family:"Montserrat";
+  src:url("/fonts/montserrat-italic-variable.woff2") format("woff2");
+  font-style:italic;font-weight:100 900;font-display:swap;
 }
 :root{
-  --vv-typeface:var(--vv-licensed-travels-webfont,"VisualVerse TT Travels"),"TT Travels",Arial,sans-serif;
+  --vv-typeface:"Montserrat",Arial,sans-serif;
   --vv-island-font:var(--vv-typeface);
   --vv-font-heading-weight:800;
   --vv-font-subheading-weight:700;

@@ -1,5 +1,5 @@
 /* Visual Verse inner pages — shared navy/aqua typography and footer. */
-.vv-inner-page{background:#f9fcfa;color:#003f5c;min-height:100svh;font-family:var(--vv-island-font,"TT Travels",Arial,sans-serif)}
+.vv-inner-page{background:#f9fcfa;color:#003f5c;min-height:100svh;font-family:var(--vv-island-font,"Montserrat",Arial,sans-serif)}
 .vv-inner-hero{padding:150px max(24px,calc((100vw - 1230px)/2)) 90px;background:linear-gradient(135deg,#f8fcfa,#e6f6f0);border-bottom:1px solid #d5e9e1}
 .vv-inner-hero-inner{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(250px,.75fr);align-items:center;gap:30px}
 .vv-inner-eyebrow{display:inline-flex;color:#24988e;font-weight:850;font-size:10px;letter-spacing:.14em;text-transform:uppercase}

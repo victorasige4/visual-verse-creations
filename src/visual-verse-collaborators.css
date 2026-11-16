@@ -2,7 +2,7 @@
    Closely recreates Potadot's About-page four-card partner section:
    1168px container, 2-column editorial heading, 18px card grid,
    #f2f3f7 neumorphic cards, inset 52px icons, cursor-based mint spotlight.
-   Content and accents belong to Visual Verse; TT Travels is inherited. */
+   Content and accents belong to Visual Verse; Montserrat is inherited. */
 
 .vv-about-editorial .vv-about-partners.vv-collab-section{
   --vv-collab-paper:#f2f3f7;

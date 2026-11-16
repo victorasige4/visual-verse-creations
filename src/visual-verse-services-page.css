@@ -2,12 +2,12 @@
    Clone-study reference: user-owned Visual Verse original content and visual
    identity + Potadot Services layout and scroll-pinned process behaviour.
    Palette: #003F5C navy, #002A40 deep navy, #2EC4B6 mint, white, neutral
-   tints only. TT Travels inherited from the global site typography.
+   tints only. Montserrat inherited from the global site typography.
 */
 .vv-services-editorial {
   --sv-navy:#003f5c;--sv-deep:#002a40;--sv-mint:#2ec4b6;
   --sv-ink:#173e50;--sv-paper:#f7fcfb;--sv-surface:#f2f5f7;--sv-white:#fff;
-  font-family:var(--vv-typeface,"TT Travels",Arial,sans-serif);
+  font-family:var(--vv-typeface,"Montserrat",Arial,sans-serif);
   background:var(--sv-paper);color:var(--sv-ink);
   overflow:clip;
 }

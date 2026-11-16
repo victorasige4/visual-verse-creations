@@ -1,6 +1,6 @@
 /* Visual Verse / People We Create With — four bespoke, fully interactive creative universes.
    No stock dashboard motif; live scenes intentionally use different compositions and motion systems. */
-#who-we-serve .vvcr-root{--vvcr-navy:#003f5c;--vvcr-aqua:#2ec4b6;max-width:1280px;margin:0 auto;font-family:var(--vv-typeface,'VisualVerse TT Travels','TT Travels',Arial,sans-serif);color:#003f5c}
+#who-we-serve .vvcr-root{--vvcr-navy:#003f5c;--vvcr-aqua:#2ec4b6;max-width:1280px;margin:0 auto;font-family:var(--vv-typeface,'Montserrat',Arial,sans-serif);color:#003f5c}
 #who-we-serve .vvcr-root *{box-sizing:border-box}
 .vvcr-intro{display:grid;grid-template-columns:minmax(0,1.26fr) minmax(220px,.74fr);gap:14px 55px;align-items:end}
 .vvcr-intro>.vv-label{grid-column:1/-1;display:flex;align-items:center;gap:10px;margin:0;font-size:10px;letter-spacing:.13em;font-weight:750;color:#188d83}

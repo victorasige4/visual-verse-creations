@@ -10,7 +10,7 @@
 }
 #services .vv-svc-layout,
 #who-we-serve .vv-aud-layout {
-  font-family: var(--vv-island-font, "VisualVerse TT Travels", "TT Travels", "Manrope", Arial, sans-serif);
+  font-family: var(--vv-island-font, "Montserrat", Arial, sans-serif);
   color: #173c4c;
 }
 #services .vv-svc-heading {

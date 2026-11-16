@@ -28,15 +28,6 @@ document.addEventListener("pointerleave", () => {
   magnetic = null;
 });
 
-// The CDN only offers trial files. Preview locally; never fetch them on the public site.
-if (import.meta.env.DEV && ["localhost", "127.0.0.1"].includes(location.hostname)) {
-  const font = document.createElement("link");
-  font.rel = "stylesheet";
-  font.href = "https://fonts.cdnfonts.com/css/tt-travels-trl";
-  document.head.append(font);
-  document.documentElement.style.setProperty("--vv-licensed-travels-webfont", "'TT Travels Trl'");
-}
-
 // The legacy homepage has a few server-rendered anchors outside React islands.
 export function enhanceStaticActions() {
   document.querySelectorAll<HTMLAnchorElement>(".vv-hero-actions .vv-pill-button, .vv-about-more, .vv-preview-portfolio-link").forEach(anchor => {
