@@ -79,6 +79,35 @@ try {
     assert.ok(await motionPage.evaluate(()=>scrollY<2),"Hero must be first after decoding");
     console.log("Animated transmission: "+(path||"home")+" passed");
   }
+  // Warm internal navigation must replay the route's own transmission,
+  // even when its HTML and shared scripts have already been cached.
+  async function followFromHome(page, name, path, touch = false) {
+    await page.goto(base,{waitUntil:"commit"});
+    await page.locator("#vv-page-loading .vv-boot-encrypted").waitFor({state:"visible",timeout:10000});
+    await page.locator("html:not([data-vv-boot])").waitFor({state:"attached",timeout:20000});
+    const link = page.locator('[aria-label="Visual Verse Creations navigation"]').getByRole("link",{name,exact:true});
+    await Promise.all([
+      page.waitForURL(base+path,{waitUntil:"commit"}),
+      touch ? link.tap() : link.click({noWaitAfter:true})
+    ]);
+    await page.locator("#vv-page-loading .vv-boot-encrypted").waitFor({state:"visible",timeout:10000});
+    assert.equal(await page.locator("html").getAttribute("data-vv-message"),routeMessage(path));
+    assert.ok(await page.evaluate(()=>document.documentElement.hasAttribute("data-vv-boot") && !!document.elementFromPoint(innerWidth/2,innerHeight/2)?.closest("#vv-page-loading")),"Navigation transmission not covering the hero: "+path);
+    await page.locator("html:not([data-vv-boot])").waitFor({state:"attached",timeout:20000});
+    assert.equal(await page.locator("html").getAttribute("data-vv-decrypted"),"true");
+    assert.ok(await page.evaluate(()=>scrollY<2),"Navigation did not reveal the hero: "+path);
+    console.log("Home → "+name+" ("+(touch?"touch":"click")+") passed");
+  }
+  for (const [name,path] of [["About","about.html"],["Services","services.html"],["Who We Serve","who-we-serve.html"],["Projects","projects.html"],["Contact","contact.html"],["Let's talk","request-quote.html"]]) {
+    await followFromHome(motionPage,name,path);
+  }
+  // A persisted pageshow simulates restoration of the already-rendered
+  // document without re-running its entry module.
+  await motionPage.evaluate(()=>window.dispatchEvent(new PageTransitionEvent("pageshow",{persisted:true})));
+  await motionPage.locator("#vv-page-loading .vv-boot-encrypted").waitFor({state:"visible"});
+  await motionPage.locator("html:not([data-vv-boot])").waitFor({state:"attached",timeout:20000});
+  assert.equal(await motionPage.locator("html").getAttribute("data-vv-decrypted"),"true");
+  console.log("Restored document transmission passed");
   await motion.close();
   // A real touch/mobile context (not merely a narrow desktop window), with
   // all animation enabled. Check every public route, then exercise the
@@ -153,6 +182,8 @@ try {
     assert.deepEqual(errors,[],"Mobile JavaScript errors on "+path);
     console.log("Touch + full motion: "+(path||"home")+" passed; "+svgReport.count+" SVG elements");
   }
+  await followFromHome(touch,"About","about.html",true);
+  await followFromHome(touch,"Services","services.html",true);
   await phone.close();
 
   for (const viewport of [{width:1440,height:900},{width:390,height:844}]) {
@@ -211,6 +242,7 @@ try {
     await page.locator("html:not([data-vv-boot])").waitFor({state:"attached",timeout:20000});
     const target=await page.locator("#web-ui-ux").boundingBox();
     assert.ok(target && target.y < viewport.height && target.y+target.height>0,"Explicit project link did not reach target");
+    await followFromHome(page,"About","about.html");
     await context.close();
   }
 } finally {

@@ -2,7 +2,7 @@
  * transmission has been completely decrypted and painted. */
 export function revealPublicPage() {
   const root = document.documentElement;
-  if (!root.hasAttribute("data-vv-boot") || root.dataset.vvPageReady !== "true" || root.dataset.vvDecrypted !== "true") return;
+  if (document.hidden || !root.hasAttribute("data-vv-boot") || root.dataset.vvPageReady !== "true" || root.dataset.vvDecrypted !== "true") return;
   let id = window.location.hash.slice(1);
   try { id = decodeURIComponent(id); } catch { /* malformed fragment */ }
   const aliases: Record<string, string> = { digital: "web-ui-ux", campaigns: "social-media" };

@@ -36,15 +36,23 @@ export function EncryptedText({
   }));
   useEffect(() => {
     if (reduced) return;
-    const start = performance.now();
     const delay = Math.max(1, revealDelayMs);
-    const tick = () => {
-      const count = Math.min(length, Math.floor((performance.now() - start) / delay));
-      setFrame({ count, value: count === length ? text : encrypt(text, count, alphabet) });
-      if (count === length) window.clearInterval(timer);
+    const flip = Math.max(16, flipDelayMs);
+    let frameId = 0, painted = 0, elapsed = 0, previous = 0, lastFlip = -flip;
+    const tick = (now: number) => {
+      if (document.hidden) { previous = 0; frameId = requestAnimationFrame(tick); return; }
+      if (painted < 2) { painted++; previous = now; frameId = requestAnimationFrame(tick); return; }
+      elapsed += previous ? Math.min(60, now - previous) : 0;
+      previous = now;
+      const count = Math.min(length, Math.floor(elapsed / delay));
+      if (elapsed - lastFlip >= flip || count === length) {
+        lastFlip = elapsed;
+        setFrame({ count, value: count === length ? text : encrypt(text, count, alphabet) });
+      }
+      if (count < length) frameId = requestAnimationFrame(tick);
     };
-    const timer = window.setInterval(tick, Math.max(16, flipDelayMs));
-    return () => window.clearInterval(timer);
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
   }, [text, length, alphabet, reduced, revealDelayMs, flipDelayMs]);
   useLayoutEffect(() => {
     onProgress?.(length ? frame.count / length : 1);
