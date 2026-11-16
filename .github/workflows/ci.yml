@@ -8,6 +8,8 @@ jobs:
     timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - run: cp scripts/capture-heading-reference.mjs /tmp/vv-capture-heading-reference.mjs && git checkout b55fed5628dedb3ca0aa78626df190fb833012aa
       - uses: actions/setup-node@v4
         with:
