@@ -20,11 +20,34 @@ const server = createServer(async (req,res) => {
 });
 await new Promise(resolve => server.listen(0, "127.0.0.1", resolve));
 const base = "http://127.0.0.1:" + server.address().port + prefix;
+const serviceIds = ["graphic-design","photography","web-ui-ux","videography","branding","social-media"];
+const serviceNames = ["Graphic Design","Photography","Web & UI/UX Design","Videography","Branding & Identity","Social Media & Digital Marketing"];
+const labels = async (page,selector) => (await page.locator(selector).allTextContents()).map(text=>text.trim());
+async function checkProcess(page, viewport, path) {
+  for (let i = 0; i < 7; i++) {
+    await page.locator(".vv-sp-step-button").nth(i).evaluate(button=>button.click());
+    await page.waitForFunction(n=>document.querySelector(".vv-sp-stage")?.getAttribute("data-active-step")===String(n) && document.querySelector(".vv-ps-card")?.getAttribute("data-chapter")===String(n),i+1);
+    const active=page.locator(".vv-sp-step.is-active");
+    const title=(await active.locator("strong").textContent()).trim();
+    assert.equal((await page.locator(".vv-sp-stage-label span:last-child").textContent()).trim(),title,"Animation and timeline mismatch: "+path);
+    const stage=await page.locator(".vv-sp-stage").boundingBox();
+    const right=await page.locator(".vv-sp-right").boundingBox();
+    assert.ok(stage && right && stage.y>=-2 && stage.y+stage.height<=viewport.height+2,"Process stage outside viewport: "+path);
+    if(viewport.width>760) assert.ok(Math.abs(stage.y-right.y)<2 && Math.abs(stage.height-right.height)<2,"Process card and timeline misaligned: "+path);
+    else {
+      const caption=page.locator(".vv-sp-mobile-copy");
+      assert.equal((await caption.locator("strong").textContent()).trim(),title);
+      assert.equal((await caption.locator("p").textContent()).trim(),(await active.locator(".vv-sp-step-description").textContent()).trim());
+      const rect=await caption.boundingBox();
+      assert.ok(rect && rect.y+rect.height<=viewport.height+2 && rect.y>=stage.y+stage.height-2,"Mobile description clipped: "+path);
+    }
+  }
+}
 let browser;
 try {
   browser = await chromium.launch({headless:true});
   const paths = ["", "about.html", "services.html", "who-we-serve.html", "projects.html", "contact.html", "request-quote.html",
-    ...["photography","videography","branding","graphic-design","web-ui-ux","social-media"].map(id=>"services.html?service="+id)];
+    ...serviceIds.map(id=>"services.html?service="+id)];
   for (const viewport of [{width:1440,height:900},{width:390,height:844}]) {
     const context = await browser.newContext({viewport, reducedMotion:"reduce"});
     const page = await context.newPage();
@@ -44,6 +67,29 @@ try {
       const bounds=await hero.boundingBox();
       assert.ok(bounds && bounds.y < viewport.height && bounds.y + bounds.height > 0,"Hero is not in first viewport: "+path);
       assert.ok(await page.evaluate(()=>scrollY<2),"Initial page is not at the top: "+path);
+      await page.locator('nav[aria-label="Footer services"] a').nth(5).waitFor({state:"attached"});
+      assert.deepEqual(await labels(page,'nav[aria-label="Footer services"] a'),serviceNames,"Footer order: "+path);
+      if(path===""){
+        await page.locator(".vv-svc-slice-tab-label").nth(5).waitFor({state:"attached"});
+        await page.locator(".vv-pf-card-category").nth(5).waitFor({state:"attached"});
+        assert.deepEqual(await labels(page,".vv-svc-slice-tab-label"),serviceNames,"Homepage services");
+        assert.deepEqual(await labels(page,".vv-pf-card-category"),serviceNames.map(name=>name.toUpperCase()),"Homepage projects");
+        assert.equal(await page.locator("#serviceName").textContent(),"Graphic Design");
+        await page.locator('button[aria-label="Open Services menu"]').evaluate(button=>button.click());
+        await page.locator(".vv-nav-resize-mega-item-copy strong").nth(5).waitFor({state:"attached"});
+        assert.deepEqual(await labels(page,".vv-nav-resize-mega-item-copy strong"),serviceNames,"Navigation order");
+        await page.keyboard.press("Escape");
+      }
+      if(path==="projects.html"){
+        assert.deepEqual((await labels(page,".vv-projects-filters button")).slice(1),serviceNames,"Project filter order");
+        assert.deepEqual(await labels(page,".vv-projects-category h2"),serviceNames,"Project category order");
+      }
+      if(path==="request-quote.html") assert.deepEqual((await page.locator(".vv-inner-quote-form select").first().locator("option").allTextContents()).slice(0,6),serviceNames,"Quote service order");
+      if(path.startsWith("services.html")){
+        assert.deepEqual(await page.locator(".vv-service-switcher a").evaluateAll(links=>links.map(link=>new URL(link.href).searchParams.get("service"))),serviceIds,"Service nav links");
+        if(path==="services.html") assert.deepEqual(await labels(page,".vv-service-row-copy h3"),serviceNames,"Service listing");
+        await checkProcess(page,viewport,path);
+      }
       await page.evaluate(()=>window.scrollTo({top:document.body.scrollHeight,behavior:"instant"}));
       await page.reload({waitUntil:"commit"});
       await page.locator("#vv-page-loading").waitFor({state:"visible",timeout:5000});

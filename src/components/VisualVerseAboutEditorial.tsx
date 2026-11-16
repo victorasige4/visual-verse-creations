@@ -82,7 +82,7 @@ const strengths = [
 ];
 const detail = [
   ["Company","Visual Verse Creations"],
-  ["Our world","Branding · Graphic design · Photography · Film · UI/UX · Digital marketing"],
+  ["Our world","Graphic Design · Photography · Web & UI/UX Design · Videography · Branding & Identity · Social Media & Digital Marketing"],
   ["Home base","Nairobi, Kenya"],
   ["Working with","Brands, businesses, creators, communities and organisations"],
   ["Our approach","Discover · Imagine · Create · Refine · Deliver"],
@@ -110,7 +110,7 @@ export function VisualVerseAboutEditorial() {
           <div className="vv-about-hero-copy">
             <span className="vv-about-kicker"><span className="vv-about-dot"/> INDEPENDENT CREATIVE COMPANY · NAIROBI</span>
             <h1><span className="vv-about-hero-title-line">We turn</span><span className="vv-about-hero-title-line">your ideas</span><span className="vv-about-hero-title-line">into <em>experiences.</em></span></h1>
-            <p>Visual Verse is a multidisciplinary creative company bringing branding, photography, filmmaking, graphic design and digital experiences together. We shape every project around the people, purpose and possibility behind it.</p>
+            <p>Visual Verse is a multidisciplinary creative company bringing graphic design, photography, web and UI/UX design, videography, branding and identity, and social media and digital marketing together. We shape every project around the people, purpose and possibility behind it.</p>
           </div>
           <div className="vv-about-hero-visual vv-about-hero-visual--card-stack" aria-label="Visual Verse: Imagine, Create, Connect">
             <CardStackDemo />

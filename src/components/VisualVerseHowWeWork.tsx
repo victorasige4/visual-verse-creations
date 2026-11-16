@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import {
   ArrowRight, ArrowUpRight, AudioLines, BookOpenText, Check, Focus,
   Handshake, Layers3, MoveUpRight, RefreshCw, SlidersVertical, Sparkles
@@ -198,7 +198,7 @@ export function VisualVerseHowWeWork() {
               </div>
               <div className="vv-hww-artboard-lockup">
                 <div className="vv-hww-lockup-top"><span>{active.micro}</span><active.Icon size={20} aria-hidden="true"/></div>
-                <motion.strong key={active.id} initial={reduced?false:{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{duration:reduced?0:.32}}>{studioLines[selected][0]}<br/>{studioLines[selected][1]}<br/><em>{studioLines[selected][2]}</em></motion.strong>
+                <motion.strong key={active.id} initial={reduced?false:{opacity:.75,y:5}} animate={{opacity:1,y:0}} transition={{duration:reduced?0:.32}}>{studioLines[selected][0]}<br/>{studioLines[selected][1]}<br/><em>{studioLines[selected][2]}</em></motion.strong>
                 <div className="vv-hww-lockup-bottom"><span>THOUGHTFUL BY DESIGN.</span><img src={import.meta.env.BASE_URL+"logo-mark.png"} alt="Visual Verse Creations logo"/></div>
               </div>
               <div className="vv-hww-bridge" aria-hidden="true"><span/><span/><i/></div>
@@ -214,16 +214,13 @@ export function VisualVerseHowWeWork() {
             <strong>{active.micro}</strong>
           </div>
           <div className="vv-hww-readout-story">
-            <AnimatePresence mode="wait" initial={false}>
               <motion.div key={active.id}
-                initial={reduced?false:{opacity:0,y:16,filter:"blur(5px)"}}
-                animate={{opacity:1,y:0,filter:"blur(0px)"}}
-                exit={reduced?{opacity:0}:{opacity:0,y:-11,filter:"blur(5px)"}}
+                initial={reduced?false:{opacity:.75,y:5}}
+                animate={{opacity:1,y:0}}
                 transition={{duration:reduced?0:.32,ease:[.22,1,.36,1]}}>
                 <h3>{active.label}</h3>
                 <p>{active.description}</p>
               </motion.div>
-            </AnimatePresence>
           </div>
           <div className="vv-hww-readout-signature"><span>✳</span>{active.detail}<ArrowUpRight size={16} aria-hidden="true"/></div>
         </div>

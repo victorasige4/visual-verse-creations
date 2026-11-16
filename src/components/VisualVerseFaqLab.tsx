@@ -25,7 +25,7 @@ const questions = [
     card: "What's in your creative toolkit?",
     category: "THE CREATIVE MENU",
     question: "What services does Visual Verse offer?",
-    answer: "We bring together photography, videography, branding, graphic design, web and UI/UX design, and social media and digital marketing. We can focus on one service or combine disciplines around a broader creative brief.",
+    answer: "We bring together graphic design, photography, web and UI/UX design, videography, branding and identity, and social media and digital marketing. We can focus on one service or combine disciplines around a broader creative brief.",
     takeaway: "One creative partner. Many ways to tell your story.",
   },
   {

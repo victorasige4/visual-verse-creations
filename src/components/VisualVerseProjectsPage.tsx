@@ -1,3 +1,4 @@
+import { orderedServices, serviceLabel, serviceNumber } from "../data/services";
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useState } from "react";
 import { ArrowUpRight, ArrowRight, Check, FolderOpen, Image as ImageIcon, Camera, Clapperboard, PenTool, MonitorSmartphone, Share2, Palette } from "lucide-react";
@@ -13,14 +14,14 @@ type ProjectCategory={
  id:string;name:string;short:string;number:string;headline:string;description:string;
  services:string[];Icon:LucideIcon;photo?:string;art?:PortfolioCollection["id"];
 };
-const categories:ProjectCategory[]=[
-  {id:"photography",name:"Photography",short:"Photography",number:"01",headline:"The moments that matter.",description:"Portraits, graduations, corporate functions, celebrations and stories captured with care.",services:["Portraits & lifestyle","Graduations and celebrations","Corporate and event photography","Creative image editing"],Icon:Camera,photo:"/portfolio-graduations.jpg"},
-  {id:"videography",name:"Videography",short:"Videography",number:"02",headline:"Give the story motion.",description:"Cinematic storytelling, productions, coverage and editing that carry the feeling into every frame.",services:["Corporate and event films","Interviews & documentaries","Editing and color","Promotional video storytelling"],Icon:Clapperboard,photo:"/portfolio-event-story.jpg"},
-  {id:"graphic-design",name:"Graphic Design",short:"Graphic Design",number:"03",headline:"Design with a voice.",description:"Communication that catches the eye and makes the message impossible to miss.",services:["Campaign graphics","Social media creative","Posters and print collateral","Illustrations and compositions"],Icon:PenTool,photo:"/portfolio-social-design.jpg"},
-  {id:"web-ui-ux",name:"Web & UI/UX",short:"Web & UI/UX",number:"04",headline:"Every pixel with a purpose.",description:"Responsive sites, product interfaces and interactions that make digital experiences feel natural.",services:["Website design","UI/UX flows and research","Responsive layouts","Interactive prototypes"],Icon:MonitorSmartphone,art:"digital"},
-  {id:"social-media",name:"Social Media & Digital Marketing",short:"Social Media",number:"05",headline:"Ideas built to travel.",description:"Creative campaigns, posts and stories designed for connection across channels.",services:["Content strategy","Campaign creative","Social media design","Video and motion content"],Icon:Share2,art:"campaigns"},
-  {id:"branding",name:"Branding & Identity",short:"Branding",number:"06",headline:"An identity worth recognising.",description:"Distinctive marks and thoughtful brand systems built around a clear story.",services:["Brand identity","Logos & typography","Brand applications","Guidelines and campaigns"],Icon:Palette,art:"branding"}
-];
+const categories:ProjectCategory[]=orderedServices<ProjectCategory>([
+  {id:"graphic-design",name: "Graphic Design",short: "Graphic Design",number:"01",headline:"Design with a voice.",description:"Communication that catches the eye and makes the message impossible to miss.",services:["Campaign graphics","Social media creative","Posters and print collateral","Illustrations and compositions"],Icon:PenTool,photo:"/portfolio-social-design.jpg"},
+  {id:"photography",name: "Photography",short: "Photography",number:"02",headline:"The moments that matter.",description:"Portraits, graduations, corporate functions, celebrations and stories captured with care.",services:["Portraits & lifestyle","Graduations and celebrations","Corporate and event photography","Creative image editing"],Icon:Camera,photo:"/portfolio-graduations.jpg"},
+  {id:"web-ui-ux",name: "Web & UI/UX Design",short: "Web & UI/UX Design",number:"03",headline:"Every pixel with a purpose.",description:"Responsive sites, product interfaces and interactions that make digital experiences feel natural.",services:["Website design","UI/UX flows and research","Responsive layouts","Interactive prototypes"],Icon:MonitorSmartphone,art:"digital"},
+  {id:"videography",name: "Videography",short: "Videography",number:"04",headline:"Give the story motion.",description:"Cinematic storytelling, productions, coverage and editing that carry the feeling into every frame.",services:["Corporate and event films","Interviews & documentaries","Editing and color","Promotional video storytelling"],Icon:Clapperboard,photo:"/portfolio-event-story.jpg"},
+  {id:"branding",name: "Branding & Identity",short: "Branding & Identity",number:"05",headline:"An identity worth recognising.",description:"Distinctive marks and thoughtful brand systems built around a clear story.",services:["Brand identity","Logos & typography","Brand applications","Guidelines and campaigns"],Icon:Palette,art:"branding"},
+  {id:"social-media",name: "Social Media & Digital Marketing",short: "Social Media & Digital Marketing",number:"06",headline:"Ideas built to travel.",description:"Creative campaigns, posts and stories designed for connection across channels.",services:["Content strategy","Campaign creative","Social media design","Video and motion content"],Icon:Share2,art:"campaigns"}
+]).map(s=>({...s,name:serviceLabel(s.id),short:serviceLabel(s.id),number:serviceNumber(s.id)}));
 const archive=[
   {image:"/portfolio-corporate-events.jpg",alt:"Corporate gathering from the original Visual Verse image archive",tag:"CORPORATE EVENTS"},
   {image:"/portfolio-graduations.jpg",alt:"Graduation photograph from the original Visual Verse image archive",tag:"GRADUATION MOMENTS"},

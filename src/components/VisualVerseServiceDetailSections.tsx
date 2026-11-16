@@ -42,7 +42,7 @@ export function VisualVerseServiceDetailSections({service,outcome,quoteHref,allS
     return ()=>observer.disconnect();
   },[]);
   const whatsappText="Hi Visual Verse! I'd like to discuss "+service.name+"."+ (checked.length?"\n\nHere is what sounds familiar:\n"+checked.map(i=>"• "+data.checks[i]).join("\n"):"");
-  const related=data.related.map(id=>allServices.find(item=>item.id===id)!).filter(Boolean);
+  const related=allServices.filter(item=>data.related.includes(item.id));
   const items=data.process.map(([title,line])=>({title,line}));
   const toggle=(i:number)=>setChecked(prev=>prev.includes(i)?prev.filter(v=>v!==i):[...prev,i].sort((a,b)=>a-b));
   return <div className="vv-ds" ref={root}>

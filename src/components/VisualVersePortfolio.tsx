@@ -2,7 +2,7 @@ import { ArrowUpRight, Camera, Palette, MonitorSmartphone, Clapperboard, Sparkle
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 
 export type PortfolioCollection = {
-  id: "photography" | "branding" | "digital" | "campaigns";
+  id: "graphic-design" | "photography" | "branding" | "digital" | "videography" | "campaigns";
   number: string;
   category: string;
   headline: string;
@@ -13,17 +13,38 @@ export type PortfolioCollection = {
 
 export const portfolioCollections: PortfolioCollection[] = [
   {
+    id: "graphic-design", number: "01", category: "GRAPHIC DESIGN",
+    headline: "Ideas made visible.",
+    description: "Campaigns, print and expressive visual communication crafted to make a message clear.",
+    tags: ["Campaigns", "Print", "Visual Design"], href: "/projects.html#graphic-design",
+  },
+  {
     id: "photography",
-    number: "01",
-    category: "PHOTOGRAPHY & VISUAL STORIES",
+    number: "02",
+    category: "PHOTOGRAPHY",
     headline: "Moments, beautifully remembered.",
     description: "Portraits, celebrations and imagery that tell the story behind the moment.",
     tags: ["Portraits", "Events", "Photography"],
     href: "/projects.html#photography",
   },
   {
+    id: "digital",
+    number: "03",
+    category: "WEB & UI/UX DESIGN",
+    headline: "Digital that feels human.",
+    description: "Websites and interfaces shaped to make every interaction count.",
+    tags: ["Web Design", "UI/UX", "Prototyping"],
+    href: "/projects.html#web-ui-ux",
+  },
+  {
+    id: "videography", number: "04", category: "VIDEOGRAPHY",
+    headline: "Every frame has a story.",
+    description: "Film, event highlights and thoughtful editing that make the moment move.",
+    tags: ["Film", "Editing", "Motion"], href: "/projects.html#videography",
+  },
+  {
     id: "branding",
-    number: "02",
+    number: "05",
     category: "BRANDING & IDENTITY",
     headline: "Identities with a point of view.",
     description: "Memorable marks, considered design systems and expressive brand worlds.",
@@ -31,23 +52,14 @@ export const portfolioCollections: PortfolioCollection[] = [
     href: "/projects.html#branding",
   },
   {
-    id: "digital",
-    number: "03",
-    category: "WEB & DIGITAL EXPERIENCES",
-    headline: "Digital that feels human.",
-    description: "Websites and interfaces shaped to make every interaction count.",
-    tags: ["Web Design", "UI/UX", "Prototyping"],
-    href: "/projects.html#web-ui-ux",
-  },
-  {
     id: "campaigns",
-    number: "04",
-    category: "CAMPAIGNS & MOTION",
+    number: "06",
+    category: "SOCIAL MEDIA & DIGITAL MARKETING",
     headline: "Creative that travels further.",
     description: "Campaign visuals, moving stories and content made for connection.",
     tags: ["Graphic Design", "Video", "Social Media"],
     href: "/projects.html#social-media",
-  },
+  }
 ];
 
 /**
@@ -55,6 +67,12 @@ export const portfolioCollections: PortfolioCollection[] = [
  * They are not claims of commissioned client projects.
  */
 export function PortfolioArtwork({ kind }: { kind: PortfolioCollection["id"] }) {
+  if (kind === "graphic-design" || kind === "videography") return (
+    <div className="vv-pf-art vv-pf-art-photo">
+      <div className="vv-pf-photo-main"><img src={kind==="graphic-design"?"/portfolio-social-design.jpg":"/portfolio-event-story.jpg"} alt={kind==="graphic-design"?"Visual Verse graphic design portfolio example":"Visual Verse event coverage portfolio example"} loading="lazy" decoding="async"/><span className="vv-pf-photo-focus" aria-hidden="true"/></div>
+      <div className="vv-pf-photo-chip">{kind==="graphic-design"?<Layers size={14} aria-hidden="true"/>:<Clapperboard size={14} aria-hidden="true"/>}<span>{kind==="graphic-design"?"IDEAS / MADE VISIBLE":"STORIES / IN MOTION"}</span></div>
+    </div>
+  );
   if (kind === "photography") return (
     <div className="vv-pf-art vv-pf-art-photo">
       <div className="vv-pf-photo-main">
@@ -153,7 +171,7 @@ export function VisualVersePortfolio() {
           <h2 className="vv-section-h">A glimpse of<br/>what we create<span className="vv-pf-period">.</span></h2>
         </div>
         <div className="vv-pf-intro">
-          <p>Every creative journey has its own story. Explore four ways we bring ideas to life—from the first frame to the final experience.</p>
+          <p>Every creative journey has its own story. Explore six ways we bring ideas to life—from the first frame to the final experience.</p>
           <a className="vv-pf-all" href="/projects.html">Explore the portfolio <span><ArrowUpRight size={18} aria-hidden="true"/></span></a>
         </div>
       </div>

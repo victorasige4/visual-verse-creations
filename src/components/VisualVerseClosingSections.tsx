@@ -1,3 +1,4 @@
+import { SERVICE_CATALOG } from "../data/services";
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { PolicyLinks } from "./VisualVersePolicies";
 import { VisualVerseAboutCta } from "./VisualVerseAboutCta";
@@ -8,10 +9,9 @@ import {
 } from "lucide-react";
 
 const creativeWords = [
-  "Marketing", "User Experience", "Interaction Design", "Logos", "Brand Identity",
-  "Photography", "Videography", "Motion Graphics", "Art Direction", "Graphic Design",
-  "Web Design", "UI Design", "UX Research", "Digital Campaigns", "Content Strategy",
-  "Social Media", "Visual Storytelling", "Creative Strategy", "Illustration", "Video Editing"
+  ...SERVICE_CATALOG.map(service=>service.name), "Marketing", "User Experience", "Interaction Design", "Logos",
+  "Motion Graphics", "Art Direction", "UX Research", "Content Strategy", "Digital Campaigns",
+  "Visual Storytelling", "Creative Strategy", "Illustration", "Video Editing"
 ];
 
 export function VisualVerseMarquee() {
@@ -70,14 +70,7 @@ export function VisualVerseCTA(){
   return <VisualVerseAboutCta/>;
 }
 
-const serviceLinks=[
-  {label:"Photography",href:"/services.html?service=photography"},
-  {label:"Videography",href:"/services.html?service=videography"},
-  {label:"Branding",href:"/services.html?service=branding"},
-  {label:"Graphic Design",href:"/services.html?service=graphic-design"},
-  {label:"Web & UI/UX",href:"/services.html?service=web-ui-ux"},
-  {label:"Social Media",href:"/services.html?service=social-media"},
-];
+const serviceLinks=SERVICE_CATALOG.map(({id,name})=>({label:name,href:"/services.html?service="+id}));
 const navigation=[
   {label:"Home",href:"/#top"},
   {label:"About",href:"/about.html"},

@@ -1,6 +1,6 @@
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { ProcessStoryArt } from "./VisualVerseProcessStories";
 import "../visual-verse-services-page.css";
@@ -46,7 +46,8 @@ export function VisualVerseProcessJourney({items=steps, heading, artwork, quoteH
     const recalc = () => {
       frame = 0;
       const rect = root.getBoundingClientRect();
-      const runway = Math.max(1, rect.height - window.innerHeight);
+      const pinHeight = root.querySelector(".vv-sp-pin")?.getBoundingClientRect().height ?? window.innerHeight;
+      const runway = Math.max(1, rect.height - pinHeight);
       const progress = Math.min(1, Math.max(0, -rect.top / runway));
       const current = Math.min(last, Math.max(0, Math.round(progress * last)));
       root.style.setProperty("--vv-sp-progress", progress.toFixed(4));
@@ -69,7 +70,8 @@ export function VisualVerseProcessJourney({items=steps, heading, artwork, quoteH
     const section = rootRef.current;
     if (!section) return;
     const sectionStart = window.scrollY + section.getBoundingClientRect().top;
-    const runway = Math.max(1, section.getBoundingClientRect().height - window.innerHeight);
+    const pinHeight = section.querySelector(".vv-sp-pin")?.getBoundingClientRect().height ?? window.innerHeight;
+    const runway = Math.max(1, section.getBoundingClientRect().height - pinHeight);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     window.scrollTo({top:sectionStart + runway * (index / Math.max(1,last)),behavior:reduce?"instant":"smooth"});
   };
@@ -78,28 +80,30 @@ export function VisualVerseProcessJourney({items=steps, heading, artwork, quoteH
     <div className="vv-sp-pin">
       <Boxes/>
       <div className="vv-sp-grid">
-        <div className="vv-sp-left">
+        <header className="vv-sp-heading">
           <div className="vv-sp-overline"><i/><i/> OUR PROCESS</div>
           <h2 id="vv-sp-title">{heading ?? <>Seven steps from <em>first hello</em> to the final frame—and beyond.</>}</h2>
-          <div className="vv-sp-stage" aria-live="off">
+        </header>
+        <div className="vv-sp-left">
+          <div className="vv-sp-stage" data-active-step={active+1} aria-live="off">
             <div className="vv-sp-stage-sparks" aria-hidden="true"><span/><span/><span/><span/></div>
-            <div className="vv-sp-counter"><strong>{stamp(active)}</strong><span>/ {stamp(last)}</span></div>
-            <div className="vv-sp-stage-label"><span>IN MOTION</span><i/> <span>{items[active].title}</span></div>
+            <div className="vv-sp-stage-head">
+              <div className="vv-sp-counter"><strong>{stamp(active)}</strong><span>/ {stamp(last)}</span></div>
+              <div className="vv-sp-stage-label"><span>IN MOTION</span><i/> <span>{items[active].title}</span></div>
+            </div>
             <div className="vv-sp-scene-layer">
-              <AnimatePresence mode="wait" initial={false}>
                 <motion.div key={active} className="vv-sp-scene"
-                  initial={reducedMotion ? false : {opacity:0,y:24,scale:.96}}
-                  animate={{opacity:1,y:0,scale:1}}
-                  exit={reducedMotion ? {opacity:1} : {opacity:0,y:-16,scale:.98}}
-                  transition={reducedMotion ? {duration:0} : {duration:.38,ease:[.16,1,.3,1]}}>
+                  initial={reducedMotion ? false : {opacity:.68,y:7}}
+                  animate={{opacity:1,y:0}}
+                  transition={reducedMotion ? {duration:0} : {duration:.22,ease:[.16,1,.3,1]}}>
                   {artwork ? artwork(active) : <ProcessStoryArt kind="overview" step={active}/>}
                 </motion.div>
-              </AnimatePresence>
             </div>
             <div className="vv-sp-stage-track"><span/></div>
           </div>
         </div>
         <div className="vv-sp-right">
+          <div className="vv-sp-mobile-copy"><strong>{items[active].title}</strong><p>{items[active].line}</p></div>
           <ol className="vv-sp-steps" aria-label="Stages of the Visual Verse creative process">
             {items.map((item,index)=><li className={"vv-sp-step"+(index===active?" is-active":"")+(index<active?" is-complete":"")} key={item.title}>
               <button type="button"
