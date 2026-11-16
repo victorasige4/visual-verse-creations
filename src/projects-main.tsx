@@ -1,4 +1,5 @@
 import { StrictMode } from "react";
+import { PublicPageReady } from "./components/PublicPageReady";
 import { createRoot } from "react-dom/client";
 import { VisualVerseCursor } from "./components/VisualVerseCursor";
 import { VisualVerseProjectsPage } from "./components/VisualVerseProjectsPage";
@@ -15,6 +16,7 @@ if (root) {
   createRoot(root).render(
     <StrictMode>
       <VisualVerseProjectsPage />
+      <PublicPageReady />
     </StrictMode>,
   );
 }

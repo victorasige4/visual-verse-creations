@@ -37,13 +37,13 @@ export function VisualVerseProjectsPage(){
   const [filter,setFilter]=useState("all");
   useEffect(()=>{
     function scrollToHash(){
-      const id=decodeURIComponent(window.location.hash.slice(1));
+      let id=window.location.hash.slice(1);
+      try{id=decodeURIComponent(id);}catch{/* malformed fragment */}
       if(id){
         const alias:{[k:string]:string}={digital:"web-ui-ux",campaigns:"social-media"};
         window.requestAnimationFrame(()=>document.getElementById(alias[id]??id)?.scrollIntoView({block:"start"}));
       }
     }
-    scrollToHash();
     window.addEventListener("hashchange",scrollToHash);
     return ()=>window.removeEventListener("hashchange",scrollToHash);
   },[]);

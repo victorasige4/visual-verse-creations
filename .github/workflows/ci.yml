@@ -69,3 +69,9 @@ jobs:
           grep -q '/visual-verse-creations/assets/' dist/index.html
           test -s dist/about.html
           test -s dist/projects.html
+
+      - name: Check hero-first loading in desktop and mobile Chromium
+        run: |
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+          node scripts/check-page-startup.mjs
