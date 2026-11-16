@@ -207,7 +207,7 @@ export function VisualVersePotadotToolbox() {
           <span className="vv-potbx-eyebrow">
             <i aria-hidden="true"/><i aria-hidden="true"/> OUR TOOLBOX
           </span>
-          <h2 id="vv-potbx-heading"><span className="vv-potbx-title-line">Modern tools,</span><span className="vv-potbx-title-line">picked for<span className="vv-potbx-last-word"> each job.</span></span></h2>
+          <h2 id="vv-potbx-heading"><span className="vv-potbx-title-line">Modern <br className="vv-break-wide"/>tools,</span><span className="vv-potbx-title-line">picked for<br className="vv-break-wide"/><span className="vv-potbx-last-word"> each <br className="vv-break-narrow"/>job.</span></span></h2>
           <p>
             We work across design, photography, film, AI and digital, bringing the right
             tools together to take your idea from first concept to its final form.

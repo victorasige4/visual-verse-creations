@@ -1,3 +1,4 @@
+import { EditorialText } from "./EditorialText";
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { motion, useReducedMotion } from "motion/react";
@@ -82,7 +83,7 @@ export function VisualVerseProcessJourney({items=steps, heading, artwork, quoteH
       <div className="vv-sp-grid">
         <header className="vv-sp-heading">
           <div className="vv-sp-overline"><i/><i/> OUR PROCESS</div>
-          <h2 id="vv-sp-title">{heading ?? <>Seven steps from <em>first hello</em> to the final frame—and beyond.</>}</h2>
+          <h2 id="vv-sp-title">{typeof heading === "string" ? <EditorialText text={heading}/> : heading ?? <>Seven steps from <br className="vv-break-narrow"/><em>first hello</em> to <br className="vv-break-wide"/>the final <br className="vv-break-narrow"/>frame—and beyond.</>}</h2>
         </header>
         <div className="vv-sp-left">
           <div className="vv-sp-stage" data-active-step={active+1} aria-live="off">

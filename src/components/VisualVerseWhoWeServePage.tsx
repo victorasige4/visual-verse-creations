@@ -1,3 +1,4 @@
+import { EditorialText } from "./EditorialText";
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
@@ -243,7 +244,7 @@ function WorldAtlas() {
           <div className="vvx-world-stage-top"><span><span className="vvx-signal-pulse"/> NOW EXPLORING / {world.name.toUpperCase()}</span><span>{world.number}—06</span></div>
           <WorldStage world={world}/>
           <div className="vvx-world-stage-bottom" key={world.id}>
-            <div className="vvx-world-stage-summary"><span>THE CREATIVE BRIEF</span><h3>{world.headline}</h3><p>{world.blurb}</p><span className="vvx-world-stage-promise">{world.promise}</span></div>
+            <div className="vvx-world-stage-summary"><span>THE CREATIVE BRIEF</span><h3><EditorialText text={world.headline}/></h3><p>{world.blurb}</p><span className="vvx-world-stage-promise">{world.promise}</span></div>
             <div className="vvx-world-stage-tags">{world.offerings.map(x=><span key={x}>{x}</span>)}</div>
             <a href={inquire(world.name)} className="vvx-world-stage-link vv-motion-action vv-action-primary"><VisualVerseActionContent Icon={ArrowUpRight}>Create with us</VisualVerseActionContent></a>
           </div>
@@ -276,7 +277,7 @@ function Collaboration() {
     <div className="vvx-container">
       <Reveal className="vvx-collab-heading">
         <Eyebrow dark>THE GOOD STUFF HAPPENS TOGETHER</Eyebrow>
-        <h2 id="vvx-collab-heading">Your world.<br/><em>Our toolbox.</em></h2>
+        <h2 id="vvx-collab-heading">Your world.<br/><em>Our <br className="vv-break-narrow"/>toolbox.</em></h2>
         <p>A little of this. A lot of that. We mix the right creative disciplines for the story, not the other way around.</p>
       </Reveal>
       <div className="vvx-collab-bento">
@@ -312,7 +313,7 @@ function FitFinder() {
   const SelectedIcon=selected.icon;
   return <section className="vvx-match" id="find-your-fit" aria-labelledby="vvx-match-heading">
     <div className="vvx-container">
-      <Reveal className="vvx-match-heading"><Eyebrow>YOUR NEXT MOVE</Eyebrow><h2 id="vvx-match-heading">So, what are<br/>we <em>making?</em></h2><p>Not sure what to ask for? Start with what you're trying to do. We'll help connect the dots.</p></Reveal>
+      <Reveal className="vvx-match-heading"><Eyebrow>YOUR NEXT MOVE</Eyebrow><h2 id="vvx-match-heading">So, what <br className="vv-break-narrow"/>are<br/>we <br className="vv-break-narrow"/><em>making?</em></h2><p>Not sure what to ask for? Start with what you're trying to do. We'll help connect the dots.</p></Reveal>
       <div className="vvx-match-shell">
         <div className="vvx-match-options" role="tablist" aria-label="What do you want to create?">
           {matches.map((item,i)=>{
@@ -337,7 +338,7 @@ function FitFinder() {
               exit={reduced?undefined:{opacity:0,y:-14,filter:"blur(4px)"}}
               transition={{duration:.28,ease:[.2,.8,.2,1]}}>
               <div className="vvx-match-result-top"><span>{selected.label}</span><SelectedIcon size={35} strokeWidth={1.5}/></div>
-              <h3>{selected.headline}</h3><p>{selected.text}</p>
+              <h3><EditorialText text={selected.headline}/></h3><p>{selected.text}</p>
               <div className="vvx-match-services">{selected.services.map(service=><span key={service}><Check size={14}/>{service}</span>)}</div>
               <a className="vvx-pill vvx-pill-primary vv-motion-action vv-action-primary" href={inquire(selected.title)}><VisualVerseActionContent Icon={ArrowUpRight}>Talk to us about it</VisualVerseActionContent></a>
             </motion.div>
@@ -353,7 +354,7 @@ function FinalStatement() {
   return <section className="vvx-finale" aria-labelledby="vvx-finale-heading">
     <div className="vvx-container vvx-finale-inner">
       <Reveal className="vvx-finale-kicker"><Eyebrow dark>AT THE END OF THE DAY</Eyebrow></Reveal>
-      <h2 id="vvx-finale-heading"><span>It's not about</span><span>the <em>industry.</em></span><span>It's about</span><span><em>your story.</em></span></h2>
+      <h2 id="vvx-finale-heading"><span>It's not <br className="vv-break-narrow"/>about</span><span>the <em>industry.</em></span><span>It's about</span><span><em>your story.</em></span></h2>
       <motion.div className="vvx-finale-row" initial={reduced?false:{opacity:0,y:20}}
         whileInView={reduced?undefined:{opacity:1,y:0}} viewport={{once:true}}
         transition={{duration:.6}}>
@@ -374,7 +375,7 @@ export function VisualVerseWhoWeServePage() {
     <FitFinder/>
     <section className="vvx-questions" aria-label="Questions about working with us">
       <div className="vvx-container">
-        <Reveal className="vvx-questions-head"><Eyebrow>GOOD TO KNOW</Eyebrow><h2>No pressure.<br/><em>Just possibilities.</em></h2></Reveal>
+        <Reveal className="vvx-questions-head"><Eyebrow>GOOD TO KNOW</Eyebrow><h2>No pressure.<br/><em>Just <br/>possibilities.</em></h2></Reveal>
         <div className="vvx-questions-list">{faqs.map((faq,i)=><details key={faq.question} className="vvx-faq"><summary><span>0{i+1}</span><strong>{faq.question}</strong><span className="vvx-faq-toggle" aria-hidden="true">+</span></summary><p>{faq.answer}</p></details>)}</div>
       </div>
     </section>

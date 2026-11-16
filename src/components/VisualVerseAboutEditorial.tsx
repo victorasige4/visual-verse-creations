@@ -1,3 +1,4 @@
+import { EditorialText } from "./EditorialText";
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, CheckCircle2 } from "lucide-react";
@@ -129,7 +130,7 @@ export function VisualVerseAboutEditorial() {
     <section className="vv-about-belief vv-about-pad" id="our-belief">
       <div className="vv-about-container">
         <span className="vv-about-kicker"><span className="vv-about-dot"/> WHAT WE BELIEVE</span>
-        <h2 className="vv-about-belief-statement">We believe <strong>creativity</strong> can shape how people <em>see, feel and connect.</em> We turn that belief into reality through <strong>thoughtful stories, purposeful design and meaningful visual experiences.</strong></h2>
+        <h2 className="vv-about-belief-statement">We believe <br className="vv-break-narrow"/><strong>creativity</strong> can <br/>shape how people <br className="vv-break-narrow"/><em>see, feel <br className="vv-break-wide"/>and <br className="vv-break-narrow"/>connect.</em> We turn <br className="vv-break-narrow"/>that <br className="vv-break-wide"/>belief into <br className="vv-break-narrow"/>reality through <br/><strong>thoughtful <br className="vv-break-narrow"/>stories, <br/>purposeful design <br className="vv-break-narrow"/>and <br className="vv-break-wide"/>meaningful <br className="vv-break-narrow"/>visual <br/>experiences.</strong></h2>
       </div>
     </section>
     <VisualVersePurposeCompass/>
@@ -141,7 +142,7 @@ export function VisualVerseAboutEditorial() {
           <span className="vv-about-image-label">A STORY WORTH TELLING / VISUAL VERSE</span>
         </div>
         <div className="vv-about-story-copy">
-          <AboutHeading label="OUR STORY" title={<>A creative home for <em>big ideas.</em></>}/>
+          <AboutHeading label="OUR STORY" title={<>A creative <br/>home for <em>big <br/>ideas.</em></>}/>
           <p>Visual Verse grew from a simple belief: compelling creative work should do more than fill a space. It should tell the truth of a brand, celebrate a moment or make an experience easier to use.</p>
           <p>We approach each collaboration with curiosity, combining creative direction with practical execution. From the first rough sketch to the finished frame, we give ideas room to become something extraordinary.</p>
           <div className="vv-about-story-points"><span><CheckCircle2 size={18}/> Creative direction with purpose</span><span><CheckCircle2 size={18}/> Personal collaboration</span><span><CheckCircle2 size={18}/> Thoughtful final delivery</span></div>
@@ -161,7 +162,7 @@ export function VisualVerseAboutEditorial() {
 
     <section className="vv-about-locations vv-about-pad" id="where-we-create">
       <div className="vv-about-container">
-        <AboutHeading label="WHERE WE CREATE" title={<>Based in Nairobi. <em>Open to Kenya.</em></>} description="Our home is in Nairobi. For projects across Kenya, we collaborate remotely whenever possible and plan on-site production together."/>
+        <AboutHeading label="WHERE WE CREATE" title={<>Based in <br/>Nairobi. <em>Open <br className="vv-break-narrow"/>to <br className="vv-break-wide"/>Kenya.</em></>} description="Our home is in Nairobi. For projects across Kenya, we collaborate remotely whenever possible and plan on-site production together."/>
         <div className="vv-about-map-motion"><VisualVerseKenyaMap/><div className="vv-about-route-rays" aria-hidden="true"><span/><span/><span/></div></div>
       </div>
     </section>
@@ -174,7 +175,7 @@ export function VisualVerseAboutEditorial() {
 
     <section className="vv-about-facts vv-about-pad" id="at-a-glance">
       <div className="vv-about-container vv-about-facts-layout">
-        <AboutHeading label="VISUAL VERSE AT A GLANCE" title={<>The short version.</>}/>
+        <AboutHeading label="VISUAL VERSE AT A GLANCE" title={<EditorialText text="The short version."/>}/>
         <dl>{detail.map(([term,value])=><div key={term}><dt>{term}</dt><dd>{value}</dd></div>)}</dl>
       </div>
     </section>

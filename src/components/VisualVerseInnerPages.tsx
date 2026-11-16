@@ -1,3 +1,4 @@
+import { EditorialText } from "./EditorialText";
 import { orderedServices, serviceLabel } from "../data/services";
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { lazy, useState, type FormEvent } from "react";
@@ -102,7 +103,7 @@ function ContactPage(){
     <section className="vv-inner-section vv-inner-contact" id="send-a-message">
       <div className="vv-inner-contact-main">
         <div className="vv-inner-contact-copy">
-          <SectionTitle eyebrow="LET'S CONNECT / FROM NAIROBI" description="Whether you're planning a campaign, an event or an entirely new brand, let's talk through it.">The first hello is<br/><em>the exciting part.</em></SectionTitle>
+          <SectionTitle eyebrow="LET'S CONNECT / FROM NAIROBI" description="Whether you're planning a campaign, an event or an entirely new brand, let's talk through it.">The first <br className="vv-break-wide"/>hello is<br/><em>the exciting <br className="vv-break-wide"/>part.</em></SectionTitle>
           <div className="vv-inner-contact-links">
             <a href={"mailto:"+EMAIL}><Mail size={20}/><span><small>EMAIL US</small><strong>{EMAIL}</strong></span><ArrowUpRight size={16}/></a>
             <a href={"tel:"+PHONE}><Phone size={20}/><span><small>CALL US</small><strong>+254 794 044 598</strong></span><ArrowUpRight size={16}/></a>
@@ -112,7 +113,7 @@ function ContactPage(){
         </div>
         <form className="vv-inner-form vv-inner-contact-form" onSubmit={submit}>
           <span className="vv-inner-eyebrow">SEND US A MESSAGE</span>
-          <h3>What can we create together?</h3>
+          <h3><EditorialText text="What can we create together?"/></h3>
           <label>Your name <input required minLength={2} value={name} onChange={e=>setName(e.target.value)} placeholder="Full name" autoComplete="name"/></label>
           <label>Email address <input required type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email"/></label>
           <label>Subject <input required minLength={3} value={subject} onChange={e=>setSubject(e.target.value)} placeholder="What is this about?"/></label>
@@ -156,7 +157,7 @@ function QuotePage(){
     <section className="vv-inner-section vv-inner-quote-section" id="brief">
       <div className="vv-inner-contact-main vv-inner-quote-main">
         <div className="vv-inner-quote-copy">
-          <SectionTitle eyebrow="LET'S PLAN IT / YOUR CREATIVE BRIEF" description="Every project has its own scope. Tell us enough to understand your idea, and we'll discuss a tailored proposal.">Good ideas begin<br/><em>with a brief.</em></SectionTitle>
+          <SectionTitle eyebrow="LET'S PLAN IT / YOUR CREATIVE BRIEF" description="Every project has its own scope. Tell us enough to understand your idea, and we'll discuss a tailored proposal.">Good ideas <br/>begin<br/><em>with a <br className="vv-break-wide"/>brief.</em></SectionTitle>
           <div className="vv-inner-quote-guide">
             <div><span>01</span><strong>Tell us who you are</strong><p>A name and a way to reach you.</p></div>
             <div><span>02</span><strong>Describe the project</strong><p>What you need, why and by when.</p></div>

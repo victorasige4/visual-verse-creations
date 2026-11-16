@@ -1,3 +1,4 @@
+import { EditorialText } from "./EditorialText";
 import { orderedServices, serviceLabel, serviceNumber } from "../data/services";
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useState } from "react";
@@ -59,7 +60,7 @@ export function VisualVerseProjectsPage(){
             <span className="vv-projects-index">SIX DISCIPLINES / INFINITE IDEAS</span>
           </div>
           <div className="vv-projects-hero-bottom">
-            <div><h1>Every story,<br/><em>a different canvas.</em></h1>
+            <div><h1>Every story,<br/><em>a different <br/>canvas.</em></h1>
               <p>A gallery of the directions we explore—from moments behind the lens to brands, campaigns and digital experiences.</p>
               <div className="vv-projects-hero-cta"><a className="vv-motion-action vv-action-primary" href="#vv-projects-gallery"><VisualVerseActionContent Icon={ArrowRight}>Explore categories</VisualVerseActionContent></a><a className="vv-motion-action vv-action-secondary" href="/request-quote.html"><VisualVerseActionContent>Start a project</VisualVerseActionContent></a></div>
             </div>
@@ -69,7 +70,7 @@ export function VisualVerseProjectsPage(){
 
         <section className="vv-projects-gallery-section" id="vv-projects-gallery">
           <div className="vv-projects-gallery-header">
-            <div><span className="vv-projects-kicker">EXPLORE OUR WORK</span><h2>Find the kind of<br/>story you're looking for.</h2></div>
+            <div><span className="vv-projects-kicker">EXPLORE OUR WORK</span><h2>Find the kind of<br/>story you're <br/>looking for.</h2></div>
             <p>Choose a creative category to explore a little further. Photographic samples are drawn from the Visual Verse archive; other visuals are illustrative directions.</p>
           </div>
           <div className="vv-projects-filters" role="group" aria-label="Filter portfolio categories">
@@ -80,7 +81,7 @@ export function VisualVerseProjectsPage(){
             {displayed.map((item)=>(
               <a href={"#"+item.id} key={item.id} className="vv-projects-focus-card">
                 <div className="vv-projects-focus-image"><CategoryVisual category={item}/><span className="vv-projects-focus-arrow"><ArrowUpRight size={21}/></span></div>
-                <div className="vv-projects-focus-caption"><h3>{item.name}</h3><p>{item.headline}</p></div>
+                <div className="vv-projects-focus-caption"><h3><EditorialText text={item.name} variant="project-focus"/></h3><p>{item.headline}</p></div>
               </a>
             ))}
           </div>
@@ -107,7 +108,7 @@ export function VisualVerseProjectsPage(){
               </div>
               <div className="vv-projects-category-copy">
                 <span className="vv-projects-kicker">CREATIVE COLLECTION</span>
-                <h2 id={"vv-project-"+category.id}>{category.name}</h2>
+                <h2 id={"vv-project-"+category.id}><EditorialText text={category.name} variant="project-category"/></h2>
                 <h3>{category.headline}</h3>
                 <p>{category.description}</p>
                 <ul>{category.services.map(point=><li key={point}><Check size={15} aria-hidden="true"/>{point}</li>)}</ul>

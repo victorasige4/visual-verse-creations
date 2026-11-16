@@ -97,7 +97,7 @@ export function VisualVerseWhyUs() {
         >
           <div className="vv-why-intro-left">
             <span className="vv-why-kicker"><i aria-hidden="true" /> WHY VISUAL VERSE</span>
-            <h2>Creative sparks.<br /><span>Real impact.</span></h2>
+            <h2>Creative <br className="vv-break-wide"/>sparks.<br /><span>Real impact.</span></h2>
           </div>
           <div className="vv-why-intro-right">
             <p>More than good-looking design. We listen first, create with intention, and bring together the right ideas to tell your story beautifully.</p>

@@ -1,3 +1,4 @@
+import { EditorialText } from "./EditorialText";
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import {
@@ -105,7 +106,7 @@ export function VisualVerseIndustries() {
       <div className="vv-about-container vv-industry-container">
         <header className="vv-industry-head">
           <span className="vv-industry-eyebrow"><i/><i/> WHO WE CREATE WITH</span>
-          <h2 id="vv-industry-title">From big brands to founders' first ideas.</h2>
+          <h2 id="vv-industry-title"><EditorialText text="From big brands to founders' first ideas."/></h2>
         </header>
 
         <div className="vv-industry-grid" role="group" aria-label="Explore the kinds of people and organisations we create for">

@@ -1,3 +1,4 @@
+import { EditorialText } from "./EditorialText";
 import { orderedServices, serviceLabel, serviceNumber } from "../data/services";
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useRef, useState } from "react";
@@ -138,7 +139,7 @@ function ServiceDetail({service:s}:{service:Service}) {
   return <div className="vv-services-editorial vv-service-detail">
     <section className="vv-detail-hero" id="services-top"><div className="vv-sv-container">
       <nav className="vv-sv-breadcrumb" aria-label="Breadcrumb"><a href={base}>Home</a><span>·</span><a href={`${base}services.html`}>Services</a><span>·</span><span aria-current="page">{s.name}</span></nav>
-      <div className="vv-detail-grid"><div className="vv-detail-copy"><span className="vv-sv-kicker"><i/><i/> {s.number} / 06 &nbsp; · &nbsp; {s.name}</span><h1>{d.headline}</h1><p>{d.intro}</p><div className="vv-detail-actions"><a className="vv-service-cta vv-motion-action vv-action-primary" href={quoteUrl(s)}><VisualVerseActionContent Icon={ArrowUpRight}>Let's talk</VisualVerseActionContent></a><a className="vv-service-secondary vv-motion-action vv-action-secondary" href={`${base}contact.html`}><VisualVerseActionContent Icon={ArrowUpRight}>Contact us</VisualVerseActionContent></a></div><div className="vv-detail-tags">{s.highlights.map(h=><span key={h}>{h}</span>)}</div></div><ServiceDemo service={s}/></div>
+      <div className="vv-detail-grid"><div className="vv-detail-copy"><span className="vv-sv-kicker"><i/><i/> {s.number} / 06 &nbsp; · &nbsp; {s.name}</span><h1><EditorialText text={d.headline}/></h1><p>{d.intro}</p><div className="vv-detail-actions"><a className="vv-service-cta vv-motion-action vv-action-primary" href={quoteUrl(s)}><VisualVerseActionContent Icon={ArrowUpRight}>Let's talk</VisualVerseActionContent></a><a className="vv-service-secondary vv-motion-action vv-action-secondary" href={`${base}contact.html`}><VisualVerseActionContent Icon={ArrowUpRight}>Contact us</VisualVerseActionContent></a></div><div className="vv-detail-tags">{s.highlights.map(h=><span key={h}>{h}</span>)}</div></div><ServiceDemo service={s}/></div>
       <ServiceNav active={s.id}/>
     </div></section>
     <VisualVerseServiceDetailSections key={s.id} service={linkFor(s)} outcome={d.outcome} quoteHref={quoteUrl(s)} allServices={services.map(linkFor)}/>
@@ -178,7 +179,7 @@ export function VisualVerseServicesEditorial() {
           <a href={import.meta.env.BASE_URL}>Home</a><span aria-hidden="true">·</span><span aria-current="page">Services</span>
         </nav>
         <div className="vv-sv-hero-main">
-          <h1 id="vv-sv-title">Six ways we create, <em>all of them yours.</em></h1>
+          <h1 id="vv-sv-title">Six ways we <br/>create, <br/><em>all of them <br/>yours.</em></h1>
           <p>Every creative solution is shaped around your story, your audience and what you want to achieve. No one-size-fits-all ideas. Just thoughtful work made for you.</p>
         </div>
         <div className="vv-service-hero-nav"><ServiceNav onPreview={setHighlight}/></div>
@@ -189,7 +190,7 @@ export function VisualVerseServicesEditorial() {
       <div className="vv-sv-container">
         <header className="vv-service-overview-heading vv-sv-reveal">
           <span className="vv-sv-kicker"><i/><i/> THE CREATIVE DISCIPLINES</span>
-          <h2 id="vv-sv-services-title">What we <em>bring to life.</em></h2>
+          <h2 id="vv-sv-services-title">What we <em>bring to <br className="vv-break-narrow"/>life.</em></h2>
         </header>
         <div className="vv-service-list">
           {services.map((s)=>{
@@ -197,7 +198,7 @@ export function VisualVerseServicesEditorial() {
             const image=covers[s.id];
             return <article className={`vv-service-row vv-sv-reveal ${highlight===s.id?"is-highlighted":""}`} id={"details-"+s.id} key={s.id} aria-labelledby={"sv-"+s.id}>
               <span id={"service-"+s.id} className="vv-service-anchor" aria-hidden="true"/>
-              <div className="vv-service-row-copy"><span className="vv-service-index"><Icon size={20} strokeWidth={1.6}/> {s.number} / 06</span><h3 id={"sv-"+s.id}>{s.name}</h3><h4>{detailCopy[s.id].headline}</h4><p>{s.description}</p><ul>{s.bullets.slice(0,3).map(b=><li key={b}><Check size={15}/>{b}</li>)}</ul><a className="vv-service-cta vv-motion-action vv-action-primary" href={serviceUrl(s.id)}><VisualVerseActionContent Icon={ArrowUpRight}>Explore {s.name}</VisualVerseActionContent></a></div>
+              <div className="vv-service-row-copy"><span className="vv-service-index"><Icon size={20} strokeWidth={1.6}/> {s.number} / 06</span><h3 id={"sv-"+s.id}><EditorialText text={s.name} variant="service-list"/></h3><h4>{detailCopy[s.id].headline}</h4><p>{s.description}</p><ul>{s.bullets.slice(0,3).map(b=><li key={b}><Check size={15}/>{b}</li>)}</ul><a className="vv-service-cta vv-motion-action vv-action-primary" href={serviceUrl(s.id)}><VisualVerseActionContent Icon={ArrowUpRight}>Explore {s.name}</VisualVerseActionContent></a></div>
               <a className="vv-service-row-art" href={serviceUrl(s.id)} aria-label={`Explore ${s.name}`}><img src={base+image.file} alt="" style={{objectPosition:image.position}} loading="lazy" decoding="async"/><span className="vv-service-row-top"><Icon size={20} strokeWidth={1.6}/><span>STUDIO / {s.number}</span></span><span className="vv-service-row-badge"><span>{s.tags[0]} · {s.tags[1]}</span><ArrowUpRight size={19}/></span></a>
             </article>;
           })}
@@ -212,13 +213,13 @@ export function VisualVerseServicesEditorial() {
       <div className="vv-sv-container">
         <header className="vv-sv-resource-heading vv-sv-reveal">
           <span className="vv-sv-kicker"><i/><i/> BEFORE YOU DECIDE</span>
-          <h2>The right creative partner starts <em>with the right questions.</em></h2>
+          <h2>The right <br className="vv-break-narrow"/>creative <br/>partner starts <br className="vv-break-narrow"/><em>with <br className="vv-break-wide"/>the right <br className="vv-break-narrow"/>questions.</em></h2>
           <p>A little clarity goes a long way. Here's where to begin.</p>
         </header>
         <div className="vv-sv-resource-grid">
           <a href={import.meta.env.BASE_URL+"request-quote.html"} className="vv-sv-resource vv-sv-reveal">
             <span><FileText size={21}/><small>01</small></span>
-            <h3>Tell us about your project</h3>
+            <h3><EditorialText text="Tell us about your project"/></h3>
             <p>Share your idea, the goals and what you're imagining. We'll shape a clear way forward.</p>
             <b>START A BRIEF <ArrowUpRight size={16}/></b>
           </a>

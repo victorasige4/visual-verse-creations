@@ -160,7 +160,7 @@ export function VisualVersePurposeCompass(){
         <div className="vv-purpose-editorial">
           <div className="vv-purpose-editorial-top">
             <span>OUR NORTH STAR & OUR WAY FORWARD <ArrowUpRight size={15}/></span>
-            <h2 id="vv-purpose-heading">Dream with<br/><em>direction.</em><br/>Create with<br/><i>purpose.</i></h2>
+            <h2 id="vv-purpose-heading">Dream <br className="vv-break-wide"/>with<br/><em>direction.</em><br/>Create <br className="vv-break-wide"/>with<br/><i>purpose.</i></h2>
             <p className="vv-purpose-lede">A vision tells us where we're going. A mission is how we bring every beautiful idea a little closer.</p>
           </div>
 

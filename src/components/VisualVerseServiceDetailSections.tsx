@@ -1,3 +1,4 @@
+import { EditorialText } from "./EditorialText";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { ArrowUpRight, Camera, Check, Clapperboard, ClipboardList, FileCheck2, Globe2, Image, Layers3, LayoutGrid, MapPin, MessageCircle, Minus, MonitorSmartphone, Palette, PenTool, Plus, ScanLine, Share2, Sparkles, Target, Telescope, Type, type LucideIcon } from "lucide-react";
 import { serviceDetails, type ServiceId } from "./visual-verse-service-detail-content";
@@ -50,7 +51,7 @@ export function VisualVerseServiceDetailSections({service,outcome,quoteHref,allS
       <div className="vv-sv-container">
         <header className="vv-ds-heading vv-ds-reveal">
           <Kicker>WHAT YOU GET</Kicker>
-          <h2 id="vv-ds-deliver-title">{outcome}</h2>
+          <h2 id="vv-ds-deliver-title"><EditorialText text={outcome}/></h2>
           <p>Every project is tailored to your goals. Here's what we can bring to yours.</p>
         </header>
         <div className="vv-ds-feature-grid">
@@ -59,7 +60,7 @@ export function VisualVerseServiceDetailSections({service,outcome,quoteHref,allS
         <div className="vv-ds-check vv-ds-reveal" data-complete={checked.length===data.checks.length}>
           <div className="vv-ds-check-intro">
             <Kicker>QUICK CHECK</Kicker>
-            <h2>Is {service.name.toLowerCase()} what you need?</h2>
+            <h2><EditorialText text={`Is ${service.name.toLowerCase()} what you need?`}/></h2>
             <p>Tick what sounds familiar. Let's find the right starting point together.</p>
             <div className="vv-ds-check-meter"><div className="vv-ds-check-ring" aria-hidden="true"><svg viewBox="0 0 88 88"><circle cx="44" cy="44" r="37"/><circle cx="44" cy="44" r="37" className="vv-ds-ring-fill" pathLength="100" strokeDasharray={checked.length/data.checks.length*100+" 100"}/></svg><span key={checked.length}>{checked.length===data.checks.length?<Sparkles size={24}/>:checked.length+"/"+data.checks.length}</span></div><div><div className="vv-ds-check-count" aria-live="polite"><strong>{checked.length}</strong> of {data.checks.length} selected</div><span className="vv-ds-check-message" key={checked.length}>{checked.length===0?"Your creative brief starts here.":checked.length===data.checks.length?"You're all set — let's create!":checked.length<3?"Great start! Keep exploring.":"Your brief is coming to life."}</span></div></div>
             <div className="vv-ds-check-progress" role="progressbar" aria-label="Selected needs" aria-valuemin={0} aria-valuemax={data.checks.length} aria-valuenow={checked.length}>{data.checks.map((_,i)=><span className={i<checked.length?"is-lit":""} key={i}/>)}</div>
@@ -72,13 +73,13 @@ export function VisualVerseServiceDetailSections({service,outcome,quoteHref,allS
     <VisualVerseProcessJourney items={items} heading={processTitles[service.id]} quoteHref={quoteHref} artwork={step=><ProcessStoryArt kind={service.id} step={step}/> }/>
     <section className="vv-ds-section vv-ds-details" aria-labelledby="vv-ds-details-title">
       <div className="vv-sv-container vv-ds-details-grid">
-        <div className="vv-ds-heading vv-ds-reveal"><Kicker>THE DETAILS</Kicker><h2 id="vv-ds-details-title">The craft behind the work.</h2><p>{data.technical}</p><div className="vv-ds-tool-label">TOOLS & CAPABILITIES</div><div className="vv-ds-tools">{data.tools.map((t,i)=>{const Icon=icons[service.id][i%6];return <span key={t}><Icon size={20}/><span>{t}</span><i aria-hidden="true"/></span>})}</div></div>
-        <div className="vv-ds-location vv-ds-reveal"><div className="vv-ds-location-orbits" aria-hidden="true"><i/><i/><i/><i/><b/><b/></div><Globe2 className="vv-ds-location-globe" aria-hidden="true" strokeWidth={.6}/><span className="vv-ds-location-icon"><MapPin size={26} strokeWidth={1.6}/></span><small>NAIROBI, KENYA · BEYOND BORDERS</small><h3>Based in Kenya.<br/>Creating for the world.</h3><p>Let's work wherever your story takes us. On location or remotely, depending on the project.</p><a className="vv-motion-action vv-action-on-dark" href={import.meta.env.BASE_URL+"contact.html"}><VisualVerseActionContent>Let's connect</VisualVerseActionContent></a></div>
+        <div className="vv-ds-heading vv-ds-reveal"><Kicker>THE DETAILS</Kicker><h2 id="vv-ds-details-title"><EditorialText text="The craft behind the work."/></h2><p>{data.technical}</p><div className="vv-ds-tool-label">TOOLS & CAPABILITIES</div><div className="vv-ds-tools">{data.tools.map((t,i)=>{const Icon=icons[service.id][i%6];return <span key={t}><Icon size={20}/><span>{t}</span><i aria-hidden="true"/></span>})}</div></div>
+        <div className="vv-ds-location vv-ds-reveal"><div className="vv-ds-location-orbits" aria-hidden="true"><i/><i/><i/><i/><b/><b/></div><Globe2 className="vv-ds-location-globe" aria-hidden="true" strokeWidth={.6}/><span className="vv-ds-location-icon"><MapPin size={26} strokeWidth={1.6}/></span><small>NAIROBI, KENYA · BEYOND BORDERS</small><h3>Based in Kenya.<br/>Creating for the <br/>world.</h3><p>Let's work wherever your story takes us. On location or remotely, depending on the project.</p><a className="vv-motion-action vv-action-on-dark" href={import.meta.env.BASE_URL+"contact.html"}><VisualVerseActionContent>Let's connect</VisualVerseActionContent></a></div>
       </div>
     </section>
     <section className="vv-ds-section vv-ds-faq" aria-labelledby="vv-ds-faq-title">
       <div className="vv-sv-container">
-        <header className="vv-ds-faq-heading vv-ds-reveal"><div className="vv-ds-heading"><Kicker>FREQUENTLY ASKED QUESTIONS</Kicker><h2 id="vv-ds-faq-title">A little more clarity.</h2></div><p>Still have a question? <a href={import.meta.env.BASE_URL+"contact.html"}>Let's talk <ArrowUpRight size={15}/></a></p></header>
+        <header className="vv-ds-faq-heading vv-ds-reveal"><div className="vv-ds-heading"><Kicker>FREQUENTLY ASKED QUESTIONS</Kicker><h2 id="vv-ds-faq-title"><EditorialText text="A little more clarity."/></h2></div><p>Still have a question? <a href={import.meta.env.BASE_URL+"contact.html"}>Let's talk <ArrowUpRight size={15}/></a></p></header>
         <div className="vv-ds-faq-list">{data.faq.map(([question,answer],i)=><article key={question} className={"vv-ds-faq-item"+(open===i?" is-open":"")}>
           <h3><button type="button" aria-expanded={open===i} aria-controls={"vv-ds-answer-"+i} onClick={()=>setOpen(open===i?null:i)}><span className="vv-ds-faq-index" aria-hidden="true">0{i+1}</span><span>{question}</span><span className="vv-ds-plus">{open===i?<Minus size={20}/>:<Plus size={20}/>}</span></button></h3>
           <div id={"vv-ds-answer-"+i} className="vv-ds-answer" aria-hidden={open!==i}><div><p>{answer}</p></div></div>
@@ -86,7 +87,7 @@ export function VisualVerseServiceDetailSections({service,outcome,quoteHref,allS
       </div>
     </section>
     <section className="vv-ds-section vv-ds-related" aria-labelledby="vv-ds-related-title">
-      <div className="vv-sv-container"><header className="vv-ds-heading vv-ds-reveal"><Kicker>MORE POSSIBILITIES</Kicker><h2 id="vv-ds-related-title">Often built together.</h2><p>Pair complementary disciplines for a creative experience that feels connected.</p></header>
+      <div className="vv-sv-container"><header className="vv-ds-heading vv-ds-reveal"><Kicker>MORE POSSIBILITIES</Kicker><h2 id="vv-ds-related-title"><EditorialText text="Often built together."/></h2><p>Pair complementary disciplines for a creative experience that feels connected.</p></header>
         <div className="vv-ds-related-grid">{related.map((item,i)=><a key={item.id} href={item.href} className="vv-ds-related-card vv-ds-reveal" style={{"--vv-ds-delay":i*85+"ms"} as CSSProperties}><div className="vv-ds-related-image"><img src={item.image} alt="" style={{objectPosition:item.position}} loading="lazy"/><span><item.Icon size={23}/></span></div><div className="vv-ds-related-name"><h3>{item.name}</h3><span><ArrowUpRight size={22}/></span></div></a>)}</div>
         <div className="vv-ds-more"><a className="vv-motion-action vv-action-primary" href={import.meta.env.BASE_URL+"services.html#services"}><VisualVerseActionContent>Explore all services</VisualVerseActionContent></a></div>
       </div>
