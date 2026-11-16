@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, ArrowRight, ArrowLeft, Camera, Clapperboard, Palette, PenTool, MonitorSmartphone, Share2, Check, UsersRound, MessageCircle, FileText, Play, Pause, Smartphone, Monitor, Layers3, MousePointer2, Type, Globe } from "lucide-react";
 import { VisualVerseProcessJourney } from "./VisualVerseProcessJourney";
+import { Compare } from "./ui/compare";
 import "../visual-verse-services-page.css";
 import "../visual-verse-service-detail.css";
 
@@ -76,7 +77,7 @@ const covers: Record<Service["id"], {file:string;position:string}> = {
   branding:{file:"service-cover-branding.webp",position:"46% center"},
 };
 const detailCopy: Record<Service["id"],{headline:string;intro:string;outcome:string;stages:string[];labels:string[]}> = {
-  photography:{headline:"Frames that make the moment last.",intro:"From the people you love to the things you build, thoughtful photography makes every moment feel worth remembering.",outcome:"Images that feel like you, long after the moment has passed.",stages:["Plan the shoot","Capture the story","Refine every frame"],labels:["Original","Colour grade","Final image"]},
+  photography:{headline:"Frames that make the moment last.",intro:"From the people you love to the things you build, thoughtful photography makes every moment feel worth remembering.",outcome:"Images that feel like you, long after the moment has passed.",stages:["Plan the shoot","Capture the story","Refine every frame"],labels:["Original","Compare","Edited"]},
   videography:{headline:"Stories that move people.",intro:"From the first idea to the final cut, we craft films that connect with the right audience and make your message impossible to ignore.",outcome:"Purposeful films that carry your story far beyond the screen.",stages:["Shape the concept","Capture the footage","Edit and deliver"],labels:["Footage","Edit","Final cut"]},
   "graphic-design":{headline:"Ideas that deserve to be seen.",intro:"Intelligent design that gives every message a visual voice, from a single print piece to an integrated creative campaign.",outcome:"Design that communicates before a single word is read.",stages:["Understand the brief","Explore visual routes","Build the final assets"],labels:["Sketch","Design","Final artwork"]},
   "web-ui-ux":{headline:"Digital experiences built for real people.",intro:"Responsive websites and thoughtful product interfaces, designed from the first wireframe to the smallest mobile interaction.",outcome:"A digital presence that looks exceptional and works beautifully everywhere.",stages:["Map the experience","Design and prototype","Build and refine"],labels:["Wireframe","Desktop","Mobile"]},
@@ -92,8 +93,8 @@ function ServiceNav({active,onPreview}:{active?:string;onPreview?:(id?:string)=>
 
 function ServiceDemo({service:s}:{service:Service}) {
   const d=detailCopy[s.id];
-  const [mode,setMode]=useState(0);
-  const [playing,setPlaying]=useState(()=>!window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const [mode,setMode]=useState(s.kind==="photo"?1:0);
+  const [playing,setPlaying]=useState(()=>s.kind!=="photo"&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   const [inView,setInView]=useState(false);
   const demoRef=useRef<HTMLDivElement>(null);
   const [split,setSplit]=useState(50);
@@ -113,17 +114,17 @@ function ServiceDemo({service:s}:{service:Service}) {
   return <div ref={demoRef} className={`vv-service-demo vv-demo-${s.kind}`} data-mode={mode} data-playing={playing}>
     <div className="vv-demo-header"><span><i/> STUDIO / {s.number}</span><Icon size={19} strokeWidth={1.6}/></div>
     <div className="vv-demo-controls" aria-label={`${s.name} demonstration views`}>
-      {d.labels.map((label,i)=><button key={label} type="button" aria-pressed={mode===i} onClick={()=>{setPlaying(false);setMode(i)}}>{label}</button>)}
+      {d.labels.map((label,i)=><button key={label} type="button" aria-pressed={mode===i} onClick={()=>{setPlaying(false);setMode(i);if(s.kind==="photo")setSplit([100,50,0][i])}}>{label}</button>)}
     </div>
     <div className="vv-demo-stage">
-      {s.kind==="photo" && <div className="vv-demo-photo-frame"><div className="vv-demo-photo-image"><img src={base+image.file} alt="Camera photography example"/><img className="vv-demo-photo-edited" src={base+image.file} alt="" style={{clipPath:`inset(0 0 0 ${split}%)`}}/><span className="vv-demo-photo-line" style={{left:`${split}%`}}/><span className="vv-demo-photo-label">ORIGINAL</span><span className="vv-demo-photo-label right">EDITED</span></div><label>Compare original and edited <input type="range" min="0" max="100" value={split} onChange={e=>{setSplit(+e.target.value);setPlaying(false)}}/></label></div>}
+      {s.kind==="photo" && <div className="vv-demo-photo-frame"><Compare firstImage={base+image.file} secondImage={base+image.file} firstImageAlt="Original camera photograph" secondImageAlt="Illustrative colour-graded camera photograph" secondImageClassname="vv-demo-photo-edited" className="vv-demo-photo-image" slideMode="drag" sliderPercentage={split} onSliderChange={value=>{setSplit(value);setMode(value===100?0:value===0?2:1)}}/><p className="vv-demo-photo-hint">Drag the divider to compare <span>↔</span></p></div>}
       {s.kind==="film" && <div className="vv-demo-film-frame"><div className="vv-demo-film-monitor"><img src={base+image.file} alt="Video production camera"/><span className="vv-demo-record"><i/> {mode===2?"EXPORT":"REC"}</span><span className="vv-demo-film-time">00:00:{["04","12","24"][mode]}</span><Play size={36} fill="currentColor"/></div><div className="vv-demo-timeline"><span>V1</span>{[1,2,3,4,5].map(i=><i key={i}/>)}<span>A1</span>{[1,2,3,4,5].map(i=><i key={i}/>)}<b/></div></div>}
       {s.kind==="graphic" && <div className="vv-demo-design-frame"><aside aria-hidden="true"><MousePointer2/><PenTool/><Type/><Layers3/></aside><div className="vv-demo-poster"><small>THE CREATIVE SERIES / 01</small><span className="vv-demo-orb"/><strong>Make<br/>it <em>seen.</em></strong><span>VISUAL VERSE / DESIGN STUDIO</span></div><div className="vv-demo-layers" aria-hidden="true"><small>LAYERS</small><b>Type</b><b>Forms</b><b>Colour</b></div></div>}
       {s.kind==="web" && <div className="vv-demo-web-frame"><div className="vv-demo-browser"><div className="vv-demo-browser-top"><i/><i/><i/><span>visualverse / concept</span></div><div className="vv-demo-web-screen"><small>VISUAL VERSE <Globe size={14}/></small><strong>Design for<br/>the real world.</strong><span>Explore <ArrowUpRight size={13}/></span><div className="vv-demo-web-orbit"/></div><div className="vv-demo-web-lines"><i/><i/><i/></div></div><div className="vv-demo-phone"><div/><small>VV / MOBILE</small><strong>Made<br/>for every<br/>screen.</strong><i/><i/><span>Explore ↗</span></div><span className="vv-demo-device-label">{mode===2?<Smartphone size={14}/>:<Monitor size={14}/>} {d.labels[mode]}</span></div>}
       {s.kind==="social" && <div className="vv-demo-social-frame"><div className="vv-demo-social-post"><small><i/> VISUAL VERSE</small><div><span>GOOD STORIES.</span><strong>Bigger<br/>impact.</strong><em>01 / CAMPAIGN</em></div><span>♡　◌　↗</span></div><div className="vv-demo-social-stats"><small>CAMPAIGN / DEMO</small><strong>Engagement</strong><div>{[28,47,40,62,55,78,95].map((h,i)=><i key={i} style={{height:h+"%",transitionDelay:i*60+"ms"}}/>)}</div><span>Creative → audience</span></div></div>}
       {s.kind==="branding" && <div className="vv-demo-brand-frame"><div className="vv-demo-brand-sheet"><small>IDENTITY / CONCEPT 01</small><img src={base+"logo-mark.png"} alt="Visual Verse identity mark"/><strong>Visual<br/>Verse.</strong><span>IMAGINE. CREATE. CONNECT.</span></div><div className="vv-demo-brand-card"><img src={base+"logo-mark.png"} alt=""/><span>Brand in motion.</span></div><div className="vv-demo-swatches"><i/><i/><i/><i/></div></div>}
     </div>
-    <div className="vv-demo-footer"><span><i/> {d.labels[mode]} <small> · Illustrative concept</small></span><button type="button" aria-label={playing?"Pause demonstration":"Play demonstration"} onClick={()=>setPlaying(p=>!p)}>{playing?<Pause size={16}/>:<Play size={16}/>}</button></div>
+    <div className="vv-demo-footer"><span><i/> {d.labels[mode]} <small> · {s.kind==="photo"?"Illustrative colour grade":"Illustrative concept"}</small></span>{s.kind!=="photo"&&<button type="button" aria-label={playing?"Pause demonstration":"Play demonstration"} onClick={()=>setPlaying(p=>!p)}>{playing?<Pause size={16}/>:<Play size={16}/>}</button>}</div>
   </div>;
 }
 
