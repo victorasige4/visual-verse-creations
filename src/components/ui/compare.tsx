@@ -70,6 +70,14 @@ export function Compare({
       aria-valuenow={value}
       aria-valuetext={`${value}% original, ${100 - value}% edited`}
       onKeyDown={handleKey}
+      onPointerEnter={event => {
+        if (slideMode === "hover" && event.pointerType === "mouse") updateFromPointer(event);
+      }}
+      onPointerLeave={event => {
+        if (slideMode === "hover" && event.pointerType === "mouse" && activePointer.current === null) {
+          update(initialSliderPercentage);
+        }
+      }}
       onPointerDown={event => {
         if (!event.isPrimary || event.button !== 0) return;
         activePointer.current = event.pointerId;
