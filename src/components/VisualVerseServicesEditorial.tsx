@@ -158,7 +158,7 @@ function useRevealSections() {
       entries.forEach(entry=>{
         if(entry.isIntersecting){entry.target.classList.add("is-visible");observer.unobserve(entry.target);}
       });
-    },{threshold:.09,rootMargin:"0px 0px -40px 0px"});
+    },{threshold:0,rootMargin:"120px 0px 120px 0px"});
     items.forEach(el=>observer.observe(el));
     return ()=>observer.disconnect();
   },[]);
@@ -202,7 +202,7 @@ export function VisualVerseServicesEditorial() {
             return <article className={`vv-service-row vv-sv-reveal ${highlight===s.id?"is-highlighted":""}`} id={"details-"+s.id} key={s.id} aria-labelledby={"sv-"+s.id}>
               <span id={"service-"+s.id} className="vv-service-anchor" aria-hidden="true"/>
               <div className="vv-service-row-copy"><span className="vv-service-index"><Icon size={20} strokeWidth={1.6}/> {s.number} / 06</span><h3 id={"sv-"+s.id}>{s.name}</h3><h4>{detailCopy[s.id].headline}</h4><p>{s.description}</p><ul>{s.bullets.slice(0,3).map(b=><li key={b}><Check size={15}/>{b}</li>)}</ul><a className="vv-service-cta" href={serviceUrl(s.id)}>Explore {s.name} <span><ArrowUpRight size={17}/></span></a></div>
-              <a className="vv-service-row-art" href={serviceUrl(s.id)} aria-label={`Explore ${s.name}`}><img src={base+image.file} alt="" style={{objectPosition:image.position}} loading="lazy" decoding="async"/><span className="vv-service-row-top"><Icon size={20} strokeWidth={1.6}/><span>STUDIO / {s.number}</span></span><span className="vv-service-row-badge"><span>{s.tags[0]} · {s.tags[1]}</span><ArrowUpRight size={19}/></span></a>
+              <a className="vv-service-row-art" href={serviceUrl(s.id)} aria-label={`Explore ${s.name}`}><img src={base+image.file} alt="" style={{objectPosition:image.position}} loading="eager" decoding="async"/><span className="vv-service-row-top"><Icon size={20} strokeWidth={1.6}/><span>STUDIO / {s.number}</span></span><span className="vv-service-row-badge"><span>{s.tags[0]} · {s.tags[1]}</span><ArrowUpRight size={19}/></span></a>
             </article>;
           })}
         </div>

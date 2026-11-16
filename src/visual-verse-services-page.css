@@ -13,10 +13,12 @@
 }
 .vv-services-editorial *, .vv-services-editorial *::before,.vv-services-editorial *::after{box-sizing:border-box}
 .vv-sv-container{width:min(1168px,calc(100% - 48px));margin-inline:auto;max-width:1168px}
+/* Content must never depend on IntersectionObserver to be readable. The
+   observer only adds a small entrance movement, not visibility. */
 .vv-sv-reveal{opacity:1;transform:none;filter:none}
 @media(prefers-reduced-motion:no-preference){
- .vv-sv-reveal:not(.is-visible){opacity:0;transform:translate3d(0,33px,0);filter:blur(3px)}
- .vv-sv-reveal{transition:opacity .88s cubic-bezier(.22,1,.36,1),transform 1.04s cubic-bezier(.22,1,.36,1),filter .82s ease}
+ .vv-sv-reveal:not(.is-visible){transform:translate3d(0,8px,0)}
+ .vv-sv-reveal{transition:transform .5s cubic-bezier(.22,1,.36,1)}
 }
 .vv-sv-kicker{
   display:inline-flex;align-items:center;gap:9px;
