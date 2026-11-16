@@ -1,0 +1,91 @@
+/* Service-specific editorial chapters. Shared visual language, distinct content. */
+.vv-ds{--ds-ink:#002a40;--ds-teal:#128b82;--ds-mint:#2ec4b6;--ds-line:#dbe9e5;--ds-muted:#55747a;background:#fff;color:var(--ds-ink)}
+.vv-ds-section{padding:clamp(68px,8vw,112px) 0}
+.vv-ds-heading{max-width:690px}
+.vv-ds-heading h2,.vv-ds-check h2{font-size:clamp(34px,4.3vw,57px);letter-spacing:-.06em;line-height:1.08;font-weight:850;color:var(--ds-ink)!important;margin:17px 0 14px}
+.vv-ds-heading p,.vv-ds-check p{color:var(--ds-muted);font-size:16px;line-height:1.75;margin:0;max-width:615px}
+.vv-ds-deliver{border-top:1px solid var(--ds-line)}
+.vv-ds-feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:36px}
+.vv-ds-feature{position:relative;display:flex;flex-direction:column;align-items:flex-start;min-height:194px;padding:26px 24px 24px;border:1px solid var(--ds-line);border-radius:13px;background:#fff;transition:background .36s,border-color .36s,box-shadow .36s,transform .36s cubic-bezier(.2,.75,.3,1)}
+.vv-ds-feature:hover{background:#edf8f4;border-color:#a9d8ce;box-shadow:0 15px 35px #003f5c12;transform:translateY(-4px)}
+.vv-ds-icon{display:grid;place-items:center;width:48px;height:48px;border-radius:10px;background:#e8f6f1;color:var(--ds-teal);transition:color .32s,background .32s,transform .35s cubic-bezier(.2,.75,.3,1),box-shadow .32s}
+.vv-ds-feature:hover .vv-ds-icon{background:#128b82;color:white;transform:rotate(-7deg) scale(1.08);box-shadow:0 7px 18px #128b8230}
+.vv-ds-feature h3{font-size:19px;font-weight:800;line-height:1.25;letter-spacing:-.035em;margin:19px 0 8px;color:var(--ds-ink)!important}
+.vv-ds-feature p{font-size:14px;line-height:1.65;color:var(--ds-muted);margin:0}
+.vv-ds-check{margin-top:clamp(46px,6vw,80px);border:1px solid var(--ds-line);border-radius:19px;padding:clamp(24px,4.5vw,58px);display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.2fr);align-items:center;gap:clamp(30px,6vw,80px);background:#f7fcfa;box-shadow:0 12px 35px #003f5c05}
+.vv-ds-check h2{font-size:clamp(29px,3.5vw,44px)}
+.vv-ds-check-count{font-size:13px;color:var(--ds-muted);margin-top:25px;font-weight:600}
+.vv-ds-check-count strong{font-size:18px;color:var(--ds-teal);font-weight:850}
+.vv-ds-check-progress{height:5px;background:#dcece7;border-radius:6px;margin:10px 0 25px;overflow:hidden}
+.vv-ds-check-progress span{display:block;height:100%;background:var(--ds-teal);border-radius:6px;transition:width .35s cubic-bezier(.2,.75,.3,1)}
+.vv-ds-check-list{margin:0;padding:0;border:0;min-width:0;display:grid;gap:8px}
+.vv-ds-check-list label{display:flex;align-items:center;gap:13px;position:relative;border:1px solid #dce9e6;border-radius:9px;background:white;padding:13px 15px;min-height:53px;font-size:14px;font-weight:650;line-height:1.45;cursor:pointer;transition:background .25s,border-color .25s,transform .25s,box-shadow .25s}
+.vv-ds-check-list label:hover{background:#eaf7f2;border-color:#9cd4c5;transform:translateX(3px)}
+.vv-ds-check-list label.is-checked{background:#e7f6ef;border-color:#8ccfc0}
+.vv-ds-check-list input{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.vv-ds-tick{flex:none;display:grid;place-items:center;width:22px;height:22px;border:1.5px solid #a4c8bd;border-radius:5px;background:white;color:transparent;transition:color .2s,background .2s,border .2s}
+.vv-ds-check-list input:checked+.vv-ds-tick{background:var(--ds-teal);border-color:var(--ds-teal);color:white}
+.vv-ds-check-list label:has(input:focus-visible){outline:2px solid var(--ds-teal);outline-offset:3px}
+.vv-ds-process-art{height:100%;width:100%;max-width:425px;margin:auto;display:flex;flex-direction:column;justify-content:center;gap:10px;padding:13px;border:1px solid #346c70;border-radius:13px;background:#0c3445;color:#e9fffc;box-shadow:0 14px 40px #001c2b55;overflow:hidden}
+.vv-ds-process-top{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:9px;font-weight:700;letter-spacing:.075em;color:#adf0e8}
+.vv-ds-process-top span:first-child{display:flex;gap:5px;align-items:center}
+.vv-ds-process-top i,.vv-ds-process-status i{width:6px;height:6px;background:#2ec4b6;border-radius:50%;display:inline-block;flex:none;box-shadow:0 0 10px #2ec4b6}
+.vv-ds-process-preview{position:relative;flex:1;min-height:0;border-radius:8px;overflow:hidden;display:flex;align-items:flex-end;isolation:isolate}
+.vv-ds-process-preview img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:vv-ds-scene-scale .95s cubic-bezier(.16,1,.3,1) both;z-index:-2}
+.vv-ds-process-shade{position:absolute;inset:0;background:linear-gradient(0deg,#002435f5 5%,#00243580 58%,transparent 100%);z-index:-1}
+.vv-ds-process-info{padding:18px 16px 13px;max-width:94%}
+.vv-ds-process-info>span{display:grid;place-items:center;width:34px;height:34px;background:#2ec4b6;color:#002a40;border-radius:7px;margin-bottom:10px}
+.vv-ds-process-info strong{font-size:clamp(16px,2.3vw,24px);line-height:1.17;font-weight:800;display:block}
+.vv-ds-process-info p{font-size:11px;line-height:1.5;margin:5px 0 0;color:#cfefeb}
+.vv-ds-process-status{position:absolute;right:10px;top:10px;font-size:8px;letter-spacing:.08em;border:1px solid #8dd9d5;background:#002a40c9;padding:5px 7px;border-radius:20px;display:flex;align-items:center;gap:5px}
+.vv-ds-process-bottom{display:flex;gap:4px}.vv-ds-process-bottom i{height:3px;background:#235b65;flex:1;border-radius:3px}.vv-ds-process-bottom i.is-current{background:#2ec4b6}
+@keyframes vv-ds-scene-scale{from{transform:scale(1.12)}to{transform:scale(1)}}
+.vv-ds-details{background:white}
+.vv-ds-details-grid{display:grid;grid-template-columns:1fr .9fr;gap:clamp(36px,7vw,100px);align-items:center}
+.vv-ds-tool-label{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--ds-teal);margin:28px 0 13px}
+.vv-ds-tools{display:flex;flex-wrap:wrap;gap:8px}
+.vv-ds-tools span{border:1px solid #dbe9e6;color:#305d66;background:#f8fcfb;border-radius:6px;padding:9px 12px;font-size:12px;font-weight:650;transition:background .25s,border .25s}
+.vv-ds-tools span:hover{background:#e7f6ef;border-color:#a5d3c8}
+.vv-ds-location{position:relative;isolation:isolate;overflow:hidden;border-radius:18px;background:linear-gradient(135deg,#002a40,#064e5f);padding:clamp(28px,4vw,48px);min-height:300px;color:#fff;box-shadow:0 15px 38px #003f5c1b}
+.vv-ds-location>small{display:block;color:#83e4d5;font-size:10px;font-weight:750;letter-spacing:.1em;margin-top:23px}
+.vv-ds-location-icon{display:grid;place-items:center;width:48px;height:48px;border:1px solid #62cabe80;border-radius:11px;color:#6bdfd1;background:#2ec4b619}
+.vv-ds-location h3{font-size:clamp(26px,3.2vw,42px);font-weight:850;color:#fff!important;letter-spacing:-.055em;line-height:1.12;margin:12px 0}
+.vv-ds-location p{font-size:14px;line-height:1.7;max-width:310px;color:#bfdfdf}
+.vv-ds-location a{display:inline-flex;align-items:center;gap:9px;font-weight:800;font-size:14px;color:#87e8d7;text-decoration:none;margin-top:15px}
+.vv-ds-location a:hover svg{transform:translate(3px,-3px)}.vv-ds-location a svg{transition:transform .25s}
+.vv-ds-location-orbits{position:absolute;z-index:-1;width:340px;height:340px;bottom:-90px;right:-80px;display:grid;place-items:center;transform:rotate(-22deg);opacity:.6}
+.vv-ds-location-orbits i{position:absolute;border:1px solid #75eddb37;border-radius:50%;width:100%;height:100%}
+.vv-ds-location-orbits i:nth-child(2){width:75%;height:75%}.vv-ds-location-orbits i:nth-child(3){width:50%;height:50%;border-style:dashed}.vv-ds-location-orbits i:nth-child(4){width:25%;height:25%;background:#2ec4b61f}
+.vv-ds-faq{background:#f7fcfa;border-block:1px solid var(--ds-line)}
+.vv-ds-faq-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:34px}
+.vv-ds-faq-heading>p{color:var(--ds-muted);font-size:14px;line-height:1.6;margin:0 0 13px}
+.vv-ds-faq-heading a{color:var(--ds-teal);display:inline-flex;gap:4px;align-items:center;font-weight:800;text-decoration:none}
+.vv-ds-faq-list{display:grid;gap:10px}
+.vv-ds-faq-item{border:1px solid var(--ds-line);border-radius:11px;overflow:hidden;background:#fff;transition:background .3s,border-color .3s,box-shadow .3s}
+.vv-ds-faq-item:hover,.vv-ds-faq-item.is-open{border-color:#acd7ce;background:#f1faf7;box-shadow:0 5px 18px #003f5c07}
+.vv-ds-faq-item h3{margin:0}
+.vv-ds-faq-item button{display:flex;width:100%;align-items:center;justify-content:space-between;gap:15px;padding:19px 23px;background:none;border:0;text-align:left;color:var(--ds-ink);font:inherit;font-size:16px;font-weight:800;cursor:pointer}
+.vv-ds-plus{width:32px;height:32px;display:grid;place-items:center;border-radius:50%;border:1px solid #c5e3db;color:var(--ds-teal);background:#fff;flex:none;transition:background .25s,color .25s,border .25s}
+.vv-ds-plus svg{transition:transform .34s cubic-bezier(.2,.75,.3,1)}
+.vv-ds-faq-item.is-open .vv-ds-plus{background:var(--ds-teal);color:#fff;border-color:var(--ds-teal)}
+.vv-ds-answer{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .38s cubic-bezier(.2,.75,.3,1),opacity .25s}
+.vv-ds-answer>div{overflow:hidden;min-height:0}
+.vv-ds-answer p{padding:0 23px 21px;margin:0;color:var(--ds-muted);font-size:15px;line-height:1.75;max-width:850px}
+.vv-ds-faq-item.is-open .vv-ds-answer{grid-template-rows:1fr;opacity:1}
+.vv-ds-related-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:35px}
+.vv-ds-related-card{color:var(--ds-ink)!important;text-decoration:none;border:1px solid var(--ds-line);border-radius:14px;background:#fff;overflow:hidden;transition:transform .35s,border-color .35s,box-shadow .35s,background .35s}
+.vv-ds-related-card:hover,.vv-ds-related-card:focus-visible{transform:translateY(-5px);border-color:#9bd4c5;background:#edf8f3;box-shadow:0 17px 35px #003f5c18}
+.vv-ds-related-image{position:relative;aspect-ratio:1.65;overflow:hidden;background:#e2f1ed}
+.vv-ds-related-image img{height:100%;width:100%;object-fit:cover;transition:transform .65s cubic-bezier(.16,1,.3,1)}
+.vv-ds-related-card:hover img{transform:scale(1.065)}
+.vv-ds-related-image>span{display:grid;place-items:center;position:absolute;top:15px;left:15px;width:43px;height:43px;background:#fff;color:var(--ds-teal);border-radius:9px;box-shadow:0 4px 20px #002a4026}
+.vv-ds-related-name{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px}
+.vv-ds-related-name h3{font-size:19px;line-height:1.25;letter-spacing:-.035em;font-weight:800;margin:0;color:var(--ds-ink)!important}
+.vv-ds-related-name>span{flex:none;display:grid;place-items:center;width:36px;height:36px;border:1px solid var(--ds-line);border-radius:50%;color:var(--ds-teal);transition:color .25s,background .25s,transform .3s}
+.vv-ds-related-card:hover .vv-ds-related-name>span{color:white;background:var(--ds-teal);transform:rotate(8deg)}
+.vv-ds :is(a,button):focus-visible{outline:2px solid var(--ds-teal);outline-offset:3px}
+.vv-ds-enter{animation:vv-ds-enter .65s cubic-bezier(.16,1,.3,1) var(--vv-ds-delay,0ms) both}
+@keyframes vv-ds-enter{from{opacity:.7;translate:0 14px}to{opacity:1;translate:0 0}}
+@media(max-width:870px){.vv-ds-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.vv-ds-check{gap:25px;padding:27px}.vv-ds-details-grid{gap:32px}.vv-ds-related-name{padding:16px}.vv-ds-related-name h3{font-size:16px}}
+@media(max-width:640px){.vv-ds-section{padding:60px 0}.vv-ds-feature-grid,.vv-ds-check,.vv-ds-details-grid,.vv-ds-related-grid{grid-template-columns:1fr}.vv-ds-feature{min-height:0;padding:22px}.vv-ds-check{padding:22px;gap:28px}.vv-ds-check-list label{font-size:13px;padding:12px}.vv-ds-faq-heading{display:block;margin-bottom:25px}.vv-ds-faq-item button{padding:15px;font-size:14px}.vv-ds-answer p{padding:0 15px 16px;font-size:14px}.vv-ds-related-image{aspect-ratio:1.9}.vv-ds-process-info p{font-size:10px}.vv-ds-process-top{font-size:8px}.vv-ds-process-info{padding:14px}.vv-ds-process-info>span{width:29px;height:29px;margin-bottom:5px}}
+@media(prefers-reduced-motion:reduce){.vv-ds *{animation-duration:.001ms!important;transition-duration:.001ms!important}.vv-ds-feature:hover,.vv-ds-related-card:hover,.vv-ds-check-list label:hover{transform:none}}
