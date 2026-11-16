@@ -33,7 +33,7 @@
 .vv-about-editorial .vv-purpose-editorial-top h2{
   margin:25px 0 22px;
   font-weight:850;letter-spacing:var(--vv-tracking-readable, 0em);line-height:1.035;
-  font-size:clamp(43px,5vw,75px);color:#003f5c;
+  font-size:clamp(21.5px,2.5vw,37.5px);color:#003f5c;
 }
 .vv-about-editorial .vv-purpose-editorial-top h2 em{font-style:normal;color:#19a99c}
 .vv-about-editorial .vv-purpose-editorial-top h2 i{
@@ -63,7 +63,7 @@
 .vv-purpose-statement{flex:1;min-height:217px;display:flex;flex-direction:column;justify-content:center;padding:27px 0 13px}
 .vv-purpose-statement-kicker{font-size:10px;font-weight:850;letter-spacing:.13em;color:#239c91}
 .vv-about-editorial .vv-purpose-statement h3{
-  font-size:clamp(31px,3vw,44px);line-height:1.08;letter-spacing:var(--vv-tracking-readable, 0em);
+  font-size:clamp(16px,1.5vw,22px);line-height:1.08;letter-spacing:var(--vv-tracking-readable, 0em);
   color:#003f5c;margin:12px 0 10px;font-weight:850;
 }
 .vv-about-editorial .vv-purpose-statement h3 em{font-style:normal;color:#17a898}
@@ -204,7 +204,7 @@
 @media(max-width:1120px){
  .vv-purpose-shell{grid-template-columns:minmax(0,.96fr) minmax(0,1.04fr)}
  .vv-purpose-editorial{padding:38px 27px 23px}
- .vv-about-editorial .vv-purpose-editorial-top h2{font-size:clamp(46px,5.1vw,62px)}
+ .vv-about-editorial .vv-purpose-editorial-top h2{font-size:clamp(23px,2.55vw,31px)}
  .vv-purpose-stage-header,.vv-purpose-stage-bottom{font-size:8px}
  .vv-purpose-mission-step{gap:10px}
  .vv-purpose-step-glyph{width:40px;height:40px}
@@ -212,7 +212,7 @@
 @media(max-width:830px){
  .vv-purpose-shell{grid-template-columns:1fr}
  .vv-purpose-editorial{padding:44px 38px 24px}
- .vv-about-editorial .vv-purpose-editorial-top h2{font-size:clamp(54px,8vw,80px)}
+ .vv-about-editorial .vv-purpose-editorial-top h2{font-size:clamp(27px,4vw,40px)}
  .vv-purpose-editorial-top h2{max-width:750px}
  .vv-purpose-statement{min-height:180px;padding:24px 0}
  .vv-purpose-switch{max-width:580px}
@@ -229,14 +229,14 @@
  .vv-purpose-shell{border-radius:21px}
  .vv-purpose-editorial{padding:29px 21px 20px}
  .vv-purpose-editorial-top>span{font-size:8px}
- .vv-about-editorial .vv-purpose-editorial-top h2{font-size:clamp(43px,10.2vw,63px);margin:19px 0 16px}
+ .vv-about-editorial .vv-purpose-editorial-top h2{font-size:clamp(21.5px,5.1vw,31.5px);margin:19px 0 16px}
  .vv-purpose-editorial:before{font-size:65px;top:15px;right:15px}
  .vv-about-editorial .vv-purpose-lede{font-size:12px;margin-bottom:22px}
  .vv-purpose-switch{gap:6px;padding:5px}
  .vv-purpose-switch-btn{min-height:46px;font-size:10px;gap:6px}
  .vv-purpose-switch-btn svg{width:15px;height:15px}
  .vv-purpose-statement{min-height:186px;padding:23px 0}
- .vv-about-editorial .vv-purpose-statement h3{font-size:clamp(34px,8vw,45px)}
+ .vv-about-editorial .vv-purpose-statement h3{font-size:clamp(17px,4vw,22.5px)}
  .vv-about-editorial .vv-purpose-statement p{font-size:12px}
  .vv-purpose-status{font-size:7px}
  .vv-purpose-stage{min-height:475px}
@@ -274,7 +274,7 @@
 }
 @media(max-width:370px){
  .vv-purpose-editorial{padding:23px 15px}
- .vv-about-editorial .vv-purpose-editorial-top h2{font-size:43px}
+ .vv-about-editorial .vv-purpose-editorial-top h2{font-size:21.5px}
  .vv-purpose-switch-btn{font-size:9px}
  .vv-purpose-vision-tag{font-size:7px;gap:5px}
  .vv-purpose-vision-tag i{width:4px;height:4px}

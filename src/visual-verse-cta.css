@@ -112,7 +112,7 @@
   width:100%;
   max-width:700px;
   color:var(--vv-cta-white)!important;
-  font-size:clamp(54px,6.4vw,92px);
+  font-size:clamp(27px,3.2vw,46px);
   line-height:1.04;
   font-weight:800;
   letter-spacing:var(--vv-tracking-readable, 0em);
@@ -278,7 +278,7 @@
 
 @media(max-width:960px) and (min-width:701px){
   .vv-cta-content{padding:86px 64px}
-  .vv-cta-section .vv-cta-headline{font-size:clamp(59px,7vw,80px);max-width:750px}
+  .vv-cta-section .vv-cta-headline{font-size:clamp(29.5px,3.5vw,40px);max-width:750px}
   .vv-cta-panel,.vv-cta-content{min-height:690px}
 }
 @media(max-width:700px){
@@ -305,7 +305,7 @@
   .vv-cta-eyebrow{font-size:11px;letter-spacing:.18em;gap:8px;line-height:21px}
   .vv-cta-section .vv-cta-headline{
     width:100%;max-width:100%;
-    font-size:clamp(34px,10.25vw,43px);
+    font-size:clamp(20px,5.125vw,21.5px);
     font-weight:800;
     line-height:1.04;
     letter-spacing:var(--vv-tracking-readable, 0em);
@@ -329,7 +329,7 @@
 }
 @media(max-width:375px){
   .vv-cta-content{padding-inline:20px}
-  .vv-cta-section .vv-cta-headline{font-size:clamp(31px,9.9vw,39px)}
+  .vv-cta-section .vv-cta-headline{font-size:clamp(20px,4.95vw,20px)}
 }
 @media(prefers-reduced-motion:reduce){
   .vv-cta-ring{animation:none!important;will-change:auto}

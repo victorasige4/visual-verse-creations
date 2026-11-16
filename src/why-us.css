@@ -107,7 +107,7 @@
 .vv-why-intro h2{
   margin:26px 0 0;
   max-width:700px;
-  font-size:clamp(42px,5.7vw,74px);
+  font-size:clamp(21px,2.85vw,37px);
   line-height:1.04;
   letter-spacing:var(--vv-tracking-readable, 0em);
   font-weight:850;
@@ -209,7 +209,7 @@
   margin-top:29px;
   max-width:300px;
   color:#f8fcf9;
-  font-size:clamp(17px,1.7vw,22px);
+  font-size:clamp(16px,0.85vw,16px);
   line-height:1.2;
   letter-spacing:var(--vv-tracking-readable, 0em);
   font-weight:850;
@@ -246,14 +246,14 @@
 @media(max-width:1024px){
   .vv-why-shell{padding-top:110px;padding-bottom:110px}
   .vv-why-intro{gap:45px;grid-template-columns:1fr .68fr}
-  .vv-why-intro h2{font-size:clamp(43px,6vw,67px)}
+  .vv-why-intro h2{font-size:clamp(21.5px,3vw,33.5px)}
   .vv-why-timeline{gap:23px;margin-top:95px}
 }
 @media(max-width:700px){
   #process.vv-why-section,.vv-why-shell{min-height:0}
   .vv-why-shell{padding:90px 22px 78px}
   .vv-why-intro{display:block}
-  .vv-why-intro h2{font-size:clamp(39px,10vw,56px);line-height:1.08;letter-spacing:var(--vv-tracking-readable, 0em);margin-top:21px}
+  .vv-why-intro h2{font-size:clamp(20px,5vw,28px);line-height:1.08;letter-spacing:var(--vv-tracking-readable, 0em);margin-top:21px}
   .vv-why-intro-right{padding:0;margin-top:26px}
   .vv-why-intro-right p{max-width:530px;margin:0;font-size:13px;line-height:1.8}
   .vv-why-timeline{display:grid;grid-template-columns:1fr;gap:29px;margin-top:63px}
@@ -293,7 +293,7 @@
     grid-column:2;grid-row:1;
     margin:5px 0 0;
     max-width:none;
-    font-size:20px;
+    font-size:16px;
   }
   .vv-why-step-description{
     grid-column:2;grid-row:2;
@@ -326,7 +326,7 @@
 .vv-why-fallback .vv-label{color:#6bd7bd}
 .vv-why-fallback .vv-section-h{
   max-width:750px;color:#f6fcf9;
-  font-size:clamp(41px,5.6vw,74px);
+  font-size:clamp(20.5px,2.8vw,37px);
   line-height:1.06;
   letter-spacing:var(--vv-tracking-readable, 0em);
 }
