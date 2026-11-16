@@ -1,4 +1,4 @@
-import { useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   ArrowRight, ArrowUpRight, AudioLines, BookOpenText, Check, Focus,
@@ -64,6 +64,8 @@ const channels = [
   },
 ] as const;
 
+const studioLines = [["YOUR","STORY","FIRST."],["GOOD","IDEAS","WITH PURPOSE."],["MANY","SKILLS","ONE VISION."],["EVERY","DETAIL","MATTERS."],["BETTER","WORK","TOGETHER."]] as const;
+
 const defaults = [82, 77, 88, 91, 84] as const;
 type Levels = [number, number, number, number, number];
 
@@ -73,6 +75,18 @@ export function VisualVerseHowWeWork() {
   const [remix, setRemix] = useState(0);
   const reduced = Boolean(useReducedMotion());
   const active = channels[selected];
+  const sectionRef=useRef<HTMLElement>(null);
+  const [playing,setPlaying]=useState(false);
+  useEffect(()=>{
+    const node=sectionRef.current;
+    if(!node)return;
+    let visible=false;
+    const sync=()=>setPlaying(visible&&!document.hidden);
+    const observer=typeof IntersectionObserver==="undefined"?null:new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;sync()},{threshold:.08});
+    if(observer)observer.observe(node);else{visible=true;sync();}
+    document.addEventListener("visibilitychange",sync);
+    return()=>{observer?.disconnect();document.removeEventListener("visibilitychange",sync);};
+  },[]);
 
   const visual = useMemo(() => ({
     "--vvhw-word-scale": String(.88 + levels[0] / 700),
@@ -100,7 +114,7 @@ export function VisualVerseHowWeWork() {
     setRemix(n => n + 1);
   };
 
-  return <section id="our-approach" className="vv-about-principles vv-hww-section" aria-labelledby="vvhww-title">
+  return <section ref={sectionRef} data-playing={playing} id="our-approach" className="vv-about-principles vv-hww-section" aria-labelledby="vvhww-title">
     <Boxes />
     <div className="vv-about-container vv-hww-container">
       <div className="vv-hww-heading">
@@ -183,8 +197,8 @@ export function VisualVerseHowWeWork() {
                 )}
               </div>
               <div className="vv-hww-artboard-lockup">
-                <div className="vv-hww-lockup-top"><span>EVERY STORY STARTS SOMEWHERE</span><span>✴</span></div>
-                <strong>IDEAS<br/>MADE<br/><em>TO MATTER.</em></strong>
+                <div className="vv-hww-lockup-top"><span>{active.micro}</span><active.Icon size={20} aria-hidden="true"/></div>
+                <motion.strong key={active.id} initial={reduced?false:{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{duration:reduced?0:.32}}>{studioLines[selected][0]}<br/>{studioLines[selected][1]}<br/><em>{studioLines[selected][2]}</em></motion.strong>
                 <div className="vv-hww-lockup-bottom"><span>THOUGHTFUL BY DESIGN.</span><img src={import.meta.env.BASE_URL+"logo-mark.png"} alt="Visual Verse Creations logo"/></div>
               </div>
               <div className="vv-hww-bridge" aria-hidden="true"><span/><span/><i/></div>

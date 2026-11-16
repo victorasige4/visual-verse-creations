@@ -235,3 +235,7 @@
  }
  .vv-hww-range{scroll-behavior:auto}
 }
+
+/* Pause the creative desk's ambient motion outside the viewport. */
+.vv-hww-section[data-playing="false"] *{animation-play-state:paused!important}
+.vv-hww-artboard-lockup>strong em{font-size:.86em}
