@@ -1,3 +1,4 @@
+import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import countyOutlines from "@/data/kenya-counties.json";
@@ -181,7 +182,7 @@ export function VisualVerseKenyaMap(){
               </button>)}
             </div>
           </div>
-          <a href="/contact.html" className="vv-atlas-cta" data-cursor="LET'S TALK">LET'S CREATE SOMETHING <span><ArrowUpRight size={18}/></span></a>
+          <a href="/contact.html" className="vv-atlas-cta vv-motion-action vv-action-primary" data-cursor="LET'S TALK"><VisualVerseActionContent Icon={ArrowUpRight}>LET'S CREATE SOMETHING</VisualVerseActionContent></a>
           <p className="vv-atlas-disclaimer">Routes are illustrative. Nairobi is our home base; other cities are enquiry locations, not claims of existing offices or clients.</p>
         </aside>
       </div>

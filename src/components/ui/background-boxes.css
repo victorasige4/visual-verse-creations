@@ -1,0 +1,5 @@
+.vv-background-boxes{position:absolute;inset:0;overflow:hidden;pointer-events:none;opacity:.5;z-index:0;mask-image:radial-gradient(ellipse at center,#000 5%,#000b 60%,transparent 100%);--box-lit:0}
+.vv-box-grid{position:absolute;width:300%;height:300%;left:50%;top:50%;transform:translate(-50%,-50%) skewX(-48deg) skewY(14deg);background-image:linear-gradient(to right,#59c7bd38 1px,transparent 1px),linear-gradient(to bottom,#59c7bd38 1px,transparent 1px);background-size:64px 32px;background-position:center}
+.vv-box-grid::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,#77ddd7a0 1px,transparent 2px);background-size:128px 64px;background-position:center}
+.vv-box-highlight{position:absolute;top:calc(50% + var(--box-y,0px));left:calc(50% + var(--box-x,0px));width:64px;height:32px;background:#2ec4b677;box-shadow:0 0 26px #2ec4b675;opacity:var(--box-lit);transition:opacity .65s,background .35s}
+@media(prefers-reduced-motion:reduce){.vv-box-highlight{display:none}}

@@ -1,3 +1,4 @@
+import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useState } from "react";
 import { ArrowUpRight, ArrowRight, Check, FolderOpen, Image as ImageIcon, Camera, Clapperboard, PenTool, MonitorSmartphone, Share2, Palette } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -59,7 +60,7 @@ export function VisualVerseProjectsPage(){
           <div className="vv-projects-hero-bottom">
             <div><h1>Every story,<br/><em>a different canvas.</em></h1>
               <p>A gallery of the directions we explore—from moments behind the lens to brands, campaigns and digital experiences.</p>
-              <div className="vv-projects-hero-cta"><a href="#vv-projects-gallery">Explore categories <ArrowRight size={16}/></a><a href="/request-quote.html">Start a project <ArrowUpRight size={16}/></a></div>
+              <div className="vv-projects-hero-cta"><a className="vv-motion-action vv-action-primary" href="#vv-projects-gallery"><VisualVerseActionContent Icon={ArrowRight}>Explore categories</VisualVerseActionContent></a><a className="vv-motion-action vv-action-secondary" href="/request-quote.html"><VisualVerseActionContent>Start a project</VisualVerseActionContent></a></div>
             </div>
             <span className="vv-projects-hero-mark" aria-hidden="true"><img src="/logo-mark.png" alt=""/></span>
           </div>
@@ -110,8 +111,8 @@ export function VisualVerseProjectsPage(){
                 <p>{category.description}</p>
                 <ul>{category.services.map(point=><li key={point}><Check size={15} aria-hidden="true"/>{point}</li>)}</ul>
                 <div className="vv-projects-category-links">
-                  <a href={"/request-quote.html?service="+encodeURIComponent(category.name)}>Start a {category.short} project <ArrowUpRight size={17} aria-hidden="true"/></a>
-                  <a href="#vv-projects-gallery" className="vv-projects-back">Back to all collections <ArrowRight size={16} aria-hidden="true"/></a>
+                  <a className="vv-motion-action vv-action-primary" href={"/request-quote.html?service="+encodeURIComponent(category.name)}><VisualVerseActionContent>Start a {category.short} project</VisualVerseActionContent></a>
+                  <a href="#vv-projects-gallery" className="vv-projects-back vv-motion-action vv-action-secondary"><VisualVerseActionContent Icon={ArrowRight}>Back to all collections</VisualVerseActionContent></a>
                 </div>
               </div>
             </section>

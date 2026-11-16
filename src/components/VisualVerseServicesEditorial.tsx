@@ -1,3 +1,4 @@
+import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Camera, Clapperboard, Palette, PenTool, MonitorSmartphone, Share2, Check, UsersRound, MessageCircle, FileText, Play, Pause, Smartphone, Monitor, Layers3, MousePointer2, Type, Globe } from "lucide-react";
 import { VisualVerseProcessJourney } from "./VisualVerseProcessJourney";
@@ -136,7 +137,7 @@ function ServiceDetail({service:s}:{service:Service}) {
   return <div className="vv-services-editorial vv-service-detail">
     <section className="vv-detail-hero" id="services-top"><div className="vv-sv-container">
       <nav className="vv-sv-breadcrumb" aria-label="Breadcrumb"><a href={base}>Home</a><span>·</span><a href={`${base}services.html`}>Services</a><span>·</span><span aria-current="page">{s.name}</span></nav>
-      <div className="vv-detail-grid"><div className="vv-detail-copy"><span className="vv-sv-kicker"><i/><i/> {s.number} / 06 &nbsp; · &nbsp; {s.name}</span><h1>{d.headline}</h1><p>{d.intro}</p><div className="vv-detail-actions"><a className="vv-service-cta" href={quoteUrl(s)}>Let's talk <span><ArrowUpRight size={17}/></span></a><a className="vv-service-secondary" href={`${base}contact.html`}>Contact us <ArrowUpRight size={15}/></a></div><div className="vv-detail-tags">{s.highlights.map(h=><span key={h}>{h}</span>)}</div></div><ServiceDemo service={s}/></div>
+      <div className="vv-detail-grid"><div className="vv-detail-copy"><span className="vv-sv-kicker"><i/><i/> {s.number} / 06 &nbsp; · &nbsp; {s.name}</span><h1>{d.headline}</h1><p>{d.intro}</p><div className="vv-detail-actions"><a className="vv-service-cta vv-motion-action vv-action-primary" href={quoteUrl(s)}><VisualVerseActionContent Icon={ArrowUpRight}>Let's talk</VisualVerseActionContent></a><a className="vv-service-secondary vv-motion-action vv-action-secondary" href={`${base}contact.html`}><VisualVerseActionContent Icon={ArrowUpRight}>Contact us</VisualVerseActionContent></a></div><div className="vv-detail-tags">{s.highlights.map(h=><span key={h}>{h}</span>)}</div></div><ServiceDemo service={s}/></div>
       <ServiceNav active={s.id}/>
     </div></section>
     <VisualVerseServiceDetailSections key={s.id} service={linkFor(s)} outcome={d.outcome} quoteHref={quoteUrl(s)} allServices={services.map(linkFor)}/>
@@ -200,7 +201,7 @@ export function VisualVerseServicesEditorial() {
             const image=covers[s.id];
             return <article className={`vv-service-row vv-sv-reveal ${highlight===s.id?"is-highlighted":""}`} id={"details-"+s.id} key={s.id} aria-labelledby={"sv-"+s.id}>
               <span id={"service-"+s.id} className="vv-service-anchor" aria-hidden="true"/>
-              <div className="vv-service-row-copy"><span className="vv-service-index"><Icon size={20} strokeWidth={1.6}/> {s.number} / 06</span><h3 id={"sv-"+s.id}>{s.name}</h3><h4>{detailCopy[s.id].headline}</h4><p>{s.description}</p><ul>{s.bullets.slice(0,3).map(b=><li key={b}><Check size={15}/>{b}</li>)}</ul><a className="vv-service-cta" href={serviceUrl(s.id)}>Explore {s.name} <span><ArrowUpRight size={17}/></span></a></div>
+              <div className="vv-service-row-copy"><span className="vv-service-index"><Icon size={20} strokeWidth={1.6}/> {s.number} / 06</span><h3 id={"sv-"+s.id}>{s.name}</h3><h4>{detailCopy[s.id].headline}</h4><p>{s.description}</p><ul>{s.bullets.slice(0,3).map(b=><li key={b}><Check size={15}/>{b}</li>)}</ul><a className="vv-service-cta vv-motion-action vv-action-primary" href={serviceUrl(s.id)}><VisualVerseActionContent Icon={ArrowUpRight}>Explore {s.name}</VisualVerseActionContent></a></div>
               <a className="vv-service-row-art" href={serviceUrl(s.id)} aria-label={`Explore ${s.name}`}><img src={base+image.file} alt="" style={{objectPosition:image.position}} loading="eager" decoding="async"/><span className="vv-service-row-top"><Icon size={20} strokeWidth={1.6}/><span>STUDIO / {s.number}</span></span><span className="vv-service-row-badge"><span>{s.tags[0]} · {s.tags[1]}</span><ArrowUpRight size={19}/></span></a>
             </article>;
           })}

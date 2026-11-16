@@ -1,3 +1,4 @@
+import { VisualVerseActionContent } from "./VisualVerseAction";
 import { PolicyLinks } from "./VisualVersePolicies";
 import { VisualVerseAboutCta } from "./VisualVerseAboutCta";
 import {
@@ -88,7 +89,7 @@ export function VisualVerseFooter(){
           <p>Have a project or a question? Start the conversation.</p>
           <a className="vv-close-footer-email" href={"mailto:"+CONTACT_EMAIL}>{CONTACT_EMAIL} <ArrowUpRight size={15} aria-hidden="true"/></a>
           <a className="vv-close-footer-email" href={"tel:"+CONTACT_PHONE}>+254 794 044 598 <ArrowUpRight size={15} aria-hidden="true"/></a>
-          <a className="vv-close-footer-mini-cta" href="/request-quote.html">Start a project <ArrowRight size={15} aria-hidden="true"/></a>
+          <a className="vv-close-footer-mini-cta vv-motion-action vv-action-on-dark" href="/request-quote.html"><VisualVerseActionContent Icon={ArrowRight}>Start a project</VisualVerseActionContent></a>
           <span className="vv-close-footer-availability"><CheckCircle2 size={14} aria-hidden="true"/> Available for project enquiries</span>
         </div>
       </div>

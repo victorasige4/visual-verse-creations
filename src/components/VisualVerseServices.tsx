@@ -1,3 +1,4 @@
+import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import {
@@ -175,7 +176,7 @@ export function VisualVerseServices() {
                         <p className="vv-svc-panel-headline">{item.headline}</p>
                         <p className="vv-svc-panel-description">{item.description}</p>
                         <ul>{item.details.map(t=><li key={t}><Check size={14} aria-hidden={true}/>{t}</li>)}</ul>
-                        <a href={"/services.html?service="+item.id} className="vv-svc-cta">Explore {item.title}<span><ArrowUpRight size={17} aria-hidden={true}/></span></a>
+                        <a href={"/services.html?service="+item.id} className="vv-svc-cta vv-motion-action vv-action-primary"><VisualVerseActionContent Icon={ArrowUpRight}>Explore {item.title}</VisualVerseActionContent></a>
                       </div>
                       <ServiceArtwork kind={item.kind}/>
                     </motion.div>

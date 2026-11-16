@@ -18,6 +18,9 @@ import "./nav-cleanup.css";
 import "./visual-workspaces.css";
 import "./policies.css";
 import "./site-cleanup.css";
+import { enhanceStaticActions } from "./lib/public-site-ui";
+
+enhanceStaticActions();
 
 const mount = document.getElementById("vv-react-nav-root");
 if (mount) {

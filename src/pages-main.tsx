@@ -10,6 +10,7 @@ import "./visual-workspaces.css";
 import "./policies.css";
 import "./site-cleanup.css";
 import "./inner-pages.css";
+import "./lib/public-site-ui";
 const root = document.getElementById("vv-inner-page-root");
 if (root) {
   createRoot(root).render(<StrictMode><VisualVerseInnerPage kind={pageKind()} /></StrictMode>);

@@ -8,6 +8,7 @@ import "./nav-cleanup.css";
 import "./policies.css";
 import "./site-cleanup.css";
 import "./closing-sections.css";
+import "./lib/public-site-ui";
 
 const root = document.getElementById("vv-projects-page-root");
 if (root) {
