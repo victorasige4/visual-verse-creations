@@ -45,7 +45,7 @@
   padding:8px clamp(6px,.72vw,11px);
   border-radius:999px;background:transparent;
   color:#174f64;text-decoration:none;font-size:12px;font-weight:600;
-  letter-spacing:-.015em;white-space:nowrap;
+  letter-spacing:var(--vv-tracking-readable, 0em);white-space:nowrap;
   transition:background .22s,color .22s;
 }
 .vv-nav-resizable.is-compact .vv-nav-resize-links > a.vv-nav-resize-link,
@@ -93,7 +93,7 @@
 .vv-nav-resize-mega:before{content:"";position:absolute;left:0;right:0;top:-9px;height:12px}
 .vv-nav-resize-mega-heading{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:18px;border-bottom:1px solid rgba(0,63,92,.11);padding-bottom:15px}
 .vv-nav-resize-mega-heading span{display:block;font-size:9px;letter-spacing:.14em;font-weight:700;color:#278e8b}
-.vv-nav-resize-mega-heading h2{font-size:20px;letter-spacing:-.05em;font-weight:800;margin:7px 0 0;color:#003f5c;line-height:1.14}
+.vv-nav-resize-mega-heading h2{font-size:20px;letter-spacing:var(--vv-tracking-readable, 0em);font-weight:800;margin:7px 0 0;color:#003f5c;line-height:1.14}
 .vv-nav-resize-mega-heading>a{display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-size:11px;font-weight:700;color:#003f5c;white-space:nowrap}
 .vv-nav-resize-mega-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(230px,.8fr);gap:14px}
 .vv-nav-resize-mega-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-content:start}
@@ -124,7 +124,7 @@
 .vv-chip-two{bottom:6%;right:8%;width:30px;height:45px;rotate:-23deg;background:#c8f5e8}
 .vv-nav-resize-preview-gridlines{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,transparent 35%,rgba(4,30,51,.22) 95%);pointer-events:none}
 .vv-nav-resize-preview-tag{font-size:9px;font-weight:700;letter-spacing:.1em;color:#9be9db}
-.vv-nav-resize-preview h3{color:white;font-size:22px;line-height:1.1;margin:7px 0 4px;letter-spacing:-.045em;font-weight:800}
+.vv-nav-resize-preview h3{color:white;font-size:22px;line-height:1.1;margin:7px 0 4px;letter-spacing:var(--vv-tracking-readable, 0em);font-weight:800}
 .vv-nav-resize-preview p{font-size:11px;line-height:1.5;margin:0;color:#c6e9e4}
 .vv-nav-resize-preview-bottom{display:flex;align-items:center;justify-content:space-between;
   gap:9px;border-top:1px solid rgba(255,255,255,.2);padding-top:12px;margin-top:16px;

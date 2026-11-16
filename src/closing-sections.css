@@ -30,7 +30,7 @@
   display:inline-flex;align-items:center;gap:clamp(21px,2.5vw,38px);
   padding-right:clamp(21px,2.5vw,38px);
   font-size:clamp(32px,4.2vw,66px);
-  letter-spacing:-.075em;
+  letter-spacing:var(--vv-tracking-readable, 0em);
   line-height:1.2;
   font-weight:850;
   color:#3f4845;
@@ -81,7 +81,7 @@
 .vv-close-location-heading h2{
   font-size:clamp(42px,5.7vw,78px);
   line-height:1.03;
-  letter-spacing:-.083em;
+  letter-spacing:var(--vv-tracking-readable, 0em);
   color:#163d47;
   font-weight:850;
   margin:25px 0 0;
@@ -254,7 +254,7 @@
 }
 .vv-close-location-facts span{font-size:10px;color:#2ca69b;font-weight:850}
 .vv-close-location-facts strong{
-  display:block;margin:13px 0 10px;font-size:16px;color:#174752;letter-spacing:-.04em
+  display:block;margin:13px 0 10px;font-size:16px;color:#174752;letter-spacing:var(--vv-tracking-readable, 0em)
 }
 .vv-close-location-facts p{margin:0;font-size:11px;color:#6d8b8e;line-height:1.7}
 .vv-close-map-source{
@@ -279,7 +279,7 @@
 .vv-close-faq-intro h2{
   font-size:clamp(41px,5.1vw,73px);
   line-height:1.06;
-  letter-spacing:-.08em;
+  letter-spacing:var(--vv-tracking-readable, 0em);
   font-weight:900;
   margin:25px 0 23px;
   color:#153a46;
@@ -321,7 +321,7 @@
   gap:18px;width:100%;text-align:left;
   border:0;background:transparent;
   font-family:inherit;font-size:clamp(12px,1.15vw,15px);
-  font-weight:750;letter-spacing:-.025em;color:#2e4f56;
+  font-weight:750;letter-spacing:var(--vv-tracking-readable, 0em);color:#2e4f56;
   cursor:pointer;
   padding:22px 0;
 }
@@ -378,7 +378,7 @@
   font-size:clamp(50px,6.4vw,89px);
   line-height:.99;
   font-weight:900;
-  letter-spacing:-.085em;
+  letter-spacing:var(--vv-tracking-readable, 0em);
 }
 .vv-close-cta h2 em{font-style:normal;color:#7be4cb}
 .vv-close-cta-content>p{color:#add4ca;max-width:480px;font-size:13px;line-height:1.8;margin:0 0 28px}

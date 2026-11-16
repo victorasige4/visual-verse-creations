@@ -57,7 +57,7 @@
 .vv-sv-hero h1{
   color:var(--sv-deep)!important;
   font-size:clamp(55px,5.35vw,80px);
-  line-height:1.04;letter-spacing:-.078em;
+  line-height:1.04;letter-spacing:var(--vv-tracking-readable, 0em);
   font-weight:900;
   margin:27px 0 0;
 }
@@ -110,7 +110,7 @@
 .vv-sv-service h2{
   color:var(--sv-deep)!important;
   font-size:clamp(40px,4.65vw,66px);
-  line-height:1.05;letter-spacing:-.077em;
+  line-height:1.05;letter-spacing:var(--vv-tracking-readable, 0em);
   font-weight:850;margin:18px 0 16px;
 }
 .vv-sv-service-intro{font-size:17px;line-height:1.67;color:#59767e;margin:0;max-width:520px}
@@ -188,7 +188,7 @@
 .vv-sp-left h2{
   color:#fff!important;
   font-size:clamp(38px,3.45vw,49px);
-  line-height:1.04;letter-spacing:-.076em;
+  line-height:1.04;letter-spacing:var(--vv-tracking-readable, 0em);
   max-width:526px;margin:18px 0 22px;font-weight:900;
 }
 .vv-sp-left h2 em{font-style:normal;color:var(--sv-mint)}
@@ -201,7 +201,7 @@
   overflow:hidden;
 }
 .vv-sp-counter{position:absolute;z-index:3;top:23px;left:21px;display:flex;align-items:baseline;gap:9px}
-.vv-sp-counter strong{font-size:29px;line-height:1;font-weight:900;letter-spacing:-.065em;color:var(--sv-mint)}
+.vv-sp-counter strong{font-size:29px;line-height:1;font-weight:900;letter-spacing:var(--vv-tracking-readable, 0em);color:var(--sv-mint)}
 .vv-sp-counter span{font-size:11px;color:#93c1c6;letter-spacing:.12em;font-weight:700}
 .vv-sp-scene-layer{position:absolute;inset:63px 28px 28px;display:grid;place-items:center;min-width:0}
 .vv-sp-scene{width:100%;height:100%;display:grid;place-items:center}
@@ -235,7 +235,7 @@
 .vv-sp-art-mood{max-height:268px;padding:15px;background:#f5fffd;color:var(--sv-navy);border-radius:14px;box-shadow:0 12px 31px rgba(0,0,0,.16)}
 .vv-sp-mood-top{display:flex;justify-content:space-between;align-items:center;color:#197f83;font-size:9px;font-weight:850;letter-spacing:.12em;margin-bottom:12px}
 .vv-sp-mood-grid{flex:1;display:grid;grid-template-columns:1.2fr .9fr;gap:10px;min-height:0}
-.vv-sp-mood-type{background:var(--sv-deep);color:white;padding:17px;font-weight:900;font-size:clamp(21px,2vw,29px);letter-spacing:-.075em;line-height:1.02;overflow:hidden}
+.vv-sp-mood-type{background:var(--sv-deep);color:white;padding:17px;font-weight:900;font-size:clamp(21px,2vw,29px);letter-spacing:var(--vv-tracking-readable, 0em);line-height:1.02;overflow:hidden}
 .vv-sp-mood-type em{color:var(--sv-mint);font-style:normal}
 .vv-sp-mood-img{overflow:hidden;border-radius:5px}.vv-sp-mood-img img{width:100%;height:100%;object-fit:cover}
 .vv-sp-mood-color{grid-column:1/-1;display:flex;gap:6px;min-height:15px}.vv-sp-mood-color i{flex:1;background:var(--sv-navy);border-radius:3px}.vv-sp-mood-color i:nth-child(2){background:var(--sv-mint)}.vv-sp-mood-color i:nth-child(3){background:#fff;border:1px solid #aacdd1}
@@ -248,7 +248,7 @@
 .vv-sp-tools{display:grid;gap:8px;justify-items:center;font-size:11px}
 .vv-sp-artboard{background:linear-gradient(145deg,#003f5c,#145c6b);padding:13px;position:relative;overflow:hidden;border:1px solid #3b8290;border-radius:3px}
 .vv-sp-artboard small{font-size:7px;letter-spacing:.1em;color:#9fe5d9;position:relative;z-index:2}
-.vv-sp-artboard strong{display:block;margin-top:9px;font-size:clamp(17px,2.4vw,29px);line-height:.98;letter-spacing:-.07em;position:relative;z-index:2}
+.vv-sp-artboard strong{display:block;margin-top:9px;font-size:clamp(17px,2.4vw,29px);line-height:.98;letter-spacing:var(--vv-tracking-readable, 0em);position:relative;z-index:2}
 .vv-sp-artboard em{font-style:normal;color:var(--sv-mint)}
 .vv-sp-artboard-orbit{position:absolute;width:124px;height:124px;border:26px solid #2ec4b649;border-radius:50%;right:-45px;bottom:-60px}
 .vv-sp-layers{display:flex;flex-direction:column;gap:13px;font-size:8px}
@@ -298,7 +298,7 @@
 }
 .vv-sp-step-number{position:relative;z-index:2;width:48px;height:48px;display:grid;place-items:center;flex:0 0 48px;border-radius:50%;background:rgba(46,196,182,.07);border:1px solid rgba(116,220,214,.22);color:#a4c7ca;font-size:13px;letter-spacing:.02em;transition:background .35s,border .35s,color .35s,box-shadow .35s,transform .4s}
 .vv-sp-step-content{display:block;padding-top:10px;max-width:425px}
-.vv-sp-step-content strong{font-size:19px;letter-spacing:-.035em;line-height:1.2;font-weight:850;display:block;transition:color .35s}
+.vv-sp-step-content strong{font-size:19px;letter-spacing:var(--vv-tracking-readable, 0em);line-height:1.2;font-weight:850;display:block;transition:color .35s}
 .vv-sp-step-description{font-size:14px;line-height:1.55;color:#a0c7ca;display:block;max-height:0;opacity:0;overflow:hidden;transition:max-height .45s ease,opacity .45s ease,margin .45s ease}
 .vv-sp-step.is-active{min-height:113px}
 .vv-sp-step.is-active .vv-sp-step-number{background:var(--sv-mint);border-color:var(--sv-mint);color:var(--sv-deep);box-shadow:0 0 0 7px #2ec4b622,0 0 28px #2ec4b63b;transform:scale(1.06)}
@@ -315,7 +315,7 @@
 /* RESOURCE CARDS / PRACTICAL NEXT STEPS */
 .vv-sv-resources{background:#f2f3f7;padding:78px 0 86px}
 .vv-sv-resource-heading{max-width:720px}
-.vv-sv-resource-heading h2{color:var(--sv-deep)!important;font-size:clamp(43px,5vw,66px);line-height:1.07;letter-spacing:-.077em;margin:18px 0;font-weight:850}
+.vv-sv-resource-heading h2{color:var(--sv-deep)!important;font-size:clamp(43px,5vw,66px);line-height:1.07;letter-spacing:var(--vv-tracking-readable, 0em);margin:18px 0;font-weight:850}
 .vv-sv-resource-heading h2 em{font-style:normal;color:#139f95}
 .vv-sv-resource-heading p{color:#657f84;font-size:17px;line-height:1.65}
 .vv-sv-resource-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:34px}
@@ -323,7 +323,7 @@
 .vv-sv-resource:hover{transform:translateY(-5px);box-shadow:10px 14px 26px #003f5c22,-8px -8px 21px #fff}
 .vv-sv-resource>span{display:flex;justify-content:space-between;align-items:center;color:#169f95}
 .vv-sv-resource>span small{font-size:10px;letter-spacing:.14em;color:#789499;font-weight:800}
-.vv-sv-resource h3{font-size:23px;line-height:1.18;letter-spacing:-.05em;margin:28px 0 12px;font-weight:850;color:var(--sv-deep)}
+.vv-sv-resource h3{font-size:23px;line-height:1.18;letter-spacing:var(--vv-tracking-readable, 0em);margin:28px 0 12px;font-weight:850;color:var(--sv-deep)}
 .vv-sv-resource p{font-size:14px;line-height:1.65;color:#5f7e84;margin:0 0 23px}
 .vv-sv-resource>b{font-size:10px;font-weight:850;letter-spacing:.095em;margin-top:auto;color:#0c938b;display:flex;align-items:center;gap:7px}
 
@@ -360,7 +360,7 @@
  .vv-sp-grid{width:calc(100% - 32px);height:100%;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;padding:clamp(20px,5svh,44px) 0}
  .vv-sp-left,.vv-sp-right{transform:none}
  .vv-sp-overline{font-size:10px}
- .vv-sp-left h2{font-size:clamp(26px,7vw,38px);line-height:1.09;margin:13px 0 16px;letter-spacing:-.075em;max-width:100%}
+ .vv-sp-left h2{font-size:clamp(26px,7vw,38px);line-height:1.09;margin:13px 0 16px;letter-spacing:var(--vv-tracking-readable, 0em);max-width:100%}
  .vv-sp-stage{height:clamp(265px,42svh,370px);border-radius:23px;flex:0 0 auto}
  .vv-sp-counter{top:16px;left:18px}
  .vv-sp-counter strong{font-size:26px}
@@ -455,7 +455,7 @@
 .vv-sv-pin-heading h2{
   color:#fff!important;
   font-size:clamp(48px,5.35vw,74px);
-  line-height:1.04;letter-spacing:-.076em;font-weight:850;
+  line-height:1.04;letter-spacing:var(--vv-tracking-readable, 0em);font-weight:850;
   margin:0;max-width:730px;
 }
 .vv-sv-pin-heading h2 em{font-style:normal;color:#2ec4b6}
@@ -534,7 +534,7 @@
 .vv-sv-pin-center h3{
   margin:0;
   font-size:clamp(22px,2vw,30px);
-  line-height:1.13;letter-spacing:-.045em;
+  line-height:1.13;letter-spacing:var(--vv-tracking-readable, 0em);
   font-weight:850;color:#2ec4b6;
   text-shadow:0 2px 16px rgba(0,20,31,.35);
 }
@@ -929,7 +929,7 @@
   font-size:clamp(58px,7.15vw,108px);
   font-weight:850;
   line-height:1.035;
-  letter-spacing:-.082em;
+  letter-spacing:var(--vv-tracking-readable, 0em);
   text-wrap:balance;
 }
 .vv-sv-hero--potadot .vv-sv-hero-main h1 em{
@@ -996,7 +996,7 @@
   font-size:clamp(12px,1vw,14px);
   font-weight:800;
   line-height:1.28;
-  letter-spacing:-.025em;
+  letter-spacing:var(--vv-tracking-readable, 0em);
 }
 .vv-sv-hero--potadot .vv-sv-hero-services a svg{
   grid-column:2;
@@ -1019,7 +1019,7 @@
   .vv-sv-hero--potadot .vv-sv-hero-main h1{
     font-size:clamp(43px,10.5vw,70px);
     line-height:1.07;
-    letter-spacing:-.075em;
+    letter-spacing:var(--vv-tracking-readable, 0em);
   }
   .vv-sv-hero-main>p{margin-top:22px;font-size:16px;line-height:1.65}
   .vv-sv-hero--potadot .vv-sv-hero-services{
@@ -1109,7 +1109,7 @@
 .vv-sp-pin{min-height:0}
 .vv-sp-grid{grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);grid-template-rows:auto auto;align-content:center;align-items:stretch;column-gap:clamp(25px,4.3vw,52px);row-gap:clamp(14px,2.5svh,26px);padding:clamp(74px,9svh,102px) 0 clamp(16px,3svh,30px);box-sizing:border-box}
 .vv-sp-heading{grid-column:1/-1;min-width:0}
-.vv-sp-heading h2{color:white!important;font-size:clamp(30px,3.3vw,46px);line-height:1.07;letter-spacing:-.068em;max-width:100%;margin:8px 0 0;font-weight:850;text-wrap:balance}
+.vv-sp-heading h2{color:white!important;font-size:clamp(30px,3.3vw,46px);line-height:1.07;letter-spacing:var(--vv-tracking-readable, 0em);max-width:100%;margin:8px 0 0;font-weight:850;text-wrap:balance}
 .vv-sp-heading h2 em{font-style:normal;color:var(--sv-mint)}
 .vv-sp-left,.vv-sp-right{transform:none;align-self:stretch}
 .vv-sp-left{display:flex;min-height:0}

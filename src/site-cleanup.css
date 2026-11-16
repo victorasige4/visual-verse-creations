@@ -21,7 +21,7 @@
 .vv-founder-head{position:absolute;top:14%;left:32%;width:78px;height:82px;border-radius:48% 48% 44% 44%;background:#bc8869;z-index:2;box-shadow:0 -13px 0 #213b42}
 .vv-founder-body{position:absolute;bottom:0;left:5%;width:190px;height:195px;border-radius:50% 50% 10% 10%;background:#003f5c}
 .vv-founder-laptop{position:absolute;bottom:-7%;left:2%;z-index:3;width:240px;height:115px;border-radius:10px 10px 3px 3px;background:#174c5e;border:5px solid #1b6473;display:flex;flex-direction:column;justify-content:center;align-items:center;box-shadow:8px 10px 17px rgba(0,63,92,.17)}
-.vv-founder-laptop strong{font-size:20px;line-height:1.03;letter-spacing:-.06em;color:white;text-align:center}
+.vv-founder-laptop strong{font-size:20px;line-height:1.03;letter-spacing:var(--vv-tracking-readable, 0em);color:white;text-align:center}
 .vv-founder-laptop>span{font-size:7px;color:#a4e9da;margin-top:13px;letter-spacing:.1em}
 .vv-founder-note{position:absolute;right:2%;top:16%;background:#fff;border:1px solid #d3e7df;border-radius:14px;padding:13px;display:flex;align-items:center;gap:10px;color:#003f5c;font-size:10px;font-weight:850;box-shadow:0 10px 22px rgba(0,63,92,.12)}
 .vv-unique-event{background:radial-gradient(circle,#e8f2e5,#a0c7ce);overflow:hidden;border-radius:16px}
@@ -34,7 +34,7 @@
 .vv-event-silhouettes i:nth-child(2){height:100%;background:#30445a}.vv-event-silhouettes i:nth-child(4){height:93%;background:#263347}
 .vv-event-silhouettes i:before{content:"";position:absolute;left:24%;top:-30px;width:52%;height:50px;border-radius:50%;background:#b18577}
 .vv-event-camera-frame{position:absolute;right:4%;bottom:2%;padding:16px;border-radius:15px;background:#003f5c;color:white;box-shadow:0 10px 29px rgba(0,63,92,.25);display:flex;flex-direction:column;gap:10px}
-.vv-event-camera-frame strong{font-size:clamp(17px,2vw,25px);line-height:1;letter-spacing:-.05em}
+.vv-event-camera-frame strong{font-size:clamp(17px,2vw,25px);line-height:1;letter-spacing:var(--vv-tracking-readable, 0em)}
 .vv-event-camera-frame>span{font-size:8px;color:#75e5cb}
 .vv-event-ticket-small{position:absolute;top:4%;left:3%;background:white;border-radius:100px;padding:10px;font-size:9px;color:#003f5c;font-weight:850}
 @media(max-width:760px){

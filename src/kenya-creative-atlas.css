@@ -4,7 +4,7 @@
    The routes are potential creative connections, never claims of past work. */
 .vv-map-v3 { --atlas-night:#082b3b; --atlas-deep:#061f2e; --atlas-aqua:#2ec4b6; }
 .vv-map-v3 .vv-close-location-heading{align-items:end;gap:clamp(24px,6vw,96px);margin-bottom:32px}
-.vv-map-v3 .vv-close-location-heading h2{font-size:clamp(43px,5.8vw,78px);line-height:1.02;letter-spacing:-.09em}
+.vv-map-v3 .vv-close-location-heading h2{font-size:clamp(43px,5.8vw,78px);line-height:1.02;letter-spacing:var(--vv-tracking-readable, 0em)}
 .vv-map-v3 .vv-close-location-heading h2 em{color:#169789}
 .vv-map-v3 .vv-close-location-summary p{max-width:410px}
 .vv-atlas-shell{position:relative;isolation:isolate;overflow:hidden;border:1px solid rgba(46,196,182,.19);border-radius:30px;color:#e8fdf6;background:linear-gradient(143deg,#092e41,#051f30 78%,#071f2f);box-shadow:0 30px 85px rgba(0,44,62,.2)}
@@ -49,7 +49,7 @@
 .vv-atlas-status i{display:block;width:6px;height:6px;background:#2ec4b6;border-radius:50%;box-shadow:0 0 0 3px rgba(46,196,182,.12)}
 .vv-atlas-place{min-height:228px;display:flex;flex-direction:column;justify-content:center;padding:30px 0 18px}
 .vv-atlas-place-brow{display:block;font-size:9px;font-weight:850;letter-spacing:.13em;color:#57d0bf;margin-bottom:17px}
-.vv-atlas-place h3{margin:0 0 10px;font-size:clamp(45px,4.8vw,70px);line-height:.96;letter-spacing:-.08em;color:#effff5;font-weight:850}
+.vv-atlas-place h3{margin:0 0 10px;font-size:clamp(45px,4.8vw,70px);line-height:.96;letter-spacing:var(--vv-tracking-readable, 0em);color:#effff5;font-weight:850}
 .vv-atlas-place h3 em{font-style:normal;color:#2ec4b6;overflow-wrap:anywhere}
 .vv-atlas-place p{font-size:13px;line-height:1.6;color:#afd8d1;margin:0 0 15px}
 .vv-atlas-county{font-size:9px;font-weight:800;color:#608f94;letter-spacing:.09em}

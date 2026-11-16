@@ -12,7 +12,7 @@
 .vv-faq-lab-header{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(275px,.65fr);align-items:end;gap:clamp(25px,5vw,90px);margin-bottom:clamp(28px,4vw,48px)}
 .vv-faq-lab-eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:10px;font-weight:850;letter-spacing:.17em;color:#238d85}
 .vv-faq-lab-blink{width:7px;height:7px;border-radius:50%;background:var(--faq-aqua);box-shadow:0 0 0 4px #d8f2e8;animation:vv-faq-beat 2.4s ease-in-out infinite}
-.vv-faq-lab-header-copy h2{position:relative;margin:20px 0 0;font-size:clamp(54px,7.25vw,104px);line-height:.98;letter-spacing:-.085em;font-weight:850;color:var(--faq-navy)}
+.vv-faq-lab-header-copy h2{position:relative;margin:20px 0 0;font-size:clamp(54px,7.25vw,104px);line-height:.98;letter-spacing:var(--vv-tracking-readable, 0em);font-weight:850;color:var(--faq-navy)}
 .vv-faq-lab-header-copy h2 em{font-style:normal;color:#19a595}
 .vv-faq-lab-header-asterisk{display:inline-block;font-size:.33em;vertical-align:top;position:relative;top:.07em;left:.3em;color:#2ec4b6;animation:vv-faq-spintiny 18s linear infinite}
 .vv-faq-lab-intro{display:flex;flex-direction:column;gap:19px;padding-bottom:4px}
@@ -55,7 +55,7 @@
 .vv-faq-lab-note.is-selected .vv-faq-lab-note-pin{background:#9af8d7;box-shadow:0 0 0 3px #78e7c52e}
 .vv-faq-lab-note-label{display:block;margin-bottom:7px;font-size:8px;font-weight:850;letter-spacing:.13em;color:#299589}
 .vv-faq-lab-note.is-selected .vv-faq-lab-note-label{color:#a8f9db}
-.vv-faq-lab-note-text{display:block;font-size:clamp(12px,1.2vw,15px);font-weight:800;line-height:1.23;letter-spacing:-.035em;max-width:95%}
+.vv-faq-lab-note-text{display:block;font-size:clamp(12px,1.2vw,15px);font-weight:800;line-height:1.23;letter-spacing:var(--vv-tracking-readable, 0em);max-width:95%}
 .vv-faq-lab-note-mark{position:absolute;right:9px;bottom:8px;font-size:21px;line-height:1;color:#29aa9a}
 .vv-faq-lab-note.is-selected .vv-faq-lab-note-mark{color:#9aefdb}
 .vv-faq-lab-note-0{--note-angle:-7deg;top:3%;left:2%;width:45%;animation:vv-faq-note-drift-a 5.8s ease-in-out infinite}
@@ -92,7 +92,7 @@
 .vv-faq-lab-answer-content{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:340px;padding:15px clamp(20px,3vw,34px) 16px;overflow:hidden}
 .vv-faq-lab-answer-copy{width:100%}
 .vv-faq-lab-question-meta{display:flex;align-items:center;justify-content:space-between;color:#2aa99a;font-size:10px;letter-spacing:.16em;font-weight:850;margin-bottom:12px}
-.vv-faq-lab-answer-copy h3{font-size:clamp(23px,2.6vw,36px);font-weight:850;letter-spacing:-.064em;line-height:1.14;color:#003f5c;margin:0 0 19px}
+.vv-faq-lab-answer-copy h3{font-size:clamp(23px,2.6vw,36px);font-weight:850;letter-spacing:var(--vv-tracking-readable, 0em);line-height:1.14;color:#003f5c;margin:0 0 19px}
 .vv-faq-lab-answer-divider{display:flex;gap:8px;align-items:center;font-size:9px;letter-spacing:.13em;font-weight:850;color:#258f89;margin-bottom:15px}
 .vv-faq-lab-answer-divider span{height:1px;background:#cee6d9;flex:1}
 .vv-faq-lab-answer-divider span:first-child{max-width:14px;background:#25a99a}

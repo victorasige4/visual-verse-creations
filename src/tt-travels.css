@@ -22,6 +22,8 @@
   --vv-fw-demi:600;
   --vv-fw-bold:700;
   --vv-fw-extra:800;
+  /* Display type uses natural character spacing, with kerning intact. */
+  --vv-tracking-readable:0em;
 }
 :where(html,body),body :where(h1,h2,h3,h4,h5,h6,p,span,small,strong,em,b,i,a,button,input,textarea,select,label,summary,blockquote,li,dt,dd,figcaption,time,legend){
   font-family:var(--vv-typeface)!important;
@@ -36,3 +38,6 @@
 .vv-nav-resize-cta,.vv-nav-resize-mega-heading h2{font-weight:700}
 .vv-about-editorial p,.vv-preview-section p,.vv-close-footer-wrap p{font-weight:400}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Natural kerning preserves comfortable glyph separation at heavier weights. */
+:where(html,body){font-kerning:normal;letter-spacing:var(--vv-tracking-readable);}

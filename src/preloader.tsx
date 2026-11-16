@@ -33,9 +33,9 @@ function PublicPreloader({ message }: { message: string }) {
       document.documentElement.dataset.vvDecrypted = "true";
       revealPublicPage();
     };
-    // Reduced motion still gets a readable, static introduction. Normal
-    // motion gives the decoded words a short, visible beat before the hero.
-    cancelHold.current = afterVisiblePaint(window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 650 : 300, finish);
+    // Hold the complete transmission for 2.5 visible seconds so visitors
+    // can actually read it, including visitors using reduced motion.
+    cancelHold.current = afterVisiblePaint(2500, finish);
   }, []);
   return <>
     <Boxes className="vv-boot-boxes" />
