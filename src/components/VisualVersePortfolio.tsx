@@ -135,7 +135,16 @@ export function PortfolioArtwork({ kind }: { kind: PortfolioCollection["id"] }) 
   );
 }
 
-export function PortfolioPreviewCard({ collection }: { collection: PortfolioCollection }) {
+export const selectedDirectionPhotos: Record<PortfolioCollection["id"], { src: string; alt: string }> = {
+  "graphic-design": { src: "selected-directions/graphic-design.webp", alt: "Vintage printed posters and bold typography" },
+  "photography": { src: "selected-directions/photography.webp", alt: "An editorial portrait of a woman in Nairobi" },
+  "digital": { src: "selected-directions/digital.webp", alt: "Close-up of a mobile digital interface" },
+  "videography": { src: "selected-directions/videography.webp", alt: "A filmmaker operating a cinema camera outdoors" },
+  "branding": { src: "selected-directions/branding.webp", alt: "A brand strategy moodboard with colour palettes and editorial visuals" },
+  "campaigns": { src: "selected-directions/campaigns.webp", alt: "A creator filming social content with a smartphone and gimbal" },
+};
+
+function PortfolioPreviewCard({ collection }: { collection: PortfolioCollection }) {
   return (
     <CardContainer containerClassName="vv-pf-card-outer" className="vv-pf-card">
       <CardBody className="vv-pf-card-content">
@@ -144,7 +153,7 @@ export function PortfolioPreviewCard({ collection }: { collection: PortfolioColl
           <span>PORTFOLIO COLLECTION</span>
         </CardItem>
         <CardItem translateZ={52} className="vv-pf-card-media">
-          <PortfolioArtwork kind={collection.id}/>
+          <img className="vv-pf-selected-photo" src={import.meta.env.BASE_URL + selectedDirectionPhotos[collection.id].src} alt={selectedDirectionPhotos[collection.id].alt} width={720} height={1280} loading="lazy" decoding="async"/>
           <span className="vv-pf-media-corner" aria-hidden="true"><ArrowUpRight size={16}/></span>
         </CardItem>
         <CardItem translateZ={32} className="vv-pf-card-details">
@@ -181,7 +190,7 @@ export function VisualVersePortfolio() {
       </div>
       <div className="vv-pf-footnote">
         <span><Check size={14} aria-hidden="true"/> SAMPLE CREATIVE DIRECTIONS</span>
-        <p>Illustrative previews of our services. Individual client case studies will be added as projects are approved for publication.</p>
+        <p>Stock imagery illustrating our services, not commissioned client projects. Individual client case studies will be added as projects are approved for publication.</p>
       </div>
     </div>
   );
