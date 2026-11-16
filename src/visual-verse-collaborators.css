@@ -43,7 +43,7 @@
 .vv-about-editorial .vv-collab-header-main h2{
   max-width:616px;margin:0;
   font-weight:850;
-  font-size:clamp(48px,4.45vw,64px);
+  font-size:clamp(24px,2.225vw,32px);
   line-height:1.04;
   letter-spacing:var(--vv-tracking-readable, 0em);
   color:var(--vv-collab-ink);
@@ -96,7 +96,7 @@
 .vv-collab-icon svg{display:block}
 .vv-about-editorial .vv-collab-card h3{
   color:var(--vv-collab-ink);
-  font-size:19px;font-weight:850;line-height:1.27;
+  font-size:16px;font-weight:850;line-height:1.27;
   letter-spacing:var(--vv-tracking-readable, 0em);margin:0;max-width:100%;
 }
 .vv-about-editorial .vv-collab-card p{
@@ -121,7 +121,7 @@
   }
   .vv-collab-header-main h2 span{display:inline}
   .vv-about-editorial .vv-collab-header-main h2{
-    font-size:clamp(36px,4.6vw,50px);
+    font-size:clamp(20px,2.3vw,25px);
     line-height:1.09;
     max-width:100%;
   }
@@ -139,7 +139,7 @@
   .vv-collab-header-main{gap:32px}
   .vv-collab-header-main h2 span{display:block}
   .vv-about-editorial .vv-collab-header-main h2{
-    font-size:clamp(31px,8.7vw,39px);
+    font-size:clamp(20px,4.35vw,20px);
     line-height:1.05;letter-spacing:var(--vv-tracking-readable, 0em);
   }
   .vv-about-editorial .vv-collab-header-main p{font-size:16px;line-height:1.6}

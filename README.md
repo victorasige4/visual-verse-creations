@@ -38,7 +38,7 @@ node scripts/prepare-github-pages.mjs
 
 ## Safeguards
 - Preserve navy `#003F5C`, deep navy `#002A40`, mint `#2EC4B6`, and the existing branding/assets.
-- Typography is owned by `src/tt-travels.css`: currently the licensed, self-hosted Montserrat variable family. The available TT Travels trial is **not licensed for public embedding**. Use `--vv-tracking-readable` (natural spacing, `0em`) for bold headlines and card titles; avoid compressed negative tracking on readable copy. Preserve intentional positive tracking on labels and decorative graphics.
+- Typography is owned by `src/tt-travels.css`: currently the licensed, self-hosted Montserrat variable family. The available TT Travels trial is **not licensed for public embedding**. Use `--vv-tracking-readable` (natural spacing, `0em`) for bold headlines and card titles; avoid compressed negative tracking on readable copy. Preserve intentional positive tracking on labels and decorative graphics. Public page display heading sizes use approximately half the former scale, with responsive readability floors (24px page titles, 20px section headings, 16px card headings); keep body, navigation, and decorative artwork sizes readable.
 - Do not add scraped reference-site bundles or saved browser resources to the project root. The Vite pipeline builds the actual source.
 - Don't remove working homepage islands, process animations, 3D pins, or the shared CTA without an explicit design decision.
 - For the November 14 maintenance checkpoint, the untouched pre-sweep state is on `backup/pre-sweep-2026-11-14`. See `docs/site-maintenance-2026-11-14.md`.

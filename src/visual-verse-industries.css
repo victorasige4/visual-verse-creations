@@ -33,7 +33,7 @@
   max-width:740px;
   margin:37px 0 0;
   color:var(--ind-ink);
-  font-size:clamp(43px,4.52vw,65px);line-height:1.03;
+  font-size:clamp(21.5px,2.26vw,32.5px);line-height:1.03;
   font-weight:900;letter-spacing:var(--vv-tracking-readable, 0em);
 }
 .vv-industry-grid{
@@ -83,7 +83,7 @@
 .vv-industry-card.is-on .vv-industry-number{color:var(--ind-dark)}
 .vv-about-editorial .vv-industry-card h3{
   position:relative;z-index:3;
-  font-size:clamp(16px,1.5vw,21px);
+  font-size:clamp(16px,0.75vw,16px);
   line-height:1.19;letter-spacing:var(--vv-tracking-readable, 0em);
   font-weight:850;margin:26px 0 0;color:var(--ind-ink);
   max-width:100%;
@@ -149,7 +149,7 @@
   .vv-industry-head{margin-bottom:36px}
   .vv-industry-eyebrow{font-size:10px;letter-spacing:.16em}
   .vv-about-editorial .vv-industry-head h2{
-    font-size:clamp(36px,8.55vw,47px);
+    font-size:clamp(20px,4.275vw,23.5px);
     line-height:1.07;letter-spacing:var(--vv-tracking-readable, 0em);
     max-width:440px;margin-top:34px
   }

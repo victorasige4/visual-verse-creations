@@ -209,6 +209,8 @@ try {
       assert.equal(await page.locator("html").getAttribute("data-vv-decrypted"),"true","Decryption gate: "+path);
       const hero=page.locator("main h1").first();
       await hero.waitFor({state:"visible"});
+      const headingSize=await hero.evaluate(node=>parseFloat(getComputedStyle(node).fontSize));
+      assert.ok(headingSize>=23 && headingSize<=(viewport.width===390?48:70),"Unexpected public heading size: "+path+" ("+headingSize+"px)");
       assert.ok(await hero.evaluate(node=>{const spacing=getComputedStyle(node).letterSpacing;return spacing==="normal"||parseFloat(spacing)>=-0.1}),"Overcompressed hero tracking: "+path);
       if(path==="who-we-serve.html"){
         assert.equal(await page.locator(".vvx-hero-id,.vvx-hero-counter").count(),0,"Landing page numbering should be removed");

@@ -2,7 +2,7 @@
 .vv-ds{--ds-ink:#002a40;--ds-teal:#128b82;--ds-mint:#2ec4b6;--ds-line:#dbe9e5;--ds-muted:#55747a;background:#fff;color:var(--ds-ink)}
 .vv-ds-section{padding:clamp(68px,8vw,112px) 0}
 .vv-ds-heading{max-width:690px}
-.vv-ds-heading h2,.vv-ds-check h2{font-size:clamp(34px,4.3vw,57px);letter-spacing:var(--vv-tracking-readable, 0em);line-height:1.08;font-weight:850;color:var(--ds-ink)!important;margin:17px 0 14px}
+.vv-ds-heading h2,.vv-ds-check h2{font-size:clamp(20px,2.15vw,28.5px);letter-spacing:var(--vv-tracking-readable, 0em);line-height:1.08;font-weight:850;color:var(--ds-ink)!important;margin:17px 0 14px}
 .vv-ds-heading p,.vv-ds-check p{color:var(--ds-muted);font-size:16px;line-height:1.75;margin:0;max-width:615px}
 .vv-ds-deliver{border-top:1px solid var(--ds-line)}
 .vv-ds-feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:36px}
@@ -10,10 +10,10 @@
 .vv-ds-feature:hover{background:#edf8f4;border-color:#a9d8ce;box-shadow:0 15px 35px #003f5c12;transform:translateY(-4px)}
 .vv-ds-icon{display:grid;place-items:center;width:48px;height:48px;border-radius:10px;background:#e8f6f1;color:var(--ds-teal);transition:color .32s,background .32s,transform .35s cubic-bezier(.2,.75,.3,1),box-shadow .32s}
 .vv-ds-feature:hover .vv-ds-icon{background:#128b82;color:white;transform:rotate(-7deg) scale(1.08);box-shadow:0 7px 18px #128b8230}
-.vv-ds-feature h3{font-size:19px;font-weight:800;line-height:1.25;letter-spacing:var(--vv-tracking-readable, 0em);margin:19px 0 8px;color:var(--ds-ink)!important}
+.vv-ds-feature h3{font-size:16px;font-weight:800;line-height:1.25;letter-spacing:var(--vv-tracking-readable, 0em);margin:19px 0 8px;color:var(--ds-ink)!important}
 .vv-ds-feature p{font-size:14px;line-height:1.65;color:var(--ds-muted);margin:0}
 .vv-ds-check{margin-top:clamp(46px,6vw,80px);border:1px solid var(--ds-line);border-radius:19px;padding:clamp(24px,4.5vw,58px);display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.2fr);align-items:center;gap:clamp(30px,6vw,80px);background:#f7fcfa;box-shadow:0 12px 35px #003f5c05}
-.vv-ds-check h2{font-size:clamp(29px,3.5vw,44px)}
+.vv-ds-check h2{font-size:clamp(20px,1.75vw,22px)}
 .vv-ds-check-count{font-size:13px;color:var(--ds-muted);margin-top:25px;font-weight:600}
 .vv-ds-check-count strong{font-size:18px;color:var(--ds-teal);font-weight:850}
 .vv-ds-check-progress{height:5px;background:#dcece7;border-radius:6px;margin:10px 0 25px;overflow:hidden}
@@ -49,7 +49,7 @@
 .vv-ds-location{position:relative;isolation:isolate;overflow:hidden;border-radius:18px;background:linear-gradient(135deg,#002a40,#064e5f);padding:clamp(28px,4vw,48px);min-height:300px;color:#fff;box-shadow:0 15px 38px #003f5c1b}
 .vv-ds-location>small{display:block;color:#83e4d5;font-size:10px;font-weight:750;letter-spacing:.1em;margin-top:23px}
 .vv-ds-location-icon{display:grid;place-items:center;width:48px;height:48px;border:1px solid #62cabe80;border-radius:11px;color:#6bdfd1;background:#2ec4b619}
-.vv-ds-location h3{font-size:clamp(26px,3.2vw,42px);font-weight:850;color:#fff!important;letter-spacing:var(--vv-tracking-readable, 0em);line-height:1.12;margin:12px 0}
+.vv-ds-location h3{font-size:clamp(16px,1.6vw,21px);font-weight:850;color:#fff!important;letter-spacing:var(--vv-tracking-readable, 0em);line-height:1.12;margin:12px 0}
 .vv-ds-location p{font-size:14px;line-height:1.7;max-width:310px;color:#bfdfdf}
 .vv-ds-location a{display:inline-flex;align-items:center;gap:9px;font-weight:800;font-size:14px;color:#87e8d7;text-decoration:none;margin-top:15px}
 .vv-ds-location a:hover svg{transform:translate(3px,-3px)}.vv-ds-location a svg{transition:transform .25s}
@@ -80,7 +80,7 @@
 .vv-ds-related-card:hover img{transform:scale(1.065)}
 .vv-ds-related-image>span{display:grid;place-items:center;position:absolute;top:15px;left:15px;width:43px;height:43px;background:#fff;color:var(--ds-teal);border-radius:9px;box-shadow:0 4px 20px #002a4026}
 .vv-ds-related-name{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px}
-.vv-ds-related-name h3{font-size:19px;line-height:1.25;letter-spacing:var(--vv-tracking-readable, 0em);font-weight:800;margin:0;color:var(--ds-ink)!important}
+.vv-ds-related-name h3{font-size:16px;line-height:1.25;letter-spacing:var(--vv-tracking-readable, 0em);font-weight:800;margin:0;color:var(--ds-ink)!important}
 .vv-ds-related-name>span{flex:none;display:grid;place-items:center;width:36px;height:36px;border:1px solid var(--ds-line);border-radius:50%;color:var(--ds-teal);transition:color .25s,background .25s,transform .3s}
 .vv-ds-related-card:hover .vv-ds-related-name>span{color:white;background:var(--ds-teal);transform:rotate(8deg)}
 .vv-ds :is(a,button):focus-visible{outline:2px solid var(--ds-teal);outline-offset:3px}
