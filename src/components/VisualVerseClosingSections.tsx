@@ -4,7 +4,7 @@ import { VisualVerseAboutCta } from "./VisualVerseAboutCta";
 import { Boxes } from "./ui/background-boxes";
 import {
   ArrowRight, ArrowUpRight, CheckCircle2, Mail,
-  MapPin, ArrowUp
+  MapPin, ArrowUp, Linkedin, Instagram, Facebook, Youtube
 } from "lucide-react";
 
 const creativeWords = [
@@ -38,6 +38,30 @@ export { VisualVerseKenyaMap as VisualVerseWhereWeServe } from "./VisualVerseKen
 
 const CONTACT_EMAIL = "hello@visualverse.com";
 const CONTACT_PHONE = "+254794044598";
+
+function TikTokIcon(){
+  return <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M14.5 2h3c.25 2.16 1.6 4.02 4.5 4.35v3.02a8.1 8.1 0 0 1-4.5-1.58v8.34a6.25 6.25 0 1 1-6.25-6.25c.4 0 .79.04 1.17.11v3.09a3.25 3.25 0 1 0 2.08 3.05V2Z"/></svg>;
+}
+
+const footerSocials=[
+  {name:"LinkedIn",url:"https://www.linkedin.com/company/visualverse-creations",Icon:Linkedin},
+  {name:"Instagram",url:null,Icon:Instagram},
+  {name:"Facebook",url:"https://www.facebook.com/profile.php?id=61596655380659",Icon:Facebook},
+  {name:"TikTok",url:null,Icon:TikTokIcon},
+  {name:"YouTube",url:null,Icon:Youtube},
+];
+
+function FooterSocials(){
+  return <div className="vv-footer-socials">
+    <span className="vv-footer-socials-label">FOLLOW US</span>
+    <nav className="vv-footer-socials-row" aria-label="Visual Verse social media">
+      {footerSocials.map(({name,url,Icon})=>url
+        ? <a key={name} href={url} target="_blank" rel="noopener noreferrer" aria-label={name+" (opens in a new tab)"} title={name}><Icon aria-hidden="true"/></a>
+        : <span key={name} className="vv-social-pending" role="img" aria-label={name+" — link coming soon"} title={name+" — link coming soon"}><Icon aria-hidden="true"/></span>
+      )}
+    </nav>
+  </div>;
+}
 
 /** Shared FAQ experience used on Home and About. */
 export { VisualVerseFaqLab as VisualVerseFaq } from "./VisualVerseFaqLab";
@@ -77,6 +101,7 @@ export function VisualVerseFooter(){
           </a>
           <p>Thoughtful design. Lasting stories. A creative company bringing ideas to life through imagery, identity and digital experiences.</p>
           <span className="vv-close-footer-location"><MapPin size={15} aria-hidden="true"/> Based in Nairobi, Kenya</span>
+          <FooterSocials/>
         </div>
         <nav aria-label="Footer pages" className="vv-close-footer-col">
           <h2>EXPLORE</h2>

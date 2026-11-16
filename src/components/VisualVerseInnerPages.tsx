@@ -87,7 +87,7 @@ function ServicesPage(){
 const socials=[
   {name:"Instagram",url:"https://www.instagram.com/visualverse.creations/",Icon:Instagram},
   {name:"LinkedIn",url:"https://www.linkedin.com/company/visualverse-creations",Icon:Linkedin},
-  {name:"Facebook",url:"https://www.facebook.com/profile.php?id=61584634318128",Icon:Facebook}
+  {name:"Facebook",url:"https://www.facebook.com/profile.php?id=61596655380659",Icon:Facebook}
 ];
 
 function openMailDraft(subject:string,body:string){
