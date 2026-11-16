@@ -110,7 +110,7 @@ function Hero() {
       <div className="vvx-hero-copy">
         <motion.div initial={reduced?false:{opacity:0,y:20}} animate={{opacity:1,y:0}}
           transition={{duration:.65,delay:.08}} className="vvx-hero-eyebrow">
-          <span className="vvx-hero-id">VV — 003</span><span className="vvx-hero-line"/>
+          <span className="vvx-hero-line" aria-hidden="true"/>
           WHO WE CREATE WITH
         </motion.div>
         <h1 id="vvx-hero-title" className="vvx-hero-heading">
@@ -147,7 +147,6 @@ function Hero() {
             <img src={asset("portfolio-corporate-moment.jpg")} alt="Visual Verse corporate event photography" decoding="async"/>
           </figure>
           <span className="vvx-hero-disc" aria-hidden="true"><Sparkles size={26}/> MADE FOR YOU</span>
-          <span className="vvx-hero-counter" aria-hidden="true"><strong>06</strong><small>WORLDS.<br/>ENDLESS IDEAS.</small></span>
         </motion.div>
       </motion.div>
     </div>

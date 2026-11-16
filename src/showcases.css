@@ -25,7 +25,7 @@
   color: #153d4c;
   font-size: clamp(43px, 5.6vw, 76px);
   line-height: 1.04;
-  letter-spacing: -.075em;
+  letter-spacing:var(--vv-tracking-readable, 0em);
   max-width: 740px;
   margin: 22px 0 0;
 }
@@ -93,7 +93,7 @@
   writing-mode:vertical-rl;
   text-orientation:mixed;
   white-space:nowrap;
-  letter-spacing:-.025em;
+  letter-spacing:var(--vv-tracking-readable, 0em);
   font-size:13px;
   font-weight:750;
 }
@@ -122,7 +122,7 @@
   font-size:clamp(25px,3.3vw,43px);
   line-height:1.08;
   font-weight:850;
-  letter-spacing:-.07em;
+  letter-spacing:var(--vv-tracking-readable, 0em);
   color:#003f5c;
   margin:0 0 13px;
 }
@@ -238,7 +238,7 @@
 .vv-svc-brand-card-front{background:#e4f5ef;transform:translate(-16%,6%) rotate(-10deg);border:1px solid #c4e3db}
 .vv-svc-brand-caption{font-size:9px;color:#176a6e;font-weight:800;letter-spacing:.06em}
 .vv-svc-brand-card-front img{width:min(60%,105px);align-self:center}
-.vv-svc-brand-card-front strong{font-size:19px;line-height:1.05;letter-spacing:-.055em;color:#003f5c}
+.vv-svc-brand-card-front strong{font-size:19px;line-height:1.05;letter-spacing:var(--vv-tracking-readable, 0em);color:#003f5c}
 .vv-svc-brand-palette{position:absolute;bottom:0;right:-4%;display:flex;align-items:center;gap:4px;background:white;border-radius:12px;padding:10px;box-shadow:0 10px 25px rgba(0,63,92,.11)}
 .vv-svc-brand-palette span{width:18px;height:25px;border-radius:4px}
 .vv-svc-brand-palette small{margin-left:6px;color:#3c7179;font-size:8px;font-weight:800}
@@ -248,7 +248,7 @@
 .vv-svc-poster-back b{font-size:160px;position:absolute;right:-12px;bottom:-70px;opacity:.15}
 .vv-svc-poster-front{background:#003f5c;color:#e5f8f3;transform:translate(-12%,4%) rotate(-8deg);display:flex;flex-direction:column;justify-content:space-between}
 .vv-svc-poster-top,.vv-svc-poster-bottom{display:flex;justify-content:space-between;align-items:center;font-size:9px;font-weight:800;letter-spacing:.09em}
-.vv-svc-poster-front strong{font-size:clamp(28px,3vw,46px);line-height:.91;letter-spacing:-.07em}
+.vv-svc-poster-front strong{font-size:clamp(28px,3vw,46px);line-height:.91;letter-spacing:var(--vv-tracking-readable, 0em)}
 .vv-svc-poster-front em{font-style:normal;color:#2ec4b6}
 .vv-svc-design-grid{position:absolute;right:4%;bottom:-3%;display:grid;grid-template-columns:repeat(2,25px);gap:3px;background:#fff;border-radius:10px;padding:8px;box-shadow:0 10px 24px rgba(0,63,92,.12)}
 .vv-svc-design-grid span{height:25px;background:#003f5c;border-radius:3px}
@@ -263,7 +263,7 @@
 .vv-svc-browser-mini img{width:36px;height:36px;object-fit:contain}
 .vv-svc-browser-type{position:relative;z-index:1;margin-top:20px}
 .vv-svc-browser-type small{font-size:8px;color:#2c9289;letter-spacing:.15em;font-weight:900}
-.vv-svc-browser-type strong{display:block;font-size:clamp(21px,2.8vw,34px);line-height:1.01;letter-spacing:-.07em;color:#003f5c;margin:8px 0 15px}
+.vv-svc-browser-type strong{display:block;font-size:clamp(21px,2.8vw,34px);line-height:1.01;letter-spacing:var(--vv-tracking-readable, 0em);color:#003f5c;margin:8px 0 15px}
 .vv-svc-browser-type>span{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:800;background:#2ec4b6;border-radius:100px;padding:8px 11px}
 .vv-svc-browser-art{position:absolute;width:145px;height:145px;right:-36px;bottom:-30px;border-radius:50%;border:20px solid #b0e9e0}
 .vv-svc-browser-art i{position:absolute;width:110px;height:110px;border:1px solid #b6e7df;border-radius:50%;left:-22px;top:-22px}
@@ -308,7 +308,7 @@
 .vv-aud-option-icon{display:grid;place-items:center;flex:0 0 auto;width:42px;height:42px;border-radius:12px;background:#edf6f3;color:#318f8b}
 .vv-aud-option.is-selected .vv-aud-option-icon{background:#2ec4b6;color:#003f5c}
 .vv-aud-option-copy{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}
-.vv-aud-option-copy strong{font-size:14px;letter-spacing:-.03em;color:#163f50}
+.vv-aud-option-copy strong{font-size:14px;letter-spacing:var(--vv-tracking-readable, 0em);color:#163f50}
 .vv-aud-option-copy small{font-size:11px;line-height:1.3;font-weight:500;color:#728990}
 .vv-aud-option-action{display:grid;place-items:center;width:28px;height:28px;border:1px solid #dcece8;border-radius:50%;background:#f7fcfa;color:#67939b;flex:0 0 auto}
 .is-selected .vv-aud-option-action{background:#2ec4b6;color:#003f5c;border-color:#2ec4b6}
@@ -322,7 +322,7 @@
 .vv-aud-stage{min-height:615px;padding:clamp(23px,2.6vw,36px);border:1px solid #e0ede8;background:#fbfdfb;border-radius:26px;box-shadow:0 26px 55px rgba(0,63,92,.11);display:flex;flex-direction:column;overflow:hidden}
 .vv-aud-stage-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px}
 .vv-aud-stage-kicker{font-size:10px;font-weight:850;color:#328d87;letter-spacing:.13em}
-.vv-aud-stage-head h3{font-size:clamp(24px,2.5vw,36px);line-height:1.1;letter-spacing:-.06em;color:#153d4c;font-weight:850;margin:11px 0 11px}
+.vv-aud-stage-head h3{font-size:clamp(24px,2.5vw,36px);line-height:1.1;letter-spacing:var(--vv-tracking-readable, 0em);color:#153d4c;font-weight:850;margin:11px 0 11px}
 .vv-aud-stage-head p{font-size:12px;line-height:1.7;color:#637e82;max-width:340px;margin:0}
 .vv-aud-stage-number{white-space:nowrap;border-radius:100px;background:#def6ec;color:#288d84;padding:8px 11px;font-size:10px;font-weight:800}
 .vv-aud-art{flex:1;min-height:300px;margin:20px 0;position:relative;display:flex;align-items:center;justify-content:center;isolation:isolate}
@@ -333,7 +333,7 @@
 .vv-aud-brand-head{display:flex;justify-content:space-between;align-items:center;font-size:10px;letter-spacing:.1em;font-weight:800;color:#397f7f}
 .vv-aud-brand-paper{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:24px;height:65%;padding:20px;background:#003f5c;border-radius:13px;color:#fff}
 .vv-aud-brand-paper img{width:45%;max-height:120px;object-fit:contain}
-.vv-aud-brand-paper span{font-size:clamp(13px,1.6vw,20px);line-height:1.15;font-weight:850;letter-spacing:-.05em}
+.vv-aud-brand-paper span{font-size:clamp(13px,1.6vw,20px);line-height:1.15;font-weight:850;letter-spacing:var(--vv-tracking-readable, 0em)}
 .vv-aud-brand-paper b{color:#2ec4b6}
 .vv-aud-brand-swatches{display:flex;gap:6px;margin-top:13px}
 .vv-aud-brand-swatches span{flex:1;height:16px;border-radius:3px;background:#003f5c}
@@ -349,7 +349,7 @@
 .vv-aud-dash-top{display:flex;justify-content:space-between;align-items:center;margin:24px 0 16px}
 .vv-aud-dash-top>div:first-child{display:flex;flex-direction:column;gap:6px}
 .vv-aud-dash-top small{font-size:9px;font-weight:850;color:#6b9595}
-.vv-aud-dash-top strong{font-size:24px;letter-spacing:-.07em;color:#003f5c}
+.vv-aud-dash-top strong{font-size:24px;letter-spacing:var(--vv-tracking-readable, 0em);color:#003f5c}
 .vv-aud-dash-top span{font-size:11px;color:#718d90}
 .vv-aud-dash-check{width:50px;height:50px;border-radius:12px;display:grid;place-items:center;background:#e0f8ef;color:#149d91}
 .vv-aud-dash-bars{display:flex;gap:9px;align-items:end;height:105px;padding:10px 7px 0;border-bottom:1px solid #d2e9e3}
@@ -361,7 +361,7 @@
 .vv-aud-creator-image img,.vv-aud-event-main img{width:100%;height:100%;object-fit:cover}
 .vv-aud-creator-plan{position:absolute;right:0;bottom:6%;width:51%;padding:21px 18px;background:#fafffd;border:1px solid #dbece6;border-radius:15px;box-shadow:0 10px 30px rgba(0,63,92,.14);transform:rotate(4deg)}
 .vv-aud-creator-plan>span{font-size:9px;font-weight:850;color:#37978e;letter-spacing:.09em}
-.vv-aud-creator-plan strong{display:block;margin:13px 0;color:#003f5c;font-size:21px;line-height:1.14;letter-spacing:-.05em}
+.vv-aud-creator-plan strong{display:block;margin:13px 0;color:#003f5c;font-size:21px;line-height:1.14;letter-spacing:var(--vv-tracking-readable, 0em)}
 .vv-aud-creator-plan>div{font-size:10px;color:#4a7379;margin-top:8px;display:flex;align-items:center;gap:7px}
 .vv-aud-creator-plan svg{color:#1a9f92}
 .vv-aud-creator-badge{top:0;right:1%}
@@ -370,7 +370,7 @@
 .vv-aud-event-image-overlay{position:absolute;left:9px;bottom:10px;background:rgba(255,255,255,.93);color:#003f5c;border-radius:100px;display:flex;align-items:center;gap:6px;padding:8px 10px;font-size:9px;font-weight:850}
 .vv-aud-event-ticket{position:absolute;right:0;top:23%;width:49%;background:#003f5c;border-radius:15px;padding:21px 18px;color:#fff;box-shadow:0 10px 24px rgba(0,63,92,.20);transform:rotate(5deg)}
 .vv-aud-event-ticket>span{font-size:9px;letter-spacing:.1em;font-weight:900;color:#7de5d7}
-.vv-aud-event-ticket strong{font-size:23px;line-height:1.08;letter-spacing:-.06em;display:block;margin:23px 0}
+.vv-aud-event-ticket strong{font-size:23px;line-height:1.08;letter-spacing:var(--vv-tracking-readable, 0em);display:block;margin:23px 0}
 .vv-aud-event-ticket>div{display:flex;align-items:center;gap:10px;border-top:1px dashed #578b8b;padding-top:13px;color:#c0e9e0;font-size:9px;font-weight:800}
 .vv-aud-event-caption{bottom:-1%;right:4%}
 @media(max-width:1150px){
@@ -396,7 +396,7 @@
     background:#f5faf8;
   }
   .vv-svc-slice.is-active .vv-svc-slice-tab{background:#d8f4ec;border-color:#56d2c3}
-  .vv-svc-slice-tab-label{writing-mode:horizontal-tb;white-space:normal;font-size:10px;text-align:center;letter-spacing:-.02em;line-height:1.1}
+  .vv-svc-slice-tab-label{writing-mode:horizontal-tb;white-space:normal;font-size:10px;text-align:center;letter-spacing:var(--vv-tracking-readable, 0em);line-height:1.1}
   .vv-svc-slice-tab svg{display:none}
   .vv-svc-active-panel{grid-column:1/-1;grid-row:2;min-height:480px;background:#fbfcfa;border:1px solid #dceae6;border-radius:22px;box-shadow:0 15px 38px rgba(0,63,92,.09)}
   .vv-svc-panel-inner{padding:30px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}

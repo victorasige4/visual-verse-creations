@@ -62,6 +62,8 @@ try {
     const observer = new MutationObserver(()=>{
       if(document.documentElement?.dataset.vvTextComplete!=="true")return;
       const text=[...document.querySelectorAll("#vv-page-loading .vv-boot-word")].map(word=>[...word.querySelectorAll(".vv-boot-letter-display")].map(el=>el.textContent).join("")).join(" ");
+      window.vvDecodedAt=performance.now();
+      window.addEventListener("vv-page-revealed",()=>{window.vvRevealAt=performance.now()},{once:true});
       window.vvDecodedSnapshot={text,covered:document.documentElement.hasAttribute("data-vv-boot"),boxes:!!document.querySelector("#vv-page-loading .vv-boot-boxes")};
       observer.disconnect();
     });
@@ -74,6 +76,9 @@ try {
     await motionPage.locator("html:not([data-vv-boot])").waitFor({state:"attached",timeout:20000});
     const result=await motionPage.evaluate(()=>window.vvDecodedSnapshot);
     assert.deepEqual(result,{text:routeMessage(path),covered:true,boxes:true},"Reveal before entire message decoded: "+path);
+    const hold=await motionPage.evaluate(()=>window.vvRevealAt-window.vvDecodedAt);
+    assert.ok(hold>=2450,"Decoded statement did not remain visible for 2.5 seconds: "+hold);
+    console.log("Decoded message reading time: "+Math.round(hold)+"ms");
     assert.equal(await motionPage.locator("html").getAttribute("data-vv-page-ready"),"true");
     assert.equal(await motionPage.locator("html").getAttribute("data-vv-decrypted"),"true");
     assert.ok(await motionPage.evaluate(()=>scrollY<2),"Hero must be first after decoding");
@@ -204,6 +209,14 @@ try {
       assert.equal(await page.locator("html").getAttribute("data-vv-decrypted"),"true","Decryption gate: "+path);
       const hero=page.locator("main h1").first();
       await hero.waitFor({state:"visible"});
+      assert.ok(await hero.evaluate(node=>{const spacing=getComputedStyle(node).letterSpacing;return spacing==="normal"||parseFloat(spacing)>=-0.1}),"Overcompressed hero tracking: "+path);
+      if(path==="who-we-serve.html"){
+        assert.equal(await page.locator(".vvx-hero-id,.vvx-hero-counter").count(),0,"Landing page numbering should be removed");
+        const rows=await page.locator(".vvx-hero-heading-row").evaluateAll(rows=>rows.map(row=>({scroll:row.scrollWidth,client:row.clientWidth})));
+        assert.equal(rows.length,3);
+        assert.ok(rows.every(r=>r.scroll<=r.client+2),"Audience heading is clipped: "+JSON.stringify(rows));
+      }
+
       const bounds=await hero.boundingBox();
       assert.ok(bounds && bounds.y < viewport.height && bounds.y + bounds.height > 0,"Hero is not in first viewport: "+path);
       assert.ok(await page.evaluate(()=>scrollY<2),"Initial page is not at the top: "+path);

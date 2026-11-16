@@ -32,7 +32,7 @@
 }
 .vv-about-editorial .vv-purpose-editorial-top h2{
   margin:25px 0 22px;
-  font-weight:850;letter-spacing:-.082em;line-height:1.035;
+  font-weight:850;letter-spacing:var(--vv-tracking-readable, 0em);line-height:1.035;
   font-size:clamp(43px,5vw,75px);color:#003f5c;
 }
 .vv-about-editorial .vv-purpose-editorial-top h2 em{font-style:normal;color:#19a99c}
@@ -63,7 +63,7 @@
 .vv-purpose-statement{flex:1;min-height:217px;display:flex;flex-direction:column;justify-content:center;padding:27px 0 13px}
 .vv-purpose-statement-kicker{font-size:10px;font-weight:850;letter-spacing:.13em;color:#239c91}
 .vv-about-editorial .vv-purpose-statement h3{
-  font-size:clamp(31px,3vw,44px);line-height:1.08;letter-spacing:-.065em;
+  font-size:clamp(31px,3vw,44px);line-height:1.08;letter-spacing:var(--vv-tracking-readable, 0em);
   color:#003f5c;margin:12px 0 10px;font-weight:850;
 }
 .vv-about-editorial .vv-purpose-statement h3 em{font-style:normal;color:#17a898}
@@ -174,7 +174,7 @@
 .vv-purpose-step-glyph{width:46px;height:46px;display:grid;place-items:center;flex:0 0 auto;border-radius:13px;background:#1c686e;color:#75ebd2;border:1px solid #72cbb95b}
 .vv-purpose-mission-step.is-active .vv-purpose-step-glyph{background:#75efd2;color:#003f5c;border-color:#a0ffe4}
 .vv-purpose-step-copy{display:flex;flex-direction:column;gap:5px;min-width:0;flex:1}
-.vv-purpose-step-copy strong{font-size:clamp(16px,1.9vw,23px);letter-spacing:-.04em;font-weight:850;color:#ecfff6}
+.vv-purpose-step-copy strong{font-size:clamp(16px,1.9vw,23px);letter-spacing:var(--vv-tracking-readable, 0em);font-weight:850;color:#ecfff6}
 .vv-purpose-step-copy small{font-size:10px;line-height:1.35;color:#9ec9bf}
 .vv-purpose-step-arrow{color:#6de7d0}
 .vv-purpose-step-progress{position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#2ec4b6,#c0ffe5);border-radius:99px;animation:vv-purpose-progress 2.8s linear infinite;transform-origin:left}
@@ -188,7 +188,7 @@
 .vv-purpose-readout-copy{min-width:0;flex:1}
 .vv-purpose-readout-copy span{display:block;color:#65ddc4;font-size:9px;font-weight:850;letter-spacing:.13em;margin-bottom:7px}
 .vv-about-editorial .vv-purpose-readout-copy p{margin:0;color:#d1f6eb;font-size:12px;line-height:1.55}
-.vv-purpose-mission-ambient{position:absolute;top:22%;right:-1%;font-size:67px;font-weight:900;line-height:.92;letter-spacing:-.07em;color:#89e9d00a;pointer-events:none;transform:rotate(11deg)}
+.vv-purpose-mission-ambient{position:absolute;top:22%;right:-1%;font-size:67px;font-weight:900;line-height:.92;letter-spacing:var(--vv-tracking-readable, 0em);color:#89e9d00a;pointer-events:none;transform:rotate(11deg)}
 .vv-purpose-afterline{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:18px;
   font-size:9px;font-weight:850;letter-spacing:.12em;color:#739892}
 @keyframes vv-purpose-slow-spin{to{transform:rotate(360deg)}}

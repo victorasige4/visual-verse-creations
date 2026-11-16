@@ -109,7 +109,7 @@
   max-width:700px;
   font-size:clamp(42px,5.7vw,74px);
   line-height:1.04;
-  letter-spacing:-.085em;
+  letter-spacing:var(--vv-tracking-readable, 0em);
   font-weight:850;
   color:#f5fbf8;
 }
@@ -211,7 +211,7 @@
   color:#f8fcf9;
   font-size:clamp(17px,1.7vw,22px);
   line-height:1.2;
-  letter-spacing:-.043em;
+  letter-spacing:var(--vv-tracking-readable, 0em);
   font-weight:850;
   transition:color .3s,transform .3s;
 }
@@ -253,7 +253,7 @@
   #process.vv-why-section,.vv-why-shell{min-height:0}
   .vv-why-shell{padding:90px 22px 78px}
   .vv-why-intro{display:block}
-  .vv-why-intro h2{font-size:clamp(39px,10vw,56px);line-height:1.08;letter-spacing:-.074em;margin-top:21px}
+  .vv-why-intro h2{font-size:clamp(39px,10vw,56px);line-height:1.08;letter-spacing:var(--vv-tracking-readable, 0em);margin-top:21px}
   .vv-why-intro-right{padding:0;margin-top:26px}
   .vv-why-intro-right p{max-width:530px;margin:0;font-size:13px;line-height:1.8}
   .vv-why-timeline{display:grid;grid-template-columns:1fr;gap:29px;margin-top:63px}
@@ -328,7 +328,7 @@
   max-width:750px;color:#f6fcf9;
   font-size:clamp(41px,5.6vw,74px);
   line-height:1.06;
-  letter-spacing:-.075em;
+  letter-spacing:var(--vv-tracking-readable, 0em);
 }
 .vv-why-fallback>p{color:#a1c8c2;max-width:620px;line-height:1.75}
 .vv-why-fallback-reasons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;margin-top:65px}

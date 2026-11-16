@@ -16,7 +16,7 @@
 .vv-header,.vv-hero{font-family:var(--vv-typeface);color:var(--vv-navy)}
 .vv-header{position:sticky;top:0;z-index:80;background:rgba(250,252,250,.96);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,63,92,.09)}
 .vv-navbar{height:80px;max-width:1570px;margin:auto;padding:0 clamp(20px,4.4vw,80px);display:flex;align-items:center;justify-content:space-between;gap:32px}
-.vv-logo{color:var(--vv-navy);font-weight:900;font-size:24px;letter-spacing:-.085em;text-decoration:none;display:inline-flex;align-items:center;white-space:nowrap;gap:9px}
+.vv-logo{color:var(--vv-navy);font-weight:900;font-size:24px;letter-spacing:var(--vv-tracking-readable, 0em);text-decoration:none;display:inline-flex;align-items:center;white-space:nowrap;gap:9px}
 .vv-logo-symbol{display:grid;place-items:center;width:33px;height:33px;background:var(--vv-navy);color:white;border-radius:50%;font-size:18px;letter-spacing:-.13em;padding-right:3px}
 .vv-logo em{color:var(--vv-aqua);font-style:normal}
 .vv-nav-items{display:flex;align-items:center;gap:clamp(15px,2.6vw,38px)}
@@ -33,9 +33,9 @@
 .vv-hero-kicker{font-size:11px;font-weight:850;letter-spacing:.16em;display:flex;align-items:center;gap:10px;margin-bottom:clamp(58px,7vh,94px)}
 .vv-kicker-dot{height:9px;width:9px;background:var(--vv-aqua);border-radius:50%;box-shadow:0 0 0 6px rgba(46,196,182,.12)}
 .vv-scene-eyebrow{font-size:12px;font-weight:850;letter-spacing:.17em;margin-bottom:18px;color:#3c8290}
-.vv-hero-title{font-family:var(--vv-typeface);font-size:clamp(55px,7vw,116px);line-height:.97;letter-spacing:-.09em;font-weight:850;max-width:850px;min-height:1.94em;text-wrap:balance;margin:0 0 25px;color:var(--vv-navy)}
+.vv-hero-title{font-family:var(--vv-typeface);font-size:clamp(55px,7vw,116px);line-height:.97;letter-spacing:var(--vv-tracking-readable, 0em);font-weight:850;max-width:850px;min-height:1.94em;text-wrap:balance;margin:0 0 25px;color:var(--vv-navy)}
 .vv-title-dot{color:var(--vv-aqua)}
-.vv-hero-description{max-width:470px;min-height:4.2em;font-size:clamp(16px,1.45vw,19px);line-height:1.65;color:#4e7280;margin:0 0 23px;letter-spacing:-.025em}
+.vv-hero-description{max-width:470px;min-height:4.2em;font-size:clamp(16px,1.45vw,19px);line-height:1.65;color:#4e7280;margin:0 0 23px;letter-spacing:var(--vv-tracking-readable, 0em)}
 .vv-current-service{display:flex;align-items:center;gap:13px;font-size:12px;margin-top:0;margin-bottom:35px}
 .vv-current-service span{font-size:10px;letter-spacing:.14em;font-weight:800;color:#66949c}
 .vv-current-service strong{font-size:13px;font-weight:850}
@@ -70,7 +70,7 @@
 @keyframes vv-copy-in{from{opacity:.1;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){.vv-copy-enter{animation:none}}
 
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:#003f5c;background:#fafcfa;font-family:'Montserrat',Arial,sans-serif;-webkit-font-smoothing:antialiased}button,a{font:inherit}button:focus-visible,a:focus-visible{outline:3px solid #119a92;outline-offset:4px}.vv-preview-section{padding:115px max(5vw,20px);max-width:1480px;margin:auto}.vv-label{font-weight:850;letter-spacing:.18em;font-size:11px;color:#24867f}.vv-section-h{font-size:clamp(40px,5.8vw,82px);line-height:1.07;letter-spacing:-.08em;font-weight:850;max-width:950px;margin:17px 0 28px}.vv-lead{font-size:clamp(17px,1.6vw,22px);line-height:1.7;max-width:900px;color:#516f7c}.vv-service-list{border-top:1px solid #a7cecd;margin-top:48px}.vv-service-row{display:flex;gap:25px;align-items:baseline;border-bottom:1px solid #a7cecd;padding:25px 0;text-decoration:none;color:inherit}.vv-service-row small{font-size:12px;font-weight:800;color:#409f9a}.vv-service-row strong{font-size:clamp(27px,3.4vw,48px);font-weight:850;letter-spacing:-.06em;flex:1}.vv-service-row span{font-size:14px;font-weight:600;color:#467a80}.vv-service-row:hover strong{color:#168d87}.vv-work-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:18px}.vv-work-placeholder{min-height:370px;background:#e7f4f1;border-radius:18px;border:1px solid #c5e6e0;display:flex;flex-direction:column;justify-content:space-between;padding:32px;overflow:hidden;position:relative}.vv-work-placeholder:before{content:'V';font-weight:900;font-size:clamp(200px,22vw,340px);line-height:.8;letter-spacing:-.14em;color:#caeae7;position:absolute;right:-20px;bottom:-20px}.vv-work-placeholder div{z-index:1}.vv-work-placeholder strong{display:block;font-size:28px;letter-spacing:-.05em}.vv-work-placeholder small{font-size:12px;font-weight:800;letter-spacing:.12em}.vv-work-placeholder p{z-index:1;font-size:14px;color:#517680}.vv-work-grid .vv-work-placeholder:nth-child(2){background:#e1ecef}.vv-work-grid .vv-work-placeholder:nth-child(2):before{color:#c5e0e5}.vv-process{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;margin-top:45px}.vv-process article{border-top:3px solid #2ec4b6;padding-top:20px}.vv-process article strong{font-size:25px;letter-spacing:-.05em}.vv-process article p{line-height:1.7;color:#5c7580}.vv-footer{background:#003f5c;color:white;padding:95px max(5vw,20px) 55px}.vv-footer-inner{max-width:1400px;margin:auto}.vv-footer-title{font-size:clamp(50px,7.3vw,105px);line-height:1;letter-spacing:-.08em;margin:15px 0 35px;font-weight:850}.vv-footer a{color:#2ec4b6;text-decoration:none;display:inline-block;border-bottom:2px solid currentColor;padding-bottom:9px;font-weight:850}.vv-footer-end{margin-top:110px;display:flex;justify-content:space-between;gap:10px;color:#b0d8dd;font-size:12px}.vv-footer-end a{border:0;padding:0;color:inherit;font-weight:600}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:#003f5c;background:#fafcfa;font-family:'Montserrat',Arial,sans-serif;-webkit-font-smoothing:antialiased}button,a{font:inherit}button:focus-visible,a:focus-visible{outline:3px solid #119a92;outline-offset:4px}.vv-preview-section{padding:115px max(5vw,20px);max-width:1480px;margin:auto}.vv-label{font-weight:850;letter-spacing:.18em;font-size:11px;color:#24867f}.vv-section-h{font-size:clamp(40px,5.8vw,82px);line-height:1.07;letter-spacing:var(--vv-tracking-readable, 0em);font-weight:850;max-width:950px;margin:17px 0 28px}.vv-lead{font-size:clamp(17px,1.6vw,22px);line-height:1.7;max-width:900px;color:#516f7c}.vv-service-list{border-top:1px solid #a7cecd;margin-top:48px}.vv-service-row{display:flex;gap:25px;align-items:baseline;border-bottom:1px solid #a7cecd;padding:25px 0;text-decoration:none;color:inherit}.vv-service-row small{font-size:12px;font-weight:800;color:#409f9a}.vv-service-row strong{font-size:clamp(27px,3.4vw,48px);font-weight:850;letter-spacing:var(--vv-tracking-readable, 0em);flex:1}.vv-service-row span{font-size:14px;font-weight:600;color:#467a80}.vv-service-row:hover strong{color:#168d87}.vv-work-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:18px}.vv-work-placeholder{min-height:370px;background:#e7f4f1;border-radius:18px;border:1px solid #c5e6e0;display:flex;flex-direction:column;justify-content:space-between;padding:32px;overflow:hidden;position:relative}.vv-work-placeholder:before{content:'V';font-weight:900;font-size:clamp(200px,22vw,340px);line-height:.8;letter-spacing:-.14em;color:#caeae7;position:absolute;right:-20px;bottom:-20px}.vv-work-placeholder div{z-index:1}.vv-work-placeholder strong{display:block;font-size:28px;letter-spacing:var(--vv-tracking-readable, 0em)}.vv-work-placeholder small{font-size:12px;font-weight:800;letter-spacing:.12em}.vv-work-placeholder p{z-index:1;font-size:14px;color:#517680}.vv-work-grid .vv-work-placeholder:nth-child(2){background:#e1ecef}.vv-work-grid .vv-work-placeholder:nth-child(2):before{color:#c5e0e5}.vv-process{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;margin-top:45px}.vv-process article{border-top:3px solid #2ec4b6;padding-top:20px}.vv-process article strong{font-size:25px;letter-spacing:var(--vv-tracking-readable, 0em)}.vv-process article p{line-height:1.7;color:#5c7580}.vv-footer{background:#003f5c;color:white;padding:95px max(5vw,20px) 55px}.vv-footer-inner{max-width:1400px;margin:auto}.vv-footer-title{font-size:clamp(50px,7.3vw,105px);line-height:1;letter-spacing:var(--vv-tracking-readable, 0em);margin:15px 0 35px;font-weight:850}.vv-footer a{color:#2ec4b6;text-decoration:none;display:inline-block;border-bottom:2px solid currentColor;padding-bottom:9px;font-weight:850}.vv-footer-end{margin-top:110px;display:flex;justify-content:space-between;gap:10px;color:#b0d8dd;font-size:12px}.vv-footer-end a{border:0;padding:0;color:inherit;font-weight:600}
 @media(max-width:750px){.vv-preview-section{padding:72px 20px}.vv-work-grid,.vv-process{grid-template-columns:1fr}.vv-service-row{flex-wrap:wrap}.vv-service-row span{width:100%;padding-left:35px}.vv-work-placeholder{min-height:280px}.vv-footer-end{flex-wrap:wrap}}
 
 .vv-copy-enter{animation:vv-copy-in .48s cubic-bezier(.2,.7,.2,1)}@keyframes vv-copy-in{from{opacity:.1;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.vv-mobile-menu[hidden]{display:none}.vv-header{font-family:'Montserrat',Arial,sans-serif}.vv-hero-title{min-height:1.9em}
@@ -79,15 +79,15 @@
    All sections share one Montserrat family. The original homepage, service
    particle animation, content, colors, sections, responsiveness and JS remain. */
 html,body,.vv-header,.vv-hero,button,input,textarea,select{font-family:var(--vv-typeface)}
-body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
+body{font-weight:var(--vv-fw-regular);letter-spacing:var(--vv-tracking-readable, 0em)}
 /* Expressive display typography */
-.vv-hero-title{font-family:var(--vv-typeface);font-weight:var(--vv-fw-extra);letter-spacing:-.055em;line-height:1.03}
-.vv-section-h,.vv-footer-title{font-family:var(--vv-typeface);font-weight:var(--vv-fw-extra);letter-spacing:-.055em;line-height:1.06}
-.vv-logo{font-weight:var(--vv-fw-extra);letter-spacing:-.065em}
+.vv-hero-title{font-family:var(--vv-typeface);font-weight:var(--vv-fw-extra);letter-spacing:var(--vv-tracking-readable, 0em);line-height:1.03}
+.vv-section-h,.vv-footer-title{font-family:var(--vv-typeface);font-weight:var(--vv-fw-extra);letter-spacing:var(--vv-tracking-readable, 0em);line-height:1.06}
+.vv-logo{font-weight:var(--vv-fw-extra);letter-spacing:var(--vv-tracking-readable, 0em)}
 .vv-work-placeholder:before{font-weight:var(--vv-fw-extra)}
 /* Clear section hierarchy */
-.vv-service-row strong{font-weight:var(--vv-fw-bold);letter-spacing:-.035em}
-.vv-work-placeholder strong,.vv-process article strong{font-weight:var(--vv-fw-bold);letter-spacing:-.03em}
+.vv-service-row strong{font-weight:var(--vv-fw-bold);letter-spacing:var(--vv-tracking-readable, 0em)}
+.vv-work-placeholder strong,.vv-process article strong{font-weight:var(--vv-fw-bold);letter-spacing:var(--vv-tracking-readable, 0em)}
 .vv-current-service strong{font-weight:var(--vv-fw-bold)}
 /* Navigation, calls-to-action, and concise information */
 .vv-nav-items a,.vv-mobile-menu a{font-weight:var(--vv-fw-demi)}
@@ -97,9 +97,9 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
 .vv-service-row small,.vv-work-placeholder small{font-weight:var(--vv-fw-demi)}
 /* Readable body text and supporting descriptions */
 .vv-hero-description,.vv-lead,.vv-process article p,
-.vv-work-placeholder p,.vv-service-row span{font-weight:var(--vv-fw-regular);letter-spacing:-.008em}
+.vv-work-placeholder p,.vv-service-row span{font-weight:var(--vv-fw-regular);letter-spacing:var(--vv-tracking-readable, 0em)}
 .vv-footer-end,.vv-footer-end a{font-weight:var(--vv-fw-medium)}
-@media(max-width:760px){.vv-hero-title{letter-spacing:-.05em}.vv-section-h,.vv-footer-title{letter-spacing:-.045em}}
+@media(max-width:760px){.vv-hero-title{letter-spacing:var(--vv-tracking-readable, 0em)}.vv-section-h,.vv-footer-title{letter-spacing:var(--vv-tracking-readable, 0em)}}
 
 /* VisualVerse brand lock-up / Nov 11 — uses the supplied logo (not recreated type) */
 .vv-header .vv-logo{display:inline-flex;align-items:center;justify-content:flex-start;flex:0 0 auto;gap:0;line-height:0;width:228px;min-height:58px;overflow:hidden;letter-spacing:normal}
@@ -119,7 +119,7 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
 .vv-header .vv-logo{flex:0 0 auto;width:clamp(172px,17.6vw,218px)}
 .vv-header .vv-brand-wordmark{width:100%;max-width:218px;height:auto}
 .vv-nav-items{display:flex;align-items:center;gap:3px;min-width:0;justify-content:center;flex:1}
-.vv-nav-items .vv-nav-link{display:inline-flex;align-items:center;justify-content:center;gap:5px;position:relative;white-space:nowrap;padding:11px clamp(7px,.8vw,12px);border:0;background:transparent;border-radius:100px;color:#264751;text-decoration:none;font-size:clamp(11px,.85vw,13px);font-weight:600;letter-spacing:-.015em;opacity:1;cursor:pointer;transition:background-color .25s ease,color .25s ease,transform .25s ease}
+.vv-nav-items .vv-nav-link{display:inline-flex;align-items:center;justify-content:center;gap:5px;position:relative;white-space:nowrap;padding:11px clamp(7px,.8vw,12px);border:0;background:transparent;border-radius:100px;color:#264751;text-decoration:none;font-size:clamp(11px,.85vw,13px);font-weight:600;letter-spacing:var(--vv-tracking-readable, 0em);opacity:1;cursor:pointer;transition:background-color .25s ease,color .25s ease,transform .25s ease}
 .vv-nav-items .vv-nav-link::after{display:none}
 .vv-nav-items .vv-nav-link:hover,.vv-nav-items .vv-nav-link:focus-visible,.vv-nav-items .vv-nav-link[aria-current="page"],.vv-nav-items .vv-nav-trigger[aria-expanded="true"]{background:rgba(46,196,182,.115);color:var(--vv-navy);transform:translateY(-1px)}
 .vv-nav-items .vv-nav-link[aria-current="page"]::before{position:absolute;content:"";bottom:4px;left:calc(50% - 2px);width:4px;height:4px;background:var(--vv-aqua);border-radius:50%}
@@ -147,7 +147,7 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
 .vv-language-unavailable{color:#7a939a}
 .vv-language-unavailable small{font-size:10px;white-space:nowrap}
 /* Pill controls copied in movement and proportion, recoloured to our own brand. */
-.vv-pill-button{isolation:isolate;position:relative;display:inline-flex;align-items:center;justify-content:space-between;gap:16px;overflow:hidden;text-decoration:none;border:1px solid transparent;border-radius:100px;padding:6px 7px 6px 19px;color:#fff;background:var(--vv-pill-ink);box-shadow:0 5px 14px rgba(0,45,55,.08);font-size:12px;font-weight:700;letter-spacing:-.015em;line-height:1;min-height:45px;transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease,color .32s ease,background-color .32s ease}
+.vv-pill-button{isolation:isolate;position:relative;display:inline-flex;align-items:center;justify-content:space-between;gap:16px;overflow:hidden;text-decoration:none;border:1px solid transparent;border-radius:100px;padding:6px 7px 6px 19px;color:#fff;background:var(--vv-pill-ink);box-shadow:0 5px 14px rgba(0,45,55,.08);font-size:12px;font-weight:700;letter-spacing:var(--vv-tracking-readable, 0em);line-height:1;min-height:45px;transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease,color .32s ease,background-color .32s ease}
 .vv-pill-button::before{content:"";position:absolute;inset:0;background:var(--vv-aqua);z-index:-1;transform:translateX(-103%);transition:transform .45s cubic-bezier(.22,.8,.2,1)}
 .vv-pill-button:hover::before,.vv-pill-button:focus-visible::before{transform:translateX(0)}
 .vv-pill-button:hover,.vv-pill-button:focus-visible{color:var(--vv-deep);transform:translateY(-2px);box-shadow:0 10px 25px rgba(0,45,55,.13);background:var(--vv-pill-ink)}
@@ -192,7 +192,7 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
 .vv-audience-grid article{min-height:235px;background:#eaf6f3;padding:25px 22px;border-radius:16px;transition:transform .26s,background .26s}
 .vv-audience-grid article:hover{transform:translateY(-5px);background:#dcf3ee}
 .vv-audience-grid article>span{font-size:10px;letter-spacing:.17em;color:#439e98;font-weight:700}
-.vv-audience-grid h3{margin:58px 0 12px;font-size:clamp(20px,2vw,28px);letter-spacing:-.045em;line-height:1.1}
+.vv-audience-grid h3{margin:58px 0 12px;font-size:clamp(20px,2vw,28px);letter-spacing:var(--vv-tracking-readable, 0em);line-height:1.1}
 .vv-audience-grid p{font-size:13px;line-height:1.65;color:#557780;margin:0}
 /* Small laptop/tablet: preserve the full mobile navigation rather than cramping labels. */
 @media(max-width:1180px){.vv-navbar{height:74px}.vv-header .vv-nav-items,.vv-header .vv-talk,.vv-language-picker{display:none}.vv-header .vv-logo{width:198px}.vv-mobile-toggle{display:grid;place-items:center}.vv-mobile-menu:not([hidden]){display:flex;flex-direction:column;padding:8px clamp(20px,4vw,45px) 25px;max-height:calc(100svh - 74px);overflow-y:auto;background:#fafcfa;border-top:1px solid #e5efed;box-shadow:0 22px 36px rgba(0,40,50,.1)}.vv-mobile-menu a,.vv-mobile-services summary{display:block;text-decoration:none;padding:14px 0;color:var(--vv-navy);font-size:15px;font-weight:600;border-bottom:1px solid #e3efed;cursor:pointer}.vv-mobile-services summary{display:flex;justify-content:space-between;align-items:center;list-style:none}.vv-mobile-services summary::-webkit-details-marker{display:none}.vv-mobile-services[open] summary span{transform:rotate(180deg)}.vv-mobile-services>div{display:grid;grid-template-columns:repeat(2,1fr);gap:0 13px;padding:4px 0 12px}.vv-mobile-services>div a{font-size:13px;color:#426c76;padding:12px 7px}.vv-mobile-language{display:flex;gap:9px;align-items:center;padding:17px 0;font-size:12px;color:#617b80}.vv-mobile-language svg{width:17px;height:17px}.vv-mobile-menu a.vv-mobile-cta{border-radius:100px;margin-top:5px;padding:14px 18px;color:var(--vv-deep);background:var(--vv-aqua);font-weight:700;display:flex;justify-content:space-between;align-items:center}.vv-mobile-cta span{font-size:19px}}
@@ -239,7 +239,7 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
 .vv-about-main{max-width:860px;padding-top:4px}
 .vv-about-overline{gap:14px;margin-bottom:clamp(46px,5vw,70px)}
 .vv-about-overline-line{height:1px;width:26px;background:var(--vv-aqua)}
-.vv-about-headline{margin:0;color:#21383e;font-family:var(--vv-typeface);font-weight:var(--vv-fw-extra);font-size:clamp(35px,3.75vw,58px);letter-spacing:-.065em;line-height:1.13;text-wrap:pretty}
+.vv-about-headline{margin:0;color:#21383e;font-family:var(--vv-typeface);font-weight:var(--vv-fw-extra);font-size:clamp(35px,3.75vw,58px);letter-spacing:var(--vv-tracking-readable, 0em);line-height:1.13;text-wrap:pretty}
 .vv-about-highlight{color:#0f8b84} /* Accessible deep-aqua shade of brand #2EC4B6 */
 .vv-about-description{margin:35px 0 30px;max-width:645px;color:#55747e;font-size:clamp(15px,1.15vw,18px);line-height:1.8;font-weight:var(--vv-fw-regular)}
 .vv-about-more{display:inline-flex;align-items:center;gap:18px;text-decoration:none;color:#27454c;font-size:14px;font-weight:var(--vv-fw-bold);padding:12px 0 10px;border-bottom:1px solid rgba(0,63,92,.35);transition:color .25s,border-color .25s,gap .25s}
@@ -260,7 +260,7 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
   .vv-about-aside{min-height:0;margin-bottom:25px}
   .vv-about-orbit-art,.vv-about-aside-note{display:none}
   .vv-about-overline{margin:0 0 28px;font-size:9px}
-  .vv-about-headline{font-size:clamp(32px,8.1vw,48px);line-height:1.14;letter-spacing:-.055em}
+  .vv-about-headline{font-size:clamp(32px,8.1vw,48px);line-height:1.14;letter-spacing:var(--vv-tracking-readable, 0em)}
   .vv-about-description{margin:23px 0 20px;line-height:1.75;font-size:15px}
   .vv-about-more{font-size:13px;padding:9px 0}
 }
@@ -463,7 +463,7 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
 /* Visual Verse 2026 — Aceternity Navbar Menu-inspired expandable navigation.
    Native adaptation keeps the existing static HTML site + Montserrat intact. */
 .vv-navbar{position:relative}
-.vv-nav-items .vv-mega-trigger{appearance:none;font:inherit;font-family:var(--vv-typeface);font-size:clamp(11px,.85vw,13px);font-weight:600;letter-spacing:-.015em}
+.vv-nav-items .vv-mega-trigger{appearance:none;font:inherit;font-family:var(--vv-typeface);font-size:clamp(11px,.85vw,13px);font-weight:600;letter-spacing:var(--vv-tracking-readable, 0em)}
 .vv-mega-trigger[aria-expanded="true"]{background:rgba(46,196,182,.12);color:var(--vv-navy)}
 .vv-mega-trigger[aria-expanded="true"] svg{transform:rotate(180deg)}
 .vv-mega-shell{
@@ -484,7 +484,7 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
 .vv-mega-intro{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;padding:30px 25px;border-radius:20px;background:linear-gradient(155deg,#edf9f5,#ddf1ed 75%,#e8f8f6);isolation:isolate}
 .vv-mega-intro::before{content:"";position:absolute;right:-50px;top:-55px;width:160px;height:160px;border:1px solid rgba(0,63,92,.11);border-radius:50%}
 .vv-mega-kicker{font-size:10px;font-weight:700;letter-spacing:.17em;color:#277d80}
-.vv-mega-intro h2{font-size:clamp(23px,2.6vw,33px);letter-spacing:-.065em;line-height:1.13;font-weight:800;color:var(--vv-navy);margin:32px 0 15px}
+.vv-mega-intro h2{font-size:clamp(23px,2.6vw,33px);letter-spacing:var(--vv-tracking-readable, 0em);line-height:1.13;font-weight:800;color:var(--vv-navy);margin:32px 0 15px}
 .vv-mega-intro h2 em{color:#168e88;font-style:normal}
 .vv-mega-intro p{font-size:12px;line-height:1.75;color:#466e75;margin:0 0 22px;max-width:265px}
 .vv-mega-all{position:relative;z-index:1;display:inline-flex;align-items:center;gap:16px;margin-top:auto;border-bottom:1px solid #66b5ae;padding:8px 0;text-decoration:none!important;font-size:12px!important;color:var(--vv-navy)!important;font-weight:800!important}
@@ -496,7 +496,7 @@ body{font-weight:var(--vv-fw-regular);letter-spacing:-.005em}
 .vv-mega-card:hover,.vv-mega-card:focus-visible{background:#eaf8f5!important;border-color:#b8e6df;transform:translateY(-2px)!important}
 .vv-mega-num{flex:0 0 auto;padding-top:3px;color:#2aa99d;font-size:10px;font-weight:800}
 .vv-mega-card-body{display:flex;flex-direction:column;gap:6px;flex:1;min-width:0}
-.vv-mega-card strong{font-size:14px;font-weight:750;letter-spacing:-.035em;line-height:1.15}
+.vv-mega-card strong{font-size:14px;font-weight:750;letter-spacing:var(--vv-tracking-readable, 0em);line-height:1.15}
 .vv-mega-card small{font-size:11px;line-height:1.5;color:#64838a;font-weight:400}
 .vv-mega-arrow{font-size:15px;color:#219f96;transition:transform .2s}
 .vv-mega-card:hover .vv-mega-arrow{transform:translate(2px,-2px)}
