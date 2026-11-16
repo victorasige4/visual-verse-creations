@@ -1,4 +1,7 @@
 import "../visual-verse-actions.css";
+import { mountSiteBackgroundBeams } from "../components/VisualVerseBackgroundBeams";
+
+mountSiteBackgroundBeams();
 
 // Match the two home CTA buttons' gentle magnetic response without attaching
 // one listener per button or running layout work for ordinary pointer movement.
