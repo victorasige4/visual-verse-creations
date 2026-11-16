@@ -1,3 +1,4 @@
+import { VisualVerseActionContent } from "./VisualVerseAction";
 import { lazy, Suspense, useEffect, useState, type FormEvent } from "react";
 import {
   ArrowUpRight, ArrowRight, Camera, Clapperboard, Palette, PenTool,
@@ -60,8 +61,8 @@ function PageHero({kind}:{kind:Kind}){
           <h1>{page.first}<br/><em>{page.accent}</em></h1>
           <p>{page.description}</p>
           <div className="vv-inner-hero-actions">
-            <a href="/request-quote.html">Start a project <ArrowUpRight size={16} aria-hidden="true"/></a>
-            <a href="/projects.html">Explore our work <ArrowRight size={16} aria-hidden="true"/></a>
+            <a className="vv-motion-action vv-action-primary" href="/request-quote.html"><VisualVerseActionContent>Start a project</VisualVerseActionContent></a>
+            <a className="vv-motion-action vv-action-secondary" href="/projects.html"><VisualVerseActionContent Icon={ArrowRight}>Explore our work</VisualVerseActionContent></a>
           </div>
         </div>
         <div className="vv-inner-hero-art">
@@ -120,7 +121,7 @@ function ContactPage(){
           <label>Subject <input required minLength={3} value={subject} onChange={e=>setSubject(e.target.value)} placeholder="What is this about?"/></label>
           <label>Message <textarea required minLength={10} rows={5} value={message} onChange={e=>setMessage(e.target.value)} placeholder="Tell us a little about your idea…"/></label>
           <p>Submitting opens a prepared draft in your email application. Your message is not sent automatically.</p>
-          <button type="submit">Prepare my email <Send size={17}/></button>
+          <button type="submit" className="vv-motion-action vv-action-primary"><VisualVerseActionContent Icon={Send}>Prepare my email</VisualVerseActionContent></button>
         </form>
       </div>
     </section>
@@ -185,7 +186,7 @@ function QuotePage(){
           <label>Tell us about the project * <textarea required minLength={15} rows={6} value={description} onChange={e=>setDescription(e.target.value)} placeholder="What are you working on, who is it for, and what would success look like?"/></label>
           <div className="vv-inner-file-note"><FileText size={20}/><span><strong>Need to share references?</strong> You can attach logos, moodboards or briefs to the email draft after opening it. Files can't be attached automatically from this form.</span></div>
           <p>Submitting opens your email application with the project brief filled in. No form submission is claimed until you send the email yourself.</p>
-          <button type="submit">Prepare my quote request <ArrowUpRight size={18}/></button>
+          <button type="submit" className="vv-motion-action vv-action-primary"><VisualVerseActionContent>Prepare my quote request</VisualVerseActionContent></button>
         </form>
       </div>
     </section>

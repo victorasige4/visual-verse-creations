@@ -1,3 +1,4 @@
+import { VisualVerseActionContent } from "../VisualVerseAction";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
@@ -125,9 +126,7 @@ export function ResizableNavbarDemo() {
           <a className={"vv-nav-resize-link"+(page==="contact"?" is-active":"")} href="/contact.html">Contact</a>
         </nav>
         <div className="vv-nav2-actions vv-nav-resize-actions">
-          <a href="/request-quote.html" className="vv-nav2-cta vv-nav-resize-cta">
-            Let's talk <span><ArrowUpRight size={15} aria-hidden="true"/></span>
-          </a>
+          <a href="/request-quote.html" className="vv-nav2-cta vv-nav-resize-cta vv-motion-action vv-action-primary"><VisualVerseActionContent Icon={ArrowUpRight}>Let's talk</VisualVerseActionContent></a>
         </div>
       </NavBody>
       <AnimatePresence>

@@ -1,7 +1,9 @@
+import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowUpRight, Check, CheckCircle2, Circle, Heart, Rocket, Sparkles } from "lucide-react";
 import "../visual-verse-services-page.css";
+import { Boxes } from "./ui/background-boxes";
 
 /**
  * Visual Verse creative process. Observed and rebuilt from the original
@@ -129,7 +131,7 @@ export function VisualVerseProcessJourney({items=steps, heading, artwork, quoteH
 
   return <section className="vv-sp-process" id="our-process" aria-labelledby="vv-sp-title" ref={rootRef}>
     <div className="vv-sp-pin">
-      <div className="vv-sp-dots" aria-hidden="true"/>
+      <Boxes/>
       <div className="vv-sp-grid">
         <div className="vv-sp-left">
           <div className="vv-sp-overline"><i/><i/> OUR PROCESS</div>
@@ -167,7 +169,7 @@ export function VisualVerseProcessJourney({items=steps, heading, artwork, quoteH
               </button>
             </li>)}
           </ol>
-          <a className="vv-sp-after-link" href={quoteHref ?? import.meta.env.BASE_URL+"request-quote.html"}>Ready to begin your story? <ArrowUpRight size={16}/></a>
+          <a className="vv-sp-after-link vv-motion-action vv-action-on-dark" href={quoteHref ?? import.meta.env.BASE_URL+"request-quote.html"}><VisualVerseActionContent Icon={ArrowUpRight}>Ready to begin your story?</VisualVerseActionContent></a>
         </div>
       </div>
       <div className="vv-sp-section-progress" aria-hidden="true"><span/></div>

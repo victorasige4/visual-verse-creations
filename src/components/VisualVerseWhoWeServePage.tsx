@@ -1,3 +1,4 @@
+import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
 import {
@@ -113,7 +114,7 @@ function Hero() {
           WHO WE CREATE WITH
         </motion.div>
         <h1 id="vvx-hero-title" className="vvx-hero-heading">
-          {["NO TWO","STORIES","ALIKE."].map((text,index)=>
+          {["No two","stories","alike."].map((text,index)=>
             <span className={"vvx-hero-heading-row vvx-hero-heading-"+index} key={text}>
               <motion.span initial={reduced?false:{y:"115%",opacity:0}} animate={{y:"0%",opacity:1}}
                 transition={{duration:.85,delay:.14+index*.13,ease:[.16,1,.3,1]}}>{text}</motion.span>
@@ -123,8 +124,8 @@ function Hero() {
           transition={{delay:.62,duration:.7}} className="vvx-hero-bottom">
           <p>Some people build brands. Others build movements, moments, or the next big thing. We make creative work that feels like <em>yours.</em></p>
           <div className="vvx-hero-buttons">
-            <a className="vvx-pill vvx-pill-primary" href="#explore">Find your people <ArrowDown size={17} aria-hidden="true"/></a>
-            <a className="vvx-pill vvx-pill-ghost" href={inquire()}>Let's create <ArrowUpRight size={17} aria-hidden="true"/></a>
+            <a className="vvx-pill vvx-pill-primary vv-motion-action vv-action-primary" href="#explore"><VisualVerseActionContent Icon={ArrowDown}>Find your people</VisualVerseActionContent></a>
+            <a className="vvx-pill vvx-pill-ghost vv-motion-action vv-action-secondary" href={inquire()}><VisualVerseActionContent Icon={ArrowUpRight}>Let's create</VisualVerseActionContent></a>
           </div>
         </motion.div>
       </div>
@@ -217,7 +218,7 @@ function WorldAtlas() {
       <Reveal className="vvx-section-header">
         <Eyebrow>THE PEOPLE / THE POSSIBILITIES</Eyebrow>
         <div className="vvx-section-header-grid">
-          <h2 id="vvx-atlas-heading">FIND YOUR<br/><em>FREQUENCY.</em></h2>
+          <h2 id="vvx-atlas-heading">Find your<br/><em>frequency.</em></h2>
           <p>Six different worlds. One thing in common: a story worth bringing to life. Scroll through them—or choose your own.</p>
         </div>
       </Reveal>
@@ -245,7 +246,7 @@ function WorldAtlas() {
           <div className="vvx-world-stage-bottom" key={world.id}>
             <div className="vvx-world-stage-summary"><span>THE CREATIVE BRIEF</span><h3>{world.headline}</h3><p>{world.blurb}</p><span className="vvx-world-stage-promise">{world.promise}</span></div>
             <div className="vvx-world-stage-tags">{world.offerings.map(x=><span key={x}>{x}</span>)}</div>
-            <a href={inquire(world.name)} className="vvx-world-stage-link">Create with us <ArrowUpRight size={16}/></a>
+            <a href={inquire(world.name)} className="vvx-world-stage-link vv-motion-action vv-action-primary"><VisualVerseActionContent Icon={ArrowUpRight}>Create with us</VisualVerseActionContent></a>
           </div>
         </div>
       </div>
@@ -276,7 +277,7 @@ function Collaboration() {
     <div className="vvx-container">
       <Reveal className="vvx-collab-heading">
         <Eyebrow dark>THE GOOD STUFF HAPPENS TOGETHER</Eyebrow>
-        <h2 id="vvx-collab-heading">YOUR WORLD.<br/><em>OUR TOOLBOX.</em></h2>
+        <h2 id="vvx-collab-heading">Your world.<br/><em>Our toolbox.</em></h2>
         <p>A little of this. A lot of that. We mix the right creative disciplines for the story, not the other way around.</p>
       </Reveal>
       <div className="vvx-collab-bento">
@@ -312,7 +313,7 @@ function FitFinder() {
   const SelectedIcon=selected.icon;
   return <section className="vvx-match" id="find-your-fit" aria-labelledby="vvx-match-heading">
     <div className="vvx-container">
-      <Reveal className="vvx-match-heading"><Eyebrow>YOUR NEXT MOVE</Eyebrow><h2 id="vvx-match-heading">SO, WHAT ARE<br/>WE <em>MAKING?</em></h2><p>Not sure what to ask for? Start with what you're trying to do. We'll help connect the dots.</p></Reveal>
+      <Reveal className="vvx-match-heading"><Eyebrow>YOUR NEXT MOVE</Eyebrow><h2 id="vvx-match-heading">So, what are<br/>we <em>making?</em></h2><p>Not sure what to ask for? Start with what you're trying to do. We'll help connect the dots.</p></Reveal>
       <div className="vvx-match-shell">
         <div className="vvx-match-options" role="tablist" aria-label="What do you want to create?">
           {matches.map((item,i)=>{
@@ -339,7 +340,7 @@ function FitFinder() {
               <div className="vvx-match-result-top"><span>{selected.label}</span><SelectedIcon size={35} strokeWidth={1.5}/></div>
               <h3>{selected.headline}</h3><p>{selected.text}</p>
               <div className="vvx-match-services">{selected.services.map(service=><span key={service}><Check size={14}/>{service}</span>)}</div>
-              <a className="vvx-pill vvx-pill-primary" href={inquire(selected.title)}>Talk to us about it <ArrowUpRight size={17}/></a>
+              <a className="vvx-pill vvx-pill-primary vv-motion-action vv-action-primary" href={inquire(selected.title)}><VisualVerseActionContent Icon={ArrowUpRight}>Talk to us about it</VisualVerseActionContent></a>
             </motion.div>
           </AnimatePresence>
         </div>
@@ -353,12 +354,12 @@ function FinalStatement() {
   return <section className="vvx-finale" aria-labelledby="vvx-finale-heading">
     <div className="vvx-container vvx-finale-inner">
       <Reveal className="vvx-finale-kicker"><Eyebrow dark>AT THE END OF THE DAY</Eyebrow></Reveal>
-      <h2 id="vvx-finale-heading"><span>IT'S NOT ABOUT</span><span>THE <em>INDUSTRY.</em></span><span>IT'S ABOUT</span><span><em>YOUR STORY.</em></span></h2>
+      <h2 id="vvx-finale-heading"><span>It's not about</span><span>the <em>industry.</em></span><span>It's about</span><span><em>your story.</em></span></h2>
       <motion.div className="vvx-finale-row" initial={reduced?false:{opacity:0,y:20}}
         whileInView={reduced?undefined:{opacity:1,y:0}} viewport={{once:true}}
         transition={{duration:.6}}>
         <p>Whether you're starting, growing, changing or celebrating—great creative work starts with understanding what matters to you.</p>
-        <a href={inquire()} className="vvx-finale-link">Let's make something matter <ArrowUpRight size={21}/></a>
+        <a href={inquire()} className="vvx-finale-link vv-motion-action vv-action-on-dark"><VisualVerseActionContent Icon={ArrowUpRight}>Let's make something matter</VisualVerseActionContent></a>
       </motion.div>
       <div className="vvx-finale-watermark" aria-hidden="true">VV.</div>
     </div>
@@ -374,7 +375,7 @@ export function VisualVerseWhoWeServePage() {
     <FitFinder/>
     <section className="vvx-questions" aria-label="Questions about working with us">
       <div className="vvx-container">
-        <Reveal className="vvx-questions-head"><Eyebrow>GOOD TO KNOW</Eyebrow><h2>NO PRESSURE.<br/><em>JUST POSSIBILITIES.</em></h2></Reveal>
+        <Reveal className="vvx-questions-head"><Eyebrow>GOOD TO KNOW</Eyebrow><h2>No pressure.<br/><em>Just possibilities.</em></h2></Reveal>
         <div className="vvx-questions-list">{faqs.map((faq,i)=><details key={faq.question} className="vvx-faq"><summary><span>0{i+1}</span><strong>{faq.question}</strong><span className="vvx-faq-toggle" aria-hidden="true">+</span></summary><p>{faq.answer}</p></details>)}</div>
       </div>
     </section>

@@ -101,6 +101,7 @@ export function VisualVerseHowWeWork() {
   };
 
   return <section id="our-approach" className="vv-about-principles vv-hww-section" aria-labelledby="vvhww-title">
+    <Boxes />
     <div className="vv-about-container vv-hww-container">
       <div className="vv-hww-heading">
         <div className="vv-hww-heading-main">
@@ -219,3 +220,4 @@ export function VisualVerseHowWeWork() {
     </div>
   </section>;
 }
+import { Boxes } from "./ui/background-boxes";

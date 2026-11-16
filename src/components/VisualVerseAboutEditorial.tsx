@@ -1,3 +1,4 @@
+import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { VisualVerseKenyaMap } from "./VisualVerseKenyaMap";
@@ -145,7 +146,7 @@ export function VisualVerseAboutEditorial() {
           <p>We approach each collaboration with curiosity, combining creative direction with practical execution. From the first rough sketch to the finished frame, we give ideas room to become something extraordinary.</p>
           <div className="vv-about-story-points"><span><CheckCircle2 size={18}/> Creative direction with purpose</span><span><CheckCircle2 size={18}/> Personal collaboration</span><span><CheckCircle2 size={18}/> Thoughtful final delivery</span></div>
           <blockquote>“The strongest work happens when imagination and intention meet.”<cite>— VISUAL VERSE CREATIONS</cite></blockquote>
-          <a className="vv-about-inline-link" href="/contact.html">Start a conversation <ArrowUpRight size={17}/></a>
+          <a className="vv-about-inline-link vv-motion-action vv-action-primary" href="/contact.html"><VisualVerseActionContent Icon={ArrowUpRight}>Start a conversation</VisualVerseActionContent></a>
         </div>
       </div>
     </section>

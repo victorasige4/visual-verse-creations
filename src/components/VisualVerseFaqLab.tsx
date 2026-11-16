@@ -1,3 +1,4 @@
+import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type { KeyboardEvent } from "react";
@@ -200,8 +201,8 @@ export function VisualVerseFaqLab() {
       <footer className="vv-faq-lab-footer">
         <div className="vv-faq-lab-footer-note"><span className="vv-faq-lab-footer-icon"><MoveUpRight size={19}/></span><div><strong>Still wondering about something?</strong><p>Some things are better talked through. Tell us what's on your mind.</p></div></div>
         <div className="vv-faq-lab-footer-actions">
-          <a href={"mailto:"+CONTACT_EMAIL+"?subject=Question%20for%20Visual%20Verse"} className="vv-faq-lab-email"><Mail size={16}/> Email a question</a>
-          <a href="/contact.html" className="vv-faq-lab-ask" data-cursor="LET'S TALK">Ask us anything <ArrowUpRight size={17}/></a>
+          <a href={"mailto:"+CONTACT_EMAIL+"?subject=Question%20for%20Visual%20Verse"} className="vv-faq-lab-email vv-motion-action vv-action-secondary"><VisualVerseActionContent Icon={Mail}>Email a question</VisualVerseActionContent></a>
+          <a href="/contact.html" className="vv-faq-lab-ask vv-motion-action vv-action-primary" data-cursor="LET'S TALK"><VisualVerseActionContent Icon={ArrowUpRight}>Ask us anything</VisualVerseActionContent></a>
         </div>
       </footer>
     </section>

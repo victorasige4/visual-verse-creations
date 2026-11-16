@@ -1,3 +1,4 @@
+import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import {
   ArrowUpRight, Building2, Camera, Clapperboard,
@@ -145,9 +146,7 @@ export function VisualVerseIndustries() {
             );
           })}
         </div>
-        <a href="/who-we-serve.html" className="vv-industry-link">
-          See how we create for each kind of project <ArrowUpRight size={17} aria-hidden="true"/>
-        </a>
+        <a href="/who-we-serve.html" className="vv-industry-link vv-motion-action vv-action-primary"><VisualVerseActionContent Icon={ArrowUpRight}>See how we create for each kind of project</VisualVerseActionContent></a>
       </div>
     </section>
   );
