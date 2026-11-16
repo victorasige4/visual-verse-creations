@@ -1,3 +1,4 @@
+import { orderedServices, serviceLabel } from "../data/services";
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { lazy, useState, type FormEvent } from "react";
 import {
@@ -38,14 +39,14 @@ const pages: Record<Kind, {eyebrow:string;first:string;accent:string;description
 };
 
 type Service = {id:string;title:string;label:string;summary:string;deliverables:string[];Icon:LucideIcon};
-const services:Service[]=[
-  {id:"photography",title:"Photography",label:"Visual storytelling",summary:"Preserving people, places and moments with intention—from portraits to milestone events.",deliverables:["Weddings, graduations & celebrations","Corporate, church & community events","Portraits and lifestyle photography","Product and brand imagery"],Icon:Camera},
-  {id:"videography",title:"Videography",label:"Film & motion",summary:"Stories that move. From capturing the moment to editing the final frame.",deliverables:["Event films and highlight reels","Corporate and promotional videos","Documentary and interview production","Editing, color grading and motion graphics"],Icon:Clapperboard},
-  {id:"graphic-design",title:"Graphic Design",label:"Digital & print",summary:"Design that communicates clearly, catches attention and connects with the right people.",deliverables:["Campaign and marketing graphics","Social media and digital assets","Print, editorial and event materials","Packaging and promotional collateral"],Icon:PenTool},
-  {id:"web-ui-ux",title:"Web & UI/UX",label:"Digital experiences",summary:"Responsive websites and product interfaces created for useful, effortless experiences.",deliverables:["Website and landing page design","Mobile app screens and user flows","UI/UX research and wireframes","Interactive Figma prototypes"],Icon:MonitorSmartphone},
-  {id:"social-media",title:"Social Media & Digital Marketing",label:"Campaigns & strategy",summary:"Creative content and joined-up campaigns designed to engage audiences and grow recognition.",deliverables:["Content planning and strategy","Social media creatives and campaigns","Digital marketing assets and copywriting","Performance-oriented creative iterations"],Icon:Share2},
-  {id:"branding",title:"Branding",label:"Identity & direction",summary:"A consistent brand world built from the logo all the way to how it speaks and shows up.",deliverables:["Brand discovery and positioning","Logo and visual identity systems","Guidelines and brand applications","Rebrands and campaign direction"],Icon:Palette},
-];
+const services:Service[]=orderedServices<Service>([
+  {id:"graphic-design",title: "Graphic Design",label:"Digital & print",summary:"Design that communicates clearly, catches attention and connects with the right people.",deliverables:["Campaign and marketing graphics","Social media and digital assets","Print, editorial and event materials","Packaging and promotional collateral"],Icon:PenTool},
+  {id:"photography",title: "Photography",label:"Visual storytelling",summary:"Preserving people, places and moments with intention—from portraits to milestone events.",deliverables:["Weddings, graduations & celebrations","Corporate, church & community events","Portraits and lifestyle photography","Product and brand imagery"],Icon:Camera},
+  {id:"web-ui-ux",title: "Web & UI/UX Design",label:"Digital experiences",summary:"Responsive websites and product interfaces created for useful, effortless experiences.",deliverables:["Website and landing page design","Mobile app screens and user flows","UI/UX research and wireframes","Interactive Figma prototypes"],Icon:MonitorSmartphone},
+  {id:"videography",title: "Videography",label:"Film & motion",summary:"Stories that move. From capturing the moment to editing the final frame.",deliverables:["Event films and highlight reels","Corporate and promotional videos","Documentary and interview production","Editing, color grading and motion graphics"],Icon:Clapperboard},
+  {id:"branding",title: "Branding & Identity",label:"Identity & direction",summary:"A consistent brand world built from the logo all the way to how it speaks and shows up.",deliverables:["Brand discovery and positioning","Logo and visual identity systems","Guidelines and brand applications","Rebrands and campaign direction"],Icon:Palette},
+  {id:"social-media",title: "Social Media & Digital Marketing",label:"Campaigns & strategy",summary:"Creative content and joined-up campaigns designed to engage audiences and grow recognition.",deliverables:["Content planning and strategy","Social media creatives and campaigns","Digital marketing assets and copywriting","Performance-oriented creative iterations"],Icon:Share2}
+]).map(s=>({...s,title:serviceLabel(s.id)}));
 
 function PageHero({kind}:{kind:Kind}){
   const page=pages[kind];
@@ -137,13 +138,14 @@ function QuotePage(){
   const requestedAudience=quoteParams.get("audience")??"";
   // Card headings can be more descriptive than the canonical quote options.
   const serviceAliases:Record<string,string>={
-    "Branding & Identity":"Branding",
-    "Web & UI/UX Design":"Web & UI/UX"
+    "Branding":"Branding & Identity",
+    "Web & UI/UX":"Web & UI/UX Design",
+    "Social Media":"Social Media & Digital Marketing"
   };
   const normalizedService=serviceAliases[requestedService]??requestedService;
   const initialService=services.some(item=>item.title===normalizedService)
     ? normalizedService
-    : requestedService||requestedAudience ? "Several services / Other" : "Photography";
+    : requestedService||requestedAudience ? "Several services / Other" : services[0].title;
   const [name,setName]=useState(""),[email,setEmail]=useState(""),[company,setCompany]=useState(""),[phone,setPhone]=useState(""),[service,setService]=useState(initialService),[budget,setBudget]=useState("Not decided yet"),[timeline,setTimeline]=useState(""),[description,setDescription]=useState("");
   function submit(event:FormEvent<HTMLFormElement>){
     event.preventDefault();

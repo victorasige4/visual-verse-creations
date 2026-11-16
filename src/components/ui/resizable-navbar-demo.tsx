@@ -1,3 +1,4 @@
+import { SERVICE_CATALOG, type PublicServiceId } from "../../data/services";
 import { VisualVerseActionContent } from "../VisualVerseAction";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
@@ -12,14 +13,15 @@ import { Navbar, NavBody } from "./resizable-navbar";
 type MenuName = "services" | "audiences";
 type MenuEntry = {name:string;details:string;href:string;Icon:LucideIcon};
 
-const services:MenuEntry[] = [
-  {name:"Photography",details:"Portraits · Events · Product",href:"/services.html?service=photography",Icon:Camera},
-  {name:"Videography",details:"Brand films · Motion · Stories",href:"/services.html?service=videography",Icon:Clapperboard},
-  {name:"Branding",details:"Identity · Direction · Strategy",href:"/services.html?service=branding",Icon:Palette},
-  {name:"Graphic Design",details:"Campaigns · Digital · Print",href:"/services.html?service=graphic-design",Icon:PenTool},
-  {name:"Web & UI/UX",details:"Websites · Apps · Interfaces",href:"/services.html?service=web-ui-ux",Icon:MonitorSmartphone},
-  {name:"Social Media",details:"Content · Campaigns · Growth",href:"/services.html?service=social-media",Icon:Share2},
-];
+const serviceMenu:Record<PublicServiceId,{details:string;Icon:LucideIcon}> = {
+  "graphic-design": { details:"Campaigns · Digital · Print", Icon:PenTool },
+  "photography": { details:"Portraits · Events · Product", Icon:Camera },
+  "web-ui-ux": { details:"Websites · Apps · Interfaces", Icon:MonitorSmartphone },
+  "videography": { details:"Brand films · Motion · Stories", Icon:Clapperboard },
+  "branding": { details:"Identity · Direction · Strategy", Icon:Palette },
+  "social-media": { details:"Content · Campaigns · Growth", Icon:Share2 },
+};
+const services:MenuEntry[] = SERVICE_CATALOG.map(({id,name})=>({name,href:"/services.html?service="+id,...serviceMenu[id]}));
 const audiences:MenuEntry[] = [
   {name:"Growing brands",details:"From a first impression to a clear identity",href:"/who-we-serve.html#industries",Icon:Rocket},
   {name:"Businesses & teams",details:"Communication that feels joined up",href:"/who-we-serve.html#industries",Icon:Building2},

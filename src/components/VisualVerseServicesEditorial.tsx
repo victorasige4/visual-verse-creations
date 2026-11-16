@@ -1,3 +1,4 @@
+import { orderedServices, serviceLabel, serviceNumber } from "../data/services";
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Camera, Clapperboard, Palette, PenTool, MonitorSmartphone, Share2, Check, UsersRound, MessageCircle, FileText, Play, Pause, Smartphone, Monitor, Layers3, MousePointer2, Type, Globe } from "lucide-react";
@@ -14,25 +15,9 @@ import "../visual-verse-service-detail.css";
  * Illustrations and wording are Visual Verse's, not Potadot assets or copy.
  */
 type Kind = "photo"|"film"|"branding"|"graphic"|"web"|"social";
-const services = [
+const services = orderedServices([
   {
-    id:"photography",number:"01",name:"Photography",kind:"photo" as Kind,Icon:Camera,
-    highlights:["Weddings","Graduations","Family Shoots","Corporate Events","Church Events"],
-    description:"Real moments. Beautifully told. From portraits and brand shoots to once-in-a-lifetime celebrations, every image has a reason to exist.",
-    bullets:["Portraits, lifestyle and product photography","Weddings, graduations and live events","Corporate, church and community stories","Thoughtful retouching and colour finishing"],
-    tags:["Portraits","Events","Products","Brand campaigns"],
-    link:"Discuss Photography",
-  },
-  {
-    id:"videography",number:"02",name:"Videography",kind:"film" as Kind,Icon:Clapperboard,
-    highlights:["Wedding Films","Corporate Videos","Documentaries","Event Coverage","Commercial Production"],
-    description:"Films that make people stop scrolling and start feeling. We shape your story from the first shot to the finishing colour grade.",
-    bullets:["Event films and cinematic highlights","Promotional, corporate and documentary video","Interviews, reels and social-first stories","Editing, sound and motion graphics"],
-    tags:["Film","Reels","Interviews","Editing"],
-    link:"Discuss Videography",
-  },
-  {
-    id:"graphic-design",number:"03",name:"Graphic Design",kind:"graphic" as Kind,Icon:PenTool,
+    id:"graphic-design",number:"01",name: "Graphic Design",kind:"graphic" as Kind,Icon:PenTool,
     highlights:["Logo Design","Print Materials","Social Media Graphics","Packaging Design","Marketing Collateral"],
     description:"Clear ideas, expressed beautifully. We design visual communication that makes people look, understand and remember.",
     bullets:["Digital campaigns and social media creatives","Print, editorial and marketing collateral","Event identities, invitations and presentations","Packaging, signage and promotional material"],
@@ -40,7 +25,15 @@ const services = [
     link:"Discuss Graphic Design",
   },
   {
-    id:"web-ui-ux",number:"04",name:"Web & UI/UX Design",kind:"web" as Kind,Icon:MonitorSmartphone,
+    id:"photography",number:"02",name: "Photography",kind:"photo" as Kind,Icon:Camera,
+    highlights:["Weddings","Graduations","Family Shoots","Corporate Events","Church Events"],
+    description:"Real moments. Beautifully told. From portraits and brand shoots to once-in-a-lifetime celebrations, every image has a reason to exist.",
+    bullets:["Portraits, lifestyle and product photography","Weddings, graduations and live events","Corporate, church and community stories","Thoughtful retouching and colour finishing"],
+    tags:["Portraits","Events","Products","Brand campaigns"],
+    link:"Discuss Photography",
+  },
+  {
+    id:"web-ui-ux",number:"03",name: "Web & UI/UX Design",kind:"web" as Kind,Icon:MonitorSmartphone,
     highlights:["Website Design","Mobile Interfaces","User Experience","E-commerce","Web Applications"],
     description:"Digital experiences that make sense and feel effortless. From a high-impact website to a carefully considered product flow.",
     bullets:["Responsive websites and landing pages","UI/UX research, user journeys and wireframes","Figma prototypes and interface design","Front-end implementation and refinements"],
@@ -48,22 +41,30 @@ const services = [
     link:"Discuss Web & UI/UX",
   },
   {
-    id:"social-media",number:"05",name:"Social Media & Digital Marketing",kind:"social" as Kind,Icon:Share2,
-    highlights:["Content Strategy","Social Media Management","Campaigns","SEO & Digital Creative","Analytics & Reporting"],
-    description:"The right creative, in the right places. We bring strategy and storytelling together to build recognisable, engaging online brands.",
-    bullets:["Content strategy, planning and creative direction","Campaign graphics, reels and visual assets","Multi-platform content and brand consistency","Insights-led revisions and digital storytelling"],
-    tags:["Strategy","Campaigns","Social","Content"],
-    link:"Discuss Digital Marketing",
+    id:"videography",number:"04",name: "Videography",kind:"film" as Kind,Icon:Clapperboard,
+    highlights:["Wedding Films","Corporate Videos","Documentaries","Event Coverage","Commercial Production"],
+    description:"Films that make people stop scrolling and start feeling. We shape your story from the first shot to the finishing colour grade.",
+    bullets:["Event films and cinematic highlights","Promotional, corporate and documentary video","Interviews, reels and social-first stories","Editing, sound and motion graphics"],
+    tags:["Film","Reels","Interviews","Editing"],
+    link:"Discuss Videography",
   },
   {
-    id:"branding",number:"06",name:"Branding & Identity",kind:"branding" as Kind,Icon:Palette,
+    id:"branding",number:"05",name: "Branding & Identity",kind:"branding" as Kind,Icon:Palette,
     highlights:["Brand Strategy","Visual Identity","Brand Guidelines","Naming & Positioning","Rebranding"],
     description:"More than a logo. We create the visual language, distinctive character and consistent presence that make a brand feel like itself.",
     bullets:["Discovery, positioning and creative direction","Logos, visual identities and design systems","Brand guidelines and real-world applications","Rebrands, launches and campaign identity"],
     tags:["Strategy","Logo","Identity","Brand systems"],
     link:"Discuss Branding",
   },
-] as const;
+  {
+    id:"social-media",number:"06",name: "Social Media & Digital Marketing",kind:"social" as Kind,Icon:Share2,
+    highlights:["Content Strategy","Social Media Management","Campaigns","SEO & Digital Creative","Analytics & Reporting"],
+    description:"The right creative, in the right places. We bring strategy and storytelling together to build recognisable, engaging online brands.",
+    bullets:["Content strategy, planning and creative direction","Campaign graphics, reels and visual assets","Multi-platform content and brand consistency","Insights-led revisions and digital storytelling"],
+    tags:["Strategy","Campaigns","Social","Content"],
+    link:"Discuss Digital Marketing",
+  }
+] as const).map(s=>({...s,name:serviceLabel(s.id),number:serviceNumber(s.id)}));
 
 type Service = typeof services[number];
 const base = import.meta.env.BASE_URL;

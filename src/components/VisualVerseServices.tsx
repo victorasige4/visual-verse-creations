@@ -1,3 +1,4 @@
+import { orderedServices, serviceLabel } from "../data/services";
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
@@ -20,44 +21,44 @@ type Service = {
   Icon: ComponentType<{ size?: number; strokeWidth?: number; "aria-hidden"?: boolean }>;
 };
 
-const services: Service[] = [
+const services: Service[] = orderedServices<Service>([
   {
-    id:"photography", title:"Photography", label:"Moments & portraits", headline:"Stories worth remembering.",
-    description:"From personal milestones to purposeful brand imagery, we make every frame feel like your story.",
-    details:["Portraits & lifestyle","Events & celebrations","Brand & product photography"],
-    kind:"photo",Icon:Camera
-  },
-  {
-    id:"videography", title:"Videography",label:"Film & motion",headline:"Make every frame matter.",
-    description:"Films, reels and moving stories that capture attention and stay with your audience.",
-    details:["Brand films & documentaries","Event highlight films","Social video & editing"],
-    kind:"film",Icon:Clapperboard
-  },
-  {
-    id:"branding",title:"Branding",label:"Identity & strategy",headline:"An identity that's unmistakably you.",
-    description:"From first idea to final brand system, we give your vision a distinct and consistent voice.",
-    details:["Brand strategy & direction","Logo & visual identities","Guidelines & brand systems"],
-    kind:"branding",Icon:Palette
-  },
-  {
-    id:"graphic-design",title:"Graphic Design",label:"Visual communication",headline:"Design people feel.",
+    id:"graphic-design",title: "Graphic Design",label:"Visual communication",headline:"Design people feel.",
     description:"Clear, expressive visuals for campaigns, print and every place your brand shows up.",
     details:["Campaigns & social assets","Editorial & marketing design","Print & promotional materials"],
     kind:"graphic",Icon:PenTool
   },
   {
-    id:"web-ui-ux",title:"Web & UI/UX",label:"Digital experiences",headline:"Digital, with a human touch.",
+    id:"photography", title: "Photography", label:"Moments & portraits", headline:"Stories worth remembering.",
+    description:"From personal milestones to purposeful brand imagery, we make every frame feel like your story.",
+    details:["Portraits & lifestyle","Events & celebrations","Brand & product photography"],
+    kind:"photo",Icon:Camera
+  },
+  {
+    id:"web-ui-ux",title: "Web & UI/UX Design",label:"Digital experiences",headline:"Digital, with a human touch.",
     description:"Websites and intuitive interfaces that guide people from curiosity to connection.",
     details:["Responsive websites","UX strategy & prototyping","Product & interface design"],
     kind:"web",Icon:MonitorSmartphone
   },
   {
-    id:"social-media",title:"Social Media",label:"Digital marketing",headline:"Good stories travel further.",
+    id:"videography", title: "Videography",label:"Film & motion",headline:"Make every frame matter.",
+    description:"Films, reels and moving stories that capture attention and stay with your audience.",
+    details:["Brand films & documentaries","Event highlight films","Social video & editing"],
+    kind:"film",Icon:Clapperboard
+  },
+  {
+    id:"branding",title: "Branding & Identity",label:"Identity & strategy",headline:"An identity that's unmistakably you.",
+    description:"From first idea to final brand system, we give your vision a distinct and consistent voice.",
+    details:["Brand strategy & direction","Logo & visual identities","Guidelines & brand systems"],
+    kind:"branding",Icon:Palette
+  },
+  {
+    id:"social-media",title: "Social Media & Digital Marketing",label:"Digital marketing",headline:"Good stories travel further.",
     description:"Content, campaigns and social experiences that build communities and spark conversations.",
     details:["Social content strategy","Creative campaigns & reels","Digital storytelling"],
     kind:"social",Icon:Share2
   }
-];
+]).map(s=>({...s,title:serviceLabel(s.id)}));
 
 export function ServiceArtwork({ kind }: { kind: ServiceKind }) {
   if(kind==="photo")return (
