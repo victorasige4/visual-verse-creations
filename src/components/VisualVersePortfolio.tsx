@@ -1,3 +1,4 @@
+import { EditorialText } from "./EditorialText";
 import { ArrowUpRight, Camera, Palette, MonitorSmartphone, Clapperboard, Sparkles, Play, MousePointer2, Layers, Check } from "lucide-react";
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 
@@ -148,7 +149,7 @@ export function PortfolioPreviewCard({ collection }: { collection: PortfolioColl
         </CardItem>
         <CardItem translateZ={32} className="vv-pf-card-details">
           <span className="vv-pf-card-category">{collection.category}</span>
-          <h3>{collection.headline}</h3>
+          <h3><EditorialText text={collection.headline}/></h3>
           <p>{collection.description}</p>
         </CardItem>
         <CardItem translateZ={22} className="vv-pf-card-bottom">
@@ -168,7 +169,7 @@ export function VisualVersePortfolio() {
       <div className="vv-pf-header">
         <div>
           <span className="vv-label">SELECTED DIRECTIONS</span>
-          <h2 className="vv-section-h">A glimpse of<br/>what we create<span className="vv-pf-period">.</span></h2>
+          <h2 className="vv-section-h">A glimpse of<br/>what we <br className="vv-break-narrow"/>create<span className="vv-pf-period">.</span></h2>
         </div>
         <div className="vv-pf-intro">
           <p>Every creative journey has its own story. Explore six ways we bring ideas to life—from the first frame to the final experience.</p>

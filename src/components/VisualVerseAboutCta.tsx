@@ -161,6 +161,7 @@ export function VisualVerseAboutCta() {
                 </span>
               )).reduce<ReactNode[]>((result,element,index)=>{
                 if(index>0) result.push(" ");
+                if(index===3 || index===6) result.push(<br key={"line-"+index}/>);
                 result.push(element);
                 return result;
               },[])}

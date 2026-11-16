@@ -139,7 +139,7 @@ export function VisualVerseServices() {
       <div className="vv-svc-heading">
         <div>
           <span className="vv-label">WHAT WE DO</span>
-          <h2 className="vv-section-h">Six ways we<br/>bring ideas to life.</h2>
+          <h2 className="vv-section-h">Six ways we<br/>bring ideas to <br className="vv-break-wide"/>life.</h2>
         </div>
         <p>One creative partner, every detail considered. Select a service to see how Visual Verse turns your vision into something remarkable.</p>
       </div>

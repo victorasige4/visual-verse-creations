@@ -1,3 +1,4 @@
+import { EditorialText } from "./EditorialText";
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
@@ -109,7 +110,7 @@ export function VisualVerseFaqLab() {
       <header className="vv-faq-lab-header">
         <div className="vv-faq-lab-header-copy">
           <span className="vv-faq-lab-eyebrow"><span aria-hidden="true" className="vv-faq-lab-blink"/> THE QUESTION LAB · VISUAL VERSE</span>
-          <h2 id="vv-faq-lab-heading">Curious?<br/><em>We love that.</em><span className="vv-faq-lab-header-asterisk" aria-hidden="true"><Asterisk size={30} strokeWidth={1.6}/></span></h2>
+          <h2 id="vv-faq-lab-heading">Curious?<br/><em>We love <br className="vv-break-wide"/>that.</em><span className="vv-faq-lab-header-asterisk" aria-hidden="true"><Asterisk size={30} strokeWidth={1.6}/></span></h2>
         </div>
         <div className="vv-faq-lab-intro">
           <p>Every great collaboration starts with a good question. Pick one from the board and see what we have to say — or let curiosity choose for you.</p>
@@ -178,7 +179,7 @@ export function VisualVerseFaqLab() {
                   transition={{duration:reduced?.01:.37,ease:[.22,1,.36,1]}}
                   className="vv-faq-lab-answer-copy">
                   <div className="vv-faq-lab-question-meta"><span>YOU ASKED</span><CircleHelp size={16} aria-hidden="true"/></div>
-                  <h3>{current.question}</h3>
+                  <h3><EditorialText text={current.question}/></h3>
                   <div className="vv-faq-lab-answer-divider"><span/> THE SHORT ANSWER <span/></div>
                   <p>{current.answer}</p>
                   <div className="vv-faq-lab-answer-takeaway"><WandSparkles size={18} aria-hidden="true"/><strong>{current.takeaway}</strong></div>

@@ -100,7 +100,7 @@ export function VisualVerseKenyaMap(){
   </>;
   return <div className="vv-close-location vv-map-v3" ref={mapRef}>
     <div className="vv-close-location-heading">
-      <div><span className="vv-close-eyebrow"><span/> WHERE WE CREATE</span><h2>From Nairobi.<br/><em>To anywhere</em> the<br/>story takes us.</h2></div>
+      <div><span className="vv-close-eyebrow"><span/> WHERE WE CREATE</span><h2>From Nairobi.<br/><em>To anywhere</em> <br/>the<br/>story takes us.</h2></div>
       <div className="vv-close-location-summary"><p>One creative home, many possible directions. Explore Kenya with us — select a city, follow the signal, and imagine what we could make together.</p><div className="vv-close-location-meta"><span><MapPin size={15}/> NAIROBI BASED</span><span><Globe2 size={15}/> KENYA-WIDE ENQUIRIES</span></div></div>
     </div>
     <div className="vv-atlas-shell">

@@ -120,7 +120,7 @@ export function VisualVerseHowWeWork() {
       <div className="vv-hww-heading">
         <div className="vv-hww-heading-main">
           <span className="vv-hww-eyebrow"><span className="vv-hww-led"/> HOW WE WORK / THE CREATIVE MIX</span>
-          <h2 id="vvhww-title">Good work<br/>isn't an accident.<br/><em>It's a mix.</em></h2>
+          <h2 id="vvhww-title">Good work<br/>isn't an <br/>accident.<br/><em>It's a mix.</em></h2>
         </div>
         <div className="vv-hww-heading-aside">
           <p>Every great piece of creative work is shaped by more than a single idea. Explore the five ingredients we bring to every collaboration — and play with the mix.</p>

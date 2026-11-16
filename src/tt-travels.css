@@ -41,3 +41,7 @@
 
 /* Natural kerning preserves comfortable glyph separation at heavier weights. */
 :where(html,body){font-kerning:normal;letter-spacing:var(--vv-tracking-readable);}
+
+/* Preserve the previous editorial line composition at the standard desktop/mobile breakpoints. */
+.vv-break-narrow{display:none;}
+@media(max-width:760px){.vv-break-wide{display:none;}.vv-break-narrow{display:initial;}}

@@ -211,6 +211,23 @@ try {
       await hero.waitFor({state:"visible"});
       const headingSize=await hero.evaluate(node=>parseFloat(getComputedStyle(node).fontSize));
       assert.ok(headingSize>=23 && headingSize<=(viewport.width===390?48:70),"Unexpected public heading size: "+path+" ("+headingSize+"px)");
+      const editorialHeroLines={"about.html":[["We turn","your ideas","into experiences."],["We turn","your ideas","into experiences."]],"services.html":[["Six ways we","create,","all of them","yours."],["Six ways we","create,","all of them","yours."]],"who-we-serve.html":[["No two","stories","alike."],["No two","stories","alike."]],"projects.html":[["Every story,","a different","canvas."],["Every story,","a different","canvas."]],"contact.html":[["Let's start a","conversation."],["Let's start a","conversation."]],"request-quote.html":[["Tell us about","your big idea."],["Tell us about","your big idea."]],"services.html?service=graphic-design":[["Ideas that","deserve to","be seen."],["Ideas that","deserve to","be seen."]],"services.html?service=photography":[["Frames that","make the","moment","last."],["Frames that","make the","moment last."]],"services.html?service=web-ui-ux":[["Digital","experiences","built for","real people."],["Digital","experiences","built for","real people."]],"services.html?service=videography":[["Stories","that move","people."],["Stories that","move people."]],"services.html?service=branding":[["An identity","that feels","unmistakably","yours."],["An identity","that feels","unmistakably","yours."]],"services.html?service=social-media":[["Good stories","deserve","a bigger","stage."],["Good stories","deserve a","bigger stage."]]};
+      if(editorialHeroLines[path]){
+        const lines=await hero.evaluate(el=>{
+          const rows=[];
+          const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);
+          let node;
+          while(node=walker.nextNode()) for(const match of node.nodeValue.matchAll(/\S+/g)){
+            const range=document.createRange();range.setStart(node,match.index);range.setEnd(node,match.index+match[0].length);
+            const r=range.getBoundingClientRect();if(!r.width||!r.height)continue;
+            const y=r.top+r.height/2;let row=rows.find(row=>Math.abs(row.y-y)<6);
+            if(!row){row={y,words:[]};rows.push(row);}
+            row.words.push(match[0]);
+          }
+          return rows.sort((a,b)=>a.y-b.y).map(row=>row.words.join(" "));
+        });
+        assert.deepEqual(lines,editorialHeroLines[path][viewport.width===390?1:0],"Preserved page headline layout: "+path);
+      }
       assert.ok(await hero.evaluate(node=>{const spacing=getComputedStyle(node).letterSpacing;return spacing==="normal"||parseFloat(spacing)>=-0.1}),"Overcompressed hero tracking: "+path);
       if(path==="who-we-serve.html"){
         assert.equal(await page.locator(".vvx-hero-id,.vvx-hero-counter").count(),0,"Landing page numbering should be removed");
@@ -230,6 +247,13 @@ try {
         assert.deepEqual(await labels(page,".vv-svc-slice-tab-label"),serviceNames,"Homepage services");
         assert.deepEqual(await labels(page,".vv-pf-card-category"),serviceNames.map(name=>name.toUpperCase()),"Homepage projects");
         assert.equal(await page.locator("#serviceName").textContent(),"Graphic Design");
+        const heroLines=[["Designed to","connect"],["Moments that","last"],["Made to","explore"],["Stories in","motion"],["Made to","be known"],["Stories worth","sharing"]];
+        for(let i=0;i<serviceNames.length;i++){
+          await page.getByRole("button",{name:"Show "+serviceNames[i],exact:true}).evaluate(button=>button.click());
+          const lines=(await page.locator("#headline").innerText()).split("\n").map(line=>line.trim()).filter(Boolean);
+          assert.deepEqual(lines,heroLines[i],"Homepage editorial headline layout: "+serviceNames[i]);
+        }
+        await page.getByRole("button",{name:"Show Graphic Design",exact:true}).evaluate(button=>button.click());
         await page.locator('button[aria-label="Open Services menu"]').evaluate(button=>button.click());
         await page.locator(".vv-nav-resize-mega-item-copy strong").nth(5).waitFor({state:"attached"});
         assert.deepEqual(await labels(page,".vv-nav-resize-mega-item-copy strong"),serviceNames,"Navigation order");
