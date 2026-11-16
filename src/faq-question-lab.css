@@ -4,7 +4,7 @@
 .vv-close-faq-section:has(.vv-faq-lab){background:#f8fcfa;padding:clamp(95px,9vw,145px) max(20px,4.2vw);border-color:#edf4ef}
 .vv-faq-lab{
   --faq-navy:#003f5c;--faq-deep:#062d41;--faq-aqua:#2ec4b6;--faq-mint:#e8f8f1;
-  font-family:var(--vv-typeface,"VisualVerse TT Travels","TT Travels",Arial,sans-serif);
+  font-family:var(--vv-typeface,"Montserrat",Arial,sans-serif);
   width:100%;max-width:1240px;margin:0 auto;color:var(--faq-navy);
 }
 .vv-faq-lab *{box-sizing:border-box}

@@ -6,7 +6,7 @@
   z-index:900;
   transition:width .48s cubic-bezier(.22,1,.36,1),top .48s cubic-bezier(.22,1,.36,1);
   isolation:isolate;
-  font-family:var(--vv-island-font,"TT Travels",Arial,sans-serif);
+  font-family:var(--vv-island-font,"Montserrat",Arial,sans-serif);
 }
 .vv-nav2.vv-nav-resizable.is-compact {
   width:min(1000px,calc(100vw - 22px));top:8px;

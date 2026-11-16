@@ -1,5 +1,5 @@
 /* VISUAL VERSE / ABOUT EDITORIAL — designed around the studio's own visual identity. */
-.vv-about-editorial{--navy:#003f5c;--aqua:#2ec4b6;--deep:#003f5c;--mist:#f7fcfb;--ink:#0a5670;--line:#e8f8f5;background:#f7fcfb;color:var(--navy);font-family:var(--vv-island-font,"TT Travels",Arial,sans-serif)}
+.vv-about-editorial{--navy:#003f5c;--aqua:#2ec4b6;--deep:#003f5c;--mist:#f7fcfb;--ink:#0a5670;--line:#e8f8f5;background:#f7fcfb;color:var(--navy);font-family:var(--vv-island-font,"Montserrat",Arial,sans-serif)}
 .vv-about-editorial *{box-sizing:border-box}
 .vv-about-editorial a,.vv-about-editorial button{transition:background .2s,color .2s,border-color .2s,transform .25s}
 .vv-about-editorial a:focus-visible,.vv-about-editorial button:focus-visible{outline:3px solid var(--aqua);outline-offset:4px}

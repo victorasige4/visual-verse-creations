@@ -8,7 +8,7 @@
   left:50%;
   width:min(1140px,calc(100vw - 28px));
   transform:translateX(-50%);
-  font-family:var(--vv-island-font,"TT Travels",Arial,sans-serif);
+  font-family:var(--vv-island-font,"Montserrat",Arial,sans-serif);
   transition:width .35s cubic-bezier(.22,1,.36,1),top .3s;
 }
 .vv-nav2.is-compact {

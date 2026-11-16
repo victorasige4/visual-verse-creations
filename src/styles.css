@@ -9,7 +9,7 @@
   --color-vv-aqua: #2ec4b6;
   --color-vv-ink: #193c46;
   --color-vv-mist: #e8f7f4;
-  --font-vv: "VisualVerse TT Travels", "TT Travels", "Manrope", Arial, sans-serif;
+  --font-vv: "Montserrat", Arial, sans-serif;
 }
 
 :root {
@@ -22,7 +22,7 @@
   --vv-island-navy: #003f5c;
   --vv-island-aqua: #2ec4b6;
   --vv-island-ink: #234651;
-  --vv-island-font: "VisualVerse TT Travels", "TT Travels", "Manrope", Arial, sans-serif;
+  --vv-island-font: "Montserrat", Arial, sans-serif;
 }
 
 /* The original nav stays intact as a zero-JS fallback. Hide it only

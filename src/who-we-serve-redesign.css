@@ -5,7 +5,7 @@
   --vx-navy:#003f5c;--vx-ink:#113e4c;--vx-mint:#2ec4b6;
   --vx-dark:#061d2b;--vx-mist:#edfaf5;--vx-ease:cubic-bezier(.2,.8,.2,1);
   color:var(--vx-ink);background:#f7fcfa;
-  font-family:var(--vv-typeface,"VisualVerse TT Travels","TT Travels",Arial,sans-serif);
+  font-family:var(--vv-typeface,"Montserrat",Arial,sans-serif);
   overflow:clip;position:relative;isolation:isolate;
 }
 .vvx-page *, .vvx-page *::before, .vvx-page *::after{box-sizing:border-box}

@@ -2,7 +2,7 @@
    Scoped to closing sections to preserve the hero, main card layouts and nav. */
 .vv-close-marquee-section,.vv-close-location-section,.vv-close-faq-section,.vv-close-cta-section,
 .vv-close-footer-wrap{
-  font-family:var(--vv-island-font,"VisualVerse TT Travels","TT Travels","Manrope",Arial,sans-serif);
+  font-family:var(--vv-island-font,"Montserrat",Arial,sans-serif);
 }
 .vv-close-eyebrow{
   display:inline-flex;align-items:center;gap:9px;

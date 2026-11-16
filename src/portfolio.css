@@ -1,7 +1,7 @@
 
 /* Visual Verse portfolio collections — Aceternity-style perspective tilt cards.
    Entirely isolated to #work and the dedicated projects page. */
-#work .vv-pf-layout,.vv-projects-page{font-family:var(--vv-island-font,"TT Travels","Manrope",Arial,sans-serif);color:#173f4d}
+#work .vv-pf-layout,.vv-projects-page{font-family:var(--vv-island-font,"Montserrat",Arial,sans-serif);color:#173f4d}
 #work .vv-pf-header{display:grid;grid-template-columns:1.1fr .72fr;align-items:end;gap:clamp(24px,5vw,88px)}
 #work .vv-pf-header .vv-section-h{font-size:clamp(42px,5.5vw,78px);line-height:1.04;letter-spacing:-.08em;margin:19px 0 0}
 .vv-pf-period{color:#2ec4b6}

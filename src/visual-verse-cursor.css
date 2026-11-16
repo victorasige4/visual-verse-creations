@@ -8,7 +8,7 @@
 .vv-cursor-core i{width:3px;height:3px;background:#003f5c;border-radius:50%}
 .vv-cursor-orbit{width:36px;height:36px;border:1.4px solid rgba(0,105,116,.66);background:rgba(46,196,182,.05);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);z-index:1}
 .vv-cursor-orbit-tick{position:absolute;top:-3px;left:calc(50% - 3px);width:6px;height:6px;border-radius:50%;background:#2ec4b6;box-shadow:0 0 6px #2ec4b6}
-.vv-cursor-orbit-label{font-family:var(--vv-typeface,"TT Travels",Arial,sans-serif);font-size:8px;font-weight:800;letter-spacing:.1em;color:#003f5c;opacity:0;transform:scale(.6);transition:opacity .17s,transform .25s}
+.vv-cursor-orbit-label{font-family:var(--vv-typeface,"Montserrat",Arial,sans-serif);font-size:8px;font-weight:800;letter-spacing:.1em;color:#003f5c;opacity:0;transform:scale(.6);transition:opacity .17s,transform .25s}
 .vv-cursor-core.is-visible,.vv-cursor-orbit.is-visible{opacity:1}
 .vv-cursor-orbit.is-interactive{width:74px;height:74px;border-color:rgba(46,196,182,.82);border-width:2px;background:rgba(225,255,247,.86);box-shadow:0 8px 35px rgba(0,63,92,.13),0 0 0 5px rgba(46,196,182,.08)}
 .vv-cursor-orbit.is-interactive .vv-cursor-orbit-tick{top:5px;left:5px}
