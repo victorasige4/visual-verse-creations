@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, ArrowRight, ArrowLeft, Camera, Clapperboard, Palette, PenTool, MonitorSmartphone, Share2, Check, UsersRound, MessageCircle, FileText, Play, Pause, Smartphone, Monitor, Layers3, MousePointer2, Type, Globe } from "lucide-react";
+import { ArrowUpRight, Camera, Clapperboard, Palette, PenTool, MonitorSmartphone, Share2, Check, UsersRound, MessageCircle, FileText, Play, Pause, Smartphone, Monitor, Layers3, MousePointer2, Type, Globe } from "lucide-react";
 import { VisualVerseProcessJourney } from "./VisualVerseProcessJourney";
 import { Compare } from "./ui/compare";
+import { VisualVerseServiceDetailSections } from "./VisualVerseServiceDetailSections";
 import "../visual-verse-services-page.css";
 import "../visual-verse-service-detail.css";
 
@@ -130,8 +131,7 @@ function ServiceDemo({service:s}:{service:Service}) {
 
 function ServiceDetail({service:s}:{service:Service}) {
   const d=detailCopy[s.id];
-  const next=services[(services.indexOf(s)+1)%services.length];
-  const previous=services[(services.indexOf(s)+services.length-1)%services.length];
+  const linkFor=(item:Service)=>({id:item.id,name:item.name,image:base+covers[item.id].file,position:covers[item.id].position,href:serviceUrl(item.id),Icon:item.Icon});
   useEffect(()=>{const old=document.title;document.title=s.name+" | Visual Verse Creations";return()=>{document.title=old}},[s]);
   return <div className="vv-services-editorial vv-service-detail">
     <section className="vv-detail-hero" id="services-top"><div className="vv-sv-container">
@@ -139,9 +139,7 @@ function ServiceDetail({service:s}:{service:Service}) {
       <div className="vv-detail-grid"><div className="vv-detail-copy"><span className="vv-sv-kicker"><i/><i/> {s.number} / 06 &nbsp; · &nbsp; {s.name}</span><h1>{d.headline}</h1><p>{d.intro}</p><div className="vv-detail-actions"><a className="vv-service-cta" href={quoteUrl(s)}>Let's talk <span><ArrowUpRight size={17}/></span></a><a className="vv-service-secondary" href={`${base}contact.html`}>Contact us <ArrowUpRight size={15}/></a></div><div className="vv-detail-tags">{s.highlights.map(h=><span key={h}>{h}</span>)}</div></div><ServiceDemo service={s}/></div>
       <ServiceNav active={s.id}/>
     </div></section>
-    <section className="vv-detail-offer"><div className="vv-sv-container"><div className="vv-detail-intro"><span className="vv-sv-kicker"><i/><i/> WHAT WE DELIVER</span><h2>{d.outcome}</h2><p>{s.description}</p></div><div className="vv-detail-deliverables">{s.bullets.map((b,i)=><article key={b}><span>0{i+1}</span><Check size={22}/><h3>{b}</h3></article>)}</div></div></section>
-    <section className="vv-detail-method"><div className="vv-sv-container"><div className="vv-detail-method-copy"><span className="vv-sv-kicker"><i/><i/> HOW WE WORK</span><h2>Made with intention.</h2><p>A clear, collaborative creative process from start to finish.</p><ol>{d.stages.map((stage,i)=><li key={stage}><span>0{i+1}</span>{stage}<ArrowRight size={19}/></li>)}</ol><a className="vv-service-cta" href={quoteUrl(s)}>Start a project <span><ArrowUpRight size={17}/></span></a></div><figure><img src={base+covers[s.id].file} style={{objectPosition:covers[s.id].position}} alt={`${s.name} creative process`} loading="lazy"/><figcaption>{s.name} / Visual Verse Creations</figcaption></figure></div></section>
-    <section className="vv-detail-next"><div className="vv-sv-container"><a href={serviceUrl(previous.id)}><ArrowLeft size={21}/><span><small>PREVIOUS SERVICE</small>{previous.name}</span></a><a href={`${base}services.html`}>All services</a><a href={serviceUrl(next.id)}><span><small>NEXT SERVICE</small>{next.name}</span><ArrowRight size={21}/></a></div></section>
+    <VisualVerseServiceDetailSections key={s.id} service={linkFor(s)} outcome={d.outcome} quoteHref={quoteUrl(s)} allServices={services.map(linkFor)}/>
   </div>;
 }
 
