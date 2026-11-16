@@ -1,7 +1,8 @@
 import { VisualVerseActionContent } from "./VisualVerseAction";
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { ArrowUpRight, Check, CheckCircle2, Circle, Heart, Rocket, Sparkles } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import { ProcessStoryArt } from "./VisualVerseProcessStories";
 import "../visual-verse-services-page.css";
 import { Boxes } from "./ui/background-boxes";
 
@@ -24,62 +25,6 @@ export const steps = [
 ] as const;
 
 const stamp = (n:number) => String(n + 1).padStart(2, "0");
-
-export function ProcessArtwork({step,context}:{step:number;context?:{service:string;image:string;items:readonly JourneyStep[];deliverables:readonly string[]}}) {
-  switch(step){
-    case 0: return <div className="vv-sp-art vv-sp-art-chat">
-      <div className="vv-sp-speech is-question"><span className="vv-sp-avatar" aria-hidden="true"/>{context?context.items[0].title+" — where do we begin?":"What story are we telling?"}</div>
-      <div className="vv-sp-speech is-answer">{context?context.items[0].line:"Something people will remember."}<i aria-hidden="true"/></div>
-      <div className="vv-sp-flow"><span>Listen</span><b/> <span>Understand</span><b/> <span className="is-accent">Discover</span></div>
-      <div className="vv-sp-art-notes"><span>THE AUDIENCE</span><span>THE IDEA</span><span>THE GOAL</span></div>
-    </div>;
-    case 1: return <div className="vv-sp-art vv-sp-art-roadmap">
-      <div className="vv-sp-window-head"><span>{context?context.service.toUpperCase()+" ROADMAP":"CREATIVE ROADMAP"}</span><b>BRIEF APPROVED <Check size={13}/></b></div>
-      <div className="vv-sp-roadmap-grid">
-        {(context?context.items.slice(1,6).map(item=>item.title):["Research","Concepts","Production","Feedback","Delivery"]).map((x,i)=>
-          <div key={x}><span>{x}</span><i style={{"--bar-width":(i===0?87:i===1?69:i===2?94:i===3?52:39)+"%","--bar-delay":i*90+"ms"} as CSSProperties}/></div>)}
-      </div>
-      <div className="vv-sp-roadmap-foot"><span>WEEK 01</span><span>WEEK 02</span><span>WEEK 03</span><span>WEEK 04</span></div>
-    </div>;
-    case 2: return <div className="vv-sp-art vv-sp-art-mood">
-      <div className="vv-sp-mood-top"><span>MOODBOARD / DIRECTION 01</span><Sparkles size={17}/></div>
-      <div className="vv-sp-mood-grid">
-        <div className="vv-sp-mood-type">{context?<>{context.items[2].title.split(" ").slice(0,-1).join(" ")}<br/><em>{context.items[2].title.split(" ").slice(-1)}</em></>:<>MAKE<br/><em>IT MEAN</em><br/>SOMETHING.</>}</div>
-        <div className="vv-sp-mood-img"><img src={context?.image??import.meta.env.BASE_URL+"portfolio-event-detail.jpg"} alt="Visual Verse concept direction" loading="lazy"/></div>
-        <div className="vv-sp-mood-color"><i/><i/><i/></div>
-      </div>
-      <div className="vv-sp-mood-bottom"><span>FEELING / PURPOSE / STORY</span><span>VV · 03</span></div>
-    </div>;
-    case 3: return <div className="vv-sp-art vv-sp-art-production">
-      <div className="vv-sp-window-head"><span><i/><i/><i/> VISUAL VERSE / CREATIONS</span><b>IN PRODUCTION</b></div>
-      <div className="vv-sp-workspace">
-        <div className="vv-sp-tools"><span><Sparkles size={14} aria-hidden="true"/></span><span><Circle size={14} aria-hidden="true"/></span><span><ArrowUpRight size={14} aria-hidden="true"/></span><span>T</span></div>
-        <div className="vv-sp-artboard"><small>VISUAL VERSE / STORY 01</small><strong>GREAT<br/>IDEAS<br/><em>LIVE HERE.</em></strong><div className="vv-sp-artboard-orbit"/></div>
-        <div className="vv-sp-layers"><small>LAYERS</small><span><i/> TYPE</span><span><i/> SHAPE</span><span><i/> IMAGE</span></div>
-      </div>
-      <div className="vv-sp-art-status">DESIGN · FILM · PHOTO · DIGITAL</div>
-    </div>;
-    case 4: return <div className="vv-sp-art vv-sp-art-review">
-      <div className="vv-sp-window-head"><span>CREATIVE QUALITY CHECK</span><b>05 / 07</b></div>
-      <div className="vv-sp-review-head"><CheckCircle2 size={24}/> READY FOR FINAL REVIEW <small>4 / 4 CHECKED</small></div>
-      <div className="vv-sp-checks">{(context?context.deliverables.slice(0,4):[
-        "Visual identity is consistent","Every frame tells the right story","All platforms and formats checked","Feedback applied and approved"
-      ]).map((x)=><div key={x}><span><Check size={13}/></span><p>{x}</p><small>DONE</small></div>)}</div>
-      <span className="vv-sp-review-progress"/>
-    </div>;
-    case 5: return <div className="vv-sp-art vv-sp-art-launch">
-      <div className="vv-sp-launch-circle"><span className="vv-sp-launch-circle-ring"/><Rocket size={35}/><strong>LIVE</strong></div>
-      <div className="vv-sp-launch-status">{context?context.items[5].title.toUpperCase():"YOUR STORY. READY FOR THE WORLD."}</div>
-      <div className="vv-sp-launch-chips"><span>DELIVERED</span><span>PUBLISHED</span><span>SHARED</span></div>
-    </div>;
-    default:return <div className="vv-sp-art vv-sp-art-growth">
-      <div className="vv-sp-window-head"><span>CREATIVE PARTNERSHIP</span><b>ALWAYS GROWING</b></div>
-      <div className="vv-sp-health"><span>PROJECT STATUS</span><strong>{context?context.items[6].title:"Going places."} <i/></strong></div>
-      <svg viewBox="0 0 420 122" aria-hidden="true" className="vv-sp-chart"><defs><linearGradient id="vv-process-chart" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#2ec4b6" stopOpacity=".2"/><stop offset="1" stopColor="#2ec4b6" stopOpacity="0"/></linearGradient></defs><path d="M0 103 L58 98 L110 90 L159 96 L205 67 L266 73 L315 50 L363 55 L420 17 L420 122 L0 122Z" fill="url(#vv-process-chart)"/><path d="M0 103 L58 98 L110 90 L159 96 L205 67 L266 73 L315 50 L363 55 L420 17" fill="none" stroke="#2ec4b6" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></svg>
-      <div className="vv-sp-growth-foot"><span><Heart size={12}/> ROOM TO GROW</span><span>VISUAL VERSE / ALWAYS HERE</span></div>
-    </div>;
-  }
-}
 
 type JourneyStep = { title: string; line: string };
 export function VisualVerseProcessJourney({items=steps, heading, artwork, quoteHref}:{
@@ -143,11 +88,11 @@ export function VisualVerseProcessJourney({items=steps, heading, artwork, quoteH
             <div className="vv-sp-scene-layer">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div key={active} className="vv-sp-scene"
-                  initial={reducedMotion ? false : {opacity:0,y:62,scale:.87,rotateX:14,filter:"blur(14px)"}}
-                  animate={{opacity:1,y:0,scale:1,rotateX:0,filter:"blur(0px)"}}
-                  exit={reducedMotion ? {opacity:1} : {opacity:0,y:-32,scale:1.035,rotateX:-6,filter:"blur(10px)"}}
-                  transition={reducedMotion ? {duration:0} : {duration:.67,ease:[.16,1,.3,1]}}>
-                  {artwork ? artwork(active) : <ProcessArtwork step={active}/>}
+                  initial={reducedMotion ? false : {opacity:0,y:24,scale:.96}}
+                  animate={{opacity:1,y:0,scale:1}}
+                  exit={reducedMotion ? {opacity:1} : {opacity:0,y:-16,scale:.98}}
+                  transition={reducedMotion ? {duration:0} : {duration:.38,ease:[.16,1,.3,1]}}>
+                  {artwork ? artwork(active) : <ProcessStoryArt kind="overview" step={active}/>}
                 </motion.div>
               </AnimatePresence>
             </div>

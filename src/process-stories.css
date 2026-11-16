@@ -1,0 +1,41 @@
+/* Original creative-process scenes. The active card is one lightweight SVG,
+   with no images, timers, canvas loops or external animation assets. */
+.vv-ps-card{--ps-accent:#2ec4b6;position:relative;width:min(100%,480px);max-height:100%;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:12px;padding:15px 16px 13px;border:1px solid #4ba6a65c;border-radius:17px;background:radial-gradient(ellipse at 75% 0%,#1a5860 0%,transparent 54%),#092f40;box-shadow:0 16px 45px #001b2950;overflow:hidden;color:#effbf9;box-sizing:border-box}
+.vv-ps-card[data-story="photography"]{background:radial-gradient(ellipse at 50% 30%,#1b575c,transparent 66%),#092f40;border-radius:12px}
+.vv-ps-card[data-story="videography"]{background:linear-gradient(165deg,#153f4b,#062c3b 62%);border-radius:9px;border-color:#54818c}
+.vv-ps-card[data-story="branding"]{background:linear-gradient(140deg,#0c4659,#082e3d);border-radius:4px}
+.vv-ps-card[data-story="graphic-design"]{background:linear-gradient(135deg,#154f59,#082d40);border-radius:7px}
+.vv-ps-card[data-story="web-ui-ux"]{background:linear-gradient(135deg,#144e5d,#092d3c);border-radius:15px}
+.vv-ps-card[data-story="social-media"]{background:radial-gradient(ellipse at 12% 10%,#205d63,transparent 65%),#092f40;border-radius:22px}
+.vv-ps-head,.vv-ps-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;white-space:nowrap;min-width:0;font-size:9px;font-weight:750;letter-spacing:.08em}
+.vv-ps-head>span{display:flex;align-items:center;gap:7px;color:#e6fffa;min-width:0;white-space:normal}
+.vv-ps-head i{width:6px;height:6px;background:var(--ps-accent);border-radius:50%;flex:none;animation:vv-ps-pulse 3s ease-in-out infinite}
+.vv-ps-head small{color:#b1d1d0;font-size:8px}
+.vv-ps-illustration{display:block;width:100%;height:auto;min-height:0;max-height:205px;overflow:visible;flex:1 1 auto}
+.vv-ps-foot{border-top:1px solid #4ba6a644;padding-top:9px;color:#b5dedb;font-size:8px;letter-spacing:.025em;white-space:normal}
+.vv-ps-foot>div{display:flex;gap:3px;flex:none}
+.vv-ps-foot i{display:block;width:13px;height:3px;background:#3d6671;border-radius:3px}
+.vv-ps-foot i.is-current{background:var(--ps-accent)}
+.vv-ps-card .vv-ps-pop,.vv-ps-card .vv-ps-pulse,.vv-ps-card .vv-ps-focus,.vv-ps-card .vv-ps-logo-motion,.vv-ps-card .vv-ps-grow,.vv-ps-card .vv-ps-slide{transform-box:fill-box;transform-origin:center}
+.vv-ps-card .vv-ps-pop{animation:vv-ps-pop 4.5s ease-in-out infinite}
+.vv-ps-card .vv-ps-pulse{animation:vv-ps-pulse 3s ease-in-out infinite}
+.vv-ps-card .vv-ps-focus{animation:vv-ps-focus 3.4s ease-in-out infinite}
+.vv-ps-card .vv-ps-logo-motion{animation:vv-ps-logo 4s ease-in-out infinite}
+.vv-ps-card .vv-ps-grow{transform-origin:bottom center;animation:vv-ps-grow 4s ease-in-out infinite}
+.vv-ps-card .vv-ps-slide{animation:vv-ps-slide 5s linear infinite}
+.vv-ps-card .vv-ps-draw{stroke-dasharray:100;animation:vv-ps-draw 4.5s ease infinite}
+.vv-ps-card .vv-ps-flow-path{animation:vv-ps-flow 3s linear infinite}
+.vv-ps-card .vv-ps-shutter{animation:vv-ps-shutter 5s ease-in-out infinite;pointer-events:none}
+.vv-ps-card[data-running="false"] *{animation-play-state:paused!important}
+@keyframes vv-ps-pop{0%,100%{opacity:.65;transform:translateY(2px)}30%,75%{opacity:1;transform:translateY(0)}}
+@keyframes vv-ps-pulse{0%,100%{opacity:.55}50%{opacity:1}}
+@keyframes vv-ps-focus{0%,100%{transform:scale(1)}50%{transform:scale(.87)}}
+@keyframes vv-ps-logo{0%,100%{transform:scale(.91) rotate(-3deg)}50%{transform:scale(1) rotate(3deg)}}
+@keyframes vv-ps-grow{0%,100%{transform:scaleY(.75)}35%,75%{transform:scaleY(1)}}
+@keyframes vv-ps-slide{from{transform:translateX(0)}to{transform:translateX(382px)}}
+@keyframes vv-ps-draw{0%{stroke-dashoffset:100}45%,90%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
+@keyframes vv-ps-flow{to{stroke-dashoffset:-100}}
+@keyframes vv-ps-shutter{0%,40%,54%,100%{opacity:0}47%{opacity:.22}}
+@media(max-width:760px){.vv-ps-card{gap:7px;padding:9px 10px 8px;border-radius:11px}.vv-ps-head{font-size:8px}.vv-ps-head small,.vv-ps-foot{font-size:7px}.vv-ps-foot{padding-top:6px}.vv-ps-foot i{width:9px}.vv-ps-illustration{max-height:170px}}
+@media(max-height:720px) and (max-width:760px){.vv-ps-card{gap:4px;padding:7px}.vv-ps-illustration{max-height:125px}}
+@media(prefers-reduced-motion:reduce){.vv-ps-card *{animation:none!important;transition:none!important}.vv-ps-card .vv-ps-shutter{opacity:0}.vv-ps-card .vv-ps-draw{stroke-dashoffset:0}}

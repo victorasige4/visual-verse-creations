@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { ArrowUpRight, Camera, Check, Clapperboard, ClipboardList, FileCheck2, Globe2, Image, Layers3, LayoutGrid, MapPin, MessageCircle, Minus, MonitorSmartphone, Palette, PenTool, Plus, ScanLine, Share2, Sparkles, Target, Telescope, Type, type LucideIcon } from "lucide-react";
 import { serviceDetails, type ServiceId } from "./visual-verse-service-detail-content";
-import { VisualVerseProcessJourney, ProcessArtwork } from "./VisualVerseProcessJourney";
+import { VisualVerseProcessJourney } from "./VisualVerseProcessJourney";
+import { ProcessStoryArt } from "./VisualVerseProcessStories";
 import "../visual-verse-service-sections.css";
 import { VisualVerseActionContent } from "./VisualVerseAction";
 
@@ -25,22 +26,6 @@ const processTitles:Record<ServiceId,string> = {
 
 function Kicker({children}:{children:React.ReactNode}) {
   return <span className="vv-sv-kicker"><i/><i/> {children}</span>;
-}
-
-function ServiceArtwork({service,step}:{service:ServiceLink;step:number}) {
-  const data=serviceDetails[service.id];
-  const Icon=step===0?MessageCircle:step===6?Sparkles:icons[service.id][step-1];
-  const [title,line]=data.process[step];
-  return <div className="vv-ds-process-art" aria-hidden="true">
-    <div className="vv-ds-process-top"><span><i/> VISUAL VERSE / {service.name.toUpperCase()}</span><span>0{step+1} / 07</span></div>
-    <div className="vv-ds-process-preview">
-      <img src={service.image} alt="" style={{objectPosition:service.position}} loading="lazy"/>
-      <div className="vv-ds-process-shade"/>
-      <div className="vv-ds-process-info"><span><Icon size={20}/></span><strong>{title}</strong><p>{line}</p></div>
-      <div className="vv-ds-process-status"><i/> {["DISCOVERY","PLANNING","DIRECTION","IN PRODUCTION","REFINEMENT","HANDOVER","WHAT'S NEXT"][step]}</div>
-    </div>
-    <div className="vv-ds-process-bottom">{data.process.map(([label],i)=><i key={label} className={i<=step?"is-current":""}/>)}</div>
-  </div>;
 }
 
 export function VisualVerseServiceDetailSections({service,outcome,quoteHref,allServices}:{service:ServiceLink;outcome:string;quoteHref:string;allServices:readonly ServiceLink[]}) {
@@ -84,7 +69,7 @@ export function VisualVerseServiceDetailSections({service,outcome,quoteHref,allS
         </div>
       </div>
     </section>
-    <VisualVerseProcessJourney items={items} heading={processTitles[service.id]} quoteHref={quoteHref} artwork={step=>step===3?<ServiceArtwork service={service} step={step}/>:<ProcessArtwork step={step} context={{service:service.name,image:service.image,items,deliverables:data.deliverables.map(([title])=>title)}}/>}/>
+    <VisualVerseProcessJourney items={items} heading={processTitles[service.id]} quoteHref={quoteHref} artwork={step=><ProcessStoryArt kind={service.id} step={step}/> }/>
     <section className="vv-ds-section vv-ds-details" aria-labelledby="vv-ds-details-title">
       <div className="vv-sv-container vv-ds-details-grid">
         <div className="vv-ds-heading vv-ds-reveal"><Kicker>THE DETAILS</Kicker><h2 id="vv-ds-details-title">The craft behind the work.</h2><p>{data.technical}</p><div className="vv-ds-tool-label">TOOLS & CAPABILITIES</div><div className="vv-ds-tools">{data.tools.map((t,i)=>{const Icon=icons[service.id][i%6];return <span key={t}><Icon size={20}/><span>{t}</span><i aria-hidden="true"/></span>})}</div></div>
