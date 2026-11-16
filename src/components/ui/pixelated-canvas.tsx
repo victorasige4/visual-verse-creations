@@ -43,6 +43,7 @@ type Sample = {
   b: number;
   a: number;
   seed: number;
+  fill: string;
 };
 
 const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
@@ -107,12 +108,14 @@ export function PixelatedCanvas({
     let currentX = -1000;
     let currentY = -1000;
     let hovering = false;
+    let touchPointer: number | null = null;
+    let releaseTimer = 0;
     let still = false;
     const input = new Image();
     input.decoding = "async";
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const finePointer = window.matchMedia("(pointer: fine)");
-    const canInteract = () => interactive && !reduceMotion.matches && finePointer.matches;
+    const coarsePointer = window.matchMedia("(pointer: coarse)");
+    const canInteract = () => interactive && !reduceMotion.matches;
     const step = Math.max(3, cellSize);
     const tint = parseHex(tintColor);
     const tintAmount = clamp(tintStrength, 0, 1);
@@ -147,10 +150,7 @@ export function PixelatedCanvas({
             dy += Math.cos(sample.seed * 1.7 + now * 0.001 * jitterSpeed) * jitter;
           }
         }
-        const r = Math.round(sample.r * (1 - tintAmount) + tint[0] * tintAmount);
-        const g = Math.round(sample.g * (1 - tintAmount) + tint[1] * tintAmount);
-        const b = Math.round(sample.b * (1 - tintAmount) + tint[2] * tintAmount);
-        context.fillStyle = `rgba(${r},${g},${b},${sample.a / 255})`;
+        context.fillStyle = sample.fill;
         if (shape === "circle") {
           context.beginPath();
           context.arc(sample.x + dx, sample.y + dy, size * 0.5, 0, Math.PI * 2);
@@ -197,7 +197,8 @@ export function PixelatedCanvas({
       const rect = canvas!.getBoundingClientRect();
       w = Math.max(1, Math.round(responsive ? rect.width : width));
       h = Math.max(1, Math.round(responsive ? rect.height : height));
-      ratio = Math.min(window.devicePixelRatio || 1, 2);
+      ratio = Math.min(window.devicePixelRatio || 1, coarsePointer.matches ? 1.35 : 2);
+      if (canvas!.width === Math.round(w * ratio) && canvas!.height === Math.round(h * ratio) && samples.length) return;
       canvas!.width = Math.round(w * ratio);
       canvas!.height = Math.round(h * ratio);
       const buffer = document.createElement("canvas");
@@ -255,7 +256,9 @@ export function PixelatedCanvas({
             const lum = red * 0.299 + green * 0.587 + blue * 0.114;
             red = green = blue = lum;
           }
-          next.push({ x, y, r: red, g: green, b: blue, a: alpha, seed: x * 0.17 + y * 0.29 });
+          const blend = (value: number, channel: number) => Math.round(value * (1 - tintAmount) + channel * tintAmount);
+          next.push({ x, y, r: red, g: green, b: blue, a: alpha, seed: x * 0.17 + y * 0.29,
+            fill: `rgba(${blend(red,tint[0])},${blend(green,tint[1])},${blend(blue,tint[2])},${alpha / 255})` });
         }
       }
       samples = next;
@@ -265,7 +268,7 @@ export function PixelatedCanvas({
     }
 
     const onMove = (event: PointerEvent) => {
-      if (!canInteract()) return;
+      if (!canInteract() || (event.pointerType === "touch" && touchPointer !== event.pointerId)) return;
       const rect = canvas!.getBoundingClientRect();
       targetX = event.clientX - rect.left;
       targetY = event.clientY - rect.top;
@@ -276,11 +279,25 @@ export function PixelatedCanvas({
       hovering = true;
       wake();
     };
+    const onDown = (event: PointerEvent) => {
+      if (event.pointerType !== "touch" || !canInteract()) return;
+      window.clearTimeout(releaseTimer);
+      touchPointer = event.pointerId;
+      onMove(event);
+    };
+    const onUp = (event: PointerEvent) => {
+      if (event.pointerId !== touchPointer) return;
+      touchPointer = null;
+      releaseTimer = window.setTimeout(onLeave, 160);
+    };
     const onLeave = () => {
+      touchPointer = null;
+      window.clearTimeout(releaseTimer);
       hovering = false;
       if (!fadeOnLeave) intensity = 0;
       wake();
     };
+    const onExit = (event: PointerEvent) => { if (event.pointerType !== "touch") onLeave(); };
     const onVisibility = () => {
       if (document.hidden) { cancelAnimationFrame(frame); frame = 0; }
       else wake();
@@ -292,7 +309,10 @@ export function PixelatedCanvas({
     }, { threshold: 0.01 });
     const resizeObserver = new ResizeObserver(() => resizeAndSample());
     canvas.addEventListener("pointermove", onMove, { passive: true });
-    canvas.addEventListener("pointerleave", onLeave);
+    canvas.addEventListener("pointerdown", onDown, { passive: true });
+    canvas.addEventListener("pointerup", onUp, { passive: true });
+    canvas.addEventListener("pointercancel", onLeave);
+    canvas.addEventListener("pointerleave", onExit);
     document.addEventListener("visibilitychange", onVisibility);
     observer.observe(canvas);
     resizeObserver.observe(canvas);
@@ -306,7 +326,11 @@ export function PixelatedCanvas({
       resizeObserver.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
       canvas.removeEventListener("pointermove", onMove);
-      canvas.removeEventListener("pointerleave", onLeave);
+      window.clearTimeout(releaseTimer);
+      canvas.removeEventListener("pointerdown", onDown);
+      canvas.removeEventListener("pointerup", onUp);
+      canvas.removeEventListener("pointercancel", onLeave);
+      canvas.removeEventListener("pointerleave", onExit);
       input.onload = null;
     };
   }, [
@@ -319,7 +343,7 @@ export function PixelatedCanvas({
   return (
     <div className={cn("vv-pixel-canvas", className)} style={{ width: responsive ? "100%" : width, height: responsive ? "100%" : height }}>
       <img className={cn("vv-pixel-fallback", ready && "is-ready")} src={src} alt={alt} loading="lazy" decoding="async" />
-      <canvas ref={canvasRef} className="vv-pixel-surface" role="img" aria-label={alt} />
+      <canvas ref={canvasRef} className="vv-pixel-surface" style={{ touchAction: "pan-y" }} role="img" aria-label={alt} />
     </div>
   );
 }

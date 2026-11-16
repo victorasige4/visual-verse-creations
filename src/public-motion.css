@@ -1,0 +1,13 @@
+/* Keep the same authored animation timelines across viewport sizes.
+   Pause CSS animation work when its section is outside the render window. */
+.vv-motion-offscreen, .vv-motion-offscreen::before, .vv-motion-offscreen::after,
+.vv-motion-offscreen *, .vv-motion-offscreen *::before, .vv-motion-offscreen *::after,
+html[data-vv-tab-hidden] body *, html[data-vv-tab-hidden] body *::before, html[data-vv-tab-hidden] body *::after {
+  animation-play-state: paused !important;
+}
+@media (hover: none), (pointer: coarse) {
+  .vv-motion-action:active .vv-action-disc, .vv-cta-button:active .vv-cta-button-icon { transform: scale(.92); }
+  .vv-3d-outer:active .vv-3d-body { transform: scale(.985); }
+  .vv-pin-container:active .vv-pin-face { transform: scale(.985); }
+  .vv-nav-resize-chevron { touch-action: manipulation; }
+}

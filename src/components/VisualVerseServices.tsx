@@ -141,7 +141,7 @@ export function VisualVerseServices() {
           <span className="vv-label">WHAT WE DO</span>
           <h2 className="vv-section-h">Six ways we<br/>bring ideas to life.</h2>
         </div>
-        <p>One creative partner, every detail considered. Hover over a service to see how Visual Verse turns your vision into something remarkable.</p>
+        <p>One creative partner, every detail considered. Select a service to see how Visual Verse turns your vision into something remarkable.</p>
       </div>
       <div className="vv-svc-stack" aria-label="Visual Verse services">
         {services.map((item,index)=>{

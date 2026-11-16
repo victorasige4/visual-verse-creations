@@ -876,6 +876,7 @@ let progressElapsed=0,lastProgressTime=0;
 const canvas=document.getElementById('vvCanvas'),g=canvas.getContext('2d');
 let w=500,h=500,dpr=1;const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const pointer={x:0,y:0,active:false};
+let vvParticlesInitialized=false;
 /* Exact Visual Verse favicon, already distributed with this site. */
 const vvBrandMark=new Image();
 vvBrandMark.decoding='async';
@@ -973,10 +974,13 @@ function makeShape(shape){
  return arr.sort((a,b)=>(a.x+a.y*.13)-(b.x+b.y*.13));
 }
 frames=scenes.map(s=>makeShape(s.shape));dots=Array.from({length:Math.max(...frames.map(f=>f.length))},()=>({x:210+(Math.random()-.5)*410,y:210+(Math.random()-.5)*410,tx:210,ty:210,a:0,ta:0,fill:'#003f5c',size:2.6+Math.random()*.8}));
-function resize(){const rect=canvas.getBoundingClientRect();w=Math.max(1,rect.width);h=Math.max(1,rect.height);dpr=Math.min(window.matchMedia('(pointer:coarse)').matches?1:1.5,window.devicePixelRatio||1);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);g.setTransform(dpr,0,0,dpr,0,0)}
+function resize(){const rect=canvas.getBoundingClientRect();w=Math.max(1,rect.width);h=Math.max(1,rect.height);dpr=Math.min(window.matchMedia('(pointer:coarse)').matches?1:1.5,window.devicePixelRatio||1);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);g.setTransform(dpr,0,0,dpr,0,0);if(vvParticlesInitialized){if(reduced)requestAnimationFrame(animateParticles);else startParticles()}}
 new ResizeObserver(resize).observe(canvas);resize();
-canvas.addEventListener('pointermove',e=>{const r=canvas.getBoundingClientRect();pointer.x=e.clientX-r.left;pointer.y=e.clientY-r.top;pointer.active=true});canvas.addEventListener('pointerleave',()=>pointer.active=false);
-function morph(n){active=n;const frame=frames[n];for(let i=0;i<dots.length;i++){const d=dots[i],p=frame[i];if(p){d.tx=p.x;d.ty=p.y;d.ta=1;d.fill=p.fill;if(reduced){d.x=d.tx;d.y=d.ty;d.a=d.ta}}else{d.tx=210+(Math.random()-.5)*330;d.ty=210+(Math.random()-.5)*330;d.ta=0;if(reduced)d.a=0}}}
+const particleTouch=e=>{const r=canvas.getBoundingClientRect();pointer.x=e.clientX-r.left;pointer.y=e.clientY-r.top;pointer.active=true;startParticles();};
+canvas.addEventListener('pointermove',particleTouch,{passive:true});
+canvas.addEventListener('pointerdown',particleTouch,{passive:true});
+for(const type of ['pointerleave','pointerup','pointercancel'])canvas.addEventListener(type,()=>{pointer.active=false},{passive:true});
+function morph(n){active=n;const frame=frames[n];for(let i=0;i<dots.length;i++){const d=dots[i],p=frame[i];if(p){d.tx=p.x;d.ty=p.y;d.ta=1;d.fill=p.fill;if(reduced){d.x=d.tx;d.y=d.ty;d.a=d.ta}}else{d.tx=210+(Math.random()-.5)*330;d.ty=210+(Math.random()-.5)*330;d.ta=0;if(reduced)d.a=0}}if(vvParticlesInitialized){if(reduced)requestAnimationFrame(animateParticles);else startParticles()}}
 /* Rebuild the branding scene once the exact logo-mark image is available. */
 vvBrandMark.addEventListener('load',()=>{
   const updated=makeShape('identity');
@@ -1058,7 +1062,7 @@ scenes.forEach((scene,i)=>{
 });
 const pause=document.getElementById('pauseSlide');
 function updatePause(){
-  pause.textContent=paused?'▶':'Ⅱ';
+  pause.innerHTML=paused?'<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg>':'<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>';
   pause.setAttribute('aria-label',paused?'Resume slideshow':'Pause slideshow');
   pause.setAttribute('aria-pressed',String(paused));
 }
@@ -1112,7 +1116,7 @@ if(reduced){
 /* Performance: paint only while the hero is visible, cap refresh rate, and
    suspend all particle work in background tabs. */
 let vvParticleVisible=true,vvParticleFrame=0,vvParticleLast=0;
-const vvParticleFps=window.matchMedia('(pointer:coarse)').matches?24:30;
+const vvParticleFps=window.matchMedia('(pointer:coarse)').matches?28:30;
 function animateParticles(now){
  if(!vvParticleVisible||document.hidden){vvParticleFrame=0;return}
  if(!reduced)vvParticleFrame=requestAnimationFrame(animateParticles);
@@ -1121,7 +1125,9 @@ function animateParticles(now){
  vvParticleLast=now;
  g.clearRect(0,0,w,h);
  const scale=Math.min(w,h)/420,ox=(w-420*scale)/2,oy=(h-420*scale)/2;
+ let unsettled=pointer.active;
  for(const p of dots){
+  if(Math.abs(p.tx-p.x)+Math.abs(p.ty-p.y)>.12||Math.abs(p.ta-p.a)>.008)unsettled=true;
   p.x+=(p.tx-p.x)*(reduced?.24:.095);
   p.y+=(p.ty-p.y)*(reduced?.24:.095);
   p.a+=(p.ta-p.a)*.13;
@@ -1139,6 +1145,7 @@ function animateParticles(now){
   g.beginPath();g.arc(px,py,p.size*scale,0,Math.PI*2);g.fill();
  }
  g.globalAlpha=1;
+ if(!reduced&&!unsettled)stopParticles();
 }
 function startParticles(){if(!vvParticleFrame&&vvParticleVisible&&!document.hidden&&!reduced)vvParticleFrame=requestAnimationFrame(animateParticles)}
 function stopParticles(){if(vvParticleFrame)cancelAnimationFrame(vvParticleFrame);vvParticleFrame=0}
@@ -1148,6 +1155,7 @@ const particleObserver=new IntersectionObserver(entries=>{
 },{rootMargin:'80px',threshold:0});
 particleObserver.observe(canvas);
 document.addEventListener('visibilitychange',()=>{document.hidden?stopParticles():startParticles()});
+vvParticlesInitialized=true;
 if(reduced){for(const p of dots){p.x=p.tx;p.y=p.ty;p.a=p.ta;}requestAnimationFrame(animateParticles)}
 else startParticles();
 const burger=document.getElementById('burger'),mobile=document.getElementById('mobile');burger.addEventListener('click',()=>{const open=mobile.hidden;mobile.hidden=!open;burger.setAttribute('aria-expanded',String(open));burger.textContent=open?'×':'☰'});mobile.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mobile.hidden=true;burger.setAttribute('aria-expanded','false');burger.textContent='☰'}));
@@ -1327,7 +1335,8 @@ const burger=document.getElementById('burger'),mobile=document.getElementById('m
     start();
   }
   hero.addEventListener('pointermove',handlePointer,{passive:true});
-  hero.addEventListener('pointerleave',()=>{pointer.active=false},{passive:true});
+  hero.addEventListener('pointerdown',handlePointer,{passive:true});
+  for(const type of ['pointerleave','pointerup','pointercancel'])hero.addEventListener(type,()=>{pointer.active=false},{passive:true});
   window.addEventListener('blur',stop);
   window.addEventListener('focus',start);
   document.addEventListener('visibilitychange',()=>{document.hidden?stop():start()});

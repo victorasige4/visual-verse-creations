@@ -12,9 +12,10 @@ export const Boxes = memo(function Boxes({className}:{className?:string}) {
   useEffect(()=>{
     const layer=root.current, host=layer?.parentElement;
     if(!layer || !host || window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
-    let frame=0;
+    let frame=0, release=0;
     const move=(event:PointerEvent)=>{
-      if(event.pointerType==="touch")return;
+      if(event.pointerType==="touch" && event.type==="pointermove" && event.buttons===0)return;
+      window.clearTimeout(release);
       if(frame)cancelAnimationFrame(frame);
       frame=requestAnimationFrame(()=>{
         const bounds=layer.getBoundingClientRect();
@@ -29,10 +30,15 @@ export const Boxes = memo(function Boxes({className}:{className?:string}) {
         layer.style.setProperty("--box-lit","1");
       });
     };
-    const leave=()=>{cancelAnimationFrame(frame);layer.style.setProperty("--box-lit","0");};
+    const leave=()=>{cancelAnimationFrame(frame);window.clearTimeout(release);layer.style.setProperty("--box-lit","0");};
+    const end=(event:PointerEvent)=>{if(event.pointerType==="touch")release=window.setTimeout(leave,240);};
     host.addEventListener("pointermove",move,{passive:true});
-    host.addEventListener("pointerleave",leave);
-    return ()=>{cancelAnimationFrame(frame);host.removeEventListener("pointermove",move);host.removeEventListener("pointerleave",leave);};
+    host.addEventListener("pointerdown",move,{passive:true});
+    host.addEventListener("pointerup",end,{passive:true});
+    host.addEventListener("pointercancel",leave);
+    const exit=(event:PointerEvent)=>{if(event.pointerType!=="touch")leave();};
+    host.addEventListener("pointerleave",exit);
+    return ()=>{leave();host.removeEventListener("pointermove",move);host.removeEventListener("pointerdown",move);host.removeEventListener("pointerup",end);host.removeEventListener("pointercancel",leave);host.removeEventListener("pointerleave",exit);};
   },[]);
   return <div aria-hidden="true" ref={root} className={cn("vv-background-boxes",className)}><div className="vv-box-grid"><div className="vv-box-highlight"/></div></div>;
 });

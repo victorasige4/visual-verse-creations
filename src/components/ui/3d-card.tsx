@@ -71,6 +71,14 @@ export function CardContainer({
         onPointerEnter={(event) => {
           if (event.pointerType === "mouse" && !reducedMotion) setHovered(true);
         }}
+        onPointerDown={event => {
+          if (event.pointerType === "touch" && !reducedMotion) {
+            setHovered(true);
+            if (bodyRef.current) bodyRef.current.style.transform = "rotateX(2deg) rotateY(-2deg) scale(.99)";
+          }
+        }}
+        onPointerUp={event => { if (event.pointerType === "touch") resetTilt(); }}
+        onPointerCancel={resetTilt}
         onPointerMove={handlePointerMove}
         onPointerLeave={resetTilt}
         onBlurCapture={(event) => {

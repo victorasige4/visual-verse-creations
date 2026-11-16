@@ -80,6 +80,81 @@ try {
     console.log("Animated transmission: "+(path||"home")+" passed");
   }
   await motion.close();
+  // A real touch/mobile context (not merely a narrow desktop window), with
+  // all animation enabled. Check every public route, then exercise the
+  // highest-cost interactive components on the phone.
+  const phone = await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,isMobile:true,hasTouch:true,reducedMotion:"no-preference"});
+  const touch = await phone.newPage();
+  const errors = [];
+  touch.on("pageerror", error=>errors.push(error.message));
+  for(const path of paths){
+    await touch.goto(base+path,{waitUntil:"commit"});
+    await touch.locator("#vv-page-loading .vv-boot-encrypted").waitFor({state:"visible",timeout:10000});
+    await touch.locator("html:not([data-vv-boot])").waitFor({state:"attached",timeout:20000});
+    await touch.locator("main h1").first().waitFor({state:"visible"});
+    assert.equal(await touch.locator("html").getAttribute("data-vv-decrypted"),"true",path);
+    assert.equal(await touch.evaluate(()=>matchMedia("(pointer:coarse)").matches),true);
+    // SVG viewBoxes and dimensions must be valid, including the large
+    // artwork. Hidden icons and decorative defs are intentionally skipped.
+    const svgReport=await touch.evaluate(()=>{
+      const visible=[...document.querySelectorAll("svg")].filter(svg=>{
+        const r=svg.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(svg).visibility!=="hidden";
+      });
+      return {count:visible.length,invalid:visible.filter(svg=>svg.hasAttribute("viewBox")&&(!svg.viewBox.baseVal.width||!svg.viewBox.baseVal.height)).length,viewport:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth};
+    });
+    assert.ok(svgReport.count>0 && svgReport.invalid===0,"Broken SVG geometry: "+path);
+    assert.ok(svgReport.scroll<=svgReport.viewport+2,"Phone horizontal overflow: "+path+" "+JSON.stringify(svgReport));
+    if(!path){
+      // A finger tap must open the dropdown once, not trigger a synthetic
+      // mouse hover followed by a click that closes it again.
+      await touch.getByRole("button",{name:"Open Services menu",exact:true}).tap();
+      await touch.locator("#vv-nav-mega").waitFor({state:"visible"});
+      assert.deepEqual(await labels(touch,".vv-nav-resize-mega-item-copy strong"),serviceNames);
+      await touch.getByRole("button",{name:"Close Services menu",exact:true}).tap();
+      await touch.locator("#vv-nav-mega").waitFor({state:"hidden"});
+      await touch.getByRole("button",{name:"Show Photography",exact:true}).tap();
+      assert.equal(await touch.locator("#serviceName").textContent(),"Photography");
+      await touch.locator(".vv-pixel-surface").scrollIntoViewIfNeeded();
+      await touch.locator(".vv-pixel-fallback.is-ready").waitFor({state:"attached"});
+      const pixel=touch.locator(".vv-pixel-surface");
+      const before=await pixel.evaluate(canvas=>canvas.toDataURL());
+      await pixel.tap();
+      await touch.waitForFunction(value=>document.querySelector(".vv-pixel-surface").toDataURL()!==value,before,{timeout:5000});
+      await touch.locator(".vv-svc-slice-tab").nth(2).tap();
+      await touch.locator(".vv-svc-active-panel h3").filter({hasText:"Web & UI/UX Design"}).waitFor({state:"visible"});
+      await touch.locator(".vvcr-category").nth(2).tap();
+      await touch.locator(".vvcr-category").nth(2).getAttribute("aria-pressed").then(value=>assert.equal(value,"true"));
+      await touch.locator(".vv-atlas-map").scrollIntoViewIfNeeded();
+      await touch.locator(".vv-atlas-dot-overlay path").waitFor({state:"attached"});
+      assert.equal(await touch.getByRole("button",{name:"Pause automatic map tour"}).count(),1,"Mobile atlas should autoplay");
+      await touch.locator(".vv-atlas-city-grid button").nth(1).tap();
+      await touch.locator(".vv-atlas-active-route").waitFor({state:"visible"});
+      await touch.locator(".vv-atlas-map animateMotion").waitFor({state:"attached"});
+      await touch.getByRole("button",{name:"Next question",exact:true}).tap();
+      await touch.locator(".vv-faq-lab-answer-copy").waitFor({state:"visible"});
+      // Scroll away: CSS motion must be paused on offscreen sections.
+      await touch.evaluate(()=>window.scrollTo({top:0,behavior:"instant"}));
+      await touch.waitForFunction(()=>document.querySelector(".vv-close-marquee-section")?.classList.contains("vv-motion-offscreen"));
+    }
+    if(path==="services.html?service=photography"){
+      const compare=touch.getByRole("slider",{name:"Compare original and edited photography"});
+      await compare.scrollIntoViewIfNeeded();
+      const box=await compare.boundingBox();
+      assert.ok(box&&box.width>0);
+      await compare.tap({position:{x:Math.round(box.width*.74),y:Math.round(box.height*.5)}});
+      const amount=Number(await compare.getAttribute("aria-valuenow"));
+      assert.ok(amount>=65&&amount<=85,"Touch photo comparison did not update: "+amount);
+    }
+    if(path.startsWith("services.html")){
+      await touch.evaluate(()=>{const section=document.querySelector("#our-process");window.scrollTo({top:scrollY+section.getBoundingClientRect().top,behavior:"instant"});});
+      await touch.locator(".vv-sp-step-button").nth(3).tap();
+      await touch.waitForFunction(()=>document.querySelector(".vv-sp-stage")?.getAttribute("data-active-step")==="4"&&document.querySelector(".vv-ps-card")?.getAttribute("data-chapter")==="4");
+    }
+    assert.deepEqual(errors,[],"Mobile JavaScript errors on "+path);
+    console.log("Touch + full motion: "+(path||"home")+" passed; "+svgReport.count+" SVG elements");
+  }
+  await phone.close();
+
   for (const viewport of [{width:1440,height:900},{width:390,height:844}]) {
     const context = await browser.newContext({viewport, reducedMotion:"reduce"});
     const page = await context.newPage();

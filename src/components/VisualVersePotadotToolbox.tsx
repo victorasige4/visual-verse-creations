@@ -95,7 +95,8 @@ export function VisualVersePotadotToolbox() {
   const cometRefs = useRef<(SVGCircleElement | null)[]>([]);
   const beamRef = useRef<SVGLineElement | null>(null);
   const activeRef = useRef<number | null>(null);
-  const visibleRef = useRef(true);
+  const repaintRef = useRef<() => void>(() => {});
+  useEffect(() => { repaintRef.current(); }, [selectedIndex]);
   activeRef.current = selectedIndex;
 
   useEffect(() => {
@@ -117,23 +118,39 @@ export function VisualVersePotadotToolbox() {
   useEffect(() => {
     const scene = sceneRef.current;
     if (!scene) return;
-    const onVisibility = () => { visibleRef.current = !document.hidden; };
-    document.addEventListener("visibilitychange", onVisibility);
-    const intersection = new IntersectionObserver(([entry]) => {
-      visibleRef.current = Boolean(entry?.isIntersecting) && !document.hidden;
-    }, { rootMargin: "80px 0px", threshold: 0 });
-    intersection.observe(scene);
-
+    let near = false;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     let elapsed = 0;
     let previous = performance.now();
+    let lastPaint = 0;
     let frame = 0;
-
+    const wake = () => {
+      if (!frame && near && !document.hidden) {
+        previous = performance.now();
+        frame = window.requestAnimationFrame(paint);
+      }
+    };
+    const sync = () => {
+      if (near && !document.hidden) wake();
+      else { window.cancelAnimationFrame(frame); frame = 0; }
+    };
+    const onVisibility = () => sync();
+    document.addEventListener("visibilitychange", onVisibility);
+    const intersection = new IntersectionObserver(([entry]) => {
+      near = Boolean(entry?.isIntersecting);
+      sync();
+    }, { rootMargin: "80px 0px", threshold: 0 });
+    intersection.observe(scene);
+    repaintRef.current = wake;
     const paint = (now: number) => {
-      const delta = Math.min(45, now - previous);
+      frame = 0;
+      if (!near || document.hidden) return;
+      if (!reduce.matches && dimensions.mobile && now - lastPaint < 30) { frame = window.requestAnimationFrame(paint); return; }
+      lastPaint = now;
+      const delta = Math.min(65, now - previous);
       previous = now;
       const active = activeRef.current;
-      if (visibleRef.current && !reduce.matches && active === null) elapsed += delta / 1000;
+      if (!reduce.matches && active === null) elapsed += delta / 1000;
 
       for (let ring = 0; ring < 3; ring++) {
         const { rx, ry } = radii(dimensions, ring as Ring);
@@ -169,19 +186,14 @@ export function VisualVersePotadotToolbox() {
           beam.style.opacity = "0.55";
         } else beam.style.opacity = "0";
       }
-      if (!reduce.matches) frame = window.requestAnimationFrame(paint);
+      if (!reduce.matches && active === null) frame = window.requestAnimationFrame(paint);
     };
 
-    frame = window.requestAnimationFrame(paint);
-    const onMotionChange = () => {
-      if (!reduce.matches && !frame) {
-        previous = performance.now();
-        frame = window.requestAnimationFrame(paint);
-      }
-    };
+    const onMotionChange = () => { window.cancelAnimationFrame(frame); frame = 0; wake(); };
     reduce.addEventListener("change", onMotionChange);
     return () => {
       window.cancelAnimationFrame(frame);
+      repaintRef.current = () => {};
       intersection.disconnect();
       reduce.removeEventListener("change", onMotionChange);
       document.removeEventListener("visibilitychange", onVisibility);
@@ -252,9 +264,9 @@ export function VisualVersePotadotToolbox() {
                     aria-pressed={selected === index}
                     aria-label={"Explore " + tool.name}
                     data-cursor="EXPLORE"
-                    onMouseEnter={() => setHovered(index)}
-                    onMouseLeave={() => setHovered(null)}
-                    onFocus={() => setHovered(index)}
+                    onPointerEnter={event => { if (event.pointerType === "mouse") setHovered(index); }}
+                    onPointerLeave={event => { if (event.pointerType === "mouse") setHovered(null); }}
+                    onFocus={event => { if (event.currentTarget.matches(":focus-visible")) setHovered(index); }}
                     onBlur={() => setHovered(null)}
                     onClick={() => setSelected(current => current === index ? null : index)}>
                     <i className={"vv-potbx-chip-dot ring-" + tool.ring} aria-hidden="true"/>
