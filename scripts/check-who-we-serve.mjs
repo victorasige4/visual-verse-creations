@@ -10,7 +10,8 @@ const html = read("who-we-serve.html");
 
 assert.doesNotThrow(() => postcss.parse(styles, { from: "who-we-serve-redesign.css" }), "audience CSS must parse");
 assert(router.includes('import("./VisualVerseWhoWeServePage")'), "audience page must be lazy loaded");
-assert(router.includes('kind==="audiences"&&<Suspense'), "route must render the audience page");
+assert(router.includes('kind==="audiences"&&<VisualVerseWhoWeServePage/>'), "route must render the audience page");
+assert(read("src/pages-main.tsx").includes("<Suspense fallback={null}><VisualVerseInnerPage"), "the lazy page and shared chrome must commit together");
 assert(!router.includes("function AudiencePage()"), "old duplicate audience page must be removed");
 assert(router.includes("<VisualVerseAboutCta/>") && router.includes("<VisualVerseFooter/>"), "shared CTA and footer remain");
 assert(html.includes("Who We Serve | Visual Verse Creations"), "page SEO must be intact");
