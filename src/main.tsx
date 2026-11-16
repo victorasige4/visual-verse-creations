@@ -1,3 +1,4 @@
+import "./preloader";
 import { StrictMode } from "react";
 import { PublicPageReady } from "./components/PublicPageReady";
 import { createRoot } from "react-dom/client";

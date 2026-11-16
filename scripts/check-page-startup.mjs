@@ -48,6 +48,38 @@ try {
   browser = await chromium.launch({headless:true});
   const paths = ["", "about.html", "services.html", "who-we-serve.html", "projects.html", "contact.html", "request-quote.html",
     ...serviceIds.map(id=>"services.html?service="+id)];
+  const messages = {"index":"Welcome TO Our Universe...","about":"Meet the minds behind the orbit...","services":"Choose your creative constellation...","who-we-serve":"Every orbit has a story...","projects":"A galaxy of ideas awaits...","contact":"Establishing first contact...","request-quote":"Plotting your next mission...","graphic-design":"Transmitting a new visual language...","photography":"Capturing light-years of memories...","web-ui-ux":"Launching your digital universe...","videography":"Putting stars in motion...","branding":"Finding your own constellation...","social-media":"Sending your signal across the galaxy..."};
+  const routeMessage = path => {
+    const url = new URL(base + path);
+    const key = url.searchParams.get("service") || url.pathname.split("/").pop().replace(/\.html$/, "") || "index";
+    return messages[key];
+  };
+  // Real motion: verify the overlay is still covering the hero while the
+  // transmission is encrypted, and the final glyphs match before reveal.
+  const motion = await browser.newContext({viewport:{width:1440,height:900},reducedMotion:"no-preference"});
+  const motionPage = await motion.newPage();
+  await motionPage.addInitScript(()=>{
+    const observer = new MutationObserver(()=>{
+      if(document.documentElement?.dataset.vvTextComplete!=="true")return;
+      const text=[...document.querySelectorAll("#vv-page-loading .vv-boot-word")].map(word=>[...word.querySelectorAll(".vv-boot-letter-display")].map(el=>el.textContent).join("")).join(" ");
+      window.vvDecodedSnapshot={text,covered:document.documentElement.hasAttribute("data-vv-boot"),boxes:!!document.querySelector("#vv-page-loading .vv-boot-boxes")};
+      observer.disconnect();
+    });
+    observer.observe(document,{subtree:true,attributes:true,attributeFilter:["data-vv-text-complete"]});
+  });
+  for (const path of ["", "about.html", "services.html?service=photography"]) {
+    await motionPage.goto(base+path,{waitUntil:"commit"});
+    await motionPage.locator("#vv-page-loading .vv-boot-encrypted").waitFor({state:"visible"});
+    assert.equal(await motionPage.locator("html").getAttribute("data-vv-message"),routeMessage(path));
+    await motionPage.locator("html:not([data-vv-boot])").waitFor({state:"attached",timeout:20000});
+    const result=await motionPage.evaluate(()=>window.vvDecodedSnapshot);
+    assert.deepEqual(result,{text:routeMessage(path),covered:true,boxes:true},"Reveal before entire message decoded: "+path);
+    assert.equal(await motionPage.locator("html").getAttribute("data-vv-page-ready"),"true");
+    assert.equal(await motionPage.locator("html").getAttribute("data-vv-decrypted"),"true");
+    assert.ok(await motionPage.evaluate(()=>scrollY<2),"Hero must be first after decoding");
+    console.log("Animated transmission: "+(path||"home")+" passed");
+  }
+  await motion.close();
   for (const viewport of [{width:1440,height:900},{width:390,height:844}]) {
     const context = await browser.newContext({viewport, reducedMotion:"reduce"});
     const page = await context.newPage();
@@ -62,6 +94,8 @@ try {
       await page.locator("#vv-page-loading").waitFor({state:"visible",timeout:5000});
       assert.equal(await page.evaluate(()=>document.elementFromPoint(innerWidth/2,innerHeight/2)?.closest("#vv-page-loading")!==null),true,"Startup cover missing: "+path);
       await page.locator("html:not([data-vv-boot])").waitFor({state:"attached",timeout:20000});
+      assert.equal(await page.locator("html").getAttribute("data-vv-message"),routeMessage(path),"Route-specific transmission: "+path);
+      assert.equal(await page.locator("html").getAttribute("data-vv-decrypted"),"true","Decryption gate: "+path);
       const hero=page.locator("main h1").first();
       await hero.waitFor({state:"visible"});
       const bounds=await hero.boundingBox();
