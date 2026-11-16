@@ -1,77 +1,14 @@
-name: Validate React + Tailwind migration
-
+name: Download licensed portrait reference assets
 on:
-  push:
-    branches: [main, feat/react-aceternity-island-navbar, dev/visual-verse-next-batch, feat/visual-verse-site-cleanup-v2, fix/why-visual-verse-brand-colors]
   pull_request:
     branches: [main]
-
+permissions:
+  contents: read
 jobs:
-  build:
+  prepare-images:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-      - name: Install dependencies
-        run: npm install --no-audit --no-fund
-      - name: Type-check and build
-        run: npm run build
-      - name: Validate redesigned Who We Serve experience
-        run: node scripts/check-who-we-serve.mjs
-      - name: Check Visual Verse public-facing business language
-        run: node scripts/check-brand-language.mjs
-      - name: Validate Visual Verse Console light/dark appearance
-        run: node scripts/check-console-theme.mjs
-      - name: Check homepage assets
-        run: |
-          test -f dist/index.html
-          test -f dist/projects.html
-          test -f dist/about.html
-          test -f dist/services.html
-          test -f dist/who-we-serve.html
-          test -f dist/contact.html
-          test -f dist/request-quote.html
-          grep -q vv-portfolio-root dist/index.html
-          grep -q vv-projects-page-root dist/projects.html
-          test -f dist/brand-wordmark.png
-          test -f dist/brand-logo.png
-          test -f dist/logo-mark.png
-          test -f dist/favicon.ico
-          test -f dist/about-photographer.webp
-          grep -q vv-about-pixel-root dist/index.html
-          grep -q vv-react-nav-root dist/index.html
-
-      - name: Validate private Visual Verse Console shell
-        run: |
-          node --check public/console-assets/console.js
-          test -s dist/console-preview.html
-          test -s dist/console-assets/console.js
-          test -s dist/console-assets/console.css
-          test -s dist/console-assets/console-file-upload.js
-          node --check dist/console-assets/console-file-upload.js
-          test -s dist/console-assets/console-floating-dock.js
-          node --check dist/console-assets/console-floating-dock.js
-          grep -q "vv-console-dock-root" dist/console-preview.html
-          grep -q "console-floating-dock.js" dist/console-preview.html
-          grep -q 'VISUAL VERSE CONSOLE' dist/console-preview.html
-
-      - name: Check GitHub Pages subpath build
-        env:
-          GITHUB_PAGES: "true"
-        run: |
-          npm run build
-          node scripts/prepare-github-pages.mjs
-          grep -q '/visual-verse-creations/assets/' dist/index.html
-          test -s dist/about.html
-          test -s dist/projects.html
-
-      - name: Check hero-first loading in desktop and mobile Chromium
-        run: |
-          npm install --no-save --package-lock=false playwright
-          npx playwright install --with-deps chromium
-          node scripts/check-page-startup.mjs
+      - uses: actions/checkout@v4
+      - run: python -m pip install Pillow
+      - run: python scripts/download-selected-directions.py
