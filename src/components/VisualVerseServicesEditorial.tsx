@@ -8,8 +8,8 @@ import "../visual-verse-services-page.css";
 
 /**
  * Original Visual Verse service categories + Potadot Services page architecture:
- * editorial hero, numbered service quick-nav, six alternating split showcase
- * rows, seven-stage scroll-pinned process and practical guide cards.
+ * editorial hero, six interactive service cards, seven-stage scroll-pinned
+ * process and practical guide cards.
  * Illustrations and wording are Visual Verse's, not Potadot assets or copy.
  */
 type Kind = "photo"|"film"|"branding"|"graphic"|"web"|"social";
@@ -97,13 +97,6 @@ export function VisualVerseServicesEditorial() {
           <h1 id="vv-sv-title">Six ways we create, <em>all of them yours.</em></h1>
           <p>Every creative solution is shaped around your story, your audience and what you want to achieve. No one-size-fits-all ideas. Just thoughtful work made for you.</p>
         </div>
-        <nav className="vv-sv-nav vv-sv-hero-services vv-sv-reveal" aria-label="Jump to a creative service">
-          {services.map(s=><a key={s.id} href={"#service-"+s.id}>
-            <span className="vv-sv-hero-nav-number">{s.number}</span>
-            <span className="vv-sv-hero-nav-name">{s.id==="social-media"?"Social Media":s.id==="web-ui-ux"?"Web & UI/UX":s.id==="branding"?"Branding":s.name}</span>
-            <ArrowUpRight size={16} strokeWidth={1.8} aria-hidden="true"/>
-          </a>)}
-        </nav>
       </div>
     </section>
 
