@@ -26,6 +26,7 @@ export const BackgroundBeams = memo(function BackgroundBeams({ className }: { cl
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
+    let inRange = false;
     const measure = () => setWidth(Math.max(1, Math.round(node.clientWidth)));
     measure();
     const resize = typeof ResizeObserver === "undefined" ? undefined : new ResizeObserver(measure);
@@ -33,12 +34,13 @@ export const BackgroundBeams = memo(function BackgroundBeams({ className }: { cl
     if (!resize) window.addEventListener("resize", measure);
     const observer = typeof IntersectionObserver === "undefined" ? undefined :
       new IntersectionObserver(([entry]) => {
+        inRange = entry.isIntersecting;
         setNear(entry.isIntersecting);
         setVisible(entry.isIntersecting && !document.hidden);
       }, { rootMargin: "80px" });
     if (observer) observer.observe(node);
-    else {setNear(true);setVisible(true);}
-    const onVisibility=()=>setVisible(!document.hidden);
+    else {inRange=true;setNear(true);setVisible(!document.hidden);}
+    const onVisibility=()=>setVisible(inRange&&!document.hidden);
     document.addEventListener("visibilitychange",onVisibility);
     return () => { resize?.disconnect(); observer?.disconnect(); window.removeEventListener("resize", measure);document.removeEventListener("visibilitychange",onVisibility); };
   }, []);

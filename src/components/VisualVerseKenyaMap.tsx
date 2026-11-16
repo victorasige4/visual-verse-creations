@@ -36,6 +36,7 @@ function pathOf(coordinates:number[][][]|number[][][][],type:string){
 const outlines=countyOutlines.features.map(c=>({
   id:c.properties.code,name:c.properties.name,path:pathOf(c.geometry.coordinates,c.geometry.type)
 }));
+const dottedOutline=outlines.map(c=>c.path).join(" ");
 const cityPoints=cities.map(c=>project([c.lon,c.lat]));
 const nairobi=cityPoints[0];
 
@@ -50,12 +51,12 @@ function routeTo(index:number){
 }
 export function VisualVerseKenyaMap(){
   const [selected,setSelected]=useState(0);
-  // Keep the desktop tour animated, but leave mobile in a low-power, tap-to-explore mode.
+  // Animate the selected route on phones as well; expensive glow filters stay desktop-only.
   const [compact,setCompact]=useState(()=>window.matchMedia("(max-width: 800px)").matches);
-  const [playing,setPlaying]=useState(()=>!window.matchMedia("(max-width: 800px)").matches);
+  const [playing,setPlaying]=useState(true);
   const [visible,setVisible]=useState(false);
   const [tabVisible,setTabVisible]=useState(()=>!document.hidden);
-  const [reduced,setReduced]=useState(false);
+  const [reduced,setReduced]=useState(()=>window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   const mapRef=useRef<HTMLDivElement>(null);
 
   useEffect(()=>{
@@ -69,7 +70,6 @@ export function VisualVerseKenyaMap(){
     const media=window.matchMedia("(max-width: 800px)");
     const update=()=>{
       setCompact(media.matches);
-      if(media.matches)setPlaying(false);
     };
     media.addEventListener("change",update);
     return ()=>media.removeEventListener("change",update);
@@ -91,7 +91,8 @@ export function VisualVerseKenyaMap(){
 
   const city=cities[selected];
   const route=useMemo(()=>selected===0?"":routeTo(selected),[selected]);
-  const running=playing&&visible&&tabVisible&&!reduced;
+  const motionVisible=visible&&tabVisible&&!reduced;
+  const running=playing&&motionVisible;
   const choose=(i:number)=>{setSelected(i);setPlaying(false)};
   const placeDetails=<>
     <h3>Hello,<br/><em>{city.name}.</em></h3><p>{city.phrase}</p>
@@ -131,20 +132,18 @@ export function VisualVerseKenyaMap(){
                   fillRule="evenodd" className={chosen?"vv-atlas-selected-county":""}/>;
               })}
             </g>
-            {!compact&&<g className="vv-atlas-dot-overlay" pointerEvents="none">
-              {outlines.map(c=><path key={"dots-"+c.id} d={c.path} fill="url(#vv-atlas-dots)" fillRule="evenodd" opacity=".25"/>)}
-            </g>}
-            {/* Keep the Nairobi-to-city connection network visible on mobile, without continuous animations. */}
+            <g className="vv-atlas-dot-overlay" pointerEvents="none"><path d={dottedOutline} fill="url(#vv-atlas-dots)" fillRule="evenodd" opacity=".25"/></g>
+            {/* A single lightweight active route animation; the other connections remain visible. */}
             <g pointerEvents="none" aria-hidden="true">
               {cityPoints.slice(1).map((_,i)=><path key={"possible-"+i} className="vv-atlas-ghost-route" d={routeTo(i+1)} fill="none"/>)}
             </g>
             <circle cx={cityPoints[selected][0]} cy={cityPoints[selected][1]} r="75" fill="url(#vv-atlas-spotlight)" pointerEvents="none"/>
             {route&&<g key={"live-"+selected} pointerEvents="none">
               {!compact&&<path d={route} className="vv-atlas-route-glow" filter="url(#vv-atlas-glow)"/>}
-              {compact
+              {!motionVisible
                 ? <path d={route} className="vv-atlas-active-route"/>
                 : <motion.path d={route} className="vv-atlas-active-route" initial={{pathLength:0,opacity:0}} animate={{pathLength:1,opacity:1}} transition={{duration:1.25,ease:[.25,1,.35,1]}}/>}
-              {!compact&&!reduced&&<circle r="5" fill="#e9fff5" stroke="#2ec4b6" strokeWidth="2">
+              {motionVisible&&<circle r="5" fill="#e9fff5" stroke="#2ec4b6" strokeWidth="2">
                 <animateMotion dur="3.8s" repeatCount="indefinite" path={route}/>
               </circle>}
             </g>}
@@ -156,6 +155,7 @@ export function VisualVerseKenyaMap(){
                 aria-label={"Explore "+c.name+", "+c.county+" County"} aria-pressed={active}
                 onClick={()=>choose(i)} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();choose(i)}}}>
                 {active&&<circle className="vv-atlas-pin-pulse" r="22"/>}
+                <circle r="20" fill="transparent" aria-hidden="true"/>
                 <circle className="vv-atlas-pin-halo" r={active?15:11}/>
                 <circle className="vv-atlas-pin-core" r={active?6.3:4.7}/>
                 {(active||i===0)&&<text className="vv-atlas-pin-label" x="15" y="-15">{c.name.toUpperCase()}</text>}
@@ -168,9 +168,9 @@ export function VisualVerseKenyaMap(){
           <div className="vv-atlas-panel-head"><span>THE NEXT CREATIVE STOP</span><span className="vv-atlas-status"><i/> EXPLORE LIVE</span></div>
           <div className="vv-atlas-place">
             <span className="vv-atlas-place-brow">{city.role}</span>
-            {compact
+            {!motionVisible
               ? <div key={city.name}>{placeDetails}</div>
-              : <AnimatePresence mode="wait"><motion.div key={city.name} initial={{opacity:0,y:20,filter:"blur(5px)"}} animate={{opacity:1,y:0,filter:"blur(0px)"}} exit={{opacity:0,y:-13,filter:"blur(5px)"}} transition={{duration:.34}}>{placeDetails}</motion.div></AnimatePresence>}
+              : <AnimatePresence mode="wait"><motion.div key={city.name} initial={{opacity:0,y:compact?10:20}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}} transition={{duration:.3}}>{placeDetails}</motion.div></AnimatePresence>}
           </div>
           <div className="vv-atlas-city-controls">
             <div className="vv-atlas-city-controls-title"><span>PICK A DESTINATION</span><button type="button" onClick={()=>setPlaying(v=>!v)} aria-label={playing?"Pause automatic map tour":"Resume automatic map tour"} data-cursor="PLAY">{playing?<Pause size={13}/>:<Play size={13}/>} {playing?"PAUSE":"PLAY"}</button></div>

@@ -36,8 +36,11 @@ export function PinContainer({
       onPointerEnter={(event) => {
         if (event.pointerType === "mouse" || event.pointerType === "pen") setActive(true);
       }}
+      onPointerDown={event => { if (event.pointerType === "touch") setActive(true); }}
+      onPointerUp={event => { if (event.pointerType === "touch") setActive(false); }}
+      onPointerCancel={() => setActive(false)}
       onPointerLeave={() => setActive(false)}
-      onFocus={() => setActive(true)}
+      onFocus={event => { if (event.currentTarget.matches(":focus-visible")) setActive(true); }}
       onBlur={() => setActive(false)}
       data-pin-active={active}
       data-pin-highlights={!!highlights?.length}

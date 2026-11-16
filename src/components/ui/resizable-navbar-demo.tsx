@@ -96,7 +96,7 @@ export function ResizableNavbarDemo() {
 
   const group=(name:MenuName,label:string,href:string)=>(
     <div className={"vv-nav-resize-group"+(open===name?" is-open":"")}
-      onMouseEnter={()=>{setPreview(0);setOpen(name)}}>
+      onPointerEnter={event=>{if(event.pointerType==="mouse"){setPreview(0);setOpen(name)}}}>
       <a href={href} className={"vv-nav-resize-link"+(page===name?" is-active":"")}>
         {label}
       </a>
@@ -113,7 +113,7 @@ export function ResizableNavbarDemo() {
   );
 
   return <div ref={headerRef} className="vv-resize-nav-anchor"
-    onMouseLeave={()=>setOpen(null)}>
+    onPointerLeave={event=>{if(event.pointerType==="mouse")setOpen(null)}}>
     <Navbar compact={compact}>
       <NavBody>
         <a className="vv-nav2-logo vv-nav-resize-logo" href="/#top" aria-label="Visual Verse Creations — Home">
@@ -152,7 +152,7 @@ export function ResizableNavbarDemo() {
                 const Icon=item.Icon;
                 return <a key={item.name} className={"vv-nav-resize-mega-item"+(preview===i?" is-preview":"")}
                   href={item.href}
-                  onMouseEnter={()=>setPreview(i)}
+                  onPointerEnter={event=>{if(event.pointerType==="mouse")setPreview(i)}}
                   onFocus={()=>setPreview(i)}
                   onClick={()=>setOpen(null)}>
                   <span className="vv-nav-resize-mega-number">{String(i+1).padStart(2,"0")}</span>
