@@ -1,15 +1,13 @@
-import { useEffect, useRef } from "react";
-import { ArrowUpRight, ArrowRight, Camera, Clapperboard, Palette, PenTool, MonitorSmartphone, Share2, Check, UsersRound, MessageCircle, FileText } from "lucide-react";
-import { ServiceArtwork } from "./VisualVerseServices";
-import { PinContainer } from "./ui/3d-pin";
-import "../aceternity-3d-pin.css";
+import { useEffect, useRef, useState } from "react";
+import { ArrowUpRight, ArrowRight, ArrowLeft, Camera, Clapperboard, Palette, PenTool, MonitorSmartphone, Share2, Check, UsersRound, MessageCircle, FileText, Play, Pause, Smartphone, Monitor, Layers3, MousePointer2, Type, Globe } from "lucide-react";
 import { VisualVerseProcessJourney } from "./VisualVerseProcessJourney";
 import "../visual-verse-services-page.css";
+import "../visual-verse-service-detail.css";
 
 /**
  * Original Visual Verse service categories + Potadot Services page architecture:
- * editorial hero, six interactive service cards, seven-stage scroll-pinned
- * process and practical guide cards.
+ * editorial overview, dedicated service detail views, seven-stage scroll-pinned
+ * process and practical guide cards. The 3D Pin component remains available elsewhere.
  * Illustrations and wording are Visual Verse's, not Potadot assets or copy.
  */
 type Kind = "photo"|"film"|"branding"|"graphic"|"web"|"social";
@@ -64,6 +62,88 @@ const services = [
   },
 ] as const;
 
+type Service = typeof services[number];
+const base = import.meta.env.BASE_URL;
+const serviceUrl = (id: string) => `${base}services.html?service=${id}`;
+const quoteUrl = (s:Service) => `${base}request-quote.html?service=${encodeURIComponent(s.name)}`;
+const covers: Record<Service["id"], {file:string;position:string}> = {
+  photography:{file:"service-cover-photography.webp",position:"32% center"},
+  videography:{file:"service-cover-videography.webp",position:"66% center"},
+  "graphic-design":{file:"service-cover-graphic-design.webp",position:"62% center"},
+  "social-media":{file:"service-cover-social-media.webp",position:"51% center"},
+  // Compagnons / Unsplash (FkUTlyPLhJQ); Leeloo The First / Pexels (7598022).
+  "web-ui-ux":{file:"service-cover-web-ui-ux.webp",position:"58% center"},
+  branding:{file:"service-cover-branding.webp",position:"46% center"},
+};
+const detailCopy: Record<Service["id"],{headline:string;intro:string;outcome:string;stages:string[];labels:string[]}> = {
+  photography:{headline:"Frames that make the moment last.",intro:"From the people you love to the things you build, thoughtful photography makes every moment feel worth remembering.",outcome:"Images that feel like you, long after the moment has passed.",stages:["Plan the shoot","Capture the story","Refine every frame"],labels:["Original","Colour grade","Final image"]},
+  videography:{headline:"Stories that move people.",intro:"From the first idea to the final cut, we craft films that connect with the right audience and make your message impossible to ignore.",outcome:"Purposeful films that carry your story far beyond the screen.",stages:["Shape the concept","Capture the footage","Edit and deliver"],labels:["Footage","Edit","Final cut"]},
+  "graphic-design":{headline:"Ideas that deserve to be seen.",intro:"Intelligent design that gives every message a visual voice, from a single print piece to an integrated creative campaign.",outcome:"Design that communicates before a single word is read.",stages:["Understand the brief","Explore visual routes","Build the final assets"],labels:["Sketch","Design","Final artwork"]},
+  "web-ui-ux":{headline:"Digital experiences built for real people.",intro:"Responsive websites and thoughtful product interfaces, designed from the first wireframe to the smallest mobile interaction.",outcome:"A digital presence that looks exceptional and works beautifully everywhere.",stages:["Map the experience","Design and prototype","Build and refine"],labels:["Wireframe","Desktop","Mobile"]},
+  "social-media":{headline:"Good stories deserve a bigger stage.",intro:"We bring creative direction, content planning and digital campaigns together to help your brand connect consistently with its audience.",outcome:"A recognisable online presence that gives every post a purpose.",stages:["Plan the strategy","Create the content","Review and optimise"],labels:["Content","Campaign","Insights"]},
+  branding:{headline:"An identity that feels unmistakably yours.",intro:"We turn the heart of a business into a distinctive visual language that feels consistent from the first impression to every touchpoint.",outcome:"A brand system with the confidence to show up anywhere.",stages:["Discover your direction","Develop the identity","Apply the brand system"],labels:["Logo","Palette","Applications"]},
+};
+
+function ServiceNav({active,overview=false}:{active?:string;overview?:boolean}) {
+  return <nav className="vv-service-switcher" aria-label="Explore our services">
+    {services.map(s=><a key={s.id} href={overview?`#details-${s.id}`:serviceUrl(s.id)} aria-current={active===s.id?"page":undefined}><span>{s.number}</span>{s.name}<ArrowUpRight size={12} aria-hidden="true"/></a>)}
+  </nav>;
+}
+
+function ServiceDemo({service:s}:{service:Service}) {
+  const d=detailCopy[s.id];
+  const [mode,setMode]=useState(0);
+  const [playing,setPlaying]=useState(()=>!window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const [inView,setInView]=useState(false);
+  const demoRef=useRef<HTMLDivElement>(null);
+  const [split,setSplit]=useState(50);
+  const image=covers[s.id];
+  const Icon=s.Icon;
+  useEffect(()=>{
+    if(!demoRef.current || !window.IntersectionObserver){setInView(true);return;}
+    const observer=new IntersectionObserver(([entry])=>setInView(entry.isIntersecting),{threshold:.15});
+    observer.observe(demoRef.current);
+    return ()=>observer.disconnect();
+  },[]);
+  useEffect(()=>{
+    if(!playing || !inView)return;
+    const interval=window.setInterval(()=>setMode(m=>(m+1)%3),3200);
+    return ()=>window.clearInterval(interval);
+  },[playing,inView]);
+  return <div ref={demoRef} className={`vv-service-demo vv-demo-${s.kind}`} data-mode={mode} data-playing={playing}>
+    <div className="vv-demo-header"><span><i/> STUDIO / {s.number}</span><Icon size={19} strokeWidth={1.6}/></div>
+    <div className="vv-demo-controls" aria-label={`${s.name} demonstration views`}>
+      {d.labels.map((label,i)=><button key={label} type="button" aria-pressed={mode===i} onClick={()=>{setPlaying(false);setMode(i)}}>{label}</button>)}
+    </div>
+    <div className="vv-demo-stage">
+      {s.kind==="photo" && <div className="vv-demo-photo-frame"><div className="vv-demo-photo-image"><img src={base+image.file} alt="Camera photography example"/><img className="vv-demo-photo-edited" src={base+image.file} alt="" style={{clipPath:`inset(0 0 0 ${split}%)`}}/><span className="vv-demo-photo-line" style={{left:`${split}%`}}/><span className="vv-demo-photo-label">ORIGINAL</span><span className="vv-demo-photo-label right">EDITED</span></div><label>Compare original and edited <input type="range" min="0" max="100" value={split} onChange={e=>{setSplit(+e.target.value);setPlaying(false)}}/></label></div>}
+      {s.kind==="film" && <div className="vv-demo-film-frame"><div className="vv-demo-film-monitor"><img src={base+image.file} alt="Video production camera"/><span className="vv-demo-record"><i/> {mode===2?"EXPORT":"REC"}</span><span className="vv-demo-film-time">00:00:{["04","12","24"][mode]}</span><Play size={36} fill="currentColor"/></div><div className="vv-demo-timeline"><span>V1</span>{[1,2,3,4,5].map(i=><i key={i}/>)}<span>A1</span>{[1,2,3,4,5].map(i=><i key={i}/>)}<b/></div></div>}
+      {s.kind==="graphic" && <div className="vv-demo-design-frame"><aside aria-hidden="true"><MousePointer2/><PenTool/><Type/><Layers3/></aside><div className="vv-demo-poster"><small>THE CREATIVE SERIES / 01</small><span className="vv-demo-orb"/><strong>Make<br/>it <em>seen.</em></strong><span>VISUAL VERSE / DESIGN STUDIO</span></div><div className="vv-demo-layers" aria-hidden="true"><small>LAYERS</small><b>Type</b><b>Forms</b><b>Colour</b></div></div>}
+      {s.kind==="web" && <div className="vv-demo-web-frame"><div className="vv-demo-browser"><div className="vv-demo-browser-top"><i/><i/><i/><span>visualverse / concept</span></div><div className="vv-demo-web-screen"><small>VISUAL VERSE <Globe size={14}/></small><strong>Design for<br/>the real world.</strong><span>Explore <ArrowUpRight size={13}/></span><div className="vv-demo-web-orbit"/></div><div className="vv-demo-web-lines"><i/><i/><i/></div></div><div className="vv-demo-phone"><div/><small>VV / MOBILE</small><strong>Made<br/>for every<br/>screen.</strong><i/><i/><span>Explore ↗</span></div><span className="vv-demo-device-label">{mode===2?<Smartphone size={14}/>:<Monitor size={14}/>} {d.labels[mode]}</span></div>}
+      {s.kind==="social" && <div className="vv-demo-social-frame"><div className="vv-demo-social-post"><small><i/> VISUAL VERSE</small><div><span>GOOD STORIES.</span><strong>Bigger<br/>impact.</strong><em>01 / CAMPAIGN</em></div><span>♡　◌　↗</span></div><div className="vv-demo-social-stats"><small>CAMPAIGN / DEMO</small><strong>Engagement</strong><div>{[28,47,40,62,55,78,95].map((h,i)=><i key={i} style={{height:h+"%",transitionDelay:i*60+"ms"}}/>)}</div><span>Creative → audience</span></div></div>}
+      {s.kind==="branding" && <div className="vv-demo-brand-frame"><div className="vv-demo-brand-sheet"><small>IDENTITY / CONCEPT 01</small><img src={base+"logo-mark.png"} alt="Visual Verse identity mark"/><strong>Visual<br/>Verse.</strong><span>IMAGINE. CREATE. CONNECT.</span></div><div className="vv-demo-brand-card"><img src={base+"logo-mark.png"} alt=""/><span>Brand in motion.</span></div><div className="vv-demo-swatches"><i/><i/><i/><i/></div></div>}
+    </div>
+    <div className="vv-demo-footer"><span><i/> {d.labels[mode]} <small> · Illustrative concept</small></span><button type="button" aria-label={playing?"Pause demonstration":"Play demonstration"} onClick={()=>setPlaying(p=>!p)}>{playing?<Pause size={16}/>:<Play size={16}/>}</button></div>
+  </div>;
+}
+
+function ServiceDetail({service:s}:{service:Service}) {
+  const d=detailCopy[s.id];
+  const next=services[(services.indexOf(s)+1)%services.length];
+  const previous=services[(services.indexOf(s)+services.length-1)%services.length];
+  useEffect(()=>{const old=document.title;document.title=s.name+" | Visual Verse Creations";return()=>{document.title=old}},[s]);
+  return <div className="vv-services-editorial vv-service-detail">
+    <section className="vv-detail-hero" id="services-top"><div className="vv-sv-container">
+      <nav className="vv-sv-breadcrumb" aria-label="Breadcrumb"><a href={base}>Home</a><span>·</span><a href={`${base}services.html`}>Services</a><span>·</span><span aria-current="page">{s.name}</span></nav>
+      <div className="vv-detail-grid"><div className="vv-detail-copy"><span className="vv-sv-kicker"><i/><i/> {s.number} / 06 &nbsp; · &nbsp; {s.name}</span><h1>{d.headline}</h1><p>{d.intro}</p><div className="vv-detail-actions"><a className="vv-service-cta" href={quoteUrl(s)}>Let's talk <span><ArrowUpRight size={17}/></span></a><a className="vv-service-secondary" href={`${base}contact.html`}>Contact us <ArrowUpRight size={15}/></a></div><div className="vv-detail-tags">{s.highlights.map(h=><span key={h}>{h}</span>)}</div></div><ServiceDemo service={s}/></div>
+      <ServiceNav active={s.id}/>
+    </div></section>
+    <section className="vv-detail-offer"><div className="vv-sv-container"><div className="vv-detail-intro"><span className="vv-sv-kicker"><i/><i/> WHAT WE DELIVER</span><h2>{d.outcome}</h2><p>{s.description}</p></div><div className="vv-detail-deliverables">{s.bullets.map((b,i)=><article key={b}><span>0{i+1}</span><Check size={22}/><h3>{b}</h3></article>)}</div></div></section>
+    <section className="vv-detail-method"><div className="vv-sv-container"><div className="vv-detail-method-copy"><span className="vv-sv-kicker"><i/><i/> HOW WE WORK</span><h2>Made with intention.</h2><p>A clear, collaborative creative process from start to finish.</p><ol>{d.stages.map((stage,i)=><li key={stage}><span>0{i+1}</span>{stage}<ArrowRight size={19}/></li>)}</ol><a className="vv-service-cta" href={quoteUrl(s)}>Start a project <span><ArrowUpRight size={17}/></span></a></div><figure><img src={base+covers[s.id].file} style={{objectPosition:covers[s.id].position}} alt={`${s.name} creative process`} loading="lazy"/><figcaption>{s.name} / Visual Verse Creations</figcaption></figure></div></section>
+    <section className="vv-detail-next"><div className="vv-sv-container"><a href={serviceUrl(previous.id)}><ArrowLeft size={21}/><span><small>PREVIOUS SERVICE</small>{previous.name}</span></a><a href={`${base}services.html`}>All services</a><a href={serviceUrl(next.id)}><span><small>NEXT SERVICE</small>{next.name}</span><ArrowRight size={21}/></a></div></section>
+  </div>;
+}
+
 function useRevealSections() {
   const rootRef = useRef<HTMLDivElement>(null);
   useEffect(()=>{
@@ -87,6 +167,14 @@ function useRevealSections() {
 
 export function VisualVerseServicesEditorial() {
   const ref = useRevealSections();
+  const selected=services.find(s=>s.id===new URLSearchParams(window.location.search).get("service"));
+  const [highlight,setHighlight]=useState<string>();
+  useEffect(()=>{
+    if(selected)return;
+    const id=window.location.hash.slice(1);
+    if(id)requestAnimationFrame(()=>document.getElementById(id)?.scrollIntoView({block:"start"}));
+  },[selected]);
+  if(selected)return <ServiceDetail service={selected}/>;
   return <div className="vv-services-editorial" ref={ref}>
     <section className="vv-sv-hero vv-sv-hero--potadot" aria-labelledby="vv-sv-title" id="services-top">
       <div className="vv-sv-container">
@@ -97,68 +185,28 @@ export function VisualVerseServicesEditorial() {
           <h1 id="vv-sv-title">Six ways we create, <em>all of them yours.</em></h1>
           <p>Every creative solution is shaped around your story, your audience and what you want to achieve. No one-size-fits-all ideas. Just thoughtful work made for you.</p>
         </div>
+        <div className="vv-service-hero-nav" onMouseOver={e=>setHighlight((e.target as HTMLElement).closest("a")?.hash.replace("#details-",""))} onMouseLeave={()=>setHighlight(undefined)}><ServiceNav overview/></div>
       </div>
     </section>
 
-    <section id="services" className="vv-sv-pin-services" aria-labelledby="vv-sv-services-title">
+    <section id="services" className="vv-service-overview" aria-labelledby="vv-sv-services-title">
       <div className="vv-sv-container">
-        <header className="vv-sv-pin-heading vv-sv-reveal">
+        <header className="vv-service-overview-heading vv-sv-reveal">
           <span className="vv-sv-kicker"><i/><i/> THE CREATIVE DISCIPLINES</span>
-          <div className="vv-sv-pin-heading-row">
-            <h2 id="vv-sv-services-title">What we <em>bring to life.</em></h2>
-            <p>Six ways to tell your story. Hover over a card to see it come alive, or tap to explore your next project.</p>
-          </div>
+          <h2 id="vv-sv-services-title">What we <em>bring to life.</em></h2>
         </header>
-        <div className="vv-sv-pin-grid">
+        <div className="vv-service-list">
           {services.map((s)=>{
             const Icon=s.Icon;
-            const photo: Record<string,{file:string;position:string}> = {
-              photography:{file:"service-cover-photography.webp",position:"32% center"},
-              videography:{file:"service-cover-videography.webp",position:"66% center"},
-              "graphic-design":{file:"service-cover-graphic-design.webp",position:"62% center"},
-              "social-media":{file:"service-cover-social-media.webp",position:"51% center"},
-              // Stock photography used as illustrative service covers, not portfolio work.
-              // Compagnons / Unsplash: https://unsplash.com/photos/black-and-silver-laptop-computer-FkUTlyPLhJQ
-              "web-ui-ux":{file:"service-cover-web-ui-ux.webp",position:"58% center"},
-              // Leeloo The First / Pexels: https://www.pexels.com/photo/branding-company-documents-on-desk-7598022/
-              branding:{file:"service-cover-branding.webp",position:"46% center"},
-            };
-            const image=photo[s.id];
-            return <article className="vv-sv-pin-cell" id={"details-"+s.id} key={s.id}
-              aria-labelledby={"sv-"+s.id}>
-              <span id={"service-"+s.id} className="vv-sv-pin-anchor" aria-hidden="true"/>
-              <PinContainer
-                containerClassName="vv-sv-service-pin"
-                title={s.name}
-                highlights={s.highlights}
-                href={import.meta.env.BASE_URL+"request-quote.html?service="+encodeURIComponent(s.name)}
-              >
-                <div className={"vv-sv-pin-card vv-sv-pin-"+s.id}>
-                  {image?<img className="vv-sv-pin-photo"
-                    src={import.meta.env.BASE_URL+image.file}
-                    style={{objectPosition:image.position}}
-                    alt="" loading="lazy" decoding="async"
-                  />:<div className="vv-sv-pin-ui-art" aria-hidden="true"><ServiceArtwork kind={s.kind}/></div>}
-                  <div className="vv-sv-pin-wash" aria-hidden="true"/>
-                  <div className="vv-sv-pin-top">
-                    <span>{s.number}<small> / 06</small></span>
-                    <Icon size={23} strokeWidth={1.5} aria-hidden="true"/>
-                  </div>
-                  <div className="vv-sv-pin-center">
-                    <span className="vv-sv-pin-category">{s.tags.slice(0,2).join(" · ")}</span>
-                    <h3 id={"sv-"+s.id}>{s.name}</h3>
-                    <p>{s.description}</p>
-                  </div>
-                  <div className="vv-sv-pin-bottom">
-                    <span>VISUAL VERSE CREATIONS</span>
-                    <span className="vv-sv-pin-explore">Explore service <ArrowUpRight size={17}/></span>
-                  </div>
-                </div>
-              </PinContainer>
+            const image=covers[s.id];
+            return <article className={`vv-service-row vv-sv-reveal ${highlight===s.id?"is-highlighted":""}`} id={"details-"+s.id} key={s.id} aria-labelledby={"sv-"+s.id}>
+              <span id={"service-"+s.id} className="vv-service-anchor" aria-hidden="true"/>
+              <div className="vv-service-row-copy"><span className="vv-service-index"><Icon size={20} strokeWidth={1.6}/> {s.number} / 06</span><h3 id={"sv-"+s.id}>{s.name}</h3><h4>{detailCopy[s.id].headline}</h4><p>{s.description}</p><ul>{s.bullets.slice(0,3).map(b=><li key={b}><Check size={15}/>{b}</li>)}</ul><a className="vv-service-cta" href={serviceUrl(s.id)}>Explore {s.name} <span><ArrowUpRight size={17}/></span></a></div>
+              <a className="vv-service-row-art" href={serviceUrl(s.id)} aria-label={`Explore ${s.name}`}><img src={base+image.file} alt="" style={{objectPosition:image.position}} loading="lazy" decoding="async"/><span className="vv-service-row-top"><Icon size={20} strokeWidth={1.6}/><span>STUDIO / {s.number}</span></span><span className="vv-service-row-badge"><span>{s.tags[0]} · {s.tags[1]}</span><ArrowUpRight size={19}/></span></a>
             </article>;
           })}
         </div>
-        <p className="vv-sv-pin-outro">One creative partner. Many disciplines. <a href={import.meta.env.BASE_URL+"request-quote.html"}>Let's shape yours <ArrowUpRight size={14}/></a></p>
+        <p className="vv-service-overview-outro">One creative partner. Many disciplines. <a href={base+"request-quote.html"}>Let's shape yours <ArrowUpRight size={14}/></a></p>
       </div>
     </section>
 
