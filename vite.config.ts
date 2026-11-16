@@ -25,43 +25,18 @@ function copyVisualVerseAssets(): Plugin {
   };
 }
 
-/** Run before React and before the browser restores the previous scroll offset.
- * Only a true reload returns to the page's hero. Normal anchors, query-string
- * service routes and history navigation keep their existing behavior. */
-function resetScrollOnReload(): Plugin {
+/** Install a first-paint gate before parsing public-page content. The React
+ * entry releases it only after the route's hero and shared chrome commit. */
+function publicPageStartup(): Plugin {
   return {
-    name: "visual-verse-reload-to-hero",
+    name: "visual-verse-page-startup",
     transformIndexHtml() {
-      return [{
-        tag: "script",
-        attrs: { id: "vv-reload-to-hero" },
-        injectTo: "head-prepend",
-        children: `(function () {
-  var navigation = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
-  var isReload = navigation ? navigation.type === 'reload' : performance.navigation && performance.navigation.type === 1;
-  if (!isReload) return;
-  var previous = 'scrollRestoration' in history ? history.scrollRestoration : null;
-  if (previous !== null) history.scrollRestoration = 'manual';
-  if (location.hash) history.replaceState(history.state, '', location.pathname + location.search);
-  function goTop() {
-    var root = document.documentElement;
-    var previousBehavior = root.style.scrollBehavior;
-    root.style.scrollBehavior = 'auto';
-    window.scrollTo(0, 0);
-    root.style.scrollBehavior = previousBehavior;
-  }
-  goTop();
-  window.addEventListener('pageshow', function () {
-    goTop();
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        goTop();
-        if (previous !== null) history.scrollRestoration = previous;
-      });
-    });
-  }, { once: true });
-})();`,
-      }];
+      return [
+        { tag: "style", attrs: { id: "vv-page-startup-style" }, injectTo: "head-prepend", children: "#vv-page-loading{display:none}\nhtml[data-vv-boot]{scroll-behavior:auto!important;overflow-anchor:none}\nhtml[data-vv-boot] body>:not(#vv-page-loading):not(script):not(style):not(link){visibility:hidden!important;opacity:0!important;pointer-events:none!important}\nhtml[data-vv-boot] #vv-page-loading{display:grid;place-items:center;position:fixed;inset:0;z-index:2147483647;background:#fafcfa;color:#003f5c;font:500 12px/1.5 system-ui,sans-serif}\n#vv-page-loading .vv-boot-inner{text-align:center;width:min(200px,70vw)}\n#vv-page-loading .vv-boot-track{display:block;position:relative;height:3px;margin:14px auto 0;overflow:hidden;border-radius:4px;background:#d7eeea}\n#vv-page-loading .vv-boot-track:after{content:\"\";position:absolute;inset:0 auto 0 0;width:36%;border-radius:inherit;background:#2ec4b6;animation:vv-boot-progress .85s ease-in-out infinite alternate}\n#vv-page-loading .vv-boot-error{display:none}\n#vv-page-loading a{color:#003f5c;text-decoration:underline}\nhtml[data-vv-boot=\"error\"] #vv-page-loading .vv-boot-wait{display:none}\nhtml[data-vv-boot=\"error\"] #vv-page-loading .vv-boot-error{display:block}\n@keyframes vv-boot-progress{from{transform:translateX(-100%)}to{transform:translateX(280%)}}\n@media(prefers-reduced-motion:reduce){#vv-page-loading .vv-boot-track:after{animation:none;width:100%}}" },
+        { tag: "script", attrs: { id: "vv-page-startup-script" }, injectTo: "head-prepend", children: "(function () {\n  var root = document.documentElement;\n  root.setAttribute('data-vv-boot', 'pending');\n  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';\n  var navigation = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];\n  var reload = navigation ? navigation.type === 'reload' : performance.navigation && performance.navigation.type === 1;\n  if (reload && location.hash) {\n    try { history.replaceState(history.state, '', location.pathname + location.search); } catch (_) {}\n  }\n  if (!location.hash) window.scrollTo(0, 0);\n  // A failed or very slow script must leave a recoverable page, not a blank screen.\n  window.setTimeout(function () {\n    if (root.getAttribute('data-vv-boot') === 'pending') root.setAttribute('data-vv-boot', 'error');\n  }, 15000);\n  window.addEventListener('pageshow', function (event) {\n    if (event.persisted && !location.hash) {\n      var old = root.style.scrollBehavior;\n      root.style.scrollBehavior = 'auto';\n      window.scrollTo(0, 0);\n      root.style.scrollBehavior = old;\n    }\n  });\n})();" },
+        { tag: "div", attrs: { id: "vv-page-loading" }, injectTo: "body-prepend",
+          children: '<div class="vv-boot-inner" role="status" aria-live="polite"><div class="vv-boot-wait">Loading Visual Verse<span class="vv-boot-track" aria-hidden="true"></span></div><div class="vv-boot-error">This page is taking longer than expected. <a href="">Try again</a></div></div>' },
+      ];
     },
   };
 }
@@ -91,7 +66,7 @@ export default defineConfig({
       },
     },
   },
-  plugins: [react(), tailwindcss(), resetScrollOnReload(), copyVisualVerseAssets()],
+  plugins: [react(), tailwindcss(), publicPageStartup(), copyVisualVerseAssets()],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),

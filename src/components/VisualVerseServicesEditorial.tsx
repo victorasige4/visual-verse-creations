@@ -169,11 +169,6 @@ export function VisualVerseServicesEditorial() {
   const ref = useRevealSections();
   const selected=services.find(s=>s.id===new URLSearchParams(window.location.search).get("service"));
   const [highlight,setHighlight]=useState<string>();
-  useEffect(()=>{
-    if(selected)return;
-    const id=window.location.hash.slice(1);
-    if(id)requestAnimationFrame(()=>document.getElementById(id)?.scrollIntoView({block:"start"}));
-  },[selected]);
   if(selected)return <ServiceDetail service={selected}/>;
   return <div className="vv-services-editorial" ref={ref}>
     <section className="vv-sv-hero vv-sv-hero--potadot" aria-labelledby="vv-sv-title" id="services-top">
@@ -181,7 +176,7 @@ export function VisualVerseServicesEditorial() {
         <nav className="vv-sv-breadcrumb" aria-label="Breadcrumb">
           <a href={import.meta.env.BASE_URL}>Home</a><span aria-hidden="true">·</span><span aria-current="page">Services</span>
         </nav>
-        <div className="vv-sv-hero-main vv-sv-reveal">
+        <div className="vv-sv-hero-main">
           <h1 id="vv-sv-title">Six ways we create, <em>all of them yours.</em></h1>
           <p>Every creative solution is shaped around your story, your audience and what you want to achieve. No one-size-fits-all ideas. Just thoughtful work made for you.</p>
         </div>

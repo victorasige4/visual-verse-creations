@@ -1,4 +1,5 @@
 import { StrictMode } from "react";
+import { PublicPageReady } from "./components/PublicPageReady";
 import { createRoot } from "react-dom/client";
 import { VisualVerseCursor } from "./components/VisualVerseCursor";
 import { VisualVerseNavbar } from "./components/VisualVerseNavbar";
@@ -27,6 +28,7 @@ if (mount) {
   createRoot(mount).render(
     <StrictMode>
       <VisualVerseNavbar />
+      <PublicPageReady />
     </StrictMode>,
   );
 }

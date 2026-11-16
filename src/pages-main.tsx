@@ -1,4 +1,5 @@
-import { StrictMode } from "react";
+import { StrictMode, Suspense } from "react";
+import { PublicPageReady } from "./components/PublicPageReady";
 import { createRoot } from "react-dom/client";
 import { VisualVerseCursor } from "./components/VisualVerseCursor";
 import { VisualVerseInnerPage, pageKind } from "./components/VisualVerseInnerPages";
@@ -13,7 +14,7 @@ import "./inner-pages.css";
 import "./lib/public-site-ui";
 const root = document.getElementById("vv-inner-page-root");
 if (root) {
-  createRoot(root).render(<StrictMode><VisualVerseInnerPage kind={pageKind()} /></StrictMode>);
+  createRoot(root).render(<StrictMode><Suspense fallback={null}><VisualVerseInnerPage kind={pageKind()} /><PublicPageReady /></Suspense></StrictMode>);
 }
 import "./visual-verse-cta.css";
 import "./visual-verse-industries.css";

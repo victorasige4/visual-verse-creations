@@ -1,5 +1,5 @@
 import { VisualVerseActionContent } from "./VisualVerseAction";
-import { lazy, Suspense, useEffect, useState, type FormEvent } from "react";
+import { lazy, useState, type FormEvent } from "react";
 import {
   ArrowUpRight, ArrowRight, Camera, Clapperboard, Palette, PenTool,
   MonitorSmartphone, Share2, Phone, Mail, MapPin, MessageCircle,
@@ -22,10 +22,6 @@ const VisualVerseServicesEditorial = lazy(async () => ({
 const VisualVerseWhoWeServePage = lazy(async () => ({
   default: (await import("./VisualVerseWhoWeServePage")).VisualVerseWhoWeServePage
 }));
-const PageLoading = () => (
-  <div role="status" aria-label="Loading page content"
-    style={{minHeight:"60svh",background:"#f7fcfb"}} />
-);
 
 
 type Kind = "about" | "services" | "audiences" | "contact" | "quote";
@@ -194,19 +190,13 @@ function QuotePage(){
 }
 
 export function VisualVerseInnerPage({kind}:{kind:Kind}){
-  useEffect(()=>{
-    const p=window.location.hash.slice(1);
-    if(!p)return;
-    const t=window.requestAnimationFrame(()=>document.getElementById(p)?.scrollIntoView({block:"start"}));
-    return ()=>window.cancelAnimationFrame(t);
-  },[kind]);
   return <div className="vv-inner-page">
     <VisualVerseNavbar/>
     <main id="top">
       {kind!=="about"&&kind!=="services"&&kind!=="audiences"&&<PageHero kind={kind}/>}
-      {kind==="about"&&<Suspense fallback={<PageLoading/>}><VisualVerseAboutEditorial/></Suspense>}
-      {kind==="services"&&<Suspense fallback={<PageLoading/>}><ServicesPage/></Suspense>}
-      {kind==="audiences"&&<Suspense fallback={<PageLoading/>}><VisualVerseWhoWeServePage/></Suspense>}
+      {kind==="about"&&<VisualVerseAboutEditorial/>}
+      {kind==="services"&&<ServicesPage/>}
+      {kind==="audiences"&&<VisualVerseWhoWeServePage/>}
       {kind==="contact"&&<ContactPage/>}
       {kind==="quote"&&<QuotePage/>}
       {kind!=="about"&&<VisualVerseAboutCta/>}
