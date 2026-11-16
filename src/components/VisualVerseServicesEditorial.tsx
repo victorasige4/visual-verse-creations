@@ -112,10 +112,11 @@ export function VisualVerseServicesEditorial() {
         <div className="vv-sv-pin-grid">
           {services.map((s)=>{
             const Icon=s.Icon;
-            const photo: Record<string,string> = {
-              photography:"about-photographer.webp",
-              videography:"portfolio-event-story.jpg",
-              "graphic-design":"portfolio-social-design.jpg",
+            const photo: Record<string,{file:string;position:string}> = {
+              photography:{file:"service-cover-photography.webp",position:"32% center"},
+              videography:{file:"service-cover-videography.webp",position:"66% center"},
+              "graphic-design":{file:"service-cover-graphic-design.webp",position:"62% center"},
+              "social-media":{file:"service-cover-social-media.webp",position:"51% center"},
             };
             const image=photo[s.id];
             return <article className="vv-sv-pin-cell" id={"details-"+s.id} key={s.id}
@@ -129,7 +130,8 @@ export function VisualVerseServicesEditorial() {
               >
                 <div className={"vv-sv-pin-card vv-sv-pin-"+s.id}>
                   {image?<img className="vv-sv-pin-photo"
-                    src={import.meta.env.BASE_URL+image}
+                    src={import.meta.env.BASE_URL+image.file}
+                    style={{objectPosition:image.position}}
                     alt="" loading="lazy" decoding="async"
                   />:<div className="vv-sv-pin-ui-art" aria-hidden="true"><ServiceArtwork kind={s.kind}/></div>}
                   <div className="vv-sv-pin-wash" aria-hidden="true"/>
