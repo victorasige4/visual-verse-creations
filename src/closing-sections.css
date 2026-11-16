@@ -428,12 +428,19 @@
 /* Complete footer — multi-column layout and faint logo watermark */
 .vv-close-footer-wrap{
   position:relative;overflow:hidden;
-  padding:clamp(73px,7vw,110px) max(22px,5vw) 0;
+  padding:0;
   background:#0b2e30;
   color:#eef8f4;
 }
-.vv-close-footer{position:relative;isolation:isolate;max-width:1220px;margin:0 auto}
-.vv-close-footer .vv-footer-boxes{z-index:-1;inset:0 -5vw}
+.vv-close-footer{position:relative;isolation:isolate;padding:clamp(73px,7vw,110px) max(22px,5vw) 0}
+.vv-close-footer .vv-footer-boxes{z-index:-1;inset:0;mask-image:none;container-type:size}
+/* Size the skewed grid from both footer dimensions so tall mobile footers
+   and wide desktop footers retain complete coverage even in the corners. */
+.vv-footer-boxes .vv-box-grid{
+  width:calc(100cqw + 112cqh + 128px);
+  height:calc(100cqh + 26cqw + 64px);
+}
+.vv-close-footer-grid,.vv-close-footer-bottom{max-width:1220px;margin-inline:auto}
 .vv-close-footer-watermark{
   position:absolute;z-index:-1;
   width:clamp(280px,42vw,620px);
@@ -531,7 +538,7 @@
   .vv-close-cta h2{font-size:clamp(43px,10vw,66px)}
   .vv-close-cta-orbit{top:-31%;right:-38%;opacity:.48}
   .vv-close-cta-mark{width:57%;right:-9%;bottom:-7%}
-  .vv-close-footer-wrap{padding:78px 20px 0}
+  .vv-close-footer{padding:78px 20px 0}
   .vv-close-footer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:42px 22px}
   .vv-close-footer-about{grid-column:1/-1}
   .vv-close-footer-bottom{flex-wrap:wrap}
