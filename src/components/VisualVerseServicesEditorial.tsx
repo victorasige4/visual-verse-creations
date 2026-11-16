@@ -84,9 +84,9 @@ const detailCopy: Record<Service["id"],{headline:string;intro:string;outcome:str
   branding:{headline:"An identity that feels unmistakably yours.",intro:"We turn the heart of a business into a distinctive visual language that feels consistent from the first impression to every touchpoint.",outcome:"A brand system with the confidence to show up anywhere.",stages:["Discover your direction","Develop the identity","Apply the brand system"],labels:["Logo","Palette","Applications"]},
 };
 
-function ServiceNav({active,overview=false}:{active?:string;overview?:boolean}) {
+function ServiceNav({active,onPreview}:{active?:string;onPreview?:(id?:string)=>void}) {
   return <nav className="vv-service-switcher" aria-label="Explore our services">
-    {services.map(s=><a key={s.id} href={overview?`#details-${s.id}`:serviceUrl(s.id)} aria-current={active===s.id?"page":undefined}><span>{s.number}</span>{s.name}<ArrowUpRight size={12} aria-hidden="true"/></a>)}
+    {services.map(s=><a key={s.id} href={serviceUrl(s.id)} aria-current={active===s.id?"page":undefined} onMouseEnter={()=>onPreview?.(s.id)} onMouseLeave={()=>onPreview?.()} onFocus={()=>onPreview?.(s.id)} onBlur={()=>onPreview?.()}><span>{s.number}</span>{s.name}<ArrowUpRight size={12} aria-hidden="true"/></a>)}
   </nav>;
 }
 
@@ -185,7 +185,7 @@ export function VisualVerseServicesEditorial() {
           <h1 id="vv-sv-title">Six ways we create, <em>all of them yours.</em></h1>
           <p>Every creative solution is shaped around your story, your audience and what you want to achieve. No one-size-fits-all ideas. Just thoughtful work made for you.</p>
         </div>
-        <div className="vv-service-hero-nav" onMouseOver={e=>setHighlight((e.target as HTMLElement).closest("a")?.hash.replace("#details-",""))} onMouseLeave={()=>setHighlight(undefined)}><ServiceNav overview/></div>
+        <div className="vv-service-hero-nav"><ServiceNav onPreview={setHighlight}/></div>
       </div>
     </section>
 

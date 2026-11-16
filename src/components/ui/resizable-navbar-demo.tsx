@@ -12,12 +12,12 @@ type MenuName = "services" | "audiences";
 type MenuEntry = {name:string;details:string;href:string;Icon:LucideIcon};
 
 const services:MenuEntry[] = [
-  {name:"Photography",details:"Portraits · Events · Product",href:"/services.html#details-photography",Icon:Camera},
-  {name:"Videography",details:"Brand films · Motion · Stories",href:"/services.html#details-videography",Icon:Clapperboard},
-  {name:"Branding",details:"Identity · Direction · Strategy",href:"/services.html#details-branding",Icon:Palette},
-  {name:"Graphic Design",details:"Campaigns · Digital · Print",href:"/services.html#details-graphic-design",Icon:PenTool},
-  {name:"Web & UI/UX",details:"Websites · Apps · Interfaces",href:"/services.html#details-web-ui-ux",Icon:MonitorSmartphone},
-  {name:"Social Media",details:"Content · Campaigns · Growth",href:"/services.html#details-social-media",Icon:Share2},
+  {name:"Photography",details:"Portraits · Events · Product",href:"/services.html?service=photography",Icon:Camera},
+  {name:"Videography",details:"Brand films · Motion · Stories",href:"/services.html?service=videography",Icon:Clapperboard},
+  {name:"Branding",details:"Identity · Direction · Strategy",href:"/services.html?service=branding",Icon:Palette},
+  {name:"Graphic Design",details:"Campaigns · Digital · Print",href:"/services.html?service=graphic-design",Icon:PenTool},
+  {name:"Web & UI/UX",details:"Websites · Apps · Interfaces",href:"/services.html?service=web-ui-ux",Icon:MonitorSmartphone},
+  {name:"Social Media",details:"Content · Campaigns · Growth",href:"/services.html?service=social-media",Icon:Share2},
 ];
 const audiences:MenuEntry[] = [
   {name:"Growing brands",details:"From a first impression to a clear identity",href:"/who-we-serve.html#industries",Icon:Rocket},

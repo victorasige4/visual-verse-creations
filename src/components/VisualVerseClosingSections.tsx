@@ -45,12 +45,12 @@ export function VisualVerseCTA(){
 }
 
 const serviceLinks=[
-  {label:"Photography",href:"/services.html#details-photography"},
-  {label:"Videography",href:"/services.html#details-videography"},
-  {label:"Branding",href:"/services.html#details-branding"},
-  {label:"Graphic Design",href:"/services.html#details-graphic-design"},
-  {label:"Web & UI/UX",href:"/services.html#details-web-ui-ux"},
-  {label:"Social Media",href:"/services.html#details-social-media"},
+  {label:"Photography",href:"/services.html?service=photography"},
+  {label:"Videography",href:"/services.html?service=videography"},
+  {label:"Branding",href:"/services.html?service=branding"},
+  {label:"Graphic Design",href:"/services.html?service=graphic-design"},
+  {label:"Web & UI/UX",href:"/services.html?service=web-ui-ux"},
+  {label:"Social Media",href:"/services.html?service=social-media"},
 ];
 const navigation=[
   {label:"Home",href:"/#top"},
