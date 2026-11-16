@@ -117,6 +117,11 @@ export function VisualVerseServicesEditorial() {
               videography:{file:"service-cover-videography.webp",position:"66% center"},
               "graphic-design":{file:"service-cover-graphic-design.webp",position:"62% center"},
               "social-media":{file:"service-cover-social-media.webp",position:"51% center"},
+              // Stock photography used as illustrative service covers, not portfolio work.
+              // Compagnons / Unsplash: https://unsplash.com/photos/black-and-silver-laptop-computer-FkUTlyPLhJQ
+              "web-ui-ux":{file:"service-cover-web-ui-ux.webp",position:"58% center"},
+              // Leeloo The First / Pexels: https://www.pexels.com/photo/branding-company-documents-on-desk-7598022/
+              branding:{file:"service-cover-branding.webp",position:"46% center"},
             };
             const image=photo[s.id];
             return <article className="vv-sv-pin-cell" id={"details-"+s.id} key={s.id}
