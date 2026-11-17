@@ -153,7 +153,7 @@ function PortfolioPreviewCard({ collection }: { collection: PortfolioCollection 
           <span>PORTFOLIO COLLECTION</span>
         </CardItem>
         <CardItem translateZ={52} className="vv-pf-card-media">
-          <img className="vv-pf-selected-photo" src={import.meta.env.BASE_URL + selectedDirectionPhotos[collection.id].src} alt={selectedDirectionPhotos[collection.id].alt} width={1280} height={720} loading="lazy" decoding="async"/>
+          <img className="vv-pf-selected-photo" src={import.meta.env.BASE_URL + selectedDirectionPhotos[collection.id].src} alt={selectedDirectionPhotos[collection.id].alt} width={720} height={1280} loading="lazy" decoding="async"/>
           <span className="vv-pf-media-corner" aria-hidden="true"><ArrowUpRight size={16}/></span>
         </CardItem>
         <CardItem translateZ={32} className="vv-pf-card-details">

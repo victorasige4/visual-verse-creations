@@ -247,13 +247,13 @@ try {
         assert.deepEqual(await labels(page,".vv-svc-slice-tab-label"),serviceNames,"Homepage services");
         assert.deepEqual(await labels(page,".vv-pf-card-category"),serviceNames.map(name=>name.toUpperCase()),"Homepage projects");
         const photos=page.locator("#work .vv-pf-selected-photo");
-        assert.equal(await photos.count(),6,"Homepage landscape imagery");
+        assert.equal(await photos.count(),6,"Homepage portrait imagery");
         assert.equal(await page.locator("#work .vv-pf-header .vv-section-h").evaluate(el=>getComputedStyle(el).fontWeight),"850","Selected directions heading weight");
         const media=await page.locator("#work .vv-pf-card-media").evaluateAll(nodes=>nodes.map(n=>({w:n.clientWidth,h:n.clientHeight})));
-        assert.ok(media.every(({w,h})=>w>0 && Math.abs(w/h-16/9)<0.02),"Landscape media aspect ratio: "+JSON.stringify(media));
+        assert.ok(media.every(({w,h})=>w>0 && Math.abs(w/h-9/16)<0.02),"Portrait media aspect ratio: "+JSON.stringify(media));
         for(const photo of await photos.all()){
           await photo.evaluate(async img=>{img.loading="eager";await img.decode();});
-          assert.deepEqual(await photo.evaluate(img=>[img.naturalWidth,img.naturalHeight]),[1280,720],"Landscape WebP dimensions");
+          assert.deepEqual(await photo.evaluate(img=>[img.naturalWidth,img.naturalHeight]),[720,1280],"Portrait WebP dimensions");
         }
         assert.equal(await page.locator("#serviceName").textContent(),"Graphic Design");
         const heroLines=[["Designed to","connect"],["Moments that","last"],["Made to","explore"],["Stories in","motion"],["Made to","be known"],["Stories worth","sharing"]];
