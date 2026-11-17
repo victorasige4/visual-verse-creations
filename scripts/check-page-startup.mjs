@@ -84,6 +84,25 @@ try {
     assert.ok(await motionPage.evaluate(()=>scrollY<2),"Hero must be first after decoding");
     console.log("Animated transmission: "+(path||"home")+" passed");
   }
+  // Verify the new hero photo, real canvas animation, and preserved side-to-side pointer tilt.
+  await motionPage.goto(base+"who-we-serve.html",{waitUntil:"commit"});
+  await motionPage.locator("#vv-page-loading .vv-boot-encrypted").waitFor({state:"visible"});
+  await motionPage.locator("html:not([data-vv-boot])").waitFor({state:"attached",timeout:20000});
+  const servingHero=motionPage.locator(".vvx-hero");
+  const servingImage=servingHero.locator(".vvx-hero-stage img");
+  assert.equal(await servingImage.count(),1,"Hero must contain exactly one photo");
+  await servingImage.evaluate(img=>img.decode());
+  assert.equal(await servingImage.evaluate(img=>img.naturalWidth),933);
+  const servingCanvas=servingHero.locator(".vvx-hero-stage canvas");
+  await servingCanvas.waitFor({state:"visible"});
+  assert.ok(await servingCanvas.evaluate(canvas=>canvas.width>0&&canvas.height>0),"Loader canvas must be painted at its layout size");
+  const heroBox=await servingHero.boundingBox();
+  assert.ok(heroBox);
+  await motionPage.mouse.move(heroBox.x+heroBox.width*.2, Math.min(heroBox.y+heroBox.height*.48,650));
+  await motionPage.waitForFunction(()=>document.querySelector(".vvx-hero-stage-perspective")?.style.transform.includes("rotateY(-"));
+  await motionPage.mouse.move(heroBox.x+heroBox.width*.8, Math.min(heroBox.y+heroBox.height*.48,650));
+  await motionPage.waitForFunction(()=>{const transform=document.querySelector(".vvx-hero-stage-perspective")?.style.transform||"";return /rotateY\([1-9]/.test(transform);});
+  console.log("Who We Serve: image decoded, live canvas and left/right tilt passed");
   // Warm internal navigation must replay the route's own transmission,
   // even when its HTML and shared scripts have already been cached.
   async function followFromHome(page, name, path, touch = false) {

@@ -1,3 +1,4 @@
+import ImageGenerationLoaderDemo from "./image-generation-loader-demo";
 import { EditorialText } from "./EditorialText";
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
@@ -132,21 +133,11 @@ function Hero() {
       </div>
       <motion.div className="vvx-hero-stage" initial={reduced?false:{opacity:0,scale:.9,x:70}}
         animate={{opacity:1,scale:1,x:0}} transition={{duration:1,delay:.28,ease:[.2,1,.3,1]}}
-        aria-label="A collage of original Visual Verse creative work">
+        aria-label="A man serving a customer">
         <motion.div className="vvx-hero-stage-perspective" style={reduced?undefined:{rotateX,rotateY}}>
           <div className="vvx-hero-orbit vvx-hero-orbit-one" aria-hidden="true"/>
           <div className="vvx-hero-orbit vvx-hero-orbit-two" aria-hidden="true"/>
-          <figure className="vvx-float-photo vvx-float-photo-a">
-            <img src={asset("portfolio-event-story.jpg")} alt="Event photography from Visual Verse" decoding="async" fetchPriority="high"/>
-            <figcaption>PEOPLE / MOMENTS</figcaption>
-          </figure>
-          <figure className="vvx-float-photo vvx-float-photo-b">
-            <img src={asset("portfolio-social-design.jpg")} alt="Visual Verse design artwork" decoding="async"/>
-            <figcaption>BRANDS / IDEAS</figcaption>
-          </figure>
-          <figure className="vvx-float-photo vvx-float-photo-c">
-            <img src={asset("portfolio-corporate-moment.jpg")} alt="Visual Verse corporate event photography" decoding="async"/>
-          </figure>
+          <ImageGenerationLoaderDemo src={asset("who-we-serve-service.webp")} alt="A waiter handing a menu to a seated customer"/>
           <span className="vvx-hero-disc" aria-hidden="true"><Sparkles size={26}/> MADE FOR YOU</span>
         </motion.div>
       </motion.div>
