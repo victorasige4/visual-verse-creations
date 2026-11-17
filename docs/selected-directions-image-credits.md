@@ -1,6 +1,6 @@
 # Selected Directions photo credits
 
-All six images are illustrative stock photography sourced from Pexels under the [Pexels License](https://www.pexels.com/license/). They are not represented as commissioned Visual Verse projects. Images have been center-cropped to 720 × 1280 (9:16), compressed to WebP and served locally.
+All six images are illustrative stock photography sourced from Pexels under the [Pexels License](https://www.pexels.com/license/). They are not represented as commissioned Visual Verse projects. Images have been reframed to 1280 × 720 (16:9), compressed to WebP and served locally.
 
 | Asset | Photographer | Original |
 | --- | --- | --- |
