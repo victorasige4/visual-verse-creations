@@ -88,15 +88,6 @@
 .vvx-hero-footer a{display:inline-flex;align-items:center;gap:10px;color:#d3fbec}
 .vvx-hero-footer a:hover{color:#4de2c3}
 
-/* 02 / Mint ticker. */
-.vvx-ribbon{background:#57dfc2;color:#004451;overflow:hidden;padding:18px 0;border-bottom:1px solid #ffffff45}
-.vvx-ribbon-track{display:flex;width:max-content;animation:vvx-run 60s linear infinite;will-change:transform}
-.vvx-ribbon-set{display:flex;flex:0 0 auto;min-width:100vw;justify-content:space-around}
-.vvx-ribbon-set>span{display:inline-flex;align-items:center;gap:24px;padding:0 23px 0 0;
-  font-size:clamp(17px,2vw,27px);font-weight:900;letter-spacing:var(--vv-tracking-readable, 0em);white-space:nowrap}
-.vvx-ribbon-set svg{color:#046d6b}
-@keyframes vvx-run{to{transform:translateX(-50%)}}
-
 /* Matching editorial edge rails: they follow the page while scrolling, but
    stay in the outer gutters and never intercept links or the pointer. */
 .vvx-edge-marquees{display:none}
@@ -108,11 +99,11 @@
   .vvx-edge-marquee-left{left:7px}
   .vvx-edge-marquee-right{right:7px}
   .vvx-edge-marquee .vvx-ribbon-track{display:flex;flex-direction:column;align-items:center;
-    width:100%;height:max-content;animation:vvx-run-vertical 55s linear infinite}
+    width:100%;height:max-content;animation:vvx-run-vertical 55s linear infinite;will-change:transform}
   .vvx-edge-marquee-left .vvx-ribbon-track{animation-direction:reverse}
-  .vvx-edge-marquee .vvx-ribbon-set{flex-direction:column;align-items:center;min-width:0;
+  .vvx-edge-marquee .vvx-ribbon-set{display:flex;flex:0 0 auto;flex-direction:column;align-items:center;min-width:0;
     min-height:100svh;width:100%;justify-content:space-around}
-  .vvx-edge-marquee .vvx-ribbon-set>span{writing-mode:vertical-rl;text-orientation:mixed;
+  .vvx-edge-marquee .vvx-ribbon-set>span{display:inline-flex;align-items:center;white-space:nowrap;writing-mode:vertical-rl;text-orientation:mixed;
     gap:14px;padding:0 0 14px;font-size:10px;line-height:1;font-weight:800;letter-spacing:.12em}
   .vvx-edge-marquee .vvx-ribbon-set svg{width:12px;height:12px;flex-shrink:0;color:#159d91}
 }
@@ -382,9 +373,6 @@
   .vvx-hero-disc{left:2%;top:10%;max-width:135px;font-size:7px}
   .vvx-hero-disc svg{width:20px}
   .vvx-hero-footer{font-size:8px;letter-spacing:.1em;padding:15px 0 21px}
-  .vvx-ribbon{padding:13px 0}
-  .vvx-ribbon-set>span{font-size:17px;gap:15px;padding-right:17px}
-  .vvx-ribbon-set svg{height:17px;width:17px}
   .vvx-atlas,.vvx-collab,.vvx-match,.vvx-questions{padding:81px 0}
   .vvx-section-header{margin-bottom:38px}
   .vvx-section-header h2{font-size:clamp(24.5px,5.2vw,40px)!important}
