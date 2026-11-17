@@ -64,17 +64,17 @@ const layouts: Record<string, [string[], string[]]> = {
   ],
   "Give your big idea a first impression worth keeping.": [
     [
-      "Give your big",
-      "idea a first",
-      "impression",
-      "worth keeping."
+      "Give your big idea a first",
+      "impression worth keeping."
     ],
     [
-      "Give your big",
-      "idea a first",
-      "impression",
-      "worth keeping."
+      "Give your big idea a first",
+      "impression worth keeping."
     ]
+  ],
+  "I'm launching something": [
+    ["I'm launching", "something"],
+    ["I'm launching", "something"]
   ],
   "What services does Visual Verse offer?": [
     [
