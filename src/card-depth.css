@@ -1,0 +1,71 @@
+/* Recessed, illuminated edges for Visual Verse's service and audience cards.
+   Keep the inset on its own layer so photography and motion stay unobstructed. */
+:root {
+  --vv-card-inset-light: inset 0 2px 5px #003f5c27, inset 0 0 20px #003f5c20, inset 0 -2px 5px #fff9;
+  --vv-card-inset-selected: inset 0 2px 8px #003f5c38, inset 0 0 25px #003f5c2b, inset 0 0 0 1px #2ec4b66b;
+  --vv-card-inset-photo: inset 0 0 0 1px #a5f4df75, inset 0 4px 12px #002a4099, inset 0 0 42px 6px #001c30a6;
+  --vv-card-inset-photo-active: inset 0 0 0 2px #7be6d6b8, inset 0 4px 14px #002a40b3, inset 0 0 48px 7px #001c30b3;
+}
+
+/* Homepage expandable service cards. Preserve the existing outer elevation. */
+#services .vv-svc-slice {
+  box-shadow: var(--vv-card-inset-light), 0 8px 27px #003f5c0b;
+}
+#services .vv-svc-slice.is-active,
+#services .vv-svc-slice:not(.is-active):hover {
+  box-shadow: var(--vv-card-inset-selected), 0 22px 60px #003f5c1a;
+}
+@media (max-width: 880px) {
+  #services .vv-svc-slice .vv-svc-slice-tab {
+    box-shadow: var(--vv-card-inset-light);
+  }
+  #services .vv-svc-slice.is-active .vv-svc-slice-tab,
+  #services .vv-svc-slice .vv-svc-slice-tab:hover,
+  #services .vv-svc-active-panel {
+    box-shadow: var(--vv-card-inset-selected);
+  }
+}
+
+/* Audience cards and the six audience chapters retain their existing states. */
+#who-we-serve .vvcr-category:not(.active),
+.vvx-atlas .vvx-world-mobile-tabs button:not(.is-active) {
+  box-shadow: var(--vv-card-inset-light);
+}
+#who-we-serve .vvcr-category.active,
+.vvx-atlas .vvx-world-mobile-tabs button.is-active {
+  box-shadow: var(--vv-card-inset-photo), 0 8px 18px #002b3d24;
+}
+.vvx-atlas .vvx-world-chapter {
+  border-radius: 14px;
+  padding-left: 15px;
+  box-shadow: var(--vv-card-inset-light);
+}
+.vvx-atlas .vvx-world-chapter:is(.is-active,:hover,:focus-visible) {
+  box-shadow: var(--vv-card-inset-selected);
+}
+.vvx-atlas .vvx-world-sticky {
+  box-shadow: var(--vv-card-inset-light), 0 25px 60px -39px #00465850;
+}
+
+/* An overlay is essential for full-bleed media: a shadow directly on a
+   parent would sit underneath its image. This layer never intercepts input. */
+#who-we-serve .vvcr-scene::after,
+.vv-service-list .vv-service-row-art::after,
+.vv-sv-pin-card::after,
+.vvx-atlas .vvx-world-visual::after,
+.vvx-collab .vvx-wobble::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: 12;
+  pointer-events: none;
+  box-shadow: var(--vv-card-inset-photo);
+}
+#who-we-serve .vvcr-scene:hover::after,
+.vv-service-list .vv-service-row-art:is(:hover,:focus-visible)::after,
+.vv-sv-service-pin:is(:hover,:focus-visible) .vv-sv-pin-card::after,
+.vvx-atlas .vvx-world-visual:hover::after,
+.vvx-collab .vvx-wobble:hover::after {
+  box-shadow: var(--vv-card-inset-photo-active);
+}
