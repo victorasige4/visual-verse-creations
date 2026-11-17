@@ -35,7 +35,7 @@ export default function ImageGenerationLoaderDemo({ src, alt }: { src: string; a
             gap={1}
             bandHeight={48}
             duration={2300}
-            repeat={false}
+            repeat={true}
             overlayOpacity={0.16}
             colors={["#087989", "#8af6d9"]}
           />

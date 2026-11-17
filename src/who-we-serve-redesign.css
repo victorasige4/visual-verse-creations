@@ -208,14 +208,14 @@
 .vvx-bento-kicker{position:absolute;top:27px;left:27px;right:20px;color:#ecfff9;
   font-size:10px;font-weight:850;letter-spacing:.15em;z-index:2}
 .vvx-wobble-photo>strong{position:absolute;left:27px;bottom:97px;z-index:2;
-  font-size:clamp(60px,6vw,98px);line-height:.87;letter-spacing:var(--vv-tracking-readable, 0em);
-  max-width:90%;font-weight:900}
+  font-size:clamp(30px,3vw,49px);line-height:1.06;letter-spacing:var(--vv-tracking-readable, 0em);
+  max-width:90%;font-weight:800;text-transform:none}
 .vvx-bento-foot{position:absolute;left:27px;right:27px;bottom:28px;z-index:2;
   display:flex;justify-content:space-between;align-items:center;gap:12px;
   color:#e3fff6;font-size:10px;font-weight:850;letter-spacing:.11em}
 .vvx-wobble-type,.vvx-wobble-device{background:#063449;color:#fff}
 .vvx-wobble-type>strong,.vvx-wobble-device>strong{position:absolute;z-index:2;left:27px;bottom:76px;
-  font-size:clamp(32px,3.6vw,55px);line-height:.98;font-weight:900;letter-spacing:var(--vv-tracking-readable, 0em);max-width:calc(100% - 54px)}
+  font-size:clamp(20px,1.85vw,29px);line-height:1.08;font-weight:800;letter-spacing:var(--vv-tracking-readable, 0em);max-width:calc(100% - 54px);text-transform:none}
 .vvx-wobble-type>strong em{font-style:normal;color:#80ebd4}
 .vvx-wobble-type>strong{bottom:120px}
 .vvx-wobble-type>p{position:absolute;z-index:2;left:27px;right:27px;bottom:73px;max-width:330px;
@@ -389,8 +389,8 @@
   .vvx-collab-bento{grid-template-columns:1fr;grid-template-rows:430px 300px 300px;gap:12px}
   .vvx-wobble{border-radius:21px}
   .vvx-wobble-photo{grid-row:auto}
-  .vvx-wobble-photo>strong{font-size:clamp(63px,12vw,95px)}
-  .vvx-wobble-type>strong,.vvx-wobble-device>strong{font-size:clamp(32px,8vw,48px)}
+  .vvx-wobble-photo>strong{font-size:clamp(30px,6vw,48px)}
+  .vvx-wobble-type>strong,.vvx-wobble-device>strong{font-size:clamp(20px,4vw,26px)}
   .vvx-wobble-type>p{max-width:290px}
   .vvx-collab-bottom{align-items:flex-start;flex-direction:column;gap:16px}
   .vvx-match-heading h2{font-size:clamp(26.5px,6vw,41px)}
@@ -422,7 +422,7 @@
   .vvx-world-poster-word{font-size:clamp(31px,7vw,39px)}
   .vvx-world-visual{height:295px;min-height:0}
   .vvx-world-poster-bottom{flex-direction:column;align-items:flex-start;gap:5px}
-  .vvx-wobble-type>strong{font-size:30px}
+  .vvx-wobble-type>strong{font-size:20px}
   .vvx-wobble-type>p{font-size:11px}
   .vvx-match-heading h2{font-size:24.5px}
 }

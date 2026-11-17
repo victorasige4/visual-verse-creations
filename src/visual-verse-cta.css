@@ -45,35 +45,6 @@
   transform:translate3d(0,0,0) scale(1);
   border-radius:48px;
 }
-.vv-cta-ring{
-  position:absolute;
-  z-index:0;
-  top:-232px;
-  right:-93px;
-  width:560px;
-  height:560px;
-  border-radius:50%;
-  border:103px solid rgba(46,196,182,.14);
-  pointer-events:none;
-  animation:vv-cta-ring-drift 12s ease-in-out infinite alternate;
-  will-change:transform;
-}
-@keyframes vv-cta-ring-drift{
-  0%{transform:translate3d(0,0,0) rotate(-4deg)}
-  100%{transform:translate3d(-12px,29px,0) rotate(3deg)}
-}
-.vv-cta-dots{
-  position:absolute;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-  opacity:.46;
-  background-image:radial-gradient(circle,rgba(46,196,182,.28) .8px,transparent 1.1px);
-  background-size:24px 24px;
-  background-position:9px 6px;
-  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 24%,#000 82%,transparent 100%);
-  mask-image:linear-gradient(90deg,transparent 0%,#000 24%,#000 82%,transparent 100%);
-}
 .vv-cta-content{
   position:relative;z-index:2;
   min-height:774px;
@@ -82,7 +53,9 @@
   flex-direction:column;
   justify-content:space-between;
   gap:36px;
+  pointer-events:none;
 }
+.vv-cta-content a,.vv-cta-eyebrow,.vv-cta-headline,.vv-cta-contact span{pointer-events:auto}
 .vv-cta-leading{display:grid;justify-items:start;align-content:start;gap:26px}
 .vv-cta-eyebrow{
   display:inline-flex;
@@ -295,12 +268,6 @@
     padding:48px 24px;
     gap:38px;
   }
-  .vv-cta-ring{
-    top:-170px;right:auto;left:-173px;
-    width:560px;height:560px;
-    border-width:103px;
-  }
-  .vv-cta-dots{background-size:22px 22px;opacity:.44}
   .vv-cta-leading{gap:26px}
   .vv-cta-eyebrow{font-size:11px;letter-spacing:.18em;gap:8px;line-height:21px}
   .vv-cta-section .vv-cta-headline{
@@ -332,7 +299,6 @@
   .vv-cta-section .vv-cta-headline{font-size:clamp(20px,4.95vw,20px)}
 }
 @media(prefers-reduced-motion:reduce){
-  .vv-cta-ring{animation:none!important;will-change:auto}
   .vv-cta-panel,.vv-cta-word,.vv-cta-button,.vv-cta-button-icon,
   .vv-cta-button-icon svg,.vv-cta-button-text{transition:none!important;animation:none!important}
   .vv-cta-section.is-ready .vv-cta-panel,

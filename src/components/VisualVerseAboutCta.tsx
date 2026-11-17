@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState, type PointerEvent, type CSSProperties, type ReactNode } from "react";
 import { ArrowUpRight } from "lucide-react";
+import { BackgroundRippleEffect } from "@/components/ui/background-ripple-effect";
 import "../visual-verse-cta.css";
 
 /**
  * About CTA, based on a desktop/mobile comparison of Potadot's actual CTA:
- *  - 1168px rounded panel and 560px background ring
- *  - dotted dark background
+ *  - 1168px rounded panel and interactive ripple grid background
  *  - scroll-triggered scale and staggered word reveal
  *  - two magnetic pill buttons with stacked label motion + rotating arrow orbs
  *  - three monospaced contact lines below the buttons
@@ -148,8 +148,7 @@ export function VisualVerseAboutCta() {
         (revealed ? " is-visible" : "")}
       aria-labelledby="vv-cta-title">
       <div className="vv-cta-panel">
-        <div className="vv-cta-ring" aria-hidden="true"/>
-        <div className="vv-cta-dots" aria-hidden="true"/>
+        <BackgroundRippleEffect/>
         <div className="vv-cta-content">
           <div className="vv-cta-leading">
             <span className="vv-cta-eyebrow"><i aria-hidden="true"/><i aria-hidden="true"/> LET'S MAKE SOMETHING MEANINGFUL</span>

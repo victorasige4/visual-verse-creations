@@ -50,8 +50,14 @@ assert(page.includes("{rotateX,rotateY}") && page.includes("useSpring"), "left/r
 assert(existsSync("public/who-we-serve-creative-service.webp"), "creative service-themed photo is missing");
 assert(html.includes('href="%BASE_URL%who-we-serve-creative-service.webp" fetchpriority="high"'), "hero photo must download immediately");
 assert(read("src/components/image-generation-loader-demo.tsx").includes('effect="scale-wave"'), "Aceternity scan must run");
-assert(read("src/components/image-generation-loader-demo.tsx").includes('text="SERVING"') && read("src/components/image-generation-loader-demo.tsx").includes('repeat={false}'), "SERVING scan must finish after a single pass");
+assert(read("src/components/image-generation-loader-demo.tsx").includes('text="SERVING"') && read("src/components/image-generation-loader-demo.tsx").includes('repeat={true}'), "SERVING scan must loop continuously");
 assert(read("src/components/ui/image-generation-loader.tsx").includes("IntersectionObserver"), "loader must pause offscreen");
+for (const title of ["Make it<br/>feel real.", "Stand<br/><em>out.</em>", "Good design<br/>is felt."]) {
+  assert(page.includes(title), "toolbox headings must use sentence case: " + title);
+}
+assert(read("src/components/VisualVerseAboutCta.tsx").includes("<BackgroundRippleEffect/>"), "all closing CTAs must use the shared ripple background");
+assert(read("src/components/ui/background-ripple-effect.tsx").includes("Math.hypot") &&
+  read("src/components/ui/background-ripple-effect.css").includes("@keyframes vv-cell-ripple"), "CTA cells must ripple outward from the selected cell");
 assert(styles.includes("object-fit:contain"), "serving photograph must stay uncropped");
 assert(page.includes("IntersectionObserver") && styles.includes("position:sticky"),
   "sticky scroll-reveal chapter experience must remain");
