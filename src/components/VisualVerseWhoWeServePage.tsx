@@ -305,14 +305,14 @@ function Collaboration() {
           <img className="vvx-toolbox-image" src={asset("who-we-serve-toolbox-film.webp")} width={1200} height={800} loading="lazy" decoding="async" alt="Professional cinema camera and filmmakers at work on a production set"/>
           <div className="vvx-wobble-photo-shade"/>
           <span className="vvx-bento-kicker">01 / THROUGH THE LENS</span>
-          <strong>MAKE IT<br/>FEEL REAL.</strong>
+          <strong>Make it<br/>feel real.</strong>
           <div className="vvx-bento-foot"><span>PHOTOGRAPHY + FILM</span><Camera size={28}/></div>
         </Wobble>
         <Wobble className="vvx-wobble-type">
           <img className="vvx-toolbox-image" src={asset("who-we-serve-toolbox-design.webp")} width={1000} height={708} loading="lazy" decoding="async" alt="Brand strategy moodboard, colour palette and printed visual identity concepts"/>
           <div className="vvx-wobble-photo-shade"/>
           <span className="vvx-bento-kicker">02 / FROM A BLANK CANVAS</span>
-          <strong>STAND<br/><em>OUT.</em></strong>
+          <strong>Stand<br/><em>out.</em></strong>
           <p>Identity. Campaigns. Design that has something to say.</p>
           <div className="vvx-bento-foot"><span>BRANDING + GRAPHIC DESIGN</span><Palette size={26}/></div>
         </Wobble>
@@ -320,7 +320,7 @@ function Collaboration() {
           <img className="vvx-toolbox-image" src={asset("who-we-serve-toolbox-web.webp")} width={1000} height={667} loading="lazy" decoding="async" alt="Laptop displaying a designed website interface on a creative workspace desk"/>
           <div className="vvx-wobble-photo-shade"/>
           <span className="vvx-bento-kicker">03 / THE DIGITAL WORLD</span>
-          <strong>GOOD DESIGN<br/>IS FELT.</strong>
+          <strong>Good design<br/>is felt.</strong>
           <div className="vvx-bento-foot"><span>WEB + UI/UX</span><MonitorSmartphone size={26}/></div>
         </Wobble>
       </div>
