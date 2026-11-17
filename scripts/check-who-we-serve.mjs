@@ -23,6 +23,13 @@ for (const name of ["function Hero()", "function WorldAtlas()", "function Collab
 }
 assert(page.includes('className="vvx-hero-spotlight"') && page.includes("useMotionValue"),
   "hero must provide spotlight and spring-driven 3D parallax");
+assert(page.includes("ImageGenerationLoaderDemo") && page.includes("who-we-serve-service.webp"), "new serving image loader must render");
+assert(!page.includes("vvx-float-photo") && !styles.includes("vvx-float-photo"), "old hero collage must be removed");
+assert(page.includes("{rotateX,rotateY}") && page.includes("useSpring"), "left/right spring hover must remain");
+assert(existsSync("public/who-we-serve-service.webp"), "service-themed photo is missing");
+assert(read("src/components/image-generation-loader-demo.tsx").includes('effect="scale-wave"'), "Aceternity scan must run");
+assert(read("src/components/ui/image-generation-loader.tsx").includes("IntersectionObserver"), "loader must pause offscreen");
+assert(styles.includes("object-fit:contain"), "serving photograph must stay uncropped");
 assert(page.includes("IntersectionObserver") && styles.includes("position:sticky"),
   "sticky scroll-reveal chapter experience must remain");
 assert(page.includes("role=\"tablist\"") && page.includes("aria-selected={active===i}"),
