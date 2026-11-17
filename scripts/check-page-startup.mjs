@@ -125,7 +125,7 @@ try {
   assert.ok(railReport.rails.every(r=>r.bottom>railReport.viewport/2&&r.top<railReport.viewport/2&&r.repeat==="infinite"),"Rails must continue through CTA: "+JSON.stringify(railReport));
   assert.ok(railReport.rails[0].right<=railReport.panelLeft&&railReport.rails[1].left>=railReport.panelRight,"Rails overlap CTA panel: "+JSON.stringify(railReport));
   await motionPage.locator("footer.vv-close-footer-wrap").evaluate(el=>el.scrollIntoView({block:"start",behavior:"instant"}));
-  assert.ok(await motionPage.evaluate(()=>[...document.querySelectorAll(".vvx-edge-marquee")].every(el=>el.getBoundingClientRect().bottom<=document.querySelector("footer.vv-close-footer-wrap").getBoundingClientRect().top+1)),"Rails must end before footer");
+  assert.ok(await motionPage.evaluate(()=>{const boundary=document.querySelector(".vvx-through-cta"),footer=document.querySelector("footer.vv-close-footer-wrap");return getComputedStyle(boundary).overflowY==="clip"&&boundary.getBoundingClientRect().bottom<=footer.getBoundingClientRect().top+1;}),"Rails must be clipped at the footer boundary");
   console.log("Who We Serve: endless desktop rails continue through CTA and end at footer");
   // Warm internal navigation must replay the route's own transmission,
   // even when its HTML and shared scripts have already been cached.
