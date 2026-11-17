@@ -99,10 +99,12 @@
 }
 @keyframes vvx-run-horizontal{to{transform:translateX(-50%)}}
 
-/* Matching editorial edge rails: they follow the page while scrolling, but
-   stay in the outer gutters and never intercept links or the pointer. */
+/* The boundary includes the shared CTA but ends before the site footer.
+   Keep the rails above the editorial and CTA surfaces, in their own gutters. */
+.vvx-through-cta{position:relative;isolation:isolate;font-family:var(--vv-typeface,"Montserrat",Arial,sans-serif)}
 .vvx-edge-marquees{display:none}
 @media(min-width:1000px){
+  .vvx-through-cta .vv-cta-panel{width:min(1168px,calc(100% - 76px))}
   .vvx-edge-marquees{display:block;position:sticky;top:0;height:100svh;margin-bottom:-100svh;
     z-index:6;pointer-events:none;user-select:none}
   .vvx-edge-marquee{position:absolute;top:116px;bottom:105px;width:23px;overflow:hidden;
@@ -447,7 +449,7 @@
   .vvx-match-heading h2{font-size:24.5px}
 }
 @media(prefers-reduced-motion:reduce){
-  .vvx-page :where(*,*::before,*::after){
+  .vvx-page :where(*,*::before,*::after), .vvx-edge-marquees .vvx-ribbon-track{
     animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important;
   }
 }

@@ -8,16 +8,26 @@ import { revealPublicPage } from "@/lib/public-page-startup";
 // tab or busy mobile main thread must not finish the intro before it is seen.
 function afterVisiblePaint(duration: number, complete: () => void) {
   let frame = 0, painted = 0, elapsed = 0, previous = 0;
+  const resetClock = () => { previous = 0; };
   const tick = (now: number) => {
     if (document.hidden) { previous = 0; frame = requestAnimationFrame(tick); return; }
     if (painted < 2) { painted++; previous = now; frame = requestAnimationFrame(tick); return; }
-    elapsed += previous ? Math.min(64, now - previous) : 0;
+    // Use actual foreground time. A busy frame must not stretch the intended
+    // reading pause by counting only a fraction of the time already elapsed.
+    elapsed += previous ? now - previous : 0;
     previous = now;
-    if (elapsed >= duration) complete();
+    if (elapsed >= duration) {
+      document.removeEventListener("visibilitychange", resetClock);
+      complete();
+    }
     else frame = requestAnimationFrame(tick);
   };
+  document.addEventListener("visibilitychange", resetClock);
   frame = requestAnimationFrame(tick);
-  return () => cancelAnimationFrame(frame);
+  return () => {
+    cancelAnimationFrame(frame);
+    document.removeEventListener("visibilitychange", resetClock);
+  };
 }
 
 function PublicPreloader({ message }: { message: string }) {

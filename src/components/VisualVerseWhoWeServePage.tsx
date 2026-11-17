@@ -1,6 +1,7 @@
 import ImageGenerationLoaderDemo from "./image-generation-loader-demo";
 import { EditorialText } from "./EditorialText";
 import { VisualVerseActionContent } from "./VisualVerseAction";
+import { VisualVerseAboutCta } from "./VisualVerseAboutCta";
 import { useAboutScrollWords } from "../hooks/useAboutScrollWords";
 import "../about-scroll-words.css";
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
@@ -402,8 +403,9 @@ function FinalStatement() {
 }
 
 export function VisualVerseWhoWeServePage() {
-  return <div className="vvx-page">
+  return <div className="vvx-through-cta">
     <EdgeMarquees/>
+    <div className="vvx-page">
     <Hero/>
     <MobileMarquee/>
     <WorldAtlas/>
@@ -416,5 +418,7 @@ export function VisualVerseWhoWeServePage() {
       </div>
     </section>
     <FinalStatement/>
+    </div>
+    <VisualVerseAboutCta/>
   </div>;
 }

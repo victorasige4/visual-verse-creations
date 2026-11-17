@@ -237,6 +237,7 @@ export function ImageGenerationLoader({
 
     let width = 0;
     let height = 0;
+    let pixelRatio = 0;
     let cells: Cell[] = [];
     let frameId = 0;
     let startTime = performance.now();
@@ -323,10 +324,13 @@ export function ImageGenerationLoader({
     };
 
     const resize = () => {
-      width = Math.max(1, parent.clientWidth);
-      height = Math.max(1, parent.clientHeight);
-
+      const nextWidth = Math.max(1, parent.clientWidth);
+      const nextHeight = Math.max(1, parent.clientHeight);
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      if (width === nextWidth && height === nextHeight && pixelRatio === dpr) return;
+      width = nextWidth;
+      height = nextHeight;
+      pixelRatio = dpr;
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -362,6 +366,13 @@ export function ImageGenerationLoader({
       const easedExit = exitAmount * exitAmount * (3 - 2 * exitAmount);
       overlay.style.clipPath = `inset(0 0 ${height - revealEdge}px 0)`;
       overlay.style.opacity = `${overlayOpacity * easedExit}`;
+      // Outside the photo, the scanner has nothing to paint. Keep its exact
+      // timing and overlay state without rebuilding gradients or pixel glyphs.
+      const overscan = Math.max(waveAmplitude, cellSize * (1 + scaleAmplitude));
+      if (bandTop + bandHeight + overscan < 0 || bandTop - overscan > height) {
+        if (!reducedMotion.matches && isVisible) frameId = requestAnimationFrame(draw);
+        return;
+      }
       const rowCount = Math.max(1, Math.floor((bandHeight + gap) / pitch));
       const gridHeight = rowCount * cellSize + (rowCount - 1) * gap;
       const gridTop = bandTop + Math.round((bandHeight - gridHeight) / 2);

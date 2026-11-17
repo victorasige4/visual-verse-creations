@@ -39,10 +39,11 @@ export function EncryptedText({
     const delay = Math.max(1, revealDelayMs);
     const flip = Math.max(16, flipDelayMs);
     let frameId = 0, painted = 0, elapsed = 0, previous = 0, lastFlip = -flip;
+    const resetClock = () => { previous = 0; };
     const tick = (now: number) => {
       if (document.hidden) { previous = 0; frameId = requestAnimationFrame(tick); return; }
       if (painted < 2) { painted++; previous = now; frameId = requestAnimationFrame(tick); return; }
-      elapsed += previous ? Math.min(60, now - previous) : 0;
+      elapsed += previous ? now - previous : 0;
       previous = now;
       const count = Math.min(length, Math.floor(elapsed / delay));
       if (elapsed - lastFlip >= flip || count === length) {
@@ -50,9 +51,14 @@ export function EncryptedText({
         setFrame({ count, value: count === length ? text : encrypt(text, count, alphabet) });
       }
       if (count < length) frameId = requestAnimationFrame(tick);
+      else document.removeEventListener("visibilitychange", resetClock);
     };
+    document.addEventListener("visibilitychange", resetClock);
     frameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameId);
+    return () => {
+      cancelAnimationFrame(frameId);
+      document.removeEventListener("visibilitychange", resetClock);
+    };
   }, [text, length, alphabet, reduced, revealDelayMs, flipDelayMs]);
   useLayoutEffect(() => {
     onProgress?.(length ? frame.count / length : 1);
