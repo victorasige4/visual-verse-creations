@@ -3,6 +3,7 @@
 @layer theme, base, components, utilities;
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
+@import "./card-depth.css";
 
 @theme {
   --color-vv-navy: #003f5c;
