@@ -17,7 +17,13 @@ assert(router.includes("<VisualVerseAboutCta/>") && router.includes("<VisualVers
 assert(html.includes("Who We Serve | Visual Verse Creations"), "page SEO must be intact");
 for (const id of ["brands", "businesses", "founders", "creators", "events", "digital"]) {
   assert(page.includes('id:"' + id + '"'), "missing audience: " + id);
+  assert(page.includes('image:"audience-' + id + '.webp"'), "audience must have its own photograph: " + id);
+  assert(existsSync("public/audience-" + id + ".webp"), "missing audience image: " + id);
 }
+assert(page.includes('alt={world.imageAlt}'), "audience photos must have descriptive alternative text");
+assert(page.includes('className="vvx-world-watermark" src={asset("logo-mark.png")}'), "use the actual Visual Verse watermark on every card");
+assert(!page.includes("vvx-world-stamp") && !styles.includes("vvx-world-stamp"), "remove the former creative-partners stamp");
+assert(styles.includes("font-size:clamp(33px,3.275vw,57px)"), "photo headlines must use the reduced type scale");
 for (const name of ["function Hero()", "function WorldAtlas()", "function Collaboration()", "function FitFinder()", "function FinalStatement()"]) {
   assert(page.includes(name), "missing experience section: " + name);
 }

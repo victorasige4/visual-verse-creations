@@ -198,6 +198,23 @@ try {
       const amount=Number(await compare.getAttribute("aria-valuenow"));
       assert.ok(amount>=65&&amount<=85,"Touch photo comparison did not update: "+amount);
     }
+    if(path==="who-we-serve.html"){
+      const photoIds=["brands","businesses","founders","creators","events","digital"];
+      for(const [index,id] of photoIds.entries()){
+        await touch.locator(".vvx-world-mobile-tabs button").nth(index).tap();
+        const image=touch.locator(`.vvx-world-photo[src$="audience-${id}.webp"]`);
+        await image.waitFor({state:"attached"});
+        await image.evaluate(img=>img.decode());
+        assert.ok(await image.evaluate(img=>img.naturalWidth>=1000 && !!img.alt),"Audience photo failed to decode: "+id);
+        const mark=touch.locator(".vvx-world-watermark");
+        await mark.evaluate(img=>img.decode());
+        assert.ok(await mark.evaluate(img=>img.naturalWidth>0 && Number(getComputedStyle(img).opacity)<.2),"Logo watermark missing: "+id);
+        const posterSize=await touch.locator(".vvx-world-poster-word").evaluate(el=>parseFloat(getComputedStyle(el).fontSize));
+        assert.ok(posterSize>=30 && posterSize<=50,"Audience title size not reduced: "+id);
+      }
+      assert.equal(await touch.locator(".vvx-world-stamp").count(),0);
+      console.log("Who We Serve: all six audience photos, watermark and smaller titles verified on touch");
+    }
     if(path.startsWith("services.html")){
       await touch.evaluate(()=>{const section=document.querySelector("#our-process");window.scrollTo({top:scrollY+section.getBoundingClientRect().top,behavior:"instant"});});
       await touch.locator(".vv-sp-step-button").nth(3).tap();
