@@ -93,6 +93,10 @@ try {
   assert.equal(await servingImage.count(),1,"Hero must contain exactly one photo");
   await servingImage.evaluate(img=>img.decode());
   assert.equal(await servingImage.evaluate(img=>img.naturalWidth),933);
+  assert.ok((await servingImage.getAttribute("src")).endsWith("who-we-serve-creative-service.webp"));
+  assert.equal((await servingHero.locator(".vvx-hero-disc").textContent()).trim(),"SERVING");
+  // All audience assets are requested before users interact with the cards.
+  await motionPage.waitForFunction(()=>["brands","businesses","founders","creators","events","digital"].every(id=>performance.getEntriesByType("resource").some(entry=>entry.name.endsWith(`audience-${id}-creative.webp`) && entry.responseEnd>0)));
   const servingCanvas=servingHero.locator(".vvx-hero-stage canvas");
   await servingCanvas.waitFor({state:"visible"});
   assert.ok(await servingCanvas.evaluate(canvas=>canvas.width>0&&canvas.height>0),"Loader canvas must be painted at its layout size");
@@ -206,10 +210,11 @@ try {
         await image.waitFor({state:"attached"});
         await image.evaluate(img=>img.decode());
         assert.ok(await image.evaluate(img=>img.naturalWidth>=1000 && !!img.alt),"Audience photo failed to decode: "+id);
-        const mark=touch.locator(".vvx-world-watermark");
+        const poster=touch.locator(".vvx-world-poster").filter({has:image});
+        const mark=poster.locator(".vvx-world-watermark");
         await mark.evaluate(img=>img.decode());
         assert.ok(await mark.evaluate(img=>img.naturalWidth>0 && Number(getComputedStyle(img).opacity)<.2),"Logo watermark missing: "+id);
-        const posterSize=await touch.locator(".vvx-world-poster-word").evaluate(el=>parseFloat(getComputedStyle(el).fontSize));
+        const posterSize=await poster.locator(".vvx-world-poster-word").evaluate(el=>parseFloat(getComputedStyle(el).fontSize));
         assert.ok(posterSize>=30 && posterSize<=50,"Audience title size not reduced: "+id);
       }
       assert.equal(await touch.locator(".vvx-world-stamp").count(),0);

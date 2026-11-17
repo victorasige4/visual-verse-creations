@@ -2,6 +2,8 @@
 
 All photographs are illustrative licensed stock images, not photographs of Visual Verse clients. Images are optimised WebP files, hosted with the website. See the [Pexels licence](https://www.pexels.com/license/).
 
+The page's SERVING hero uses [Photographer Showing Woman Photos on Camera](https://www.pexels.com/photo/photographer-showing-woman-photos-on-camera-26223322/) by Leo Ferreira Fotografo.
+
 | Audience | Image source | Photographer |
 | --- | --- | --- |
 | Growing brands | [People Taking Photo of a Product in the Studio](https://www.pexels.com/photo/people-taking-photo-of-a-product-in-the-studio-12811291/) | Luis Quintero |

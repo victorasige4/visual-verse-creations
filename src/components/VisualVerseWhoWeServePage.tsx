@@ -133,12 +133,12 @@ function Hero() {
       </div>
       <motion.div className="vvx-hero-stage" initial={reduced?false:{opacity:0,scale:.9,x:70}}
         animate={{opacity:1,scale:1,x:0}} transition={{duration:1,delay:.28,ease:[.2,1,.3,1]}}
-        aria-label="A man serving a customer">
+        aria-label="A photographer helping a client review their images">
         <motion.div className="vvx-hero-stage-perspective" style={reduced?undefined:{rotateX,rotateY}}>
           <div className="vvx-hero-orbit vvx-hero-orbit-one" aria-hidden="true"/>
           <div className="vvx-hero-orbit vvx-hero-orbit-two" aria-hidden="true"/>
-          <ImageGenerationLoaderDemo src={asset("who-we-serve-service.webp")} alt="A waiter handing a menu to a seated customer"/>
-          <span className="vvx-hero-disc" aria-hidden="true"><Sparkles size={26}/> MADE FOR YOU</span>
+          <ImageGenerationLoaderDemo src={asset("who-we-serve-creative-service.webp")} alt="A photographer sharing images on a camera with a client"/>
+          <span className="vvx-hero-disc" aria-hidden="true"><Sparkles size={26}/> SERVING</span>
         </motion.div>
       </motion.div>
     </div>
@@ -159,13 +159,13 @@ function WorldStage({world}:{world:World}) {
   const reduced=useReducedMotion();
   const Icon=world.Icon;
   return <div className={"vvx-world-visual vvx-world-"+world.tone}>
-    <AnimatePresence mode="wait" initial={false}>
+    <AnimatePresence mode="sync" initial={false}>
       <motion.div key={world.id} className="vvx-world-poster"
-        initial={reduced?false:{opacity:0,y:24,rotateY:-7,filter:"blur(12px)"}}
-        animate={{opacity:1,y:0,rotateY:0,filter:"blur(0px)"}}
-        exit={reduced?undefined:{opacity:0,y:-16,filter:"blur(7px)"}}
-        transition={{duration:.48,ease:[.2,.9,.25,1]}}>
-        <img className="vvx-world-photo" src={asset(world.image)} alt={world.imageAlt} loading="lazy" decoding="async" />
+        initial={reduced?false:{opacity:0,y:12,rotateY:-4}}
+        animate={{opacity:1,y:0,rotateY:0}}
+        exit={reduced?undefined:{opacity:0,y:-8}}
+        transition={{duration:.26,ease:[.2,.9,.25,1]}}>
+        <img className="vvx-world-photo" src={asset(world.image)} alt={world.imageAlt} width={1200} height={800} loading="eager" decoding="async" />
         <div className="vvx-world-scrim" aria-hidden="true"/>
         <img className="vvx-world-watermark" src={asset("logo-mark.png")} alt="" aria-hidden="true" decoding="async" />
         <div className="vvx-world-poster-top"><span>VISUAL VERSE / {world.number}</span><Icon size={28} strokeWidth={1.25}/></div>
@@ -180,7 +180,34 @@ function WorldStage({world}:{world:World}) {
 function WorldAtlas() {
   const [active,setActive]=useState(0);
   const root=useRef<HTMLElement|null>(null);
+  const photos=useRef(new Map<number,{image:HTMLImageElement;ready:Promise<void>;decoded:boolean}>());
+  const request=useRef(0);
   const reduced=useReducedMotion();
+  // Warm and decode the entire small gallery while the page transmission is
+  // visible. Keep the decoded images alive, so changing a card never waits
+  // for a newly mounted lazy image. Keep the old card until the next is ready.
+  const preparePhoto=(index:number)=>{
+    const existing=photos.current.get(index);
+    if(existing)return existing;
+    const image=new Image();
+    image.fetchPriority=index===0?"auto":"low";
+    image.decoding="async";
+    image.src=asset(worlds[index].image);
+    const entry={image,decoded:false,ready:Promise.resolve()};
+    photos.current.set(index,entry);
+    entry.ready=image.decode().then(()=>{entry.decoded=true;},()=>{photos.current.delete(index);});
+    return entry;
+  };
+  const chooseWorld=(index:number)=>{
+    const version=++request.current;
+    const photo=preparePhoto(index);
+    if(photo.decoded){setActive(index);return;}
+    void photo.ready.then(()=>{if(version===request.current&&photo.decoded)setActive(index);});
+  };
+  useEffect(()=>{
+    worlds.forEach((_,index)=>preparePhoto(index));
+    return ()=>{request.current++;};
+  },[]);
   useEffect(()=>{
     const scope=root.current;
     if(!scope||typeof IntersectionObserver==="undefined")return;
@@ -194,7 +221,7 @@ function WorldAtlas() {
         if(!candidates.length)return;
         const choice=candidates.sort((a,b)=>Math.abs(a.boundingClientRect.top+a.boundingClientRect.height/2-innerHeight*.52)-Math.abs(b.boundingClientRect.top+b.boundingClientRect.height/2-innerHeight*.52))[0];
         const index=Number((choice.target as HTMLElement).dataset.worldIndex);
-        if(Number.isInteger(index))setActive(index);
+        if(Number.isInteger(index))chooseWorld(index);
       },{rootMargin:"-35% 0px -35% 0px",threshold:0});
       scope.querySelectorAll<HTMLElement>(".vvx-world-chapter").forEach(el=>observer?.observe(el));
     };
@@ -220,7 +247,7 @@ function WorldAtlas() {
             return <button type="button" key={item.id}
               className={"vvx-world-chapter"+(active===i?" is-active":"")}
               data-world-index={i}
-              onClick={()=>setActive(i)} aria-pressed={active===i}>
+              onClick={()=>chooseWorld(i)} aria-pressed={active===i}>
               <span className="vvx-world-chapter-number">{item.number} / 06</span>
               <span className="vvx-world-chapter-content"><span className="vvx-world-chapter-eyebrow"><ChapterIcon size={16} aria-hidden="true"/>{item.name}</span><strong>{item.headline}</strong><span className="vvx-world-chapter-blurb">{item.blurb}</span><span className="vvx-world-chapter-hint">EXPLORE THIS WORLD <ArrowRight size={16}/></span></span>
             </button>;
@@ -229,7 +256,7 @@ function WorldAtlas() {
         <div className="vvx-world-mobile-tabs" role="group" aria-label="Choose who we serve">
           {worlds.map((item,i)=><button key={item.id} type="button"
             aria-pressed={active===i} className={active===i?"is-active":""}
-            onClick={()=>setActive(i)}>{item.number} <span>{item.name}</span></button>)}
+            onClick={()=>chooseWorld(i)}>{item.number} <span>{item.name}</span></button>)}
         </div>
         <div className="vvx-world-sticky">
           <div className="vvx-world-stage-top"><span><span className="vvx-signal-pulse"/> NOW EXPLORING / {world.name.toUpperCase()}</span><span>{world.number}—06</span></div>
@@ -273,7 +300,7 @@ function Collaboration() {
       </Reveal>
       <div className="vvx-collab-bento">
         <Wobble className="vvx-wobble-photo">
-          <img src={asset("portfolio-event-story.jpg")} loading="lazy" alt="Visual Verse event storytelling in action"/>
+          <img src={asset("who-we-serve-toolbox.webp")} width={1200} height={800} loading="lazy" decoding="async" alt="Visual Verse event storytelling in action"/>
           <div className="vvx-wobble-photo-shade"/>
           <span className="vvx-bento-kicker">01 / THROUGH THE LENS</span>
           <strong>MAKE IT<br/>FEEL REAL.</strong>
