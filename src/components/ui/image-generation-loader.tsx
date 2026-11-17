@@ -27,6 +27,7 @@ export type ImageGenerationLoaderProps = {
   gap?: number;
   bandHeight?: number;
   duration?: number;
+  repeat?: boolean;
   effect?: ImageGenerationLoaderEffect;
   waveAmplitude?: number;
   scaleAmplitude?: number;
@@ -178,6 +179,7 @@ export function ImageGenerationLoader({
   gap = 2,
   bandHeight = 48,
   duration = 4000,
+  repeat = true,
   effect = "shimmer",
   waveAmplitude = 12,
   scaleAmplitude = 0.75,
@@ -335,6 +337,12 @@ export function ImageGenerationLoader({
       context.clearRect(0, 0, width, height);
 
       const cycleDuration = Math.max(1, duration);
+      // A completed reveal is a still photograph, not an ongoing loader.
+      if (!repeat && now - startTime >= cycleDuration) {
+        overlay.style.opacity = "0";
+        overlay.style.clipPath = "inset(0 0 100% 0)";
+        return;
+      }
       const cycleElapsed = (now - startTime) % cycleDuration;
       const linearProgress = cycleElapsed / cycleDuration;
       const progress = reducedMotion.matches
@@ -533,6 +541,7 @@ export function ImageGenerationLoader({
     bandHeight,
     cellSize,
     duration,
+    repeat,
     easing,
     effect,
     fromColor,

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, statSync } from "node:fs";
 import postcss from "postcss";
 
 const read = (path) => readFileSync(path, "utf8");
@@ -15,11 +15,17 @@ assert(read("src/pages-main.tsx").includes("<Suspense fallback={null}><VisualVer
 assert(!router.includes("function AudiencePage()"), "old duplicate audience page must be removed");
 assert(router.includes("<VisualVerseAboutCta/>") && router.includes("<VisualVerseFooter/>"), "shared CTA and footer remain");
 assert(html.includes("Who We Serve | Visual Verse Creations"), "page SEO must be intact");
+let photoBytes = 0;
 for (const id of ["brands", "businesses", "founders", "creators", "events", "digital"]) {
   assert(page.includes('id:"' + id + '"'), "missing audience: " + id);
   assert(page.includes('image:"audience-' + id + '-creative.webp"'), "audience must have its own creative-industry photograph: " + id);
   assert(existsSync("public/audience-" + id + "-creative.webp"), "missing audience image: " + id);
+  assert(html.includes(`rel="preload" as="image" href="%BASE_URL%audience-${id}-creative.webp"`), "audience photo must start loading before React: " + id);
+  photoBytes += statSync(`public/audience-${id}-creative.webp`).size;
 }
+assert(photoBytes < 380_000, "six audience images exceed the page image budget");
+assert(page.includes("image.decode()") && page.includes("photo.decoded"), "decode photos before switching to a new audience card");
+assert(statSync("public/who-we-serve-toolbox.webp").size < 80_000, "toolbox photo must have a lightweight page-specific image");
 assert(page.includes('alt={world.imageAlt}'), "audience photos must have descriptive alternative text");
 assert(page.includes('className="vvx-world-watermark" src={asset("logo-mark.png")}'), "use the actual Visual Verse watermark on every card");
 assert(!page.includes("vvx-world-stamp") && !styles.includes("vvx-world-stamp"), "remove the former creative-partners stamp");
@@ -29,11 +35,13 @@ for (const name of ["function Hero()", "function WorldAtlas()", "function Collab
 }
 assert(page.includes('className="vvx-hero-spotlight"') && page.includes("useMotionValue"),
   "hero must provide spotlight and spring-driven 3D parallax");
-assert(page.includes("ImageGenerationLoaderDemo") && page.includes("who-we-serve-service.webp"), "new serving image loader must render");
+assert(page.includes("ImageGenerationLoaderDemo") && page.includes("who-we-serve-creative-service.webp"), "creative serving image loader must render");
 assert(!page.includes("vvx-float-photo") && !styles.includes("vvx-float-photo"), "old hero collage must be removed");
 assert(page.includes("{rotateX,rotateY}") && page.includes("useSpring"), "left/right spring hover must remain");
-assert(existsSync("public/who-we-serve-service.webp"), "service-themed photo is missing");
+assert(existsSync("public/who-we-serve-creative-service.webp"), "creative service-themed photo is missing");
+assert(html.includes('href="%BASE_URL%who-we-serve-creative-service.webp" fetchpriority="high"'), "hero photo must download immediately");
 assert(read("src/components/image-generation-loader-demo.tsx").includes('effect="scale-wave"'), "Aceternity scan must run");
+assert(read("src/components/image-generation-loader-demo.tsx").includes('text="SERVING"') && read("src/components/image-generation-loader-demo.tsx").includes('repeat={false}'), "SERVING scan must finish after a single pass");
 assert(read("src/components/ui/image-generation-loader.tsx").includes("IntersectionObserver"), "loader must pause offscreen");
 assert(styles.includes("object-fit:contain"), "serving photograph must stay uncropped");
 assert(page.includes("IntersectionObserver") && styles.includes("position:sticky"),
