@@ -202,7 +202,7 @@ try {
       const photoIds=["brands","businesses","founders","creators","events","digital"];
       for(const [index,id] of photoIds.entries()){
         await touch.locator(".vvx-world-mobile-tabs button").nth(index).tap();
-        const image=touch.locator(`.vvx-world-photo[src$="audience-${id}.webp"]`);
+        const image=touch.locator(`.vvx-world-photo[src$="audience-${id}-creative.webp"]`);
         await image.waitFor({state:"attached"});
         await image.evaluate(img=>img.decode());
         assert.ok(await image.evaluate(img=>img.naturalWidth>=1000 && !!img.alt),"Audience photo failed to decode: "+id);
