@@ -148,12 +148,25 @@ function Hero() {
   </section>;
 }
 
+const marqueeWords=["BRANDS","FOUNDERS","CREATORS","BUSINESSES","EVENTS","DIGITAL DREAMERS"];
+
+function MarqueeTrack() {
+  // Identical, full-viewport sets make the half-track reset imperceptible.
+  return <div className="vvx-ribbon-track" aria-hidden="true">{[0,1].map(set=><div className="vvx-ribbon-set" key={set}>
+    {[...marqueeWords,...marqueeWords].map((word,index)=><span key={index}>{word}<Aperture size={21} strokeWidth={1.4} aria-hidden="true"/></span>)}
+  </div>)}</div>;
+}
+
 function Marquee() {
-  const words=["BRANDS","FOUNDERS","CREATORS","BUSINESSES","EVENTS","DIGITAL DREAMERS"];
   return <div className="vvx-ribbon" aria-label="Creative work for brands, founders, creators, businesses, events and digital teams">
-    <div className="vvx-ribbon-track">{[0,1].map(i=><div className="vvx-ribbon-set" key={i} aria-hidden={i===1}>
-      {words.map(word=><span key={word}>{word}<Aperture size={21} strokeWidth={1.4} aria-hidden="true"/></span>)}
-    </div>)}</div>
+    <MarqueeTrack/>
+  </div>;
+}
+
+function EdgeMarquees() {
+  return <div className="vvx-edge-marquees" aria-hidden="true">
+    <div className="vvx-edge-marquee vvx-edge-marquee-left"><MarqueeTrack/></div>
+    <div className="vvx-edge-marquee vvx-edge-marquee-right"><MarqueeTrack/></div>
   </div>;
 }
 
@@ -392,6 +405,7 @@ function FinalStatement() {
 
 export function VisualVerseWhoWeServePage() {
   return <div className="vvx-page">
+    <EdgeMarquees/>
     <Hero/>
     <Marquee/>
     <WorldAtlas/>

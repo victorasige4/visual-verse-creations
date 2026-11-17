@@ -90,12 +90,33 @@
 
 /* 02 / Mint ticker. */
 .vvx-ribbon{background:#57dfc2;color:#004451;overflow:hidden;padding:18px 0;border-bottom:1px solid #ffffff45}
-.vvx-ribbon-track{display:flex;width:max-content;animation:vvx-run 33s linear infinite}
-.vvx-ribbon-set{display:flex;flex:0 0 auto}
+.vvx-ribbon-track{display:flex;width:max-content;animation:vvx-run 60s linear infinite;will-change:transform}
+.vvx-ribbon-set{display:flex;flex:0 0 auto;min-width:100vw;justify-content:space-around}
 .vvx-ribbon-set>span{display:inline-flex;align-items:center;gap:24px;padding:0 23px 0 0;
   font-size:clamp(17px,2vw,27px);font-weight:900;letter-spacing:var(--vv-tracking-readable, 0em);white-space:nowrap}
 .vvx-ribbon-set svg{color:#046d6b}
 @keyframes vvx-run{to{transform:translateX(-50%)}}
+
+/* Matching editorial edge rails: they follow the page while scrolling, but
+   stay in the outer gutters and never intercept links or the pointer. */
+.vvx-edge-marquees{display:none}
+@media(min-width:1000px){
+  .vvx-edge-marquees{display:block;position:sticky;top:0;height:100svh;margin-bottom:-100svh;
+    z-index:6;pointer-events:none;user-select:none}
+  .vvx-edge-marquee{position:absolute;top:116px;bottom:105px;width:23px;overflow:hidden;
+    border:1px solid #2ec4b65c;border-radius:12px;background:#e5faf4;color:#003f5c}
+  .vvx-edge-marquee-left{left:7px}
+  .vvx-edge-marquee-right{right:7px}
+  .vvx-edge-marquee .vvx-ribbon-track{display:flex;flex-direction:column;align-items:center;
+    width:100%;height:max-content;animation:vvx-run-vertical 55s linear infinite}
+  .vvx-edge-marquee-left .vvx-ribbon-track{animation-direction:reverse}
+  .vvx-edge-marquee .vvx-ribbon-set{flex-direction:column;align-items:center;min-width:0;
+    min-height:100svh;width:100%;justify-content:space-around}
+  .vvx-edge-marquee .vvx-ribbon-set>span{writing-mode:vertical-rl;text-orientation:mixed;
+    gap:14px;padding:0 0 14px;font-size:10px;line-height:1;font-weight:800;letter-spacing:.12em}
+  .vvx-edge-marquee .vvx-ribbon-set svg{width:12px;height:12px;flex-shrink:0;color:#159d91}
+}
+@keyframes vvx-run-vertical{to{transform:translateY(-50%)}}
 
 /* 03 / Sticky Scroll Reveal-inspired audience atlas */
 .vvx-atlas{padding:clamp(100px,10vw,157px) 0 clamp(90px,9vw,132px);

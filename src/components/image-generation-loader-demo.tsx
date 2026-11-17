@@ -29,12 +29,12 @@ export default function ImageGenerationLoaderDemo({ src, alt }: { src: string; a
         {!reduced && revealed && decoded && (
           <ImageGenerationLoader
             effect="scale-wave"
-            easing="ease-in-out"
+            easing="linear"
             text="SERVING"
             cellSize={3}
             gap={1}
             bandHeight={48}
-            duration={2300}
+            duration={4500}
             repeat={true}
             overlayOpacity={0.16}
             colors={["#087989", "#8af6d9"]}
