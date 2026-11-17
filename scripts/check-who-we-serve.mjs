@@ -9,9 +9,10 @@ const router = read("src/components/VisualVerseInnerPages.tsx");
 const html = read("who-we-serve.html");
 
 assert.doesNotThrow(() => postcss.parse(styles, { from: "who-we-serve-redesign.css" }), "audience CSS must parse");
-assert(router.includes('import("./VisualVerseWhoWeServePage")'), "audience page must be lazy loaded");
-assert(router.includes('kind==="audiences"&&<VisualVerseWhoWeServePage/>'), "route must render the audience page");
-assert(read("src/pages-main.tsx").includes("<Suspense fallback={null}><VisualVerseInnerPage"), "the lazy page and shared chrome must commit together");
+assert(html.includes('src="/src/audiences-main.tsx"'), "audience page must have its own direct entry");
+assert(read("src/audiences-main.tsx").includes('import { VisualVerseWhoWeServePage } from "./components/VisualVerseWhoWeServePage"'), "audience page must load without a lazy fetch waterfall");
+assert(router.includes('kind==="audiences"&&AudiencePage&&<AudiencePage/>'), "route must render the audience page");
+assert(read("src/inner-page-bootstrap.tsx").includes("<Suspense fallback={null}><VisualVerseInnerPage"), "page and shared chrome must commit together");
 assert(!router.includes("function AudiencePage()"), "old duplicate audience page must be removed");
 assert(router.includes("<VisualVerseAboutCta/>") && router.includes("<VisualVerseFooter/>"), "shared CTA and footer remain");
 assert(html.includes("Who We Serve | Visual Verse Creations"), "page SEO must be intact");

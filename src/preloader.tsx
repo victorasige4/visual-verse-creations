@@ -85,6 +85,7 @@ window.addEventListener("vv-page-revealed", () => {
   loader = null;
   if (finished) queueMicrotask(() => finished.unmount());
 });
+window.addEventListener("vv-startup-resume", revealPublicPage);
 window.addEventListener("pageshow", event => {
   if (event.persisted && !document.documentElement.hasAttribute("data-vv-boot")) mountPublicPreloader(true);
 });
