@@ -5,8 +5,8 @@ import { useEffect } from "react";
  * muted words resolve progressively, left to right, into the brand's navy and
  * aqua as the text crosses the viewport. Dark areas use white and aqua.
  *
- * This effect is exclusive to the "What We Believe" statement on
- * the About page. All other headings and paragraphs keep their normal styling.
+ * Shared by the About belief statement and the Who We Serve closing statement.
+ * Other headings and paragraphs keep their normal styling.
  */
 const SELECTOR = ".vv-about-belief-statement";
 
@@ -25,9 +25,9 @@ type ScrollBlock = {
   ariaLabel: string | null;
 };
 
-export function useAboutScrollWords() {
+export function useAboutScrollWords(rootSelector = ".vv-about-editorial", selector = SELECTOR) {
   useEffect(() => {
-    const root = document.querySelector<HTMLElement>(".vv-about-editorial");
+    const root = document.querySelector<HTMLElement>(rootSelector);
     if (!root) return;
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     // Native colour and layout remain intact without JavaScript or with
@@ -35,13 +35,13 @@ export function useAboutScrollWords() {
     if (media.matches) return;
 
     const blocks: ScrollBlock[] = [];
-    const candidates = root.querySelectorAll<HTMLElement>(SELECTOR);
+    const candidates = root.querySelectorAll<HTMLElement>(selector);
     candidates.forEach((element) => {
       const text = element.textContent?.replace(/\s+/g, " ").trim();
       if (!text) return;
       const markup = element.innerHTML;
       const ariaLabel = element.getAttribute("aria-label");
-      const dark = Boolean(element.closest(".vv-about-belief, .vv-about-locations, .vv-about-final-panel"));
+      const dark = Boolean(element.closest(".vv-about-belief, .vv-about-locations, .vv-about-final-panel, .vvx-finale"));
 
       const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
       const textNodes: Text[] = [];
@@ -136,5 +136,5 @@ export function useAboutScrollWords() {
         else element.setAttribute("aria-label", ariaLabel);
       }
     };
-  }, []);
+  }, [rootSelector, selector]);
 }

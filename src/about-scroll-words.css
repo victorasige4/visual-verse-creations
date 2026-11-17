@@ -1,9 +1,10 @@
-/* Who We Are scroll-scrubbed typography, exclusive to the About page's
-   What We Believe statement. Other About page text is deliberately untouched. */
+/* Scroll-scrubbed typography for the About belief and Who We Serve finale.
+   Other page typography is deliberately untouched. */
 .vv-about-editorial .vv-about-belief-statement[data-vv-about-scroll-words="true"]{
   text-wrap:pretty;
 }
-.vv-about-editorial .vv-about-belief-statement[data-vv-about-scroll-words="true"] .vv-about-scroll-word{
+.vv-about-editorial .vv-about-belief-statement[data-vv-about-scroll-words="true"] .vv-about-scroll-word,
+.vvx-finale-statement[data-vv-about-scroll-words="true"] .vv-about-scroll-word{
   display:inline-block;
   position:relative;
   white-space:nowrap;
@@ -19,6 +20,7 @@
 .vv-about-editorial .vv-about-belief .vv-about-belief-statement[data-vv-about-scroll-words="true"] .vv-about-scroll-word{
   color:#709aa4;
 }
+.vvx-finale-statement[data-vv-about-scroll-words="true"] .vv-about-scroll-word{color:#709aa4}
 .vv-about-editorial .vv-about-belief-statement[data-vv-about-scroll-words="true"] em,
 .vv-about-editorial .vv-about-belief-statement[data-vv-about-scroll-words="true"] strong{
   -webkit-text-fill-color:unset;
@@ -27,7 +29,8 @@
   -webkit-text-fill-color:currentColor;
 }
 @media(prefers-reduced-motion:reduce){
-  .vv-about-editorial .vv-about-belief-statement[data-vv-about-scroll-words="true"] .vv-about-scroll-word{
+  .vv-about-editorial .vv-about-belief-statement[data-vv-about-scroll-words="true"] .vv-about-scroll-word,
+  .vvx-finale-statement[data-vv-about-scroll-words="true"] .vv-about-scroll-word{
     color:inherit!important;opacity:1!important;will-change:auto!important;
   }
   .vv-about-editorial .vv-about-belief-statement[data-vv-about-scroll-words="true"] em .vv-about-scroll-word{

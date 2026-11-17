@@ -25,7 +25,16 @@ for (const id of ["brands", "businesses", "founders", "creators", "events", "dig
 }
 assert(photoBytes < 380_000, "six audience images exceed the page image budget");
 assert(page.includes("image.decode()") && page.includes("photo.decoded"), "decode photos before switching to a new audience card");
-assert(statSync("public/who-we-serve-toolbox.webp").size < 80_000, "toolbox photo must have a lightweight page-specific image");
+let toolboxBytes = 0;
+for (const discipline of ["film", "design", "web"]) {
+  const file = `who-we-serve-toolbox-${discipline}.webp`;
+  assert(page.includes(`asset("${file}")`), `toolbox card must display ${discipline} photography`);
+  toolboxBytes += statSync(`public/${file}`).size;
+}
+assert(toolboxBytes < 160_000, "three toolbox images must stay lightweight");
+assert(page.includes('useAboutScrollWords(".vvx-page", ".vvx-finale-statement")'), "final statement must reuse the About scroll reveal");
+assert(page.includes('className="vvx-finale-watermark" src={asset("logo-mark.png")}'), "final statement must use the real logo watermark");
+assert(page.includes('No pressure. <br/><em>Just possibilities.</em>'), "FAQ heading should use two explicit lines");
 assert(page.includes('alt={world.imageAlt}'), "audience photos must have descriptive alternative text");
 assert(page.includes('className="vvx-world-watermark" src={asset("logo-mark.png")}'), "use the actual Visual Verse watermark on every card");
 assert(!page.includes("vvx-world-stamp") && !styles.includes("vvx-world-stamp"), "remove the former creative-partners stamp");

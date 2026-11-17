@@ -1,11 +1,13 @@
 import ImageGenerationLoaderDemo from "./image-generation-loader-demo";
 import { EditorialText } from "./EditorialText";
 import { VisualVerseActionContent } from "./VisualVerseAction";
+import { useAboutScrollWords } from "../hooks/useAboutScrollWords";
+import "../about-scroll-words.css";
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
 import {
   ArrowDown, ArrowRight, ArrowUpRight, Aperture, BadgeCheck, Building2,
-  Camera, Check, Clapperboard, Compass, ExternalLink, Fingerprint,
+  Camera, Check, Clapperboard, Compass, ExternalLink,
   Globe2, Lightbulb, Megaphone, MonitorSmartphone, MousePointer2,
   Palette, Play, Rocket, Sparkles, UsersRound, WandSparkles,
 } from "lucide-react";
@@ -300,22 +302,25 @@ function Collaboration() {
       </Reveal>
       <div className="vvx-collab-bento">
         <Wobble className="vvx-wobble-photo">
-          <img src={asset("who-we-serve-toolbox.webp")} width={1200} height={800} loading="lazy" decoding="async" alt="Visual Verse event storytelling in action"/>
+          <img className="vvx-toolbox-image" src={asset("who-we-serve-toolbox-film.webp")} width={1200} height={800} loading="lazy" decoding="async" alt="Professional cinema camera and filmmakers at work on a production set"/>
           <div className="vvx-wobble-photo-shade"/>
           <span className="vvx-bento-kicker">01 / THROUGH THE LENS</span>
           <strong>MAKE IT<br/>FEEL REAL.</strong>
           <div className="vvx-bento-foot"><span>PHOTOGRAPHY + FILM</span><Camera size={28}/></div>
         </Wobble>
         <Wobble className="vvx-wobble-type">
+          <img className="vvx-toolbox-image" src={asset("who-we-serve-toolbox-design.webp")} width={1000} height={708} loading="lazy" decoding="async" alt="Brand strategy moodboard, colour palette and printed visual identity concepts"/>
+          <div className="vvx-wobble-photo-shade"/>
           <span className="vvx-bento-kicker">02 / FROM A BLANK CANVAS</span>
-          <div className="vvx-wobble-orbit" aria-hidden="true"><Fingerprint size={170} strokeWidth={.6}/></div>
           <strong>STAND<br/><em>OUT.</em></strong>
           <p>Identity. Campaigns. Design that has something to say.</p>
           <div className="vvx-bento-foot"><span>BRANDING + GRAPHIC DESIGN</span><Palette size={26}/></div>
         </Wobble>
         <Wobble className="vvx-wobble-device">
+          <img className="vvx-toolbox-image" src={asset("who-we-serve-toolbox-web.webp")} width={1000} height={667} loading="lazy" decoding="async" alt="Laptop displaying a designed website interface on a creative workspace desk"/>
+          <div className="vvx-wobble-photo-shade"/>
           <span className="vvx-bento-kicker">03 / THE DIGITAL WORLD</span>
-          <div className="vvx-wobble-browser" aria-hidden="true"><div className="vvx-wobble-browser-header"><i/><i/><i/><span>VISUALVERSE / INTERACTIVE</span></div><div className="vvx-wobble-browser-body"><span>YOU ARE HERE</span><strong>GOOD DESIGN<br/>IS FELT.</strong><span className="vvx-wobble-screen-button">LET'S BUILD IT <ArrowUpRight size={12}/></span></div></div>
+          <strong>GOOD DESIGN<br/>IS FELT.</strong>
           <div className="vvx-bento-foot"><span>WEB + UI/UX</span><MonitorSmartphone size={26}/></div>
         </Wobble>
       </div>
@@ -344,7 +349,7 @@ function FitFinder() {
                 const index=event.key==="ArrowDown"?(i+1)%matches.length:event.key==="ArrowUp"?(i-1+matches.length)%matches.length:event.key==="Home"?0:event.key==="End"?matches.length-1:-1;
                 if(index>=0){event.preventDefault();setActive(index);(event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="tab"]'))?.[index]?.focus();}
               }} className={"vvx-match-option"+(active===i?" is-active":"")}>
-              <span className="vvx-match-option-icon"><Icon size={22}/></span><span>{item.title}</span><ArrowUpRight size={18} className="vvx-match-option-arrow"/>
+              <span className="vvx-match-option-icon"><Icon size={22}/></span><span><EditorialText text={item.title}/></span><ArrowUpRight size={18} className="vvx-match-option-arrow"/>
             </button>;
           })}
         </div>
@@ -369,17 +374,18 @@ function FitFinder() {
 
 function FinalStatement() {
   const reduced=useReducedMotion();
+  useAboutScrollWords(".vvx-page", ".vvx-finale-statement");
   return <section className="vvx-finale" aria-labelledby="vvx-finale-heading">
     <div className="vvx-container vvx-finale-inner">
       <Reveal className="vvx-finale-kicker"><Eyebrow dark>AT THE END OF THE DAY</Eyebrow></Reveal>
-      <h2 id="vvx-finale-heading"><span>It's not <br className="vv-break-narrow"/>about</span><span>the <em>industry.</em></span><span>It's about</span><span><em>your story.</em></span></h2>
+      <h2 id="vvx-finale-heading" className="vvx-finale-statement"><span>It's not <br className="vv-break-narrow"/>about </span><span>the <em>industry.</em> </span><span>It's about </span><span><em>your story.</em></span></h2>
       <motion.div className="vvx-finale-row" initial={reduced?false:{opacity:0,y:20}}
         whileInView={reduced?undefined:{opacity:1,y:0}} viewport={{once:true}}
         transition={{duration:.6}}>
         <p>Whether you're starting, growing, changing or celebrating—great creative work starts with understanding what matters to you.</p>
         <a href={inquire()} className="vvx-finale-link vv-motion-action vv-action-on-dark"><VisualVerseActionContent Icon={ArrowUpRight}>Let's make something matter</VisualVerseActionContent></a>
       </motion.div>
-      <div className="vvx-finale-watermark" aria-hidden="true">VV.</div>
+      <img className="vvx-finale-watermark" src={asset("logo-mark.png")} alt="" aria-hidden="true" loading="lazy" decoding="async"/>
     </div>
   </section>;
 }
@@ -393,7 +399,7 @@ export function VisualVerseWhoWeServePage() {
     <FitFinder/>
     <section className="vvx-questions" aria-label="Questions about working with us">
       <div className="vvx-container">
-        <Reveal className="vvx-questions-head"><Eyebrow>GOOD TO KNOW</Eyebrow><h2>No pressure.<br/><em>Just <br/>possibilities.</em></h2></Reveal>
+        <Reveal className="vvx-questions-head"><Eyebrow>GOOD TO KNOW</Eyebrow><h2>No pressure. <br/><em>Just possibilities.</em></h2></Reveal>
         <div className="vvx-questions-list">{faqs.map((faq,i)=><details key={faq.question} className="vvx-faq"><summary><span>0{i+1}</span><strong>{faq.question}</strong><span className="vvx-faq-toggle" aria-hidden="true">+</span></summary><p>{faq.answer}</p></details>)}</div>
       </div>
     </section>
