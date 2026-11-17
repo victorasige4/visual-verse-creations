@@ -101,7 +101,7 @@
 
 /* The boundary includes the shared CTA but ends before the site footer.
    Keep the rails above the editorial and CTA surfaces, in their own gutters. */
-.vvx-through-cta{position:relative;isolation:isolate;font-family:var(--vv-typeface,"Montserrat",Arial,sans-serif)}
+.vvx-through-cta{position:relative;isolation:isolate;overflow:clip;font-family:var(--vv-typeface,"Montserrat",Arial,sans-serif)}
 .vvx-edge-marquees{display:none}
 @media(min-width:1000px){
   .vvx-through-cta .vv-cta-panel{width:min(1168px,calc(100% - 76px))}
