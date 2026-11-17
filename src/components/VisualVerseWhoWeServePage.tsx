@@ -19,34 +19,34 @@ const inquire = (audience?: string) =>
 
 type World = {
   id: string; number: string; name: string; eyebrow: string; headline: string;
-  blurb: string; promise: string; offerings: string[]; image: string;
+  blurb: string; promise: string; offerings: string[]; image: string; imageAlt: string;
   visualWord: string; tone: string; Icon: LucideIcon;
 };
 const worlds: World[] = [
   {id:"brands",number:"01",name:"Growing brands",eyebrow:"IDENTITIES WITH A POINT OF VIEW",
     headline:"Be the brand they remember.",blurb:"For ambitious brands that want to stop blending in and start being unmistakable.",
     promise:"Branding that looks, sounds and feels like you.",offerings:["Brand identity","Campaign creative","Art direction"],
-    image:"portfolio-social-design.jpg",visualWord:"BE / SEEN.",tone:"mint",Icon:Palette},
+    image:"audience-brands.webp",imageAlt:"Two boutique owners preparing orders for their fashion brand",visualWord:"BE / SEEN.",tone:"mint",Icon:Palette},
   {id:"businesses",number:"02",name:"Businesses & teams",eyebrow:"CLARITY FOR BIG IDEAS",
     headline:"Make the complex feel simple.",blurb:"For organisations with a lot to say, and an audience that deserves a clearer story.",
     promise:"Communications with focus and personality.",offerings:["Corporate film","Web experiences","Campaign assets"],
-    image:"portfolio-corporate-moment.jpg",visualWord:"MAKE / SENSE.",tone:"blue",Icon:Building2},
+    image:"audience-businesses.webp",imageAlt:"Business colleagues analysing a presentation and discussing strategy",visualWord:"MAKE / SENSE.",tone:"blue",Icon:Building2},
   {id:"founders",number:"03",name:"Founders & startups",eyebrow:"THE NEXT BIG THING STARTS SMALL",
     headline:"Make your first move count.",blurb:"For people building something new before the rest of the world can see it.",
     promise:"Launch-ready ideas made visible.",offerings:["Launch branding","Pitch visuals","Landing pages"],
-    image:"portfolio-event-detail.jpg",visualWord:"WHAT / IF?",tone:"amber",Icon:Rocket},
+    image:"audience-founders.webp",imageAlt:"Two startup collaborators planning ideas on a wall of sketches and notes",visualWord:"WHAT / IF?",tone:"amber",Icon:Rocket},
   {id:"creators",number:"04",name:"Creators & talent",eyebrow:"FOR THE PEOPLE MAKING CULTURE",
     headline:"Let your point of view lead.",blurb:"For artists, makers and personal brands whose work deserves its own world.",
     promise:"A creative presence that feels like your signature.",offerings:["Portraits","Video & motion","Digital portfolios"],
-    image:"portfolio-social-design.jpg",visualWord:"BE / YOU.",tone:"lilac",Icon:Aperture},
+    image:"audience-creators.webp",imageAlt:"A content creator recording a video with a collaborator and a professional camera",visualWord:"BE / YOU.",tone:"lilac",Icon:Aperture},
   {id:"events",number:"05",name:"Events & communities",eyebrow:"SOME MOMENTS DESERVE MORE",
     headline:"Keep the feeling alive.",blurb:"For the people, milestones and gatherings you never want to forget.",
     promise:"Images and films that take you right back.",offerings:["Event photography","Highlight films","Event graphics"],
-    image:"portfolio-graduations.jpg",visualWord:"FEEL / IT.",tone:"coral",Icon:Camera},
+    image:"audience-events.webp",imageAlt:"An audience member raising their hands at a live event under vivid stage lights",visualWord:"FEEL / IT.",tone:"coral",Icon:Camera},
   {id:"digital",number:"06",name:"Digital products",eyebrow:"A BETTER WAY TO EXPERIENCE",
     headline:"Make every click feel right.",blurb:"For products and platforms where beautiful design needs to actually work.",
     promise:"Human-centred interfaces with clarity and craft.",offerings:["UI/UX design","Responsive websites","Prototypes"],
-    image:"portfolio-corporate-events.jpg",visualWord:"BUILD / BETTER.",tone:"sea",Icon:MonitorSmartphone},
+    image:"audience-digital.webp",imageAlt:"A digital product designer sketching a mobile application interface",visualWord:"BUILD / BETTER.",tone:"sea",Icon:MonitorSmartphone},
 ];
 
 const matches = [
@@ -165,14 +165,14 @@ function WorldStage({world}:{world:World}) {
         animate={{opacity:1,y:0,rotateY:0,filter:"blur(0px)"}}
         exit={reduced?undefined:{opacity:0,y:-16,filter:"blur(7px)"}}
         transition={{duration:.48,ease:[.2,.9,.25,1]}}>
-        <img className="vvx-world-photo" src={asset(world.image)} alt="" loading="lazy" decoding="async" />
+        <img className="vvx-world-photo" src={asset(world.image)} alt={world.imageAlt} loading="lazy" decoding="async" />
         <div className="vvx-world-scrim" aria-hidden="true"/>
+        <img className="vvx-world-watermark" src={asset("logo-mark.png")} alt="" aria-hidden="true" decoding="async" />
         <div className="vvx-world-poster-top"><span>VISUAL VERSE / {world.number}</span><Icon size={28} strokeWidth={1.25}/></div>
         <strong className="vvx-world-poster-word">{world.visualWord.split(" / ").map((part,i)=><span key={i}>{part}</span>)}</strong>
         <div className="vvx-world-poster-bottom"><span>{world.eyebrow}</span><span>MADE TO MATTER. <ArrowUpRight size={15}/></span></div>
       </motion.div>
     </AnimatePresence>
-    <span className="vvx-world-stamp" aria-hidden="true"><span>VV</span><small>CREATIVE<br/>PARTNERS</small></span>
     <span className="vvx-world-spark" aria-hidden="true"><Sparkles size={40}/></span>
   </div>;
 }
