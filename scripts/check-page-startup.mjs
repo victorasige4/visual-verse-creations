@@ -307,6 +307,11 @@ try {
       await page.locator('nav[aria-label="Footer services"] a').nth(5).waitFor({state:"attached"});
       assert.deepEqual(await labels(page,'nav[aria-label="Footer services"] a'),serviceNames,"Footer order: "+path);
       if(path===""){
+        const glass=await page.locator(".vv-hero-visual").evaluate(el=>{
+          const style=getComputedStyle(el);
+          return {alpha:Number(style.backgroundColor.match(/,\s*([\d.]+)\)$/)?.[1]),blur:Number(style.backdropFilter.match(/blur\(([\d.]+)px\)/)?.[1]),canvas:!!el.querySelector("#vvCanvas")};
+        });
+        assert.ok(glass.alpha>0&&glass.alpha<=.25&&glass.blur>0&&glass.blur<=3&&glass.canvas,"Homepage hero must retain transparent glass and animated artwork: "+JSON.stringify(glass));
         await page.locator(".vv-svc-slice-tab-label").nth(5).waitFor({state:"attached"});
         await page.locator(".vv-pf-card-category").nth(5).waitFor({state:"attached"});
         assert.deepEqual(await labels(page,".vv-svc-slice-tab-label"),serviceNames,"Homepage services");
