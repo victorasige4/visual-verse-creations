@@ -53,8 +53,11 @@ assert(read("src/components/image-generation-loader-demo.tsx").includes('effect=
 assert(read("src/components/image-generation-loader-demo.tsx").includes('text="SERVING"') && read("src/components/image-generation-loader-demo.tsx").includes('repeat={true}'), "SERVING scan must loop continuously");
 assert(read("src/components/image-generation-loader-demo.tsx").includes('duration={4500}'), "SERVING scan must allow more reading time");
 assert(page.includes("<EdgeMarquees/>") && page.includes("vvx-edge-marquee-left") && page.includes("vvx-edge-marquee-right"), "both vertical marquee rails must render");
-assert(!page.includes("<Marquee/>") && !page.includes('className="vvx-ribbon"'), "horizontal marquee below the hero must be removed");
+assert(page.includes("<Hero/>\n    <MobileMarquee/>\n    <WorldAtlas/>"), "horizontal ribbon must sit below the hero only on mobile");
+assert(styles.includes('.vvx-ribbon{display:none}') && styles.includes('@media(width < 1000px)') && styles.includes('.vvx-ribbon{display:block;') && styles.includes('animation:vvx-run-horizontal 60s linear infinite'), "horizontal ribbon must only appear below the desktop edge-rail breakpoint");
 assert(styles.includes("animation:vvx-run-vertical 55s linear infinite") && styles.includes("min-height:100svh") && styles.includes("animation-direction:reverse"), "vertical marquee sets must cover the viewport and loop seamlessly in both directions");
+const navStyles = read("src/resizable-navbar.css");
+assert(navStyles.includes("box-shadow:var(--vv-card-inset-light)") && navStyles.includes("box-shadow:var(--vv-card-inset-selected)") && navStyles.includes("box-shadow:var(--vv-card-inset-photo)"), "both navbar dropdowns must reuse the page-card inset shadows");
 assert(read("src/components/ui/image-generation-loader.tsx").includes("IntersectionObserver"), "loader must pause offscreen");
 for (const title of ["Make it<br/>feel real.", "Stand<br/><em>out.</em>", "Good design<br/>is felt."]) {
   assert(page.includes(title), "toolbox headings must use sentence case: " + title);

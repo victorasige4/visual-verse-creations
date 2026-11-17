@@ -157,6 +157,10 @@ function MarqueeTrack() {
   </div>)}</div>;
 }
 
+function MobileMarquee() {
+  return <div className="vvx-ribbon" aria-hidden="true"><MarqueeTrack/></div>;
+}
+
 function EdgeMarquees() {
   return <div className="vvx-edge-marquees" aria-hidden="true">
     <div className="vvx-edge-marquee vvx-edge-marquee-left"><MarqueeTrack/></div>
@@ -401,6 +405,7 @@ export function VisualVerseWhoWeServePage() {
   return <div className="vvx-page">
     <EdgeMarquees/>
     <Hero/>
+    <MobileMarquee/>
     <WorldAtlas/>
     <Collaboration/>
     <FitFinder/>

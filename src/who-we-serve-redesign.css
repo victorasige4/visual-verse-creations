@@ -88,6 +88,17 @@
 .vvx-hero-footer a{display:inline-flex;align-items:center;gap:10px;color:#d3fbec}
 .vvx-hero-footer a:hover{color:#4de2c3}
 
+/* On phones and tablets the horizontal ribbon takes the place of the edge rails. */
+.vvx-ribbon{display:none}
+@media(width < 1000px){
+  .vvx-ribbon{display:block;background:#57dfc2;color:#004451;overflow:hidden;padding:13px 0;border-bottom:1px solid #ffffff45}
+  .vvx-ribbon .vvx-ribbon-track{display:flex;width:max-content;animation:vvx-run-horizontal 60s linear infinite;will-change:transform}
+  .vvx-ribbon .vvx-ribbon-set{display:flex;flex:0 0 auto;min-width:100vw;justify-content:space-around}
+  .vvx-ribbon .vvx-ribbon-set>span{display:inline-flex;align-items:center;gap:15px;padding-right:17px;font-size:17px;font-weight:900;letter-spacing:var(--vv-tracking-readable, 0em);white-space:nowrap}
+  .vvx-ribbon .vvx-ribbon-set svg{width:17px;height:17px;color:#046d6b}
+}
+@keyframes vvx-run-horizontal{to{transform:translateX(-50%)}}
+
 /* Matching editorial edge rails: they follow the page while scrolling, but
    stay in the outer gutters and never intercept links or the pointer. */
 .vvx-edge-marquees{display:none}
