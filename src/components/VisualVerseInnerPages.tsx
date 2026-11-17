@@ -2,7 +2,7 @@ import { EditorialText } from "./EditorialText";
 import { orderedServices, serviceLabel } from "../data/services";
 import { SOCIAL_PROFILES } from "../data/socials";
 import { VisualVerseActionContent } from "./VisualVerseAction";
-import { lazy, useState, type FormEvent } from "react";
+import { lazy, useState, type ComponentType, type FormEvent } from "react";
 import {
   ArrowUpRight, ArrowRight, Camera, Clapperboard, Palette, PenTool,
   MonitorSmartphone, Share2, Phone, Mail, MapPin, MessageCircle,
@@ -14,16 +14,13 @@ import { VisualVerseFooter } from "./VisualVerseClosingSections";
 import { WhatsAppFloating } from "./VisualVersePolicies";
 import { VisualVerseAboutCta } from "./VisualVerseAboutCta";
 
-/* Load the heavier About, Services, and audience experiences only on the
+/* Load the heavier About and Services experiences only on the
    matching page. This also lets Vite split their page-specific CSS. */
 const VisualVerseAboutEditorial = lazy(async () => ({
   default: (await import("./VisualVerseAboutEditorial")).VisualVerseAboutEditorial
 }));
 const VisualVerseServicesEditorial = lazy(async () => ({
   default: (await import("./VisualVerseServicesEditorial")).VisualVerseServicesEditorial
-}));
-const VisualVerseWhoWeServePage = lazy(async () => ({
-  default: (await import("./VisualVerseWhoWeServePage")).VisualVerseWhoWeServePage
 }));
 
 
@@ -187,14 +184,14 @@ function QuotePage(){
   </>;
 }
 
-export function VisualVerseInnerPage({kind}:{kind:Kind}){
+export function VisualVerseInnerPage({kind, AudiencePage}:{kind:Kind;AudiencePage?:ComponentType}){
   return <div className="vv-inner-page">
     <VisualVerseNavbar/>
     <main id="top">
       {kind!=="about"&&kind!=="services"&&kind!=="audiences"&&<PageHero kind={kind}/>}
       {kind==="about"&&<VisualVerseAboutEditorial/>}
       {kind==="services"&&<ServicesPage/>}
-      {kind==="audiences"&&<VisualVerseWhoWeServePage/>}
+      {kind==="audiences"&&AudiencePage&&<AudiencePage/>}
       {kind==="contact"&&<ContactPage/>}
       {kind==="quote"&&<QuotePage/>}
       {kind!=="about"&&kind!=="audiences"&&<VisualVerseAboutCta/>}

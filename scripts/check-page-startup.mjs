@@ -127,6 +127,24 @@ try {
   await motionPage.locator("footer.vv-close-footer-wrap").evaluate(el=>el.scrollIntoView({block:"start",behavior:"instant"}));
   assert.ok(await motionPage.evaluate(()=>{const boundary=document.querySelector(".vvx-through-cta"),footer=document.querySelector("footer.vv-close-footer-wrap");return getComputedStyle(boundary).overflowY==="clip"&&boundary.getBoundingClientRect().bottom<=footer.getBoundingClientRect().top+1;}),"Rails must be clipped at the footer boundary");
   console.log("Who We Serve: endless desktop rails continue through CTA and end at footer");
+  // Simulate a stale/missing deployment entry and verify a single fresh
+  // request restores the page, leaving the canonical URL clean.
+  const retryContext = await browser.newContext({viewport:{width:1280,height:800},reducedMotion:"reduce"});
+  const retryPage = await retryContext.newPage();
+  let failedEntry = false;
+  await retryPage.route("**/assets/audiences-*.js", async route => {
+    if (!failedEntry) {
+      failedEntry = true;
+      await route.abort("failed");
+    } else await route.continue();
+  });
+  await retryPage.goto(base+"who-we-serve.html",{waitUntil:"commit"});
+  await retryPage.locator(".vvx-hero").waitFor({state:"visible",timeout:25000});
+  await retryPage.locator("html:not([data-vv-boot])").waitFor({state:"attached",timeout:25000});
+  assert.ok(failedEntry,"Test must interrupt the audience entry request");
+  assert.equal(new URL(retryPage.url()).searchParams.has("vv-reconnect"),false);
+  await retryContext.close();
+  console.log("Who We Serve: recovers automatically from an interrupted entry request");
   // Warm internal navigation must replay the route's own transmission,
   // even when its HTML and shared scripts have already been cached.
   async function followFromHome(page, name, path, touch = false) {
