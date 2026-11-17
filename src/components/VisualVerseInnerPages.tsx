@@ -1,11 +1,12 @@
 import { EditorialText } from "./EditorialText";
 import { orderedServices, serviceLabel } from "../data/services";
+import { SOCIAL_PROFILES } from "../data/socials";
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { lazy, useState, type FormEvent } from "react";
 import {
   ArrowUpRight, ArrowRight, Camera, Clapperboard, Palette, PenTool,
   MonitorSmartphone, Share2, Phone, Mail, MapPin, MessageCircle,
-  Instagram, Linkedin, Facebook, Film, FileText, Send
+  Film, FileText, Send
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { VisualVerseNavbar } from "./VisualVerseNavbar";
@@ -82,12 +83,6 @@ function ServicesPage(){
   return <VisualVerseServicesEditorial/>;
 }
 
-const socials=[
-  {name:"Instagram",url:"https://www.instagram.com/visualverse.creations/",Icon:Instagram},
-  {name:"LinkedIn",url:"https://www.linkedin.com/company/visualverse-creations",Icon:Linkedin},
-  {name:"Facebook",url:"https://www.facebook.com/profile.php?id=61596655380659",Icon:Facebook}
-];
-
 function openMailDraft(subject:string,body:string){
   window.location.href="mailto:"+EMAIL+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
 }
@@ -125,7 +120,7 @@ function ContactPage(){
     </section>
     <section className="vv-inner-section vv-inner-social-section">
       <SectionTitle eyebrow="FIND US OUT THERE">Let's stay<br/><em>in the loop.</em></SectionTitle>
-      <div className="vv-inner-social-links">{socials.map(({name,url,Icon})=><a key={name} href={url} target="_blank" rel="noopener noreferrer"><Icon size={23}/>{name}<ArrowUpRight size={16}/></a>)}</div>
+      <div className="vv-inner-social-links">{SOCIAL_PROFILES.map(({name,url,Icon})=><a key={name} href={url} target="_blank" rel="noopener noreferrer" aria-label={name+" (opens in a new tab)"}><Icon size={23} aria-hidden="true"/>{name}<ArrowUpRight size={16} aria-hidden="true"/></a>)}</div>
       <p>For meetings, shoots and production sessions, let's agree on the time and location in advance.</p>
     </section>
   </>;
