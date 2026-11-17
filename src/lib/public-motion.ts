@@ -3,7 +3,7 @@ import "../public-motion.css";
 /** Only public marketing surfaces; no authenticated dashboard behavior. */
 export function mountPublicMotion() {
   if (!("IntersectionObserver" in window)) return;
-  const selector = "main section, body > section, .vv-preview-section, .vv-close-marquee-section, .vv-close-footer-wrap";
+  const selector = "main section, body > section, .vv-preview-section, .vv-close-marquee-section, .vv-close-footer-wrap, .vvx-ribbon, .vvx-edge-marquees";
   const observed = new Set<HTMLElement>();
   const observer = new IntersectionObserver(entries => {
     for (const entry of entries) entry.target.classList.toggle("vv-motion-offscreen", !entry.isIntersecting);

@@ -53,6 +53,10 @@ assert(read("src/components/image-generation-loader-demo.tsx").includes('effect=
 assert(read("src/components/image-generation-loader-demo.tsx").includes('text="SERVING"') && read("src/components/image-generation-loader-demo.tsx").includes('repeat={true}'), "SERVING scan must loop continuously");
 assert(read("src/components/image-generation-loader-demo.tsx").includes('duration={4500}'), "SERVING scan must allow more reading time");
 assert(page.includes("<EdgeMarquees/>") && page.includes("vvx-edge-marquee-left") && page.includes("vvx-edge-marquee-right"), "both vertical marquee rails must render");
+assert(page.includes('className="vvx-through-cta">\n    <EdgeMarquees/>') && page.includes('<FinalStatement/>\n    </div>\n    <VisualVerseAboutCta/>'), "the sticky marquee boundary must include the shared CTA");
+assert(router.includes('kind!=="about"&&kind!=="audiences"&&<VisualVerseAboutCta/>') && router.includes('</main>\n    <footer'), "render exactly one CTA and leave the footer outside the marquee boundary");
+assert(styles.includes('.vvx-through-cta .vv-cta-panel{width:min(1168px,calc(100% - 76px))}'), "CTA must reserve room for desktop edge rails");
+assert(read("src/lib/public-motion.ts").includes(".vvx-ribbon, .vvx-edge-marquees"), "pause marquee animations when offscreen");
 assert(page.includes("<Hero/>\n    <MobileMarquee/>\n    <WorldAtlas/>"), "horizontal ribbon must sit below the hero only on mobile");
 assert(styles.includes('.vvx-ribbon{display:none}') && styles.includes('@media(width < 1000px)') && styles.includes('.vvx-ribbon{display:block;') && styles.includes('animation:vvx-run-horizontal 60s linear infinite'), "horizontal ribbon must only appear below the desktop edge-rail breakpoint");
 assert(styles.includes("animation:vvx-run-vertical 55s linear infinite") && styles.includes("min-height:100svh") && styles.includes("animation-direction:reverse"), "vertical marquee sets must cover the viewport and loop seamlessly in both directions");

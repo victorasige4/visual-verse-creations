@@ -107,6 +107,26 @@ try {
   await motionPage.mouse.move(heroBox.x+heroBox.width*.8, Math.min(heroBox.y+heroBox.height*.48,650));
   await motionPage.waitForFunction(()=>{const transform=document.querySelector(".vvx-hero-stage-perspective")?.style.transform||"";return /rotateY\([1-9]/.test(transform);});
   console.log("Who We Serve: image decoded, live canvas and left/right tilt passed");
+  await motionPage.locator("#lets-create").evaluate(el=>window.scrollTo({top:scrollY+el.getBoundingClientRect().top,behavior:"instant"}));
+  await motionPage.waitForFunction(()=>[...document.querySelectorAll(".vvx-edge-marquee .vvx-ribbon-track")].every(el=>getComputedStyle(el).animationPlayState==="running"));
+  const railReport=await motionPage.evaluate(()=>{
+    const cta=document.querySelector("#lets-create");
+    const boundary=document.querySelector(".vvx-through-cta");
+    const footer=document.querySelector("footer.vv-close-footer-wrap");
+    const panel=cta.querySelector(".vv-cta-panel").getBoundingClientRect();
+    const rails=[...document.querySelectorAll(".vvx-edge-marquee")];
+    return {contained:boundary.contains(cta)&&!boundary.contains(footer),ctaCount:document.querySelectorAll("#lets-create").length,
+      mobileHidden:getComputedStyle(document.querySelector(".vvx-ribbon")).display==="none",
+      rails:rails.map(el=>{const r=el.getBoundingClientRect();return {top:r.top,bottom:r.bottom,left:r.left,right:r.right,repeat:getComputedStyle(el.querySelector(".vvx-ribbon-track")).animationIterationCount};}),
+      panelLeft:panel.left,panelRight:panel.right,viewport:innerHeight};
+  });
+  assert.ok(railReport.contained&&railReport.ctaCount===1&&railReport.mobileHidden,"Desktop marquee boundary or duplicate CTA");
+  assert.equal(railReport.rails.length,2);
+  assert.ok(railReport.rails.every(r=>r.bottom>railReport.viewport/2&&r.top<railReport.viewport/2&&r.repeat==="infinite"),"Rails must continue through CTA: "+JSON.stringify(railReport));
+  assert.ok(railReport.rails[0].right<=railReport.panelLeft&&railReport.rails[1].left>=railReport.panelRight,"Rails overlap CTA panel: "+JSON.stringify(railReport));
+  await motionPage.locator("footer.vv-close-footer-wrap").evaluate(el=>el.scrollIntoView({block:"start",behavior:"instant"}));
+  assert.ok(await motionPage.evaluate(()=>[...document.querySelectorAll(".vvx-edge-marquee")].every(el=>el.getBoundingClientRect().bottom<=document.querySelector("footer.vv-close-footer-wrap").getBoundingClientRect().top+1)),"Rails must end before footer");
+  console.log("Who We Serve: endless desktop rails continue through CTA and end at footer");
   // Warm internal navigation must replay the route's own transmission,
   // even when its HTML and shared scripts have already been cached.
   async function followFromHome(page, name, path, touch = false) {
@@ -203,6 +223,10 @@ try {
       assert.ok(amount>=65&&amount<=85,"Touch photo comparison did not update: "+amount);
     }
     if(path==="who-we-serve.html"){
+      assert.equal(await touch.locator(".vvx-edge-marquees").evaluate(el=>getComputedStyle(el).display),"none");
+      await touch.locator(".vvx-ribbon").scrollIntoViewIfNeeded();
+      await touch.waitForFunction(()=>getComputedStyle(document.querySelector(".vvx-ribbon .vvx-ribbon-track")).animationPlayState==="running");
+      assert.equal(await touch.locator(".vvx-ribbon .vvx-ribbon-track").evaluate(el=>getComputedStyle(el).animationIterationCount),"infinite");
       const photoIds=["brands","businesses","founders","creators","events","digital"];
       for(const [index,id] of photoIds.entries()){
         await touch.locator(".vvx-world-mobile-tabs button").nth(index).tap();

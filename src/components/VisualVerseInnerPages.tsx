@@ -197,7 +197,7 @@ export function VisualVerseInnerPage({kind}:{kind:Kind}){
       {kind==="audiences"&&<VisualVerseWhoWeServePage/>}
       {kind==="contact"&&<ContactPage/>}
       {kind==="quote"&&<QuotePage/>}
-      {kind!=="about"&&<VisualVerseAboutCta/>}
+      {kind!=="about"&&kind!=="audiences"&&<VisualVerseAboutCta/>}
     </main>
     <footer className="vv-close-footer-wrap"><VisualVerseFooter/></footer>
     <WhatsAppFloating/>
