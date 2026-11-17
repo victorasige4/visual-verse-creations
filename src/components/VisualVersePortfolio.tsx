@@ -136,7 +136,7 @@ export function PortfolioArtwork({ kind }: { kind: PortfolioCollection["id"] }) 
 }
 
 export const selectedDirectionPhotos: Record<PortfolioCollection["id"], { src: string; alt: string }> = {
-  "graphic-design": { src: "selected-directions/graphic-design.webp", alt: "Vintage printed posters and bold typography" },
+  "graphic-design": { src: "selected-directions/graphic-design.webp", alt: "Graphic designer working on visual artwork in a creative studio" },
   "photography": { src: "selected-directions/photography.webp", alt: "An editorial portrait of a woman in Nairobi" },
   "digital": { src: "selected-directions/digital.webp", alt: "Close-up of a mobile digital interface" },
   "videography": { src: "selected-directions/videography.webp", alt: "A filmmaker operating a cinema camera outdoors" },
