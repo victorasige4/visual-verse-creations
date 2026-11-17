@@ -1,10 +1,10 @@
 # Selected Directions photo credits
 
-All six images are illustrative stock photography sourced from Pexels under the [Pexels License](https://www.pexels.com/license/). They are not represented as commissioned Visual Verse projects. Images have been center-cropped to 720 × 1280 (9:16), compressed to WebP and served locally.
+All six images are illustrative stock photography sourced from Pexels under the [Pexels License](https://www.pexels.com/license/). They are not represented as commissioned Visual Verse projects. Images have been proportionally scaled to fit 720 × 1280 (9:16) canvases with matching pale-mint padding, without cropping any original image content. They are compressed to WebP and served locally.
 
 | Asset | Photographer | Original |
 | --- | --- | --- |
-| `graphic-design.webp` | Tim Mossholder | [Vintage printed posters and bold typography](https://www.pexels.com/photo/assorted-paper-posters-3091203/) |
+| `graphic-design.webp` | Alexander Mass | [Graphic designer working on visual artwork in a creative studio](https://www.pexels.com/photo/creative-workspace-with-designer-at-desk-30008706/) |
 | `photography.webp` | Kamunya | [An editorial portrait of a woman in Nairobi](https://www.pexels.com/photo/portrait-of-a-woman-sitting-outdoors-17647076/) |
 | `digital.webp` | Nathan J Hilton | [Close-up of a mobile digital interface](https://www.pexels.com/photo/a-smartphone-with-mobile-application-on-screen-8021284/) |
 | `videography.webp` | cottonbro studio | [A filmmaker operating a cinema camera outdoors](https://www.pexels.com/photo/man-holding-video-camera-2773498/) |

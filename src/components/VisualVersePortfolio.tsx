@@ -136,7 +136,7 @@ export function PortfolioArtwork({ kind }: { kind: PortfolioCollection["id"] }) 
 }
 
 export const selectedDirectionPhotos: Record<PortfolioCollection["id"], { src: string; alt: string }> = {
-  "graphic-design": { src: "selected-directions/graphic-design.webp", alt: "Vintage printed posters and bold typography" },
+  "graphic-design": { src: "selected-directions/graphic-design.webp", alt: "Graphic designer working on visual artwork at a computer" },
   "photography": { src: "selected-directions/photography.webp", alt: "An editorial portrait of a woman in Nairobi" },
   "digital": { src: "selected-directions/digital.webp", alt: "Close-up of a mobile digital interface" },
   "videography": { src: "selected-directions/videography.webp", alt: "A filmmaker operating a cinema camera outdoors" },
@@ -153,7 +153,7 @@ function PortfolioPreviewCard({ collection }: { collection: PortfolioCollection 
           <span>PORTFOLIO COLLECTION</span>
         </CardItem>
         <CardItem translateZ={52} className="vv-pf-card-media">
-          <img className="vv-pf-selected-photo" src={import.meta.env.BASE_URL + selectedDirectionPhotos[collection.id].src} alt={selectedDirectionPhotos[collection.id].alt} width={720} height={1280} loading="lazy" decoding="async"/>
+          <img className="vv-pf-selected-photo" src={import.meta.env.BASE_URL + selectedDirectionPhotos[collection.id].src + "?v=full-frame"} alt={selectedDirectionPhotos[collection.id].alt} width={720} height={1280} loading="lazy" decoding="async"/>
           <span className="vv-pf-media-corner" aria-hidden="true"><ArrowUpRight size={16}/></span>
         </CardItem>
         <CardItem translateZ={32} className="vv-pf-card-details">

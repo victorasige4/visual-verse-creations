@@ -248,6 +248,7 @@ try {
         assert.deepEqual(await labels(page,".vv-pf-card-category"),serviceNames.map(name=>name.toUpperCase()),"Homepage projects");
         const photos=page.locator("#work .vv-pf-selected-photo");
         assert.equal(await photos.count(),6,"Homepage portrait imagery");
+        assert.ok(await photos.evaluateAll(images=>images.every(image=>getComputedStyle(image).objectFit==="contain")),"All selected directions photos must fit without cropping");
         assert.equal(await page.locator("#work .vv-pf-header .vv-section-h").evaluate(el=>getComputedStyle(el).fontWeight),"850","Selected directions heading weight");
         const media=await page.locator("#work .vv-pf-card-media").evaluateAll(nodes=>nodes.map(n=>({w:n.clientWidth,h:n.clientHeight})));
         assert.ok(media.every(({w,h})=>w>0 && Math.abs(w/h-9/16)<0.02),"Portrait media aspect ratio: "+JSON.stringify(media));
