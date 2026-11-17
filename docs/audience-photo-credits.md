@@ -4,9 +4,9 @@ All photographs are illustrative licensed stock images, not photographs of Visua
 
 | Audience | Image source | Photographer |
 | --- | --- | --- |
-| Growing brands | [Female Business Partners preparing Parcels](https://www.pexels.com/photo/female-business-partners-preparing-parcels-7857559/) | Kampus Production |
-| Businesses & teams | [Colleagues Having a Business Meeting](https://www.pexels.com/photo/colleagues-having-a-business-meeting-7710178/) | Alena Darmel |
-| Founders & startups | [Young Professionals Collaborating in Modern Office](https://www.pexels.com/photo/businessman-people-creative-office-7213516/) | Ivan S |
-| Creators & talent | [Men Recording with Camera](https://www.pexels.com/photo/men-recording-with-camera-19148312/) | Gists And Thrills Studios |
-| Events & communities | [Vibrant Concert Scene with Audience Celebration](https://www.pexels.com/photo/vibrant-concert-scene-with-audience-celebration-34519572/) | Caleb Oquendo |
-| Digital products | [Person Writing on White Paper](https://www.pexels.com/photo/person-writing-on-white-paper-3471423/) | Fabian Wiktor |
+| Growing brands | [People Taking Photo of a Product in the Studio](https://www.pexels.com/photo/people-taking-photo-of-a-product-in-the-studio-12811291/) | Luis Quintero |
+| Businesses & teams | [Behind the Scene of Video Recording](https://www.pexels.com/photo/behind-the-scene-of-video-recording-of-a-man-in-blue-polo-sitting-on-a-chair-6847073/) | Ariel Martinez |
+| Founders & startups | [Designers Working Together with Templates](https://www.pexels.com/photo/designers-working-together-with-templates-6322375/) | Antoni Shkraba |
+| Creators & talent | [Professional Portrait Photography Studio Setup](https://www.pexels.com/photo/professional-portrait-photography-studio-setup-30697993/) | Matheus Bertelli |
+| Events & communities | [Concert Drummer Filmed by Cameraman Onstage](https://www.pexels.com/photo/concert-drummer-filmed-by-cameraman-onstage-34611796/) | Caleb Oquendo |
+| Digital products | [Macbook Pro Displaying Website Version 2 on Table](https://www.pexels.com/photo/macbook-pro-displaying-website-version-2-on-table-285814/) | Tranmautritam |

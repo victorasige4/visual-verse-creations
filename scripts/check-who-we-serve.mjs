@@ -17,8 +17,8 @@ assert(router.includes("<VisualVerseAboutCta/>") && router.includes("<VisualVers
 assert(html.includes("Who We Serve | Visual Verse Creations"), "page SEO must be intact");
 for (const id of ["brands", "businesses", "founders", "creators", "events", "digital"]) {
   assert(page.includes('id:"' + id + '"'), "missing audience: " + id);
-  assert(page.includes('image:"audience-' + id + '.webp"'), "audience must have its own photograph: " + id);
-  assert(existsSync("public/audience-" + id + ".webp"), "missing audience image: " + id);
+  assert(page.includes('image:"audience-' + id + '-creative.webp"'), "audience must have its own creative-industry photograph: " + id);
+  assert(existsSync("public/audience-" + id + "-creative.webp"), "missing audience image: " + id);
 }
 assert(page.includes('alt={world.imageAlt}'), "audience photos must have descriptive alternative text");
 assert(page.includes('className="vvx-world-watermark" src={asset("logo-mark.png")}'), "use the actual Visual Verse watermark on every card");
