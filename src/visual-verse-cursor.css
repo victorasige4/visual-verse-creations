@@ -24,6 +24,11 @@
   html.vv-custom-cursor-enabled body :where(input:not([type="submit"]):not([type="button"]),textarea,[contenteditable="true"],[role="textbox"]){
     cursor:text!important
   }
+  /* If a native modal is open before the cursor has been mounted in it,
+     keep the platform pointer visible rather than leaving an invisible one. */
+  html.vv-custom-cursor-enabled dialog:modal:not(:has(.vv-cursor-layer)),
+  html.vv-custom-cursor-enabled dialog:modal:not(:has(.vv-cursor-layer)) *{cursor:auto!important}
+  html.vv-custom-cursor-enabled dialog:modal:not(:has(.vv-cursor-layer)) :where(a,button,[role="button"]){cursor:pointer!important}
 }
 @media(hover:none),(pointer:coarse),(prefers-reduced-motion:reduce){
  .vv-cursor-layer{display:none!important}

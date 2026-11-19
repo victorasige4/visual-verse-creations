@@ -30,6 +30,7 @@
 .vv-apple-detail-examples{display:grid;grid-template-columns:1fr;gap:12px;margin:20px 0}
 .vv-apple-detail-examples img{width:100%;max-height:340px;object-fit:contain;border-radius:15px;background:#e2f3ed}
 .vv-apple-detail-link{display:inline-flex;align-items:center;gap:10px;padding:14px 20px;border-radius:99px;background:#003f5c;color:white!important;font-size:13px;font-weight:750;text-decoration:none}
-@keyframes vv-apple-in{from{opacity:0;transform:translateY(12px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+/* Keep fixed-position cursor coordinates viewport-relative in this top-layer dialog. */
+@keyframes vv-apple-in{from{opacity:0}to{opacity:1}}
 @media(max-width:600px){.vv-apple-carousel{--apple-gap:12px}.vv-apple-card{width: min(78vw,310px);height:415px;border-radius:20px}.vv-apple-card-copy{padding:23px}.vv-apple-card-copy strong{font-size:29px}.vv-apple-controls{font-size:10px}.vv-apple-detail{border-radius:20px}.vv-apple-controls button{width:42px;height:42px}}
 @media(prefers-reduced-motion:reduce){.vv-apple-card,.vv-apple-card>img,.vv-apple-plus,.vv-apple-detail{transition:none;animation:none}.vv-apple-card:hover>img,.vv-apple-card:hover .vv-apple-plus{transform:none}}
