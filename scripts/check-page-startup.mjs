@@ -168,6 +168,12 @@ try {
   await movingScroller.evaluate((el,width)=>{el.scrollLeft=width*2-5;},loopPeriod);
   await motionPage.waitForFunction(width=>document.querySelector(".vv-apple-scroller").scrollLeft<width+100,loopPeriod);
   assert.equal(await collection.locator(".vv-pj-collection-end").evaluate(el=>el.getBoundingClientRect().bottom<=innerHeight),true,"Collection footer remains in viewport");
+  // Enter the stable viewport before asking Playwright to locate a moving card.
+  // A real pointer pauses the entire track immediately on entry.
+  const movingBounds=await movingScroller.boundingBox();
+  assert.ok(movingBounds);
+  await motionPage.mouse.move(movingBounds.x+movingBounds.width/2,movingBounds.y+movingBounds.height/2);
+  await motionPage.waitForFunction(()=>document.querySelector(".vv-apple-carousel")?.getAttribute("data-autoplay")==="paused");
   const creativeCard=collection.getByRole("button",{name:"Explore Campaign graphics",exact:true});
   await creativeCard.hover();
   await motionPage.waitForFunction(()=>document.querySelector(".vv-apple-carousel")?.getAttribute("data-autoplay")==="paused");
