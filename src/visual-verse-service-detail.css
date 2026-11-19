@@ -44,6 +44,8 @@
 .vv-detail-copy h1{font-size:clamp(24px,2.6vw,38px);line-height:1.045;letter-spacing:var(--vv-tracking-readable, 0em);color:var(--sv-deep)!important;font-weight:850;margin:17px 0 20px;text-wrap:balance}
 .vv-detail-copy>p{font-size:clamp(15px,1.35vw,18px);color:#59747c;line-height:1.7;margin:0;max-width:525px}
 .vv-detail-actions{display:flex;gap:13px;align-items:center;flex-wrap:wrap;margin:27px 0 22px}
+.vv-service-portfolio-link{display:inline-flex;align-items:center;gap:8px;color:#003f5c;font-weight:750;font-size:13px;text-decoration:none;border-bottom:1px solid #9bcac0;min-height:44px;margin:10px 0}
+.vv-service-portfolio-link:hover{color:#118b80}
 .vv-service-secondary{display:flex;align-items:center;gap:10px;padding:12px 17px;border:1px solid #d1e1df;border-radius:100px;background:#fff;color:var(--sv-deep);font-size:13px;font-weight:800;text-decoration:none;transition:background .25s}
 .vv-service-secondary:hover{background:#d8f2ed}.vv-service-secondary svg{color:#138f86}
 .vv-detail-tags{display:flex;flex-wrap:wrap;gap:8px}.vv-detail-tags span{border-bottom:1px solid #d4e6e3;padding:5px 8px;color:#52747a;font-size:11px}

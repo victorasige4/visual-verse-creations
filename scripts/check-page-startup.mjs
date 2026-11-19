@@ -157,8 +157,20 @@ try {
   await motionPage.locator("#graphic-design .vv-pj-detail-button").click();
   const collection=motionPage.locator(".vv-pj-collection-page[open]");
   await collection.locator(":scope > .vv-cursor-layer").waitFor({state:"attached"});
+  await motionPage.mouse.move(8,110);
+  const movingCards=collection.locator(".vv-apple-carousel");
+  const movingScroller=collection.locator(".vv-apple-scroller");
+  await movingCards.locator("[aria-label='Pause automatic cards']").waitFor();
+  await motionPage.waitForFunction(()=>document.querySelector(".vv-apple-carousel")?.getAttribute("data-autoplay")==="playing");
+  const startLeft=await movingScroller.evaluate(el=>el.scrollLeft);
+  await motionPage.waitForFunction(start=>document.querySelector(".vv-apple-scroller").scrollLeft>start+8,startLeft);
+  const loopPeriod=await movingScroller.evaluate(el=>el.querySelector(".vv-apple-group[data-copy='1']").offsetLeft);
+  await movingScroller.evaluate((el,width)=>{el.scrollLeft=width*2-5;},loopPeriod);
+  await motionPage.waitForFunction(width=>document.querySelector(".vv-apple-scroller").scrollLeft<width+100,loopPeriod);
+  assert.equal(await collection.locator(".vv-pj-collection-end").evaluate(el=>el.getBoundingClientRect().bottom<=innerHeight),true,"Collection footer remains in viewport");
   const creativeCard=collection.getByRole("button",{name:"Explore Campaign graphics",exact:true});
   await creativeCard.hover();
+  await motionPage.waitForFunction(()=>document.querySelector(".vv-apple-carousel")?.getAttribute("data-autoplay")==="paused");
   await collection.locator(":scope > .vv-cursor-layer .vv-cursor-core.is-visible").waitFor({state:"visible"});
   assert.ok(await collection.locator(":scope > .vv-cursor-layer .vv-cursor-orbit").evaluate(el=>el.classList.contains("is-interactive")),"Cursor reacts to creative card hover");
   await creativeCard.click();
@@ -279,6 +291,7 @@ try {
       await touch.locator("#graphic-design").getByRole("link",{name:"Explore Graphic Design",exact:true}).tap();
       await touch.locator(".vv-pj-collection-page[open]").waitFor({state:"visible"});
       assert.equal(await touch.locator(".vv-apple-group[data-copy='1'] button").count(),4);
+      assert.equal(await touch.locator(".vv-pj-collection-end").evaluate(el=>el.getBoundingClientRect().bottom<=innerHeight),true,"Phone collection actions remain in viewport");
       assert.ok(await touch.locator(".vv-focus-card").evaluateAll(cards=>cards.every(card=>getComputedStyle(card).filter==="none")),"Touch interaction must not leave neighboring cards blurred");
       await touch.getByRole("button",{name:"Close collection",exact:true}).tap();
       await touch.locator(".vv-pj-collection-page").waitFor({state:"detached"});
@@ -453,12 +466,11 @@ try {
         const scroller=page.locator(".vv-apple-scroller");
         await page.waitForFunction(()=>{const el=document.querySelector(".vv-apple-scroller");return el.scrollLeft>0;});
         const period=await scroller.evaluate(el=>el.querySelector(".vv-apple-group[data-copy='1']").offsetLeft);
-        for(let i=0;i<5;i++){
-          await page.getByRole("button",{name:"Next creative card",exact:true}).click();
-          await page.waitForTimeout(200);
-        }
-        const wrapped=await scroller.evaluate(el=>el.scrollLeft);
-        assert.ok(Math.abs(wrapped-period*1.25)<8,"Carousel wraps to the next card after a full revolution: "+wrapped);
+        assert.equal(await page.locator(".vv-apple-carousel").getAttribute("data-autoplay"),"paused","Reduced motion disables autoplay");
+        assert.equal(await page.getByRole("button",{name:"Next creative card",exact:true}).count(),0,"No manual arrow controls");
+        await scroller.evaluate((el,width)=>{el.scrollLeft=width*2+20;},period);
+        await page.waitForFunction(width=>Math.abs(document.querySelector(".vv-apple-scroller").scrollLeft-width-20)<3,period);
+        assert.equal(await page.locator(".vv-pj-collection-end").evaluate(el=>el.getBoundingClientRect().bottom<=innerHeight),true);
         await page.getByRole("button",{name:"Explore Portraits & lifestyle",exact:true}).click();
         await page.locator(".vv-apple-detail[open]").waitFor({state:"visible"});
         await page.keyboard.press("Escape");

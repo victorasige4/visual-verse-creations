@@ -34,3 +34,23 @@
 @keyframes vv-apple-in{from{opacity:0}to{opacity:1}}
 @media(max-width:600px){.vv-apple-carousel{--apple-gap:12px}.vv-apple-card{width: min(78vw,310px);height:415px;border-radius:20px}.vv-apple-card-copy{padding:23px}.vv-apple-card-copy strong{font-size:29px}.vv-apple-controls{font-size:10px}.vv-apple-detail{border-radius:20px}.vv-apple-controls button{width:42px;height:42px}}
 @media(prefers-reduced-motion:reduce){.vv-apple-card,.vv-apple-card>img,.vv-apple-plus,.vv-apple-detail{transition:none;animation:none}.vv-apple-card:hover>img,.vv-apple-card:hover .vv-apple-plus{transform:none}}
+/* Fill the collection's available space instead of imposing a fixed tall card. */
+.vv-apple-carousel{display:flex;flex-direction:column;flex:1;min-height:0}
+.vv-apple-scroller{flex:1;min-height:180px;padding:4px 0 9px}
+.vv-apple-track,.vv-apple-group{height:100%}
+.vv-apple-card{width:clamp(230px,24vw,340px);height:100%;min-height:170px;max-height:440px;border-radius:17px}
+.vv-apple-card-copy{padding:clamp(16px,2vw,25px);gap:5px}
+.vv-apple-card-copy strong{font-size:clamp(21px,2.15vw,29px)}
+.vv-apple-card-description{font-size:12px;line-height:1.45}
+.vv-apple-card-index{bottom:15px;left:19px}
+.vv-apple-plus{bottom:12px;right:14px;width:36px;height:36px}
+.vv-apple-plus svg{width:18px;height:18px}
+.vv-apple-controls{flex:none;margin-top:0;min-height:30px}
+.vv-apple-controls button{display:inline-flex;width:auto;height:30px;padding:0 10px;gap:5px;border-radius:99px;font:inherit}
+@media(max-width:760px){
+  .vv-apple-card{width:min(72vw,270px);max-height:380px;border-radius:15px}
+  .vv-apple-card-copy{padding:15px}
+  .vv-apple-card-copy strong{font-size:23px}
+  .vv-apple-card-description{font-size:11px}
+  .vv-apple-controls{font-size:10px;gap:6px}
+}

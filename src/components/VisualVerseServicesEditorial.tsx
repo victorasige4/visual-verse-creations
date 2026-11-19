@@ -140,6 +140,7 @@ function ServiceDetail({service:s}:{service:Service}) {
     <section className="vv-detail-hero" id="services-top"><div className="vv-sv-container">
       <nav className="vv-sv-breadcrumb" aria-label="Breadcrumb"><a href={base}>Home</a><span>·</span><a href={`${base}services.html`}>Services</a><span>·</span><span aria-current="page">{s.name}</span></nav>
       <div className="vv-detail-grid"><div className="vv-detail-copy"><span className="vv-sv-kicker"><i/><i/> {s.number} / 06 &nbsp; · &nbsp; {s.name}</span><h1><EditorialText text={d.headline}/></h1><p>{d.intro}</p><div className="vv-detail-actions"><a className="vv-service-cta vv-motion-action vv-action-primary" href={quoteUrl(s)}><VisualVerseActionContent Icon={ArrowUpRight}>Let's talk</VisualVerseActionContent></a><a className="vv-service-secondary vv-motion-action vv-action-secondary" href={`${base}contact.html`}><VisualVerseActionContent Icon={ArrowUpRight}>Contact us</VisualVerseActionContent></a></div><div className="vv-detail-tags">{s.highlights.map(h=><span key={h}>{h}</span>)}</div></div><ServiceDemo service={s}/></div>
+      <a className="vv-service-portfolio-link" href={`${base}projects.html?collection=${s.id}`}>Explore our {s.name} portfolio <ArrowUpRight size={17}/></a>
       <ServiceNav active={s.id}/>
     </div></section>
     <VisualVerseServiceDetailSections key={s.id} service={linkFor(s)} outcome={d.outcome} quoteHref={quoteUrl(s)} allServices={services.map(linkFor)}/>
