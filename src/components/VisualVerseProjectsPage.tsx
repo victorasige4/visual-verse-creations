@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from "react";
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Aperture, Camera, Clapperboard, Layers3, LayoutGrid, Minus, Pause, Play, Plus } from "lucide-react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Aperture, Camera, Clapperboard, Layers3, LayoutGrid, Pause, Play, X } from "lucide-react";
 import { orderedServices, serviceLabel, serviceNumber } from "../data/services";
+import { projectDeliverables } from "../data/project-deliverables";
+import { AppleCardsCarousel } from "./ui/apple-cards-carousel";
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { VisualVerseNavbar } from "./VisualVerseNavbar";
 import { WhatsAppFloating } from "./VisualVersePolicies";
@@ -14,30 +16,21 @@ const servicePhoto = (id: string) => BASE + "service-cover-" + id + ".webp";
 const servicePhotoHeight = (id: string) => id==="graphic-design"?820:id==="branding"?801:800;
 
 type Collection = {
-  id: string; title: string; description: string; deliverables: string[];
+  id: string; title: string; description: string;
   alt: string; medium: string; position: string;
 };
 const collections = orderedServices<Collection>([
-  {id:"graphic-design",title:"Ideas made visible.",description:"A considered composition, a clear message and the confidence to stand out.",deliverables:["Campaign graphics","Editorial & poster design","Print collateral","Illustration"],alt:"Graphic designer creating colourful artwork at a creative workstation",medium:"Graphic design / illustration",position:"62% center"},
-  {id:"photography",title:"Time, held still.",description:"The little details and big milestones that deserve to be remembered exactly as they felt.",deliverables:["Portraits & lifestyle","Graduations & celebrations","Corporate events","Image editing"],alt:"Photographer holding a professional camera in a studio",medium:"Photography / image capture",position:"32% center"},
-  {id:"web-ui-ux",title:"Digital that feels human.",description:"Intuitive, expressive digital experiences that bring people and ideas together.",deliverables:["Responsive websites","Interface design","User journeys","Interactive prototypes"],alt:"Laptop and phone displaying digital interface designs",medium:"Digital / UI design",position:"58% center"},
-  {id:"videography",title:"Stories with movement.",description:"From the first frame to the final cut, a story built to make you feel something.",deliverables:["Event films","Interviews & documentaries","Editing & colour","Promotional storytelling"],alt:"Professional video camera mounted on a production tripod",medium:"Film / production",position:"66% center"},
-  {id:"branding",title:"Made to be recognised.",description:"A visual language that feels unmistakably like you, wherever it appears.",deliverables:["Logo design","Visual identity","Brand applications","Guidelines"],alt:"Brand identity mood board with palettes and printed design materials",medium:"Brand / identity",position:"46% center"},
-  {id:"social-media",title:"Creative that travels.",description:"Ideas designed for the moments people stop scrolling, start watching and share.",deliverables:["Content strategy","Campaign creative","Social media visuals","Motion content"],alt:"Phone displaying digital content surrounded by social engagement symbols",medium:"Social / digital campaigns",position:"51% center"},
+  {id:"graphic-design",title:"Ideas made visible.",description:"A considered composition, a clear message and the confidence to stand out.",alt:"Graphic designer creating colourful artwork at a creative workstation",medium:"Graphic design / illustration",position:"62% center"},
+  {id:"photography",title:"Time, held still.",description:"The little details and big milestones that deserve to be remembered exactly as they felt.",alt:"Photographer holding a professional camera in a studio",medium:"Photography / image capture",position:"32% center"},
+  {id:"web-ui-ux",title:"Digital that feels human.",description:"Intuitive, expressive digital experiences that bring people and ideas together.",alt:"Laptop and phone displaying digital interface designs",medium:"Digital / UI design",position:"58% center"},
+  {id:"videography",title:"Stories with movement.",description:"From the first frame to the final cut, a story built to make you feel something.",alt:"Professional video camera mounted on a production tripod",medium:"Film / production",position:"66% center"},
+  {id:"branding",title:"Made to be recognised.",description:"A visual language that feels unmistakably like you, wherever it appears.",alt:"Brand identity mood board with palettes and printed design materials",medium:"Brand / identity",position:"46% center"},
+  {id:"social-media",title:"Creative that travels.",description:"Ideas designed for the moments people stop scrolling, start watching and share.",alt:"Phone displaying digital content surrounded by social engagement symbols",medium:"Social / digital campaigns",position:"51% center"},
 ]);
 
 const frames = collections.map(collection=>({...collection,label:collection.title,type:serviceLabel(collection.id)}));
-// Keep the original portfolio examples available inside their collections.
-const archiveByService: Record<string, {photo:string; alt:string}[]> = {
-  "graphic-design":[{photo:"social-design",alt:"Visual Verse minimalist editorial poster featuring a portrait"}],
-  photography:[
-    {photo:"graduations",alt:"Graduates raising their mortarboards in celebration"},
-    {photo:"event-detail",alt:"Family and friends celebrating outdoors"},
-    {photo:"corporate-moment",alt:"Speaker addressing an audience on stage"},
-    {photo:"corporate-events",alt:"Audience seated in a conference hall"},
-  ],
-  videography:[{photo:"event-story",alt:"Speaker on a stage from the Visual Verse event coverage archive"}],
-};
+const collectionHref=(id:string)=>BASE+"projects.html?collection="+encodeURIComponent(id);
+const currentCollection=()=>collections.find(item=>item.id===new URLSearchParams(window.location.search).get("collection"))??null;
 
 function ContactSheet({onNavigate}:{onNavigate:(id:string)=>void}){
   const [active,setActive] = useState(0);
@@ -101,41 +94,71 @@ function ContactSheet({onNavigate}:{onNavigate:(id:string)=>void}){
   </div>;
 }
 
-function CollectionCard({collection,hidden}:{collection:Collection;hidden:boolean}){
+function CollectionCard({collection,hidden,onOpen}:{collection:Collection;hidden:boolean;onOpen:(event:MouseEvent<HTMLAnchorElement>,collection:Collection)=>void}){
   const name=serviceLabel(collection.id);
-  const [expanded,setExpanded]=useState(false);
   return <FocusCard className={"vv-projects-category vv-pj-card vv-pj-card-"+collection.id} id={collection.id} hidden={hidden} aria-labelledby={"vv-project-"+collection.id}>
     <div className="vv-pj-card-media">
       <img src={servicePhoto(collection.id)} alt={collection.alt} style={{objectPosition:collection.position}} width={1200} height={servicePhotoHeight(collection.id)} loading="lazy" decoding="async"/>
       <FocusCardCaption className="vv-pj-focus-caption"><span>{name}</span><strong>{collection.title}</strong></FocusCardCaption>
       <span className="vv-pj-media-tag"><span className="vv-pj-media-dot"/>{collection.medium}</span>
       <span className="vv-pj-card-number" aria-hidden="true">{serviceNumber(collection.id)}</span>
-      <button className="vv-pj-open" type="button" aria-expanded={expanded} aria-controls={"vv-pj-details-"+collection.id} aria-label={(expanded?"Close ":"Explore ")+name} onClick={()=>setExpanded(!expanded)}>{expanded?<Minus size={24}/>:<ArrowUpRight size={24}/>}</button>
+      <a className="vv-pj-open" href={collectionHref(collection.id)} aria-label={"Explore "+name} onClick={event=>onOpen(event,collection)}><ArrowUpRight size={24}/></a>
     </div>
     <div className="vv-pj-card-copy">
       <h2 id={"vv-project-"+collection.id}>{name}</h2>
       <h3>{collection.title}</h3>
       <p>{collection.description}</p>
       <div className="vv-pj-card-actions">
-        <button type="button" className="vv-pj-detail-button" aria-expanded={expanded} aria-controls={"vv-pj-details-"+collection.id} onClick={()=>setExpanded(!expanded)}>{expanded?"Close collection":"Explore collection"} {expanded?<Minus size={16}/>:<Plus size={16}/>}</button>
+        <a className="vv-pj-detail-button" href={collectionHref(collection.id)} onClick={event=>onOpen(event,collection)}>Explore collection <ArrowUpRight size={16}/></a>
         <a href={BASE+"request-quote.html?service="+encodeURIComponent(name)} className="vv-pj-start-link">Start a project <ArrowUpRight size={15}/></a>
-      </div>
-      <div className="vv-pj-card-details" id={"vv-pj-details-"+collection.id} hidden={!expanded}>
-        <p>What we can create for you</p>
-        <ul>{collection.deliverables.map(item=><li key={item}>{item}</li>)}</ul>
-        {expanded && archiveByService[collection.id] && <div className="vv-pj-archive">
-          <p>From our portfolio archive</p>
-          <div className="vv-pj-archive-grid">{archiveByService[collection.id].map(item=><img key={item.photo} src={BASE+"project-archive/"+item.photo+".webp"} alt={item.alt} loading="lazy" decoding="async"/>)}</div>
-        </div>}
-        <a href={BASE+"services.html?service="+collection.id}>Discover this service <ArrowRight size={15}/></a>
       </div>
     </div>
   </FocusCard>;
 }
 
+function CollectionPage({collection,onClose}:{collection:Collection;onClose:()=>void}){
+  const dialog=useRef<HTMLDialogElement>(null);
+  const name=serviceLabel(collection.id);
+  const quoteHref=BASE+"request-quote.html?service="+encodeURIComponent(name);
+  useEffect(()=>{
+    const el=dialog.current;
+    if(!el)return;
+    const previous=document.body.style.overflow;
+    const open=()=>{if(!el.open){document.body.style.overflow="hidden";el.showModal();}};
+    if(document.documentElement.hasAttribute("data-vv-boot"))window.addEventListener("vv-page-revealed",open,{once:true});
+    else open();
+    return ()=>{window.removeEventListener("vv-page-revealed",open);if(el.open)el.close();document.body.style.overflow=previous;};
+  },[]);
+  return <dialog ref={dialog} className="vv-pj-collection-page" aria-labelledby="vv-pj-collection-title" onCancel={event=>{event.preventDefault();onClose();}} onClick={event=>{if(event.target===event.currentTarget){const rect=event.currentTarget.getBoundingClientRect();if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)onClose();}}}>
+    <header className="vv-pj-collection-header"><button type="button" onClick={onClose} className="vv-pj-collection-back"><ArrowLeft size={18}/> All collections</button><span>VISUAL VERSE / {serviceNumber(collection.id)} OF 06</span><button type="button" autoFocus className="vv-pj-collection-close" aria-label="Close collection" onClick={onClose}><X size={23}/></button></header>
+    <div className="vv-pj-collection-intro"><div><span className="vv-pj-eyebrow"><span className="vv-pj-signal"/>{name.toUpperCase()}</span><h2 id="vv-pj-collection-title">{name}</h2><h3>{collection.title}</h3><p>{collection.description}</p></div><img src={servicePhoto(collection.id)} alt={collection.alt} style={{objectPosition:collection.position}} width={1200} height={servicePhotoHeight(collection.id)} decoding="async"/></div>
+    <section className="vv-pj-collection-content" aria-labelledby="vv-pj-possibilities"><div className="vv-pj-collection-heading"><h3 id="vv-pj-possibilities">What we can <em>create for you.</em></h3><p>Explore each creative direction for a closer look at the possibilities.</p></div><AppleCardsCarousel items={projectDeliverables[collection.id]} category={name} quoteHref={quoteHref}/></section>
+    <div className="vv-pj-collection-end"><p>Have something in mind? Let’s make it happen.</p><a className="vv-motion-action vv-action-primary" href={quoteHref}><VisualVerseActionContent>Start a project</VisualVerseActionContent></a><a className="vv-pj-start-link" href={BASE+"services.html?service="+collection.id}>Discover this service <ArrowUpRight size={16}/></a></div>
+  </dialog>;
+}
+
 export function VisualVerseProjectsPage(){
   const [filter,setFilter]=useState("all");
   const [hashTarget,setHashTarget]=useState("");
+  const [activeCollection,setActiveCollection]=useState(currentCollection);
+  const collectionTrigger=useRef<HTMLAnchorElement|null>(null);
+  const openCollection=(event:MouseEvent<HTMLAnchorElement>,collection:Collection)=>{
+    if(event.button!==0||event.metaKey||event.ctrlKey||event.altKey||event.shiftKey)return;
+    event.preventDefault();collectionTrigger.current=event.currentTarget;
+    const url=new URL(location.href);url.searchParams.set("collection",collection.id);
+    history.pushState({...history.state,vvCollectionOpened:true},"",url);
+    setActiveCollection(collection);
+  };
+  const closeCollection=()=>{
+    if(history.state?.vvCollectionOpened)history.back();
+    else {const url=new URL(location.href);url.searchParams.delete("collection");history.replaceState(history.state,"",url);setActiveCollection(null);if(activeCollection)setHashTarget(activeCollection.id);}
+  };
+  useEffect(()=>{
+    const onPop=()=>setActiveCollection(currentCollection());
+    window.addEventListener("popstate",onPop);
+    return ()=>window.removeEventListener("popstate",onPop);
+  },[]);
+  useEffect(()=>{if(!activeCollection&&collectionTrigger.current){collectionTrigger.current.focus({preventScroll:true});collectionTrigger.current=null;}},[activeCollection]);
   useEffect(()=>{
     const onHash=()=>{
       let id=window.location.hash.slice(1);
@@ -178,7 +201,7 @@ export function VisualVerseProjectsPage(){
           {collections.map(item=><button type="button" key={item.id} aria-pressed={filter===item.id} onClick={()=>setFilter(item.id)}>{serviceLabel(item.id)}</button>)}
         </div><span role="status" className="vv-pj-results">{String(visibleCount).padStart(2,"0")} / 06 collections</span></div>
         <FocusCards className={"vv-pj-grid"+(filter==="all"?"":" is-filtered")}>
-          {collections.map(collection=><CollectionCard key={collection.id} collection={collection} hidden={filter!=="all"&&filter!==collection.id}/>)}
+          {collections.map(collection=><CollectionCard key={collection.id} collection={collection} hidden={filter!=="all"&&filter!==collection.id} onOpen={openCollection}/>)}
         </FocusCards>
         <p className="vv-pj-note">The collection photos illustrate our creative services and the types of work we can create for you.</p>
       </section>
@@ -197,5 +220,6 @@ export function VisualVerseProjectsPage(){
     </main>
     <footer className="vv-close-footer-wrap" id="footer"><VisualVerseFooter/></footer>
     <WhatsAppFloating/>
+    {activeCollection&&<CollectionPage key={activeCollection.id} collection={activeCollection} onClose={closeCollection}/>}
   </div>;
 }
