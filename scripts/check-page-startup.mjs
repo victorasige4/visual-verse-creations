@@ -129,6 +129,20 @@ try {
   console.log("Who We Serve: endless desktop rails continue through CTA and end at footer");
   await motionPage.goto(base+"projects.html",{waitUntil:"commit"});
   await motionPage.locator("html:not([data-vv-boot])").waitFor({state:"attached",timeout:20000});
+  await motionPage.mouse.move(8,110);
+  await motionPage.locator('.vv-pj-sheet[data-autoplay="playing"]').waitFor({state:"attached"});
+  const firstFrame=await motionPage.locator(".vv-pj-thumbs [aria-pressed=true]").getAttribute("aria-label");
+  await motionPage.waitForFunction(name=>document.querySelector(".vv-pj-thumbs [aria-pressed=true]")?.getAttribute("aria-label")!==name,firstFrame,{timeout:4500});
+  await motionPage.getByRole("button",{name:"Show Social Media & Digital Marketing",exact:true}).click();
+  await motionPage.mouse.move(8,110);
+  await motionPage.waitForFunction(()=>document.querySelector(".vv-pj-thumbs [aria-pressed=true]")?.getAttribute("aria-label")==="Show Graphic Design",null,{timeout:4500});
+  await motionPage.getByRole("button",{name:"Pause automatic slideshow",exact:true}).click();
+  await motionPage.mouse.move(8,110);
+  assert.equal(await motionPage.locator(".vv-pj-sheet").getAttribute("data-autoplay"),"paused");
+  const pausedFrame=await motionPage.locator(".vv-pj-thumbs [aria-pressed=true]").getAttribute("aria-label");
+  await motionPage.waitForTimeout(3200);
+  assert.equal(await motionPage.locator(".vv-pj-thumbs [aria-pressed=true]").getAttribute("aria-label"),pausedFrame);
+  console.log("Projects: contact sheet advances automatically, loops and pauses");
   await motionPage.locator("#graphic-design .vv-pj-card-media").hover();
   await motionPage.waitForFunction(()=>{
     const first=document.querySelector("#graphic-design"), second=document.querySelector("#photography");
@@ -377,6 +391,7 @@ try {
         await page.keyboard.press("Escape");
       }
       if(path==="projects.html"){
+        assert.equal(await page.getByRole("button",{name:"Play automatic slideshow",exact:true}).count(),1,"Reduced motion disables autoplay by default");
         assert.deepEqual((await labels(page,".vv-projects-filters button")).slice(1),serviceNames,"Project filter order");
         assert.deepEqual(await labels(page,".vv-projects-category h2"),serviceNames,"Project category order");
         const layout=await page.locator(".vv-projects-category").evaluateAll(cards=>cards.map(card=>{

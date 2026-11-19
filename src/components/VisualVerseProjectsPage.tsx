@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Aperture, Camera, Clapperboard, Layers3, LayoutGrid, Minus, Plus } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Aperture, Camera, Clapperboard, Layers3, LayoutGrid, Minus, Pause, Play, Plus } from "lucide-react";
 import { orderedServices, serviceLabel, serviceNumber } from "../data/services";
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { VisualVerseNavbar } from "./VisualVerseNavbar";
@@ -41,10 +41,45 @@ const archiveByService: Record<string, {photo:string; alt:string}[]> = {
 
 function ContactSheet({onNavigate}:{onNavigate:(id:string)=>void}){
   const [active,setActive] = useState(0);
+  const sheetRef=useRef<HTMLDivElement>(null);
+  const [playing,setPlaying]=useState(()=>!window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const [revealed,setRevealed]=useState(()=>!document.documentElement.hasAttribute("data-vv-boot"));
+  const [visible,setVisible]=useState(false);
+  const [pageVisible,setPageVisible]=useState(()=>!document.hidden);
+  const [hovered,setHovered]=useState(false);
+  const [keyboardFocused,setKeyboardFocused]=useState(false);
+  useEffect(()=>{
+    const reveal=()=>setRevealed(true);
+    const visibility=()=>setPageVisible(!document.hidden);
+    const motion=window.matchMedia("(prefers-reduced-motion: reduce)");
+    const motionChanged=()=>{if(motion.matches)setPlaying(false);};
+    window.addEventListener("vv-page-revealed",reveal);
+    if(!document.documentElement.hasAttribute("data-vv-boot"))reveal();
+    document.addEventListener("visibilitychange",visibility);
+    motion.addEventListener("change",motionChanged);
+    const observer=new IntersectionObserver(([entry])=>setVisible(entry.isIntersecting),{threshold:0});
+    if(sheetRef.current)observer.observe(sheetRef.current);
+    return ()=>{
+      window.removeEventListener("vv-page-revealed",reveal);
+      document.removeEventListener("visibilitychange",visibility);
+      motion.removeEventListener("change",motionChanged);
+      observer.disconnect();
+    };
+  },[]);
+  const running=playing&&revealed&&visible&&pageVisible&&!hovered&&!keyboardFocused;
+  useEffect(()=>{
+    if(!running)return;
+    const timeout=window.setTimeout(()=>setActive(current=>(current+1)%frames.length),3000);
+    return ()=>window.clearTimeout(timeout);
+  },[active,running]);
   const frame=frames[active];
   const cycle=(step:number)=>setActive(current=>(current+step+frames.length)%frames.length);
-  return <div className="vv-pj-sheet" aria-label="Interactive creative service contact sheet">
-    <div className="vv-pj-sheet-top"><span><Aperture size={16} aria-hidden="true"/> Visual Verse / contact sheet</span><span className="vv-pj-sheet-status"><i/> COLLECTIONS</span></div>
+  return <div ref={sheetRef} className="vv-pj-sheet" aria-label="Interactive creative service contact sheet" data-autoplay={running?"playing":"paused"}
+    onPointerEnter={event=>{if(event.pointerType==="mouse"||event.pointerType==="pen")setHovered(true);}}
+    onPointerLeave={()=>setHovered(false)}
+    onFocusCapture={event=>setKeyboardFocused(event.target.matches(":focus-visible"))}
+    onBlurCapture={event=>{if(!event.currentTarget.contains(event.relatedTarget))setKeyboardFocused(false);}}>
+    <div className="vv-pj-sheet-top"><span><Aperture size={16} aria-hidden="true"/> Visual Verse / contact sheet</span><span className="vv-pj-sheet-status"><i/> COLLECTIONS <button type="button" className="vv-pj-autoplay" aria-label={playing?"Pause automatic slideshow":"Play automatic slideshow"} title={playing?"Pause slideshow":"Play slideshow"} onClick={()=>setPlaying(value=>!value)}>{playing?<Pause size={14}/>:<Play size={14}/>}</button></span></div>
     <div className="vv-pj-viewfinder">
       <div className="vv-pj-frame-scene" key={frame.id}>
         <img src={servicePhoto(frame.id)} alt={frame.alt} style={{objectPosition:frame.position}} width={1200} height={servicePhotoHeight(frame.id)} fetchPriority={active===0?"high":"auto"} decoding="async"/>
@@ -53,7 +88,7 @@ function ContactSheet({onNavigate}:{onNavigate:(id:string)=>void}){
       <span className="vv-pj-frame-id">FRAME {String(active+1).padStart(2,"0")} / {String(frames.length).padStart(2,"0")}</span>
     </div>
     <div className="vv-pj-sheet-caption">
-      <div aria-live="polite" aria-atomic="true"><span>{frame.type}</span><strong>{frame.label}</strong></div>
+      <div aria-live={running?"off":"polite"} aria-atomic="true"><span>{frame.type}</span><strong>{frame.label}</strong></div>
       <a href={"#"+frame.id} onClick={()=>onNavigate(frame.id)} className="vv-pj-frame-link" aria-label={"Explore "+frame.type}><ArrowUpRight size={20}/></a>
     </div>
     <div className="vv-pj-filmstrip">
