@@ -1,131 +1,155 @@
-import { EditorialText } from "./EditorialText";
+import { useEffect, useState } from "react";
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Aperture, Camera, Clapperboard, Layers3, LayoutGrid, Minus, Plus } from "lucide-react";
 import { orderedServices, serviceLabel, serviceNumber } from "../data/services";
 import { VisualVerseActionContent } from "./VisualVerseAction";
-import { useEffect, useState } from "react";
-import { ArrowUpRight, ArrowRight, Check, FolderOpen, Image as ImageIcon, Camera, Clapperboard, PenTool, MonitorSmartphone, Share2, Palette } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
-import { PortfolioArtwork } from "@/components/VisualVersePortfolio";
-import type { PortfolioCollection } from "@/components/VisualVersePortfolio";
-import { VisualVerseNavbar } from "@/components/VisualVerseNavbar";
-import { WhatsAppFloating } from "@/components/VisualVersePolicies";
-import { VisualVerseFooter } from "@/components/VisualVerseClosingSections";
-import { VisualVerseAboutCta } from "@/components/VisualVerseAboutCta";
+import { PortfolioArtwork, type PortfolioCollection } from "./VisualVersePortfolio";
+import { VisualVerseNavbar } from "./VisualVerseNavbar";
+import { WhatsAppFloating } from "./VisualVersePolicies";
+import { VisualVerseFooter } from "./VisualVerseClosingSections";
+import { VisualVerseAboutCta } from "./VisualVerseAboutCta";
+import "../projects-gallery.css";
 
-type ProjectCategory={
- id:string;name:string;short:string;number:string;headline:string;description:string;
- services:string[];Icon:LucideIcon;photo?:string;art?:PortfolioCollection["id"];
+const BASE = import.meta.env.BASE_URL;
+const asset = (name: string) => BASE + "project-archive/" + name + ".webp";
+
+type Collection = {
+  id: string; title: string; description: string; deliverables: string[];
+  photo?: string; alt?: string; art?: PortfolioCollection["id"]; medium: string;
 };
-const categories:ProjectCategory[]=orderedServices<ProjectCategory>([
-  {id:"graphic-design",name: "Graphic Design",short: "Graphic Design",number:"01",headline:"Design with a voice.",description:"Communication that catches the eye and makes the message impossible to miss.",services:["Campaign graphics","Social media creative","Posters and print collateral","Illustrations and compositions"],Icon:PenTool,photo:"/portfolio-social-design.jpg"},
-  {id:"photography",name: "Photography",short: "Photography",number:"02",headline:"The moments that matter.",description:"Portraits, graduations, corporate functions, celebrations and stories captured with care.",services:["Portraits & lifestyle","Graduations and celebrations","Corporate and event photography","Creative image editing"],Icon:Camera,photo:"/portfolio-graduations.jpg"},
-  {id:"web-ui-ux",name: "Web & UI/UX Design",short: "Web & UI/UX Design",number:"03",headline:"Every pixel with a purpose.",description:"Responsive sites, product interfaces and interactions that make digital experiences feel natural.",services:["Website design","UI/UX flows and research","Responsive layouts","Interactive prototypes"],Icon:MonitorSmartphone,art:"digital"},
-  {id:"videography",name: "Videography",short: "Videography",number:"04",headline:"Give the story motion.",description:"Cinematic storytelling, productions, coverage and editing that carry the feeling into every frame.",services:["Corporate and event films","Interviews & documentaries","Editing and color","Promotional video storytelling"],Icon:Clapperboard,photo:"/portfolio-event-story.jpg"},
-  {id:"branding",name: "Branding & Identity",short: "Branding & Identity",number:"05",headline:"An identity worth recognising.",description:"Distinctive marks and thoughtful brand systems built around a clear story.",services:["Brand identity","Logos & typography","Brand applications","Guidelines and campaigns"],Icon:Palette,art:"branding"},
-  {id:"social-media",name: "Social Media & Digital Marketing",short: "Social Media & Digital Marketing",number:"06",headline:"Ideas built to travel.",description:"Creative campaigns, posts and stories designed for connection across channels.",services:["Content strategy","Campaign creative","Social media design","Video and motion content"],Icon:Share2,art:"campaigns"}
-]).map(s=>({...s,name:serviceLabel(s.id),short:serviceLabel(s.id),number:serviceNumber(s.id)}));
-const archive=[
-  {image:"/portfolio-corporate-events.jpg",alt:"Corporate gathering from the original Visual Verse image archive",tag:"CORPORATE EVENTS"},
-  {image:"/portfolio-graduations.jpg",alt:"Graduation photograph from the original Visual Verse image archive",tag:"GRADUATION MOMENTS"},
-  {image:"/portfolio-corporate-moment.jpg",alt:"Event photograph from the original Visual Verse image archive",tag:"VISUAL STORIES"},
-  {image:"/portfolio-event-detail.jpg",alt:"Documentary event photography from the original Visual Verse image archive",tag:"EVENT DETAILS"}
+const collections = orderedServices<Collection>([
+  {id:"graphic-design",title:"Ideas made visible.",description:"A considered composition, a clear message and the confidence to stand out.",deliverables:["Campaign graphics","Editorial & poster design","Print collateral","Illustration"],photo:"social-design",alt:"Visual Verse minimalist editorial poster featuring a portrait",medium:"Poster / archive"},
+  {id:"photography",title:"Time, held still.",description:"The little details and big milestones that deserve to be remembered exactly as they felt.",deliverables:["Portraits & lifestyle","Graduations & celebrations","Corporate events","Image editing"],photo:"graduations",alt:"Graduates raising their mortarboards in celebration",medium:"Photography / archive"},
+  {id:"web-ui-ux",title:"Digital that feels human.",description:"Intuitive, expressive digital experiences that bring people and ideas together.",deliverables:["Responsive websites","Interface design","User journeys","Interactive prototypes"],art:"digital",medium:"Interface / concept"},
+  {id:"videography",title:"Stories with movement.",description:"From the first frame to the final cut, a story built to make you feel something.",deliverables:["Event films","Interviews & documentaries","Editing & colour","Promotional storytelling"],photo:"event-story",alt:"Speaker on a stage from the Visual Verse event coverage archive",medium:"Production still / archive"},
+  {id:"branding",title:"Made to be recognised.",description:"A visual language that feels unmistakably like you, wherever it appears.",deliverables:["Logo design","Visual identity","Brand applications","Guidelines"],art:"branding",medium:"Identity / concept"},
+  {id:"social-media",title:"Creative that travels.",description:"Ideas designed for the moments people stop scrolling, start watching and share.",deliverables:["Content strategy","Campaign creative","Social media visuals","Motion content"],art:"campaigns",medium:"Campaign / concept"},
+]);
+
+const frames = [
+  {photo:"social-design",label:"The art of a message",type:"Graphic design",alt:"An editorial poster with an expressive portrait",id:"graphic-design"},
+  {photo:"event-detail",label:"The moments between",type:"Event photography",alt:"A candid celebration with a family and friends outdoors",id:"photography"},
+  {photo:"corporate-moment",label:"A story in every gesture",type:"Event coverage",alt:"A speaker addressing an audience on a stage",id:"photography"},
+  {photo:"corporate-events",label:"In the room",type:"Corporate photography",alt:"An audience seated in a conference hall",id:"photography"},
+  {photo:"graduations",label:"A milestone, forever",type:"Graduation photography",alt:"Graduates lifting their hats into the air",id:"photography"},
 ];
 
-function CategoryVisual({category}:{category:ProjectCategory}){
-  if(category.photo)return <img src={category.photo} alt={category.name+" example from the original Visual Verse site"} loading="lazy" decoding="async"/>;
-  return <PortfolioArtwork kind={category.art??"digital"}/>;
+function ContactSheet({onNavigate}:{onNavigate:(id:string)=>void}){
+  const [active,setActive] = useState(0);
+  const frame=frames[active];
+  const cycle=(step:number)=>setActive(current=>(current+step+frames.length)%frames.length);
+  return <div className="vv-pj-sheet" aria-label="Interactive archive contact sheet">
+    <div className="vv-pj-sheet-top"><span><Aperture size={16} aria-hidden="true"/> Visual Verse / contact sheet</span><span className="vv-pj-sheet-status"><i/> ARCHIVE</span></div>
+    <div className="vv-pj-viewfinder">
+      <div className="vv-pj-frame-scene" key={frame.photo}>
+        <img src={asset(frame.photo)} alt={frame.alt} fetchPriority={active===0?"high":"auto"} decoding="async"/>
+      </div>
+      <span className="vv-pj-frame-cross vv-pj-cross-tl" aria-hidden="true"/><span className="vv-pj-frame-cross vv-pj-cross-tr" aria-hidden="true"/><span className="vv-pj-frame-cross vv-pj-cross-bl" aria-hidden="true"/><span className="vv-pj-frame-cross vv-pj-cross-br" aria-hidden="true"/>
+      <span className="vv-pj-frame-id">FRAME {String(active+1).padStart(2,"0")} / {String(frames.length).padStart(2,"0")}</span>
+    </div>
+    <div className="vv-pj-sheet-caption">
+      <div aria-live="polite" aria-atomic="true"><span>{frame.type}</span><strong>{frame.label}</strong></div>
+      <a href={"#"+frame.id} onClick={()=>onNavigate(frame.id)} className="vv-pj-frame-link" aria-label={"Explore "+frame.type}><ArrowUpRight size={20}/></a>
+    </div>
+    <div className="vv-pj-filmstrip">
+      <button type="button" onClick={()=>cycle(-1)} aria-label="Previous archive frame" className="vv-pj-frame-step"><ArrowLeft size={18}/></button>
+      <div className="vv-pj-thumbs" role="group" aria-label="Choose an archive frame">
+        {frames.map((item,i)=><button type="button" key={item.photo} aria-pressed={i===active} aria-label={"Show frame "+(i+1)+": "+item.label} onClick={()=>setActive(i)}><img src={asset(item.photo)} alt="" decoding="async"/><span>{String(i+1).padStart(2,"0")}</span></button>)}
+      </div>
+      <button type="button" onClick={()=>cycle(1)} aria-label="Next archive frame" className="vv-pj-frame-step"><ArrowRight size={18}/></button>
+    </div>
+  </div>;
+}
+
+function CollectionCard({collection,hidden}:{collection:Collection;hidden:boolean}){
+  const name=serviceLabel(collection.id);
+  const [expanded,setExpanded]=useState(false);
+  return <article className={"vv-projects-category vv-pj-card vv-pj-card-"+collection.id} id={collection.id} hidden={hidden} aria-labelledby={"vv-project-"+collection.id}>
+    <div className="vv-pj-card-media">
+      {collection.photo?<img src={asset(collection.photo)} alt={collection.alt} loading="lazy" decoding="async"/>:<PortfolioArtwork kind={collection.art??"digital"}/>}
+      <span className="vv-pj-media-tag"><span className="vv-pj-media-dot"/>{collection.medium}</span>
+      <span className="vv-pj-card-number" aria-hidden="true">{serviceNumber(collection.id)}</span>
+      <button className="vv-pj-open" type="button" aria-expanded={expanded} aria-controls={"vv-pj-details-"+collection.id} aria-label={(expanded?"Close ":"Explore ")+name} onClick={()=>setExpanded(!expanded)}>{expanded?<Minus size={24}/>:<ArrowUpRight size={24}/>}</button>
+    </div>
+    <div className="vv-pj-card-copy">
+      <h2 id={"vv-project-"+collection.id}>{name}</h2>
+      <h3>{collection.title}</h3>
+      <p>{collection.description}</p>
+      <div className="vv-pj-card-actions">
+        <button type="button" className="vv-pj-detail-button" aria-expanded={expanded} aria-controls={"vv-pj-details-"+collection.id} onClick={()=>setExpanded(!expanded)}>{expanded?"Close collection":"Explore collection"} {expanded?<Minus size={16}/>:<Plus size={16}/>}</button>
+        <a href={BASE+"request-quote.html?service="+encodeURIComponent(name)} className="vv-pj-start-link">Start a project <ArrowUpRight size={15}/></a>
+      </div>
+      <div className="vv-pj-card-details" id={"vv-pj-details-"+collection.id} hidden={!expanded}>
+        <p>What we can create for you</p>
+        <ul>{collection.deliverables.map(item=><li key={item}>{item}</li>)}</ul>
+        <a href={BASE+"services.html?service="+collection.id}>Discover this service <ArrowRight size={15}/></a>
+      </div>
+    </div>
+  </article>;
 }
 
 export function VisualVerseProjectsPage(){
   const [filter,setFilter]=useState("all");
+  const [hashTarget,setHashTarget]=useState("");
   useEffect(()=>{
-    function scrollToHash(){
+    const onHash=()=>{
       let id=window.location.hash.slice(1);
       try{id=decodeURIComponent(id);}catch{/* malformed fragment */}
-      if(id){
-        const alias:{[k:string]:string}={digital:"web-ui-ux",campaigns:"social-media"};
-        window.requestAnimationFrame(()=>document.getElementById(alias[id]??id)?.scrollIntoView({block:"start"}));
-      }
-    }
-    window.addEventListener("hashchange",scrollToHash);
-    return ()=>window.removeEventListener("hashchange",scrollToHash);
+      id=({digital:"web-ui-ux",campaigns:"social-media"} as Record<string,string>)[id]??id;
+      if(collections.some(item=>item.id===id)){setFilter("all");setHashTarget(id);}
+    };
+    window.addEventListener("hashchange",onHash);
+    return ()=>window.removeEventListener("hashchange",onHash);
   },[]);
-  const displayed=filter==="all"?categories:categories.filter(x=>x.id===filter);
-  return (
-    <div className="vv-projects-page vv-projects-v2">
-      <VisualVerseNavbar/>
-      <main id="top">
-        <section className="vv-projects-hero">
-          <div className="vv-projects-hero-top">
-            <span className="vv-projects-kicker"><FolderOpen size={16} aria-hidden="true"/> OUR PORTFOLIO / CREATIVE COLLECTIONS</span>
-            <span className="vv-projects-index">SIX DISCIPLINES / INFINITE IDEAS</span>
+  useEffect(()=>{
+    if(!hashTarget)return;
+    const frame=requestAnimationFrame(()=>{document.getElementById(hashTarget)?.scrollIntoView({block:"start"});setHashTarget("");});
+    return ()=>cancelAnimationFrame(frame);
+  },[filter,hashTarget]);
+  const visibleCount=filter==="all"?collections.length:1;
+  return <div className="vv-projects-page vv-projects-v3">
+    <VisualVerseNavbar/>
+    <main id="top">
+      <section className="vv-pj-hero">
+        <div className="vv-pj-hero-grid">
+          <div className="vv-pj-intro">
+            <span className="vv-pj-eyebrow"><span className="vv-pj-signal"/> THE VISUAL VERSE PORTFOLIO</span>
+            <h1>Every story,<br/><em>a different<br/>canvas.</em></h1>
+            <p>Real moments. Bold ideas. Creative possibilities. A closer look at what we make and how we see the world.</p>
+            <div className="vv-pj-hero-actions"><a className="vv-motion-action vv-action-primary" href="#vv-projects-gallery"><VisualVerseActionContent Icon={ArrowDown}>Explore our work</VisualVerseActionContent></a><a href={BASE+"request-quote.html"} className="vv-motion-action vv-action-secondary"><VisualVerseActionContent>Start a project</VisualVerseActionContent></a></div>
           </div>
-          <div className="vv-projects-hero-bottom">
-            <div><h1>Every story,<br/><em>a different <br/>canvas.</em></h1>
-              <p>A gallery of the directions we explore—from moments behind the lens to brands, campaigns and digital experiences.</p>
-              <div className="vv-projects-hero-cta"><a className="vv-motion-action vv-action-primary" href="#vv-projects-gallery"><VisualVerseActionContent Icon={ArrowRight}>Explore categories</VisualVerseActionContent></a><a className="vv-motion-action vv-action-secondary" href="/request-quote.html"><VisualVerseActionContent>Start a project</VisualVerseActionContent></a></div>
-            </div>
-            <span className="vv-projects-hero-mark" aria-hidden="true"><img src="/logo-mark.png" alt=""/></span>
-          </div>
-        </section>
-
-        <section className="vv-projects-gallery-section" id="vv-projects-gallery">
-          <div className="vv-projects-gallery-header">
-            <div><span className="vv-projects-kicker">EXPLORE OUR WORK</span><h2>Find the kind of<br/>story you're <br/>looking for.</h2></div>
-            <p>Choose a creative category to explore a little further. Photographic samples are drawn from the Visual Verse archive; other visuals are illustrative directions.</p>
-          </div>
-          <div className="vv-projects-filters" role="group" aria-label="Filter portfolio categories">
-            <button type="button" aria-pressed={filter==="all"} className={filter==="all"?"is-active":""} onClick={()=>setFilter("all")}>All collections</button>
-            {categories.map(item=><button type="button" key={item.id} aria-pressed={filter===item.id} onClick={()=>setFilter(item.id)} className={filter===item.id?"is-active":""}>{item.short}</button>)}
-          </div>
-          <div className="vv-projects-focus-grid">
-            {displayed.map((item)=>(
-              <a href={"#"+item.id} key={item.id} className="vv-projects-focus-card">
-                <div className="vv-projects-focus-image"><CategoryVisual category={item}/><span className="vv-projects-focus-arrow"><ArrowUpRight size={21}/></span></div>
-                <div className="vv-projects-focus-caption"><h3><EditorialText text={item.name} variant="project-focus"/></h3><p>{item.headline}</p></div>
-              </a>
-            ))}
-          </div>
-        </section>
-
-        <section className="vv-projects-archive">
-          <div className="vv-projects-archive-heading">
-            <div><span className="vv-projects-kicker">FROM THE VISUAL VERSE ARCHIVE</span><h2>People. Places.<br/><em>Moments.</em></h2></div>
-            <p>Selected photographs previously featured on the original Visual Verse website. Further individual client case studies and project credits will be added when approved for publication.</p>
-          </div>
-          <div className="vv-projects-archive-strip">
-            {archive.map(item=><figure key={item.image}><img src={item.image} alt={item.alt} loading="lazy" decoding="async"/><figcaption>{item.tag}</figcaption></figure>)}
-          </div>
-        </section>
-
-        <div className="vv-projects-collections">
-          {categories.map((category,index)=>(
-            <section className="vv-projects-category" id={category.id} key={category.id} aria-labelledby={"vv-project-"+category.id}>
-              {category.id==="web-ui-ux"&&<span id="digital" className="vv-projects-alias"/>}
-              {category.id==="social-media"&&<span id="campaigns" className="vv-projects-alias"/>}
-              <div className="vv-projects-category-visual">
-                <div className="vv-projects-category-art"><CategoryVisual category={category}/></div>
-                <span className="vv-projects-visual-meta"><ImageIcon size={13} aria-hidden="true"/> CREATIVE CATEGORY</span>
-              </div>
-              <div className="vv-projects-category-copy">
-                <span className="vv-projects-kicker">CREATIVE COLLECTION</span>
-                <h2 id={"vv-project-"+category.id}><EditorialText text={category.name} variant="project-category"/></h2>
-                <h3>{category.headline}</h3>
-                <p>{category.description}</p>
-                <ul>{category.services.map(point=><li key={point}><Check size={15} aria-hidden="true"/>{point}</li>)}</ul>
-                <div className="vv-projects-category-links">
-                  <a className="vv-motion-action vv-action-primary" href={"/request-quote.html?service="+encodeURIComponent(category.name)}><VisualVerseActionContent>Start a {category.short} project</VisualVerseActionContent></a>
-                  <a href="#vv-projects-gallery" className="vv-projects-back vv-motion-action vv-action-secondary"><VisualVerseActionContent Icon={ArrowRight}>Back to all collections</VisualVerseActionContent></a>
-                </div>
-              </div>
-            </section>
-          ))}
+          <ContactSheet onNavigate={id=>{setFilter("all");setHashTarget(id);}}/>
         </div>
+        <div className="vv-pj-hero-foot"><span><Layers3 size={16} aria-hidden="true"/> Six creative disciplines</span><span>FROM CONCEPT TO CREATION</span><a href="#vv-projects-gallery">Scroll to explore <ArrowDown size={16}/></a></div>
+      </section>
 
-        <p className="vv-projects-archive-note">The collections above introduce our creative disciplines. Gallery photography comes from the original Visual Verse portfolio; illustrative concepts demonstrate possibilities, not claimed commissions.</p>
-        <VisualVerseAboutCta/>
-      </main>
-      <footer className="vv-close-footer-wrap" id="footer"><VisualVerseFooter/></footer>
-      <WhatsAppFloating/>
-    </div>
-  );
+      <section className="vv-pj-gallery" id="vv-projects-gallery" aria-labelledby="vv-pj-gallery-title">
+        <div className="vv-pj-section-head">
+          <div><span className="vv-pj-eyebrow"><LayoutGrid size={15} aria-hidden="true"/> THE COLLECTIONS</span><h2 id="vv-pj-gallery-title">Work that<br/><em>speaks.</em></h2></div>
+          <p>Different mediums, the same attention to detail. Explore the collection that resonates with you, then see what we can create together.</p>
+        </div>
+        <div className="vv-pj-gallery-nav"><div className="vv-projects-filters" role="group" aria-label="Filter portfolio categories">
+          <button type="button" aria-pressed={filter==="all"} onClick={()=>setFilter("all")}>All collections</button>
+          {collections.map(item=><button type="button" key={item.id} aria-pressed={filter===item.id} onClick={()=>setFilter(item.id)}>{serviceLabel(item.id)}</button>)}
+        </div><span role="status" className="vv-pj-results">{String(visibleCount).padStart(2,"0")} / 06 collections</span></div>
+        <div className={"vv-pj-grid"+(filter==="all"?"":" is-filtered")}>
+          {collections.map(collection=><CollectionCard key={collection.id} collection={collection} hidden={filter!=="all"&&filter!==collection.id}/>)}
+        </div>
+        <p className="vv-pj-note">Archive photography and design are examples from the original Visual Verse portfolio. Concept studies demonstrate creative directions, not commissioned client projects.</p>
+      </section>
+
+      <section className="vv-pj-finale" aria-labelledby="vv-pj-finale-heading">
+        <img className="vv-pj-watermark" src={BASE+"logo-mark.png"} alt="" aria-hidden="true"/>
+        <div className="vv-pj-finale-inner">
+          <span className="vv-pj-eyebrow"><Camera size={16} aria-hidden="true"/> MORE THAN A PRETTY PICTURE</span>
+          <h2 id="vv-pj-finale-heading">One idea.<br/> <em>Endless ways</em><br/> to tell it.</h2>
+          <p>From the first sketch to the final frame, we bring the right creative disciplines together to turn your ideas into something meaningful.</p>
+          <a href={BASE+"services.html"} className="vv-motion-action vv-action-primary"><VisualVerseActionContent>Discover what we do</VisualVerseActionContent></a>
+          <div className="vv-pj-finale-corner" aria-hidden="true"><Clapperboard size={20}/> MAKE IT MATTER.</div>
+        </div>
+      </section>
+      <VisualVerseAboutCta/>
+    </main>
+    <footer className="vv-close-footer-wrap" id="footer"><VisualVerseFooter/></footer>
+    <WhatsAppFloating/>
+  </div>;
 }

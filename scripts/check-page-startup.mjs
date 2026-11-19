@@ -360,6 +360,24 @@ try {
       if(path==="projects.html"){
         assert.deepEqual((await labels(page,".vv-projects-filters button")).slice(1),serviceNames,"Project filter order");
         assert.deepEqual(await labels(page,".vv-projects-category h2"),serviceNames,"Project category order");
+        const frames=page.locator(".vv-pj-thumbs button");
+        assert.equal(await frames.count(),5,"Project contact sheet frame count");
+        await page.getByRole("button",{name:"Next archive frame",exact:true}).click();
+        assert.equal(await frames.nth(1).getAttribute("aria-pressed"),"true");
+        assert.ok(await page.locator(".vv-pj-frame-scene img").evaluate(async image=>{await image.decode();return image.naturalWidth>0;}),"Archive image loads");
+        await page.getByRole("button",{name:"Previous archive frame",exact:true}).click();
+        assert.equal(await frames.first().getAttribute("aria-pressed"),"true");
+        await page.locator(".vv-projects-filters").getByRole("button",{name:"Photography",exact:true}).click();
+        assert.equal(await page.locator(".vv-projects-category:visible").count(),1,"Filtering displays one collection");
+        assert.equal(await page.locator("#photography").isVisible(),true);
+        const details=page.locator("#photography").getByRole("button",{name:"Explore collection",exact:true});
+        await details.click();
+        assert.equal(await page.locator("#vv-pj-details-photography").isVisible(),true,"Collection details expand");
+        await page.locator("#photography").getByRole("button",{name:"Close collection",exact:true}).click();
+        assert.equal(await page.locator("#vv-pj-details-photography").isVisible(),false,"Collection details collapse");
+        await page.locator(".vv-projects-filters").getByRole("button",{name:"All collections",exact:true}).click();
+        assert.equal(await page.locator(".vv-projects-category:visible").count(),6,"Reset displays all collections");
+        assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),"Projects must not overflow horizontally");
       }
       if(path==="request-quote.html") assert.deepEqual((await page.locator(".vv-inner-quote-form select").first().locator("option").allTextContents()).slice(0,6),serviceNames,"Quote service order");
       if(path.startsWith("services.html")){
