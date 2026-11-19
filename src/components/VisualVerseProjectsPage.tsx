@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, type MouseEvent } from "react";
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Aperture, Camera, Clapperboard, Layers3, LayoutGrid, Pause, Play, X } from "lucide-react";
+import { useEffect, useLayoutEffect, useRef, useState, type MouseEvent } from "react";
+import { ArrowDown, ArrowLeft, ArrowUpRight, Aperture, Camera, Clapperboard, Layers3, LayoutGrid, Pause, Play, X } from "lucide-react";
 import { orderedServices, serviceLabel, serviceNumber } from "../data/services";
 import { projectDeliverables } from "../data/project-deliverables";
 import { AppleCardsCarousel } from "./ui/apple-cards-carousel";
@@ -32,9 +32,14 @@ const frames = collections.map(collection=>({...collection,label:collection.titl
 const collectionHref=(id:string)=>BASE+"projects.html?collection="+encodeURIComponent(id);
 const currentCollection=()=>collections.find(item=>item.id===new URLSearchParams(window.location.search).get("collection"))??null;
 
-function ContactSheet({onNavigate}:{onNavigate:(id:string)=>void}){
+function ContactSheet({onNavigate,suspended}:{onNavigate:(id:string)=>void;suspended:boolean}){
   const [active,setActive] = useState(0);
   const sheetRef=useRef<HTMLDivElement>(null);
+  const filmstripRef=useRef<HTMLDivElement>(null);
+  const filmPeriod=useRef(0);
+  const filmSettle=useRef(0);
+  const filmRunning=useRef(false);
+  const [touching,setTouching]=useState(false);
   const [playing,setPlaying]=useState(()=>!window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   const [revealed,setRevealed]=useState(()=>!document.documentElement.hasAttribute("data-vv-boot"));
   const [visible,setVisible]=useState(false);
@@ -59,14 +64,44 @@ function ContactSheet({onNavigate}:{onNavigate:(id:string)=>void}){
       observer.disconnect();
     };
   },[]);
-  const running=playing&&revealed&&visible&&pageVisible&&!hovered&&!keyboardFocused;
+  const running=playing&&revealed&&visible&&pageVisible&&!hovered&&!keyboardFocused&&!touching&&!suspended;
   useEffect(()=>{
     if(!running)return;
     const timeout=window.setTimeout(()=>setActive(current=>(current+1)%frames.length),3000);
     return ()=>window.clearTimeout(timeout);
   },[active,running]);
+  // Aceternity's Infinite Moving Cards pattern: repeated identical tracks
+  // scroll continuously, while retaining native swipe and direct selection.
+  const normalizeFilm=()=>{
+    const el=filmstripRef.current,w=filmPeriod.current;
+    if(!el||!w)return;
+    if(el.scrollLeft<w-1||el.scrollLeft>=2*w)el.scrollLeft=w+((el.scrollLeft%w)+w)%w;
+  };
+  useLayoutEffect(()=>{
+    const el=filmstripRef.current;
+    if(!el)return;
+    const resize=()=>{
+      const first=el.querySelector<HTMLElement>("[data-film-copy='0']"),middle=el.querySelector<HTMLElement>("[data-film-copy='1']");
+      if(!first||!middle)return;
+      const width=middle.offsetLeft-first.offsetLeft;
+      if(width&&width!==filmPeriod.current){const progress=filmPeriod.current?(el.scrollLeft%filmPeriod.current)/filmPeriod.current:0;filmPeriod.current=width;el.scrollLeft=width+progress*width;}
+    };
+    resize();const observer=new ResizeObserver(resize);observer.observe(el);
+    const middle=el.querySelector("[data-film-copy='1']");if(middle)observer.observe(middle);
+    return ()=>{observer.disconnect();window.clearTimeout(filmSettle.current);};
+  },[]);
+  useEffect(()=>{
+    const el=filmstripRef.current;if(!el||!running)return;
+    filmRunning.current=true;window.clearTimeout(filmSettle.current);normalizeFilm();
+    let frame=0,last=0,carry=0;
+    const tick=(now:number)=>{
+      if(last){carry+=Math.min(now-last,50)*.026;const pixels=Math.floor(carry);if(pixels){carry-=pixels;el.scrollLeft+=pixels;if(el.scrollLeft>=filmPeriod.current*2)normalizeFilm();}}
+      last=now;frame=requestAnimationFrame(tick);
+    };
+    frame=requestAnimationFrame(tick);
+    return ()=>{filmRunning.current=false;cancelAnimationFrame(frame);};
+  },[running]);
   const frame=frames[active];
-  const cycle=(step:number)=>setActive(current=>(current+step+frames.length)%frames.length);
   return <div ref={sheetRef} className="vv-pj-sheet" aria-label="Interactive creative service contact sheet" data-autoplay={running?"playing":"paused"}
     onPointerEnter={event=>{if(event.pointerType==="mouse"||event.pointerType==="pen")setHovered(true);}}
     onPointerLeave={()=>setHovered(false)}
@@ -84,12 +119,14 @@ function ContactSheet({onNavigate}:{onNavigate:(id:string)=>void}){
       <div aria-live={running?"off":"polite"} aria-atomic="true"><span>{frame.type}</span><strong>{frame.label}</strong></div>
       <a href={"#"+frame.id} onClick={()=>onNavigate(frame.id)} className="vv-pj-frame-link" aria-label={"Explore "+frame.type}><ArrowUpRight size={20}/></a>
     </div>
-    <div className="vv-pj-filmstrip">
-      <button type="button" onClick={()=>cycle(-1)} aria-label="Previous collection frame" className="vv-pj-frame-step"><ArrowLeft size={18}/></button>
-      <div className="vv-pj-thumbs" role="group" aria-label="Choose a collection frame">
-        {frames.map((item,i)=><button type="button" key={item.id} aria-pressed={i===active} aria-label={"Show "+item.type} title={item.type} onClick={()=>setActive(i)}><img src={servicePhoto(item.id)} alt="" style={{objectPosition:item.position}} decoding="async"/><span>{String(i+1).padStart(2,"0")}</span></button>)}
+    <div className="vv-pj-filmstrip" ref={filmstripRef} role="group" aria-label="Automatically moving collection frames"
+      onTouchStart={()=>setTouching(true)} onTouchEnd={()=>setTouching(false)} onTouchCancel={()=>setTouching(false)}
+      onScroll={()=>{if(!filmRunning.current){window.clearTimeout(filmSettle.current);filmSettle.current=window.setTimeout(normalizeFilm,150);}}}>
+      <div className="vv-pj-thumbs">
+        {[0,1,2].map(copy=><div key={copy} className="vv-pj-thumb-group" data-film-copy={copy} aria-hidden={copy!==1?true:undefined}>
+          {frames.map((item,i)=><button type="button" key={item.id} tabIndex={copy===1?0:-1} data-selected={i===active} aria-pressed={copy===1?i===active:undefined} aria-label={"Show "+item.type} title={item.type} onClick={()=>setActive(i)}><img src={servicePhoto(item.id)} alt="" style={{objectPosition:item.position}} decoding="async"/><span>{String(i+1).padStart(2,"0")}</span></button>)}
+        </div>)}
       </div>
-      <button type="button" onClick={()=>cycle(1)} aria-label="Next collection frame" className="vv-pj-frame-step"><ArrowRight size={18}/></button>
     </div>
   </div>;
 }
@@ -188,7 +225,7 @@ export function VisualVerseProjectsPage(){
             <p>Real moments. Bold ideas. Creative possibilities. A closer look at what we make and how we see the world.</p>
             <div className="vv-pj-hero-actions"><a className="vv-motion-action vv-action-primary" href="#vv-projects-gallery"><VisualVerseActionContent Icon={ArrowDown}>Explore our work</VisualVerseActionContent></a><a href={BASE+"request-quote.html"} className="vv-motion-action vv-action-secondary"><VisualVerseActionContent>Start a project</VisualVerseActionContent></a></div>
           </div>
-          <ContactSheet onNavigate={id=>{setFilter("all");setHashTarget(id);}}/>
+          <ContactSheet suspended={!!activeCollection} onNavigate={id=>{setFilter("all");setHashTarget(id);}}/>
         </div>
         <div className="vv-pj-hero-foot"><span><Layers3 size={16} aria-hidden="true"/> Six creative disciplines</span><span>FROM CONCEPT TO CREATION</span><a href="#vv-projects-gallery">Scroll to explore <ArrowDown size={16}/></a></div>
       </section>

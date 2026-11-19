@@ -131,8 +131,13 @@ try {
   await motionPage.locator("html:not([data-vv-boot])").waitFor({state:"attached",timeout:20000});
   await motionPage.mouse.move(8,110);
   await motionPage.locator('.vv-pj-sheet[data-autoplay="playing"]').waitFor({state:"attached"});
+  const filmstrip=motionPage.locator(".vv-pj-filmstrip");
+  const filmStart=await filmstrip.evaluate(el=>el.scrollLeft);
+  await motionPage.waitForFunction(start=>document.querySelector(".vv-pj-filmstrip").scrollLeft>start+8,filmStart);
   const firstFrame=await motionPage.locator(".vv-pj-thumbs [aria-pressed=true]").getAttribute("aria-label");
   await motionPage.waitForFunction(name=>document.querySelector(".vv-pj-thumbs [aria-pressed=true]")?.getAttribute("aria-label")!==name,firstFrame,{timeout:4500});
+  // Pause the moving filmstrip with a real pointer before targeting a frame.
+  await motionPage.locator(".vv-pj-sheet-top").hover();
   await motionPage.getByRole("button",{name:"Show Social Media & Digital Marketing",exact:true}).click();
   await motionPage.mouse.move(8,110);
   await motionPage.waitForFunction(()=>document.querySelector(".vv-pj-thumbs [aria-pressed=true]")?.getAttribute("aria-label")==="Show Graphic Design",null,{timeout:4500});
@@ -445,7 +450,7 @@ try {
             assert.ok(Math.abs(left.top-right.top)<2 && Math.abs(left.bottom-right.bottom)<2 && Math.abs(left.mediaHeight-right.mediaHeight)<2,"Gallery row must align: "+JSON.stringify([left,right]));
           }
         }
-        const frames=page.locator(".vv-pj-thumbs button");
+        const frames=page.locator(".vv-pj-thumb-group[data-film-copy='1'] button");
         assert.equal(await frames.count(),6,"Project contact sheet frame count");
         assert.deepEqual(await frames.evaluateAll(buttons=>buttons.map(button=>button.getAttribute("aria-label"))),serviceNames.map(name=>"Show "+name));
         const collectionImages=await page.locator(".vv-pj-card-media > img").all();
@@ -454,10 +459,11 @@ try {
           assert.ok((await photo.getAttribute("src")).endsWith("service-cover-"+serviceIds[index]+".webp"));
           assert.ok(await photo.evaluate(async img=>{img.loading="eager";await img.decode();return img.naturalWidth===1200 && !!img.alt;}),"Collection photo loads: "+serviceIds[index]);
         }
-        await page.getByRole("button",{name:"Next collection frame",exact:true}).click();
+        assert.equal(await page.locator(".vv-pj-frame-step").count(),0,"No previous/next filmstrip arrows");
+        await frames.nth(1).click();
         assert.equal(await frames.nth(1).getAttribute("aria-pressed"),"true");
         assert.ok(await page.locator(".vv-pj-frame-scene img").evaluate(async image=>{await image.decode();return image.naturalWidth>0;}),"Collection image loads");
-        await page.getByRole("button",{name:"Previous collection frame",exact:true}).click();
+        await frames.first().click();
         assert.equal(await frames.first().getAttribute("aria-pressed"),"true");
         await page.locator(".vv-projects-filters").getByRole("button",{name:"Photography",exact:true}).click();
         assert.equal(await page.locator(".vv-projects-category:visible").count(),1,"Filtering displays one collection");
