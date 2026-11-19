@@ -102,7 +102,10 @@ export function AppleCardsCarousel({ items, category, quoteHref }: {items:Projec
 
   return <div className="vv-apple-carousel" aria-label={`${category} creative possibilities`} data-autoplay={playing?"playing":"paused"}>
     <div ref={scroller} className="vv-apple-scroller" onScroll={onScroll} role="region" aria-label="Scrollable creative cards"
-      onPointerEnter={event=>{if(event.pointerType==="mouse")setHovered(true);}}
+      // Opening a modal underneath a stationary pointer causes pointerenter
+      // without deliberate interaction. Autoplay must still start on opening.
+      onPointerMove={event=>{if((event.pointerType==="mouse"||event.pointerType==="pen")&&(event.movementX!==0||event.movementY!==0))setHovered(true);}}
+      onPointerDown={event=>{if(event.pointerType==="mouse"||event.pointerType==="pen")setHovered(true);}}
       onPointerLeave={()=>setHovered(false)}
       onTouchStart={()=>setTouching(true)} onTouchEnd={()=>setTouching(false)} onTouchCancel={()=>setTouching(false)}
       onFocusCapture={event=>{if(event.target.matches(":focus-visible"))setKeyboardFocus(true);}}

@@ -162,6 +162,9 @@ try {
   await motionPage.locator("#graphic-design .vv-pj-detail-button").click();
   const collection=motionPage.locator(".vv-pj-collection-page[open]");
   await collection.locator(":scope > .vv-cursor-layer").waitFor({state:"attached"});
+  // The pointer can remain over the moving cards after clicking Explore.
+  // A stationary pointer must not prevent the initial autoplay.
+  await motionPage.waitForFunction(()=>document.querySelector(".vv-apple-carousel")?.getAttribute("data-autoplay")==="playing");
   await motionPage.mouse.move(8,110);
   const movingCards=collection.locator(".vv-apple-carousel");
   const movingScroller=collection.locator(".vv-apple-scroller");
