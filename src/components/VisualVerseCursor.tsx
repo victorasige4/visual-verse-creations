@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import "../visual-verse-cursor.css";
 
 /**
@@ -11,6 +12,23 @@ export function VisualVerseCursor() {
   const coreRef=useRef<HTMLSpanElement>(null);
   const orbitRef=useRef<HTMLSpanElement>(null);
   const labelRef=useRef<HTMLSpanElement>(null);
+  const [modalHost,setModalHost]=useState<HTMLDialogElement|null>(null);
+
+  // Native modal dialogs live in the browser's top layer, above even the
+  // highest document z-index. Mount the same cursor inside the foremost
+  // dialog so it remains visible (including nested creative-card details).
+  useEffect(()=>{
+    const sync=()=>{
+      const open=Array.from(document.querySelectorAll<HTMLDialogElement>("dialog:modal"));
+      setModalHost(open[open.length-1]??null);
+    };
+    const observer=new MutationObserver(records=>{
+      if(records.some(record=>record.type==="attributes"&&record.target instanceof HTMLDialogElement||record.type==="childList"&&[...record.addedNodes,...record.removedNodes].some(node=>node instanceof Element&&(node.matches("dialog")||node.querySelector("dialog")))))sync();
+    });
+    observer.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:["open"]});
+    sync();
+    return ()=>observer.disconnect();
+  },[]);
 
   useEffect(()=>{
     const core=coreRef.current,orbit=orbitRef.current,label=labelRef.current;
@@ -77,12 +95,13 @@ export function VisualVerseCursor() {
       document.removeEventListener("mouseleave",onLeave);
       document.removeEventListener("mouseenter",onEnter);
     };
-  },[]);
+  },[modalHost]);
 
-  return <div className="vv-cursor-layer" aria-hidden="true">
+  const layer=<div className="vv-cursor-layer" aria-hidden="true">
     <span className="vv-cursor-core" ref={coreRef}><i/></span>
     <span className="vv-cursor-orbit" ref={orbitRef}>
       <span className="vv-cursor-orbit-tick"/><span className="vv-cursor-orbit-label" ref={labelRef}/>
     </span>
   </div>;
+  return modalHost?createPortal(layer,modalHost):layer;
 }

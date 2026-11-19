@@ -154,6 +154,23 @@ try {
   await motionPage.locator(".vv-pj-results").hover();
   await motionPage.waitForFunction(()=>[...document.querySelectorAll(".vv-focus-card")].every(card=>getComputedStyle(card).filter==="none"));
   console.log("Projects: hover focus switches between cards and clears on exit");
+  await motionPage.locator("#graphic-design .vv-pj-detail-button").click();
+  const collection=motionPage.locator(".vv-pj-collection-page[open]");
+  await collection.locator(":scope > .vv-cursor-layer").waitFor({state:"attached"});
+  const creativeCard=collection.getByRole("button",{name:"Explore Campaign graphics",exact:true});
+  await creativeCard.hover();
+  await collection.locator(":scope > .vv-cursor-layer .vv-cursor-core.is-visible").waitFor({state:"visible"});
+  assert.ok(await collection.locator(":scope > .vv-cursor-layer .vv-cursor-orbit").evaluate(el=>el.classList.contains("is-interactive")),"Cursor reacts to creative card hover");
+  await creativeCard.click();
+  const creativeDetail=motionPage.locator(".vv-apple-detail[open]");
+  await creativeDetail.locator(":scope > .vv-cursor-layer").waitFor({state:"attached"});
+  await creativeDetail.getByRole("button",{name:"Close creative detail"}).hover();
+  await creativeDetail.locator(".vv-cursor-core.is-visible").waitFor({state:"visible"});
+  await creativeDetail.getByRole("button",{name:"Close creative detail"}).click();
+  await collection.locator(":scope > .vv-cursor-layer").waitFor({state:"attached"});
+  await collection.getByRole("button",{name:"Close collection",exact:true}).click();
+  await motionPage.locator("#vv-cursor-root > .vv-cursor-layer").waitFor({state:"attached"});
+  console.log("Projects: precision cursor follows collection and nested creative card dialogs");
   // Simulate a stale/missing deployment entry and verify a single fresh
   // request restores the page, leaving the canonical URL clean.
   const retryContext = await browser.newContext({viewport:{width:1280,height:800},reducedMotion:"reduce"});
