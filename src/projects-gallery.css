@@ -51,14 +51,16 @@
 .vv-pj-sheet-caption{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:14px 2px}
 .vv-pj-sheet-caption>div{display:flex;flex-direction:column;gap:5px;min-width:0}.vv-pj-sheet-caption span{font-size:10px;color:#aad6cb;font-weight:650}
 .vv-pj-sheet-caption strong{font-size:clamp(14px,1.25vw,18px);font-weight:750;line-height:1.3;color:#f7fbf9}
-.vv-pj-frame-link,.vv-pj-frame-step{width:42px;height:42px;flex:none;display:grid;place-items:center;border-radius:50%;border:1px solid #6b9289;color:#dbf9ef;background:#ffffff08;cursor:pointer;transition:background .2s,color .2s,border-color .2s;text-decoration:none}
+.vv-pj-frame-link{width:42px;height:42px;flex:none;display:grid;place-items:center;border-radius:50%;border:1px solid #6b9289;color:#dbf9ef;background:#ffffff08;cursor:pointer;transition:background .2s,color .2s,border-color .2s;text-decoration:none}
 .vv-pj-frame-link{background:var(--pj-mint);color:var(--pj-dark);border-color:var(--pj-mint)}
-.vv-pj-frame-link:hover,.vv-pj-frame-step:hover{background:#b6f3e7;color:var(--pj-dark);border-color:#b6f3e7}
-.vv-pj-filmstrip{display:flex;align-items:center;gap:9px;padding-top:11px;border-top:1px solid #5f817957}
-.vv-pj-thumbs{flex:1;min-width:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px}
-.vv-pj-thumbs button{position:relative;aspect-ratio:1.28;min-width:0;background:#001d29;border:2px solid transparent;border-radius:6px;padding:0;overflow:hidden;cursor:pointer;opacity:.65;transition:opacity .2s,border-color .2s}
-.vv-pj-thumbs button:hover,.vv-pj-thumbs button[aria-pressed=true]{opacity:1}
-.vv-pj-thumbs button[aria-pressed=true]{border-color:var(--pj-mint)}
+.vv-pj-frame-link:hover{background:#b6f3e7;color:var(--pj-dark);border-color:#b6f3e7}
+.vv-pj-filmstrip{position:relative;container-type:inline-size;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding-top:10px;border-top:1px solid #5f817957;touch-action:pan-x pan-y}
+.vv-pj-filmstrip::-webkit-scrollbar{display:none}
+.vv-pj-thumbs{position:relative;display:flex;width:max-content}
+.vv-pj-thumb-group{display:flex;flex:none;gap:7px;padding-right:7px}
+.vv-pj-thumbs button{position:relative;flex:none;width:max(64px,calc((100cqw - 35px)/5.2));height:clamp(48px,5.7vw,70px);min-width:0;background:#001d29;border:2px solid transparent;border-radius:6px;padding:0;overflow:hidden;cursor:pointer;opacity:.72;transition:opacity .2s,border-color .2s}
+.vv-pj-thumbs button:hover,.vv-pj-thumbs button[data-selected=true]{opacity:1}
+.vv-pj-thumbs button[data-selected=true]{border-color:var(--pj-mint)}
 .vv-pj-thumbs img{height:100%;width:100%;display:block;object-fit:cover}
 .vv-pj-thumbs span{position:absolute;left:3px;bottom:3px;background:#001f2fcf;padding:2px 3px;border-radius:3px;font-size:8px;color:white;font-weight:700}
 .vv-pj-gallery{padding:clamp(52px,5.8vw,84px) max(24px,calc((100vw - 1260px)/2));scroll-margin-top:92px}
@@ -176,7 +178,7 @@
  .vv-pj-hero-grid{gap:28px;grid-template-columns:1fr 1.1fr}
  .vv-pj-intro h1{font-size:clamp(30px,4.4vw,49px)}
  .vv-pj-hero{min-height:0}
- .vv-pj-filmstrip{gap:6px}.vv-pj-frame-step{width:36px;height:36px}.vv-pj-thumbs{gap:4px}
+ .vv-pj-thumb-group{gap:6px;padding-right:6px}
 }
 @media(max-width:760px){
  .vv-pj-hero{padding:140px 20px 18px;gap:30px}
@@ -196,13 +198,28 @@
 @media(max-width:410px){
  .vv-pj-hero{padding:124px 16px 15px}
  .vv-pj-sheet{padding:10px;border-radius:16px}
- .vv-pj-frame-step{width:34px;height:40px}
- .vv-pj-thumbs button{aspect-ratio:.9}
- .vv-pj-filmstrip{gap:5px}.vv-pj-thumbs{gap:4px}
+ .vv-pj-thumbs button{height:48px}
+ .vv-pj-thumb-group{gap:5px;padding-right:5px}
  .vv-pj-sheet-top{font-size:9px}
  .vv-pj-gallery{padding-inline:16px}
  .vv-projects-v3 .vv-projects-filters button{font-size:10px;padding:9px 11px}
  .vv-pj-card-copy h3{font-size:22px}
+}
+/* Keep the complete contact sheet, including its moving filmstrip, above
+   the fold on ordinary laptop viewports. The collection actions stay pinned. */
+@media(min-width:761px) and (max-height:820px){
+ .vv-pj-hero{padding-top:112px;gap:16px}
+ .vv-pj-viewfinder{max-height:40dvh}
+ .vv-pj-sheet-top{padding-bottom:8px}
+ .vv-pj-sheet-caption{padding-block:9px}
+ .vv-pj-thumbs button{height:52px}
+ .vv-pj-hero-foot{padding-top:5px}
+}
+@media(max-height:680px){
+ .vv-pj-collection-intro{padding-block:9px}
+ .vv-pj-collection-intro>img{max-height:110px}
+ .vv-pj-collection-content{padding-block:8px}
+ .vv-pj-collection-end{padding-block:6px}
 }
 @media(prefers-reduced-motion:reduce){
  .vv-pj-frame-scene{animation:none}
