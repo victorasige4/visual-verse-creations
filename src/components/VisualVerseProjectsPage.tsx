@@ -103,7 +103,8 @@ function ContactSheet({onNavigate,suspended}:{onNavigate:(id:string)=>void;suspe
   },[running]);
   const frame=frames[active];
   return <div ref={sheetRef} className="vv-pj-sheet" aria-label="Interactive creative service contact sheet" data-autoplay={running?"playing":"paused"}
-    onPointerEnter={event=>{if(event.pointerType==="mouse"||event.pointerType==="pen")setHovered(true);}}
+    onPointerMove={event=>{if((event.pointerType==="mouse"||event.pointerType==="pen")&&(event.movementX!==0||event.movementY!==0))setHovered(true);}}
+    onPointerDown={event=>{if(event.pointerType==="mouse"||event.pointerType==="pen")setHovered(true);}}
     onPointerLeave={()=>setHovered(false)}
     onFocusCapture={event=>setKeyboardFocused(event.target.matches(":focus-visible"))}
     onBlurCapture={event=>{if(!event.currentTarget.contains(event.relatedTarget))setKeyboardFocused(false);}}>
