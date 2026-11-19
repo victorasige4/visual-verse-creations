@@ -360,6 +360,19 @@ try {
       if(path==="projects.html"){
         assert.deepEqual((await labels(page,".vv-projects-filters button")).slice(1),serviceNames,"Project filter order");
         assert.deepEqual(await labels(page,".vv-projects-category h2"),serviceNames,"Project category order");
+        const layout=await page.locator(".vv-projects-category").evaluateAll(cards=>cards.map(card=>{
+          const rect=card.getBoundingClientRect();
+          const media=card.querySelector(".vv-pj-card-media").getBoundingClientRect();
+          const copy=card.querySelector(".vv-pj-card-copy").getBoundingClientRect();
+          return {top:rect.top,bottom:rect.bottom,mediaHeight:media.height,mediaWidth:media.width,cardWidth:rect.width,innerGap:copy.top-media.bottom};
+        }));
+        assert.ok(layout.every(card=>Math.abs(card.innerGap)<2 && Math.abs(card.mediaWidth-card.cardWidth)<3),"Gallery media must fill each card without an internal gap: "+JSON.stringify(layout));
+        if(viewport.width>760){
+          for(let i=0;i<layout.length;i+=2){
+            const [left,right]=layout.slice(i,i+2);
+            assert.ok(Math.abs(left.top-right.top)<2 && Math.abs(left.bottom-right.bottom)<2 && Math.abs(left.mediaHeight-right.mediaHeight)<2,"Gallery row must align: "+JSON.stringify([left,right]));
+          }
+        }
         const frames=page.locator(".vv-pj-thumbs button");
         assert.equal(await frames.count(),5,"Project contact sheet frame count");
         await page.getByRole("button",{name:"Next archive frame",exact:true}).click();
@@ -370,6 +383,7 @@ try {
         await page.locator(".vv-projects-filters").getByRole("button",{name:"Photography",exact:true}).click();
         assert.equal(await page.locator(".vv-projects-category:visible").count(),1,"Filtering displays one collection");
         assert.equal(await page.locator("#photography").isVisible(),true);
+        assert.ok(await page.locator("#photography").evaluate(card=>Math.abs(card.getBoundingClientRect().width-card.parentElement.getBoundingClientRect().width)<2),"Filtered collection must fill the gallery");
         const details=page.locator("#photography").getByRole("button",{name:"Explore collection",exact:true});
         await details.click();
         assert.equal(await page.locator("#vv-pj-details-photography").isVisible(),true,"Collection details expand");
