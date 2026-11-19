@@ -259,10 +259,12 @@ try {
       await touch.waitForFunction(()=>document.querySelector(".vv-close-marquee-section")?.classList.contains("vv-motion-offscreen"));
     }
     if(path==="projects.html"){
-      await touch.locator("#graphic-design").getByRole("button",{name:"Explore Graphic Design",exact:true}).tap();
-      assert.equal(await touch.locator("#vv-pj-details-graphic-design").isVisible(),true);
+      await touch.locator("#graphic-design").getByRole("link",{name:"Explore Graphic Design",exact:true}).tap();
+      await touch.locator(".vv-pj-collection-page[open]").waitFor({state:"visible"});
+      assert.equal(await touch.locator(".vv-apple-group[data-copy='1'] button").count(),4);
       assert.ok(await touch.locator(".vv-focus-card").evaluateAll(cards=>cards.every(card=>getComputedStyle(card).filter==="none")),"Touch interaction must not leave neighboring cards blurred");
-      await touch.locator("#graphic-design").getByRole("button",{name:"Close collection",exact:true}).tap();
+      await touch.getByRole("button",{name:"Close collection",exact:true}).tap();
+      await touch.locator(".vv-pj-collection-page").waitFor({state:"detached"});
     }
     if(path==="services.html?service=photography"){
       const compare=touch.getByRole("slider",{name:"Compare original and edited photography"});
@@ -425,12 +427,27 @@ try {
         assert.equal(await page.locator(".vv-projects-category:visible").count(),1,"Filtering displays one collection");
         assert.equal(await page.locator("#photography").isVisible(),true);
         assert.ok(await page.locator("#photography").evaluate(card=>Math.abs(card.getBoundingClientRect().width-card.parentElement.getBoundingClientRect().width)<2),"Filtered collection must fill the gallery");
-        const details=page.locator("#photography").getByRole("button",{name:"Explore collection",exact:true});
+        const details=page.locator("#photography").getByRole("link",{name:"Explore collection",exact:true});
         await details.click();
-        assert.equal(await page.locator("#vv-pj-details-photography").isVisible(),true,"Collection details expand");
-        assert.equal(await page.locator("#vv-pj-details-photography .vv-pj-archive-grid img").count(),4,"Portfolio archive examples stay available");
-        await page.locator("#photography").getByRole("button",{name:"Close collection",exact:true}).click();
-        assert.equal(await page.locator("#vv-pj-details-photography").isVisible(),false,"Collection details collapse");
+        await page.locator(".vv-pj-collection-page[open]").waitFor({state:"visible"});
+        assert.equal(new URL(page.url()).searchParams.get("collection"),"photography");
+        assert.equal(await page.locator(".vv-apple-group[data-copy='1'] button").count(),4,"Creative carousel contains four deliverables");
+        assert.equal(await page.locator(".vv-pj-archive").count(),0,"No redundant archive section");
+        const scroller=page.locator(".vv-apple-scroller");
+        await page.waitForFunction(()=>{const el=document.querySelector(".vv-apple-scroller");return el.scrollLeft>0;});
+        const period=await scroller.evaluate(el=>el.querySelector(".vv-apple-group[data-copy='1']").offsetLeft);
+        for(let i=0;i<5;i++){
+          await page.getByRole("button",{name:"Next creative card",exact:true}).click();
+          await page.waitForTimeout(200);
+        }
+        const wrapped=await scroller.evaluate(el=>el.scrollLeft);
+        assert.ok(Math.abs(wrapped-period*1.25)<8,"Carousel wraps to the next card after a full revolution: "+wrapped);
+        await page.getByRole("button",{name:"Explore Portraits & lifestyle",exact:true}).click();
+        await page.locator(".vv-apple-detail[open]").waitFor({state:"visible"});
+        await page.keyboard.press("Escape");
+        await page.locator(".vv-apple-detail").waitFor({state:"detached"});
+        await page.getByRole("button",{name:"Close collection",exact:true}).click();
+        await page.locator(".vv-pj-collection-page").waitFor({state:"detached"});
         await page.locator(".vv-projects-filters").getByRole("button",{name:"All collections",exact:true}).click();
         assert.equal(await page.locator(".vv-projects-category:visible").count(),6,"Reset displays all collections");
         assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),"Projects must not overflow horizontally");
@@ -453,6 +470,12 @@ try {
     await page.locator("html:not([data-vv-boot])").waitFor({state:"attached",timeout:20000});
     const target=await page.locator("#web-ui-ux").boundingBox();
     assert.ok(target && target.y < viewport.height && target.y+target.height>0,"Explicit project link did not reach target");
+    await page.goto(base+"projects.html?collection=branding",{waitUntil:"commit"});
+    await page.locator(".vv-pj-collection-page[open]").waitFor({state:"visible",timeout:20000});
+    assert.equal(await page.locator("#vv-pj-collection-title").textContent(),"Branding & Identity","Collection deep links open directly");
+    await page.getByRole("button",{name:"Close collection",exact:true}).click();
+    await page.locator(".vv-pj-collection-page").waitFor({state:"detached"});
+    assert.equal(new URL(page.url()).searchParams.has("collection"),false);
     await followFromHome(page,"About","about.html");
     await context.close();
   }
