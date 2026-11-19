@@ -127,6 +127,19 @@ try {
   await motionPage.locator("footer.vv-close-footer-wrap").evaluate(el=>el.scrollIntoView({block:"start",behavior:"instant"}));
   assert.ok(await motionPage.evaluate(()=>{const boundary=document.querySelector(".vvx-through-cta"),footer=document.querySelector("footer.vv-close-footer-wrap");return getComputedStyle(boundary).overflowY==="clip"&&boundary.getBoundingClientRect().bottom<=footer.getBoundingClientRect().top+1;}),"Rails must be clipped at the footer boundary");
   console.log("Who We Serve: endless desktop rails continue through CTA and end at footer");
+  await motionPage.goto(base+"projects.html",{waitUntil:"commit"});
+  await motionPage.locator("html:not([data-vv-boot])").waitFor({state:"attached",timeout:20000});
+  await motionPage.locator("#graphic-design .vv-pj-card-media").hover();
+  await motionPage.waitForFunction(()=>{
+    const first=document.querySelector("#graphic-design"), second=document.querySelector("#photography");
+    return getComputedStyle(first).filter==="none" && getComputedStyle(second).filter==="blur(4px)" &&
+      getComputedStyle(first.querySelector(".vv-focus-caption")).opacity==="1";
+  });
+  await motionPage.locator("#photography .vv-pj-card-media").hover();
+  await motionPage.waitForFunction(()=>getComputedStyle(document.querySelector("#photography")).filter==="none" && getComputedStyle(document.querySelector("#graphic-design")).filter==="blur(4px)");
+  await motionPage.locator(".vv-pj-results").hover();
+  await motionPage.waitForFunction(()=>[...document.querySelectorAll(".vv-focus-card")].every(card=>getComputedStyle(card).filter==="none"));
+  console.log("Projects: hover focus switches between cards and clears on exit");
   // Simulate a stale/missing deployment entry and verify a single fresh
   // request restores the page, leaving the canonical URL clean.
   const retryContext = await browser.newContext({viewport:{width:1280,height:800},reducedMotion:"reduce"});
@@ -230,6 +243,12 @@ try {
       // Scroll away: CSS motion must be paused on offscreen sections.
       await touch.evaluate(()=>window.scrollTo({top:0,behavior:"instant"}));
       await touch.waitForFunction(()=>document.querySelector(".vv-close-marquee-section")?.classList.contains("vv-motion-offscreen"));
+    }
+    if(path==="projects.html"){
+      await touch.locator("#graphic-design").getByRole("button",{name:"Explore Graphic Design",exact:true}).tap();
+      assert.equal(await touch.locator("#vv-pj-details-graphic-design").isVisible(),true);
+      assert.ok(await touch.locator(".vv-focus-card").evaluateAll(cards=>cards.every(card=>getComputedStyle(card).filter==="none")),"Touch interaction must not leave neighboring cards blurred");
+      await touch.locator("#graphic-design").getByRole("button",{name:"Close collection",exact:true}).tap();
     }
     if(path==="services.html?service=photography"){
       const compare=touch.getByRole("slider",{name:"Compare original and edited photography"});

@@ -7,6 +7,7 @@ import { VisualVerseNavbar } from "./VisualVerseNavbar";
 import { WhatsAppFloating } from "./VisualVersePolicies";
 import { VisualVerseFooter } from "./VisualVerseClosingSections";
 import { VisualVerseAboutCta } from "./VisualVerseAboutCta";
+import { FocusCards, FocusCard, FocusCardCaption } from "./ui/focus-cards";
 import "../projects-gallery.css";
 
 const BASE = import.meta.env.BASE_URL;
@@ -63,9 +64,10 @@ function ContactSheet({onNavigate}:{onNavigate:(id:string)=>void}){
 function CollectionCard({collection,hidden}:{collection:Collection;hidden:boolean}){
   const name=serviceLabel(collection.id);
   const [expanded,setExpanded]=useState(false);
-  return <article className={"vv-projects-category vv-pj-card vv-pj-card-"+collection.id} id={collection.id} hidden={hidden} aria-labelledby={"vv-project-"+collection.id}>
+  return <FocusCard className={"vv-projects-category vv-pj-card vv-pj-card-"+collection.id} id={collection.id} hidden={hidden} aria-labelledby={"vv-project-"+collection.id}>
     <div className="vv-pj-card-media">
       {collection.photo?<img src={asset(collection.photo)} alt={collection.alt} loading="lazy" decoding="async"/>:<PortfolioArtwork kind={collection.art??"digital"}/>}
+      <FocusCardCaption className="vv-pj-focus-caption"><span>{name}</span><strong>{collection.title}</strong></FocusCardCaption>
       <span className="vv-pj-media-tag"><span className="vv-pj-media-dot"/>{collection.medium}</span>
       <span className="vv-pj-card-number" aria-hidden="true">{serviceNumber(collection.id)}</span>
       <button className="vv-pj-open" type="button" aria-expanded={expanded} aria-controls={"vv-pj-details-"+collection.id} aria-label={(expanded?"Close ":"Explore ")+name} onClick={()=>setExpanded(!expanded)}>{expanded?<Minus size={24}/>:<ArrowUpRight size={24}/>}</button>
@@ -84,7 +86,7 @@ function CollectionCard({collection,hidden}:{collection:Collection;hidden:boolea
         <a href={BASE+"services.html?service="+collection.id}>Discover this service <ArrowRight size={15}/></a>
       </div>
     </div>
-  </article>;
+  </FocusCard>;
 }
 
 export function VisualVerseProjectsPage(){
@@ -131,9 +133,9 @@ export function VisualVerseProjectsPage(){
           <button type="button" aria-pressed={filter==="all"} onClick={()=>setFilter("all")}>All collections</button>
           {collections.map(item=><button type="button" key={item.id} aria-pressed={filter===item.id} onClick={()=>setFilter(item.id)}>{serviceLabel(item.id)}</button>)}
         </div><span role="status" className="vv-pj-results">{String(visibleCount).padStart(2,"0")} / 06 collections</span></div>
-        <div className={"vv-pj-grid"+(filter==="all"?"":" is-filtered")}>
+        <FocusCards className={"vv-pj-grid"+(filter==="all"?"":" is-filtered")}>
           {collections.map(collection=><CollectionCard key={collection.id} collection={collection} hidden={filter!=="all"&&filter!==collection.id}/>)}
-        </div>
+        </FocusCards>
         <p className="vv-pj-note">Archive photography and design are examples from the original Visual Verse portfolio. Concept studies demonstrate creative directions, not commissioned client projects.</p>
       </section>
 
