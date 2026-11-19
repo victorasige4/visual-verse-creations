@@ -1,0 +1,33 @@
+.vv-focus-caption {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Aceternity's 300ms focus effect, scoped to this group of cards. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .vv-focus-cards:has(> .vv-focus-card:not([hidden]):hover) > .vv-focus-card:not([hidden]):not(:hover) {
+    filter: blur(4px);
+    transform: scale(.98);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .vv-focus-card:hover .vv-focus-caption {
+    opacity: 1;
+  }
+}
+
+/* Keyboard users receive the title reveal without blurring their controls. */
+.vv-focus-card:has(:focus-visible) .vv-focus-caption {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .vv-focus-cards > .vv-focus-card:not([hidden]) {
+    transition: filter 300ms ease-out, transform 300ms ease-out, box-shadow 250ms ease, border-color 250ms ease;
+  }
+  .vv-focus-caption {
+    transition: opacity 300ms ease-out;
+  }
+}
+
