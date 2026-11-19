@@ -39,8 +39,8 @@
 .vv-pj-sheet-status{white-space:nowrap;font-size:9px;letter-spacing:.1em}
 .vv-pj-sheet-status i{width:7px;height:7px;border-radius:50%;background:#60e4c8;box-shadow:0 0 10px #60e4c8}
 .vv-pj-viewfinder{position:relative;isolation:isolate;aspect-ratio:1.65;background:#011d29;border:1px solid #64847e60;border-radius:10px;overflow:hidden;display:grid;place-items:center}
-.vv-pj-frame-scene{position:absolute;inset:0;display:grid;place-items:center;padding:12px;background:radial-gradient(ellipse,#45666850,transparent 70%);animation:vv-pj-frame-in .38s ease both}
-.vv-pj-frame-scene img{display:block;width:100%;height:100%;min-height:0;object-fit:contain;filter:drop-shadow(0 12px 18px #0008)}
+.vv-pj-frame-scene{position:absolute;inset:0;background:#092f3c;animation:vv-pj-frame-in .38s ease both}
+.vv-pj-frame-scene img{display:block;width:100%;height:100%;min-height:0;object-fit:cover}
 @keyframes vv-pj-frame-in{from{opacity:.3;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 .vv-pj-frame-cross{position:absolute;width:18px;height:18px;border-color:#b3e4dcd9;border-style:solid;border-width:0;pointer-events:none}
 .vv-pj-cross-tl{top:13px;left:13px;border-width:1px 0 0 1px}.vv-pj-cross-tr{top:13px;right:13px;border-width:1px 1px 0 0}.vv-pj-cross-bl{bottom:13px;left:13px;border-width:0 0 1px 1px}.vv-pj-cross-br{bottom:13px;right:13px;border-width:0 1px 1px 0}
@@ -52,7 +52,7 @@
 .vv-pj-frame-link{background:var(--pj-mint);color:var(--pj-dark);border-color:var(--pj-mint)}
 .vv-pj-frame-link:hover,.vv-pj-frame-step:hover{background:#b6f3e7;color:var(--pj-dark);border-color:#b6f3e7}
 .vv-pj-filmstrip{display:flex;align-items:center;gap:9px;padding-top:11px;border-top:1px solid #5f817957}
-.vv-pj-thumbs{flex:1;min-width:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+.vv-pj-thumbs{flex:1;min-width:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px}
 .vv-pj-thumbs button{position:relative;aspect-ratio:1.28;min-width:0;background:#001d29;border:2px solid transparent;border-radius:6px;padding:0;overflow:hidden;cursor:pointer;opacity:.65;transition:opacity .2s,border-color .2s}
 .vv-pj-thumbs button:hover,.vv-pj-thumbs button[aria-pressed=true]{opacity:1}
 .vv-pj-thumbs button[aria-pressed=true]{border-color:var(--pj-mint)}
@@ -82,9 +82,6 @@
 .vv-pj-focus-caption span{font-size:11px;font-weight:750;letter-spacing:.065em;text-transform:uppercase;color:#a9eee3}
 .vv-pj-focus-caption strong{font-size:clamp(20px,2.1vw,30px);line-height:1.13;font-weight:800;color:#fff}
 .vv-pj-card-media>img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
-.vv-pj-card-graphic-design .vv-pj-card-media{background:radial-gradient(ellipse at 50% 40%,#355960,#092f3c)}
-.vv-pj-card-graphic-design .vv-pj-card-media>img{object-fit:contain;padding:18px;filter:drop-shadow(0 10px 18px #001c28a8)}
-.vv-pj-card-photography .vv-pj-card-media>img{object-position:center 67%}
 .vv-pj-card-media .vv-pf-art{transition:transform .45s cubic-bezier(.2,.8,.2,1)}
 .vv-pj-card:hover .vv-pj-card-media>img,.vv-pj-card:hover .vv-pj-card-media>.vv-pf-art{transform:scale(1.025)}
 .vv-pj-media-tag{position:absolute;z-index:2;left:13px;bottom:13px;display:inline-flex;align-items:center;gap:7px;background:#001f2fe8;color:#f7fbf9;font-size:10px;font-weight:650;padding:8px 10px;border:1px solid #ffffff29;border-radius:99px}
@@ -104,6 +101,10 @@
 .vv-pj-card-details p{margin:0 0 10px;font-size:11px;font-weight:750;color:#4b736f}
 .vv-pj-card-details ul{list-style:none;padding:0;margin:0;display:flex;gap:7px;flex-wrap:wrap}
 .vv-pj-card-details li{background:#e7f4ef;color:#2e655f;padding:7px 10px;border-radius:5px;font-size:11px;font-weight:600}
+.vv-pj-archive{margin-top:18px}
+.vv-pj-archive-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(130px,100%),1fr));gap:8px}
+.vv-pj-archive-grid img{display:block;width:100%;height:clamp(120px,14vw,180px);object-fit:cover;border-radius:8px;background:#e2f3ed}
+.vv-pj-card-graphic-design .vv-pj-archive-grid img{object-fit:contain;background:#092f3c}
 .vv-pj-note{font-size:12px;color:#587b76;line-height:1.6;margin:26px 0 0;max-width:780px}
 .vv-pj-finale{position:relative;isolation:isolate;overflow:hidden;color:white;background:#003f5c;padding:clamp(65px,7vw,105px) max(24px,calc((100vw - 1260px)/2))}
 .vv-pj-finale-inner{position:relative;max-width:1260px;margin:auto}
