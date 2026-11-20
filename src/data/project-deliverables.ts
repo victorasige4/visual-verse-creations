@@ -1,16 +1,27 @@
 /** Creative directions, not claims of completed commissions. Existing portfolio
  * images are incorporated into their corresponding deliverables. */
-export type CampaignArtwork = { title: string; image: string };
-export type ProjectDeliverable = { title: string; image: string; description: string; details: string; position?: string; examples?: string[]; artwork?: CampaignArtwork[] };
+export type PortfolioArtwork = { title: string; image: string; width: number; height: number };
+export type ProjectDeliverable = { title: string; image: string; description: string; details: string; position?: string; examples?: string[]; artwork?: PortfolioArtwork[]; artworkLabel?: string };
 
-const xobriqCampaign: CampaignArtwork[] = [
+const xobriqCampaign: PortfolioArtwork[] = [
   "Identify high-value AI opportunities", "Build your AI roadmap", "Detect synthetic identity", "How long should KYC take?", "Africa’s AI economy", "Verify before lending", "Your fleet moves fast", "KYC is more than an ID", "Seven days to smarter verification", "Verify the business behind the business", "Three days to Xobriq KYC", "KYC is about to get smarter", "For businesses that need to verify", "Score the risk with Xobriq Guard",
-].map((title,index)=>({title,image:`project-archive/campaign-graphics/xobriq-${String(index+8).padStart(2,"0")}.webp`}));
+].map((title,index)=>({title,image:`project-archive/campaign-graphics/xobriq-${String(index+8).padStart(2,"0")}.webp`,width:1080,height:1350}));
+
+const editorialPosters: PortfolioArtwork[] = [
+  {title:"Online Makeup Classes — Lolo Beauty",image:"online-makeup-classes",width:2000,height:2000},
+  {title:"Easter Sunday — Hillside Church",image:"easter-sunday",width:1500,height:1500},
+  {title:"Isaiah 53:5 — Hillside Church",image:"isaiah-53-5",width:1500,height:1500},
+  {title:"Ramadan Kareem — Finsense Africa",image:"ramadan-kareem",width:1200,height:1200},
+  {title:"Six Hours of Travail — Hillside Church",image:"six-hours-of-travail",width:1080,height:1080},
+  {title:"Father’s Day — Hillside Church",image:"fathers-day",width:1500,height:1500},
+  {title:"Men Always Ought to Pray — Hillside Church",image:"men-ought-to-pray",width:1200,height:1500},
+  {title:"Next Dimension — Hillside Church",image:"next-dimension",width:1200,height:1200},
+].map(item=>({...item,image:`project-archive/editorial-posters/${item.image}.webp`}));
 
 export const projectDeliverables: Record<string, ProjectDeliverable[]> = {
   "graphic-design": [
-    {title:"Campaign graphics",image:"service-cover-graphic-design.webp",description:"Visuals that make a campaign impossible to overlook.",details:"Campaign key visuals, promotional banners and adaptable artwork for digital and print touchpoints.",artwork:xobriqCampaign},
-    {title:"Editorial & poster design",image:"project-archive/social-design.webp",description:"Bold compositions with a message that lands.",details:"Posters, publication layouts, event announcements and editorial artwork with thoughtfully balanced typography and imagery.",position:"center"},
+    {title:"Campaign graphics",image:"service-cover-graphic-design.webp",description:"Visuals that make a campaign impossible to overlook.",details:"Campaign key visuals, promotional banners and adaptable artwork for digital and print touchpoints.",artwork:xobriqCampaign,artworkLabel:"Xobriq"},
+    {title:"Editorial & poster design",image:"project-archive/social-design.webp",description:"Bold compositions with a message that lands.",details:"Posters, publication layouts, event announcements and editorial artwork with thoughtfully balanced typography and imagery.",position:"center",artwork:editorialPosters,artworkLabel:"Selected work"},
     {title:"Print collateral",image:"who-we-serve-toolbox-design.webp",description:"Thoughtful design you can hold in your hands.",details:"Brochures, flyers, stationery and other print-ready materials, prepared with production requirements in mind."},
     {title:"Illustration",image:"selected-directions/graphic-design.webp",description:"Original visual ideas with their own personality.",details:"Custom illustrations, graphic elements and expressive visual concepts that support your story."},
   ],

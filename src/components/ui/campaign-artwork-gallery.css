@@ -11,6 +11,7 @@
 .vv-campaign-board-mark{position:absolute;inset:0;display:grid;align-content:center;text-align:center;color:#b4dad624;font-size:clamp(32px,7vw,82px);font-weight:850;pointer-events:none}
 .vv-campaign-board-mark span{display:block;font-size:11px;letter-spacing:.18em}
 .vv-draggable-card{--campaign-card-width:min(17cqw,38cqh);position:absolute!important;display:block;width:var(--campaign-card-width);aspect-ratio:4/5;padding:0;overflow:hidden;border:1px solid #d6ebe3;border-radius:6px;background:#092b40;box-shadow:0 7px 16px #0009;touch-action:none;user-select:none;cursor:grab!important;transform-style:preserve-3d}
+.vv-campaign-board--compact .vv-draggable-card{--campaign-card-width:min(23cqw,41cqh)}
 .vv-draggable-card:active{cursor:grabbing!important}
 .vv-draggable-card[aria-pressed=true]{border:2px solid #2ec4b6;box-shadow:0 9px 22px #000b}
 .vv-draggable-card:focus-visible{outline:3px solid #b7faec;outline-offset:2px}
@@ -25,3 +26,4 @@
 .vv-campaign-actions button:hover{background:#b8eadf}
 .vv-campaign-actions :is(button,select):focus-visible{outline:2px solid #23766e;outline-offset:2px}
 @media(max-width:600px){.vv-campaign-board{height:clamp(250px,43dvh,390px)}.vv-draggable-card{--campaign-card-width:min(31cqw,35cqh)}.vv-campaign-actions label{flex-basis:100%}.vv-campaign-toolbar{padding:8px 10px}.vv-campaign-count{font-size:10px}.vv-campaign-drag{font-size:13px}.vv-apple-detail.vv-apple-detail--campaign{padding:12px}}
+@media(max-width:600px){.vv-campaign-board--compact .vv-draggable-card{--campaign-card-width:min(35cqw,36cqh)}}

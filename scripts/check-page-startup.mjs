@@ -212,6 +212,18 @@ try {
   console.log("Projects: all 14 campaign artworks load, drag, preview and reset");
   await creativeDetail.getByRole("button",{name:"Close creative detail"}).click();
   await collection.locator(":scope > .vv-cursor-layer").waitFor({state:"attached"});
+  await collection.getByRole("button",{name:"Explore Editorial & poster design",exact:true}).click();
+  await creativeDetail.getByRole("heading",{name:"Editorial & poster design"}).waitFor();
+  assert.equal(await creativeDetail.locator(".vv-draggable-card").count(),8,"All eight editorial posters are present");
+  assert.equal(await creativeDetail.getByText("Drag to view",{exact:true}).count(),1);
+  await motionPage.waitForFunction(()=>[...document.querySelectorAll(".vv-draggable-card img")].every(image=>image.complete&&image.naturalWidth===Number(image.getAttribute("width"))&&image.naturalHeight===Number(image.getAttribute("height"))));
+  await creativeDetail.getByRole("combobox",{name:"Choose editorial artwork"}).selectOption("6");
+  await creativeDetail.locator(".vv-campaign-preview img").waitFor({state:"visible"});
+  assert.equal(await creativeDetail.locator(".vv-campaign-preview img").getAttribute("alt"),"Men Always Ought to Pray — Hillside Church");
+  await creativeDetail.getByRole("button",{name:"Reset",exact:true}).click();
+  assert.equal(await creativeDetail.locator(".vv-draggable-card[aria-pressed='true']").getAttribute("aria-label"),"Select artwork: Next Dimension — Hillside Church");
+  await creativeDetail.getByRole("button",{name:"Close creative detail"}).click();
+  console.log("Projects: all eight editorial posters load at their original proportions, preview and reset");
   await collection.getByRole("button",{name:"Close collection",exact:true}).click();
   await motionPage.locator("#vv-cursor-root > .vv-cursor-layer").waitFor({state:"attached"});
   console.log("Projects: precision cursor follows collection and nested creative card dialogs");
