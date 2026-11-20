@@ -4,7 +4,7 @@ import type { PortfolioArtwork } from "../../data/project-deliverables";
 import "./infinite-photo-cards.css";
 
 /** A continuous contact sheet: fixed-height cards retain each photo's ratio. */
-export function InfinitePhotoCards({items}:{items:PortfolioArtwork[]}) {
+export function InfinitePhotoCards({items,label}:{items:PortfolioArtwork[];label:string}) {
   const rail=useRef<HTMLDivElement>(null), first=useRef<HTMLDivElement>(null), middle=useRef<HTMLDivElement>(null);
   const width=useRef(0), settle=useRef(0), running=useRef(false);
   const [paused,setPaused]=useState(false), [hovered,setHovered]=useState(false), [focused,setFocused]=useState(false), [touching,setTouching]=useState(false);
@@ -31,9 +31,9 @@ export function InfinitePhotoCards({items}:{items:PortfolioArtwork[]}) {
     const move=(now:number)=>{if(last){carry+=Math.min(now-last,50)*.032;const pixels=Math.floor(carry);if(pixels){carry-=pixels;el.scrollLeft+=pixels;if(el.scrollLeft>=2*width.current)normalize();}}last=now;frame=requestAnimationFrame(move);};
     frame=requestAnimationFrame(move);return()=>{running.current=false;cancelAnimationFrame(frame);};
   },[playing]);
-  return <section className="vv-photo-gallery" aria-label="Graduation photography gallery" data-autoplay={playing?"playing":"paused"}>
-    <div className="vv-photo-gallery-heading"><span>Graduation portraits</span><span>{items.length} photographs</span></div>
-    <div className="vv-photo-rail" ref={rail} tabIndex={0} role="region" aria-label="Scrollable graduation photographs"
+  return <section className="vv-photo-gallery" aria-label={`${label} photography gallery`} data-autoplay={playing?"playing":"paused"}>
+    <div className="vv-photo-gallery-heading"><span>{label}</span><span>{items.length} photographs</span></div>
+    <div className="vv-photo-rail" ref={rail} tabIndex={0} role="region" aria-label={`Scrollable ${label.toLowerCase()} photographs`}
       onScroll={()=>{if(!running.current){clearTimeout(settle.current);settle.current=window.setTimeout(normalize,150);}}}
       onPointerMove={e=>{if(e.pointerType!=="touch"&&(e.movementX||e.movementY))setHovered(true);}} onPointerLeave={()=>setHovered(false)}
       onTouchStart={()=>setTouching(true)} onTouchEnd={()=>setTouching(false)} onTouchCancel={()=>setTouching(false)}

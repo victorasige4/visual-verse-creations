@@ -544,8 +544,13 @@ try {
         await scroller.evaluate((el,width)=>{el.scrollLeft=width*2+20;},period);
         await page.waitForFunction(width=>Math.abs(document.querySelector(".vv-apple-scroller").scrollLeft-width-20)<3,period);
         assert.equal(await page.locator(".vv-pj-collection-end").evaluate(el=>el.getBoundingClientRect().bottom<=innerHeight),true);
-        await page.getByRole("button",{name:"Explore Portraits & lifestyle",exact:true}).click();
+        await page.getByRole("button",{name:"Explore Birthdays",exact:true}).click();
         await page.locator(".vv-apple-detail[open]").waitFor({state:"visible"});
+        assert.equal(await page.locator(".vv-photo-gallery-heading").textContent(),"Birthday celebrations20 photographs");
+        const birthdayImages=page.locator(".vv-photo-group[data-copy='1'] img");
+        assert.equal(await birthdayImages.count(),20,"Birthday gallery includes every supplied photograph");
+        assert.ok(await birthdayImages.evaluateAll(async images=>{await Promise.all(images.map(image=>{image.loading="eager";return image.decode();}));return images.every(image=>image.naturalWidth>0&&image.alt&&image.src.includes("/birthday-photos/"));}),"All birthday photos load with descriptions");
+        assert.equal(await page.locator(".vv-photo-gallery").getAttribute("data-autoplay"),"paused","Reduced motion disables photo autoplay");
         await page.keyboard.press("Escape");
         await page.locator(".vv-apple-detail").waitFor({state:"detached"});
         await page.getByRole("button",{name:"Close collection",exact:true}).click();

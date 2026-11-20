@@ -1,7 +1,7 @@
 /** Creative directions, not claims of completed commissions. Existing portfolio
  * images are incorporated into their corresponding deliverables. */
 export type PortfolioArtwork = { title: string; image: string; width: number; height: number };
-export type ProjectDeliverable = { title: string; image: string; description: string; details: string; position?: string; examples?: string[]; artwork?: PortfolioArtwork[]; artworkLabel?: string; photographs?: PortfolioArtwork[] };
+export type ProjectDeliverable = { title: string; image: string; description: string; details: string; position?: string; examples?: string[]; artwork?: PortfolioArtwork[]; artworkLabel?: string; photographs?: PortfolioArtwork[]; photographsLabel?: string };
 
 const xobriqCampaign: PortfolioArtwork[] = [
   "Identify high-value AI opportunities", "Build your AI roadmap", "Detect synthetic identity", "How long should KYC take?", "Africa’s AI economy", "Verify before lending", "Your fleet moves fast", "KYC is more than an ID", "Seven days to smarter verification", "Verify the business behind the business", "Three days to Xobriq KYC", "KYC is about to get smarter", "For businesses that need to verify", "Score the risk with Xobriq Guard",
@@ -31,6 +31,29 @@ const graduationPortraits: PortfolioArtwork[] = [
   {title:"Landscape close-up graduation portrait",image:"top06750",width:1400,height:933},
 ].map(item=>({...item,image:`project-archive/graduation-portraits/${item.image}.webp`}));
 
+const birthdayPhotos: PortfolioArtwork[] = [
+  {title:"Birthday honoree wearing a sash, with two guests",image:"amg_9710"},
+  {title:"A guest laughing at the birthday table",image:"amg_9717"},
+  {title:"A guest sharing a birthday speech",image:"amg_9676",portrait:true},
+  {title:"A moment of prayer for the honoree",image:"amg_9636"},
+  {title:"The honoree smiling during a speech",image:"amg_9620"},
+  {title:"A guest addressing the celebration",image:"amg_9595"},
+  {title:"Guests gathering around the birthday honoree",image:"amg_9533"},
+  {title:"Guests lined up in white and lavender",image:"amg_9524"},
+  {title:"Birthday reception buffet",image:"amg_9476"},
+  {title:"The birthday honoree laughing with guests",image:"amg_9434"},
+  {title:"Guests dancing together",image:"amg_9403"},
+  {title:"Outdoor portrait by the pool and gardens",image:"amg_9396"},
+  {title:"Friends sharing a joyful moment",image:"amg_9386"},
+  {title:"Smiling birthday portrait",image:"amg_9356"},
+  {title:"Profile portrait of the birthday honoree",image:"amg_9355"},
+  {title:"Guests singing and celebrating together",image:"amg_9353"},
+  {title:"Friends applauding and capturing memories",image:"amg_9350"},
+  {title:"The birthday honoree arriving at the reception",image:"amg_9338"},
+  {title:"Three guests posing beside the balloon backdrop",image:"amg_9264"},
+  {title:"Guests playfully taking photos",image:"amg_9255"},
+].map(({title,image,portrait})=>({title,image:`project-archive/birthday-photos/${image}.webp`,width:portrait?934:1400,height:portrait?1400:934}));
+
 export const projectDeliverables: Record<string, ProjectDeliverable[]> = {
   "graphic-design": [
     {title:"Campaign graphics",image:"service-cover-graphic-design.webp",description:"Visuals that make a campaign impossible to overlook.",details:"Campaign key visuals, promotional banners and adaptable artwork for digital and print touchpoints.",artwork:xobriqCampaign,artworkLabel:"Xobriq"},
@@ -39,8 +62,8 @@ export const projectDeliverables: Record<string, ProjectDeliverable[]> = {
     {title:"Illustration",image:"selected-directions/graphic-design.webp",description:"Original visual ideas with their own personality.",details:"Custom illustrations, graphic elements and expressive visual concepts that support your story."},
   ],
   photography: [
-    {title:"Portraits & lifestyle",image:"selected-directions/photography.webp",description:"Authentic portraits with a sense of character.",details:"Individual, team and lifestyle photography, with considered lighting, composition and direction."},
-    {title:"Graduations & celebrations",image:graduationPortraits[3].image,description:"Give milestones the memories they deserve.",details:"Graduations, celebrations and special occasions, from candid interactions to carefully composed portraits.",photographs:graduationPortraits},
+    {title:"Birthdays",image:birthdayPhotos[0].image,description:"Every year. Every smile. Every unforgettable moment.",details:"Birthday photography that captures the joy of the day, from heartfelt speeches and candid laughter to portraits, family and friends.",photographs:birthdayPhotos,photographsLabel:"Birthday celebrations"},
+    {title:"Graduations & celebrations",image:graduationPortraits[3].image,description:"Give milestones the memories they deserve.",details:"Graduations, celebrations and special occasions, from candid interactions to carefully composed portraits.",photographs:graduationPortraits,photographsLabel:"Graduation portraits"},
     {title:"Corporate events",image:"project-archive/corporate-moment.webp",description:"The energy, people and details of your event.",details:"Conference, seminar and business event photography that captures speakers, audiences, networking and atmosphere.",examples:["project-archive/corporate-events.webp"]},
     {title:"Image editing",image:"photography-wedding-compare.webp",description:"Bring out what makes each photograph special.",details:"Colour correction, tonal adjustments, retouching and consistent finishing for a cohesive image collection."},
   ],
