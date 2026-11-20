@@ -96,12 +96,7 @@ export const projectDeliverables: Record<string, ProjectDeliverable[]> = {
     {title:"Corporate events",image:corporateEventPhotos[6].image,description:"The energy, people and details of your event.",details:"Conference, seminar and business event photography that captures speakers, audiences, networking and atmosphere.",photographs:corporateEventPhotos,photographsLabel:"Corporate event photography"},
     {title:"Weddings",image:weddingPhotos[0].image,description:"The moments that make your day yours.",details:"From the vows to the quiet in-between moments, explore a wedding photography style that celebrates the story of your day.",photographs:weddingPhotos,photographsLabel:"Wedding photography inspiration",photographsCredit:{label:"Stock photography: Magnific",url:"https://www.magnific.com/serie/34914720"}},
   ],
-  "web-ui-ux": [
-    {title:"Responsive websites",image:"who-we-serve-toolbox-web.webp",description:"A digital home that works on every screen.",details:"Responsive landing pages, portfolio sites and business websites, designed around your audience and brand."},
-    {title:"Interface design",image:"selected-directions/digital.webp",description:"Clear, expressive interfaces made for real people.",details:"Web and mobile product interfaces, component systems and accessible visual patterns."},
-    {title:"User journeys",image:"audience-digital-creative.webp",description:"Make every step feel natural and intentional.",details:"User flow mapping, information architecture and wireframes that simplify how people find and use what they need."},
-    {title:"Interactive prototypes",image:"service-cover-web-ui-ux.webp",description:"Experience the idea before it becomes a product.",details:"Clickable prototypes for testing key interactions, refining journeys and aligning stakeholders before development."},
-  ],
+  "web-ui-ux": [],
   videography: [
     {title:"Event films",image:"project-archive/event-story.webp",description:"Relive the feeling of being there.",details:"Event highlights, recaps and storytelling films that bring together defining moments and atmosphere."},
     {title:"Interviews & documentaries",image:"who-we-serve-toolbox-film.webp",description:"Human stories, told with care.",details:"Interview-led films, documentary-style features and authentic brand stories, with purposeful framing and sound."},

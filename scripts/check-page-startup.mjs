@@ -576,6 +576,18 @@ try {
         await page.locator(".vv-pj-collection-page").waitFor({state:"detached"});
         await page.locator(".vv-projects-filters").getByRole("button",{name:"All collections",exact:true}).click();
         assert.equal(await page.locator(".vv-projects-category:visible").count(),6,"Reset displays all collections");
+        await page.locator("#web-ui-ux").getByRole("link",{name:"Explore collection",exact:true}).click();
+        await page.locator(".vv-pj-collection-page[open]").waitFor({state:"visible"});
+        const webProject=page.locator(".vv-pj-client-card");
+        assert.equal(await webProject.count(),1,"Web design displays only its completed project");
+        assert.equal(await page.locator(".vv-pj-collection-page .vv-apple-carousel").count(),0,"Web design has no carousel");
+        assert.equal(await webProject.getAttribute("href"),"https://stevenloise.com/");
+        assert.equal(await webProject.getAttribute("target"),"_blank");
+        assert.ok(await webProject.locator("img").evaluate(async image=>{await image.decode();return image.naturalWidth===1280&&image.naturalHeight===889;}),"Authentic landing page thumbnail loads");
+        await webProject.focus();
+        assert.ok(await webProject.evaluate(link=>document.activeElement===link),"Project card is keyboard accessible");
+        await page.keyboard.press("Escape");
+        await page.locator(".vv-pj-collection-page").waitFor({state:"detached"});
         assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),"Projects must not overflow horizontally");
       }
       if(path==="request-quote.html") assert.deepEqual((await page.locator(".vv-inner-quote-form select").first().locator("option").allTextContents()).slice(0,6),serviceNames,"Quote service order");

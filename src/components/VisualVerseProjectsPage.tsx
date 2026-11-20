@@ -157,6 +157,7 @@ function CollectionCard({collection,hidden,onOpen}:{collection:Collection;hidden
 function CollectionPage({collection,onClose}:{collection:Collection;onClose:()=>void}){
   const dialog=useRef<HTMLDialogElement>(null);
   const name=serviceLabel(collection.id);
+  const isWeb=collection.id==="web-ui-ux";
   const quoteHref=BASE+"request-quote.html?service="+encodeURIComponent(name);
   useEffect(()=>{
     const el=dialog.current;
@@ -171,7 +172,15 @@ function CollectionPage({collection,onClose}:{collection:Collection;onClose:()=>
     <header className="vv-pj-collection-header"><button type="button" onClick={onClose} className="vv-pj-collection-back"><ArrowLeft size={18}/> All collections</button><span>VISUAL VERSE / {serviceNumber(collection.id)} OF 06</span><button type="button" autoFocus className="vv-pj-collection-close" aria-label="Close collection" onClick={onClose}><X size={23}/></button></header>
     <div className="vv-pj-collection-body">
       <div className="vv-pj-collection-intro"><div><span className="vv-pj-eyebrow"><span className="vv-pj-signal"/>{name.toUpperCase()}</span><h2 id="vv-pj-collection-title">{name}</h2><h3>{collection.title}</h3><p>{collection.description}</p></div><img src={servicePhoto(collection.id)} alt={collection.alt} style={{objectPosition:collection.position}} width={1200} height={servicePhotoHeight(collection.id)} decoding="async"/></div>
-      <section className="vv-pj-collection-content" aria-labelledby="vv-pj-possibilities"><div className="vv-pj-collection-heading"><h3 id="vv-pj-possibilities">What we can <em>create for you.</em></h3><p>Explore each creative direction for a closer look at the possibilities.</p></div><AppleCardsCarousel items={projectDeliverables[collection.id]} category={name} quoteHref={quoteHref}/></section>
+      <section className={`vv-pj-collection-content${isWeb?" vv-pj-web-collection":""}`} aria-labelledby="vv-pj-possibilities">
+        {isWeb?<>
+          <div className="vv-pj-collection-heading"><h3 id="vv-pj-possibilities">Selected <em>project.</em></h3><p>Explore our completed website project.</p></div>
+          <a className="vv-pj-client-card" href="https://stevenloise.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Steve & Loise website (opens in a new tab)">
+            <div className="vv-pj-client-preview"><img src={BASE+"project-archive/steven-loise-landing.webp"} alt="The Steve & Loise wedding website landing page" width={1280} height={889} decoding="async"/></div>
+            <div className="vv-pj-client-copy"><span className="vv-pj-eyebrow">WEBSITE DESIGN</span><h4>Steve &amp; Loise</h4><p>A digital wedding invitation celebrating their love story.</p><span className="vv-pj-client-visit">stevenloise.com <ArrowUpRight size={20} aria-hidden="true"/></span></div>
+          </a>
+        </>:<><div className="vv-pj-collection-heading"><h3 id="vv-pj-possibilities">What we can <em>create for you.</em></h3><p>Explore each creative direction for a closer look at the possibilities.</p></div><AppleCardsCarousel items={projectDeliverables[collection.id]} category={name} quoteHref={quoteHref}/></>}
+      </section>
     </div>
     <div className="vv-pj-collection-end"><p>Have something in mind? Let’s make it happen.</p><a className="vv-motion-action vv-action-primary" href={quoteHref}><VisualVerseActionContent>Start a project</VisualVerseActionContent></a><a className="vv-pj-start-link" href={BASE+"services.html?service="+collection.id}>Discover this service <ArrowUpRight size={16}/></a></div>
   </dialog>;
