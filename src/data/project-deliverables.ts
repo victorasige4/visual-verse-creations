@@ -1,7 +1,7 @@
 /** Creative directions, not claims of completed commissions. Existing portfolio
  * images are incorporated into their corresponding deliverables. */
 export type PortfolioArtwork = { title: string; image: string; width: number; height: number };
-export type ProjectDeliverable = { title: string; image: string; description: string; details: string; position?: string; examples?: string[]; artwork?: PortfolioArtwork[]; artworkLabel?: string; photographs?: PortfolioArtwork[]; photographsLabel?: string };
+export type ProjectDeliverable = { title: string; image: string; description: string; details: string; position?: string; examples?: string[]; artwork?: PortfolioArtwork[]; artworkLabel?: string; photographs?: PortfolioArtwork[]; photographsLabel?: string; photographsCredit?: {label: string; url: string} };
 
 const xobriqCampaign: PortfolioArtwork[] = [
   "Identify high-value AI opportunities", "Build your AI roadmap", "Detect synthetic identity", "How long should KYC take?", "Africa’s AI economy", "Verify before lending", "Your fleet moves fast", "KYC is more than an ID", "Seven days to smarter verification", "Verify the business behind the business", "Three days to Xobriq KYC", "KYC is about to get smarter", "For businesses that need to verify", "Score the risk with Xobriq Guard",
@@ -54,6 +54,19 @@ const birthdayPhotos: PortfolioArtwork[] = [
   {title:"Guests playfully taking photos",image:"amg_9255"},
 ].map(({title,image,portrait})=>({title,image:`project-archive/birthday-photos/${image}.webp`,width:portrait?934:1400,height:portrait?1400:934}));
 
+const weddingPhotos: PortfolioArtwork[] = [
+  {title:"The newlyweds sharing a kiss as guests applaud",image:"side-view-romantic-couple-kissing",width:1400,height:933},
+  {title:"The bride smiling with her autumn bouquet",image:"full-shot-smiley-bride-with-flowers",width:933,height:1400},
+  {title:"The couple beneath the floral arch",image:"couple-beneath-floral-arch",width:933,height:1400},
+  {title:"A joyful celebration with the bride lifting her bouquet",image:"full-shot-happy-couple-with-flowers",width:934,height:1400},
+  {title:"The couple walking hand in hand",image:"back-view-couple-holding-hands",width:1400,height:933},
+  {title:"An intimate portrait of the newlyweds embracing",image:"couple-posing-wedding-side-view",width:933,height:1400},
+  {title:"The autumn bouquet in focus as the couple kisses",image:"low-angle-couple-kissing-outdoors",width:933,height:1400},
+  {title:"The couple looking back beneath the flowers",image:"full-shot-couple-holding-hands",width:933,height:1400},
+  {title:"The couple laughing together in the garden",image:"couple-posing-wedding-full-shot",width:933,height:1400},
+  {title:"A quiet embrace beside the wedding flowers",image:"couple-posing-wedding-front-view",width:933,height:1400},
+].map(item=>({...item,image:`project-archive/wedding-photos/${item.image}.webp`}));
+
 export const projectDeliverables: Record<string, ProjectDeliverable[]> = {
   "graphic-design": [
     {title:"Campaign graphics",image:"service-cover-graphic-design.webp",description:"Visuals that make a campaign impossible to overlook.",details:"Campaign key visuals, promotional banners and adaptable artwork for digital and print touchpoints.",artwork:xobriqCampaign,artworkLabel:"Xobriq"},
@@ -65,7 +78,7 @@ export const projectDeliverables: Record<string, ProjectDeliverable[]> = {
     {title:"Birthdays",image:birthdayPhotos[0].image,description:"Every year. Every smile. Every unforgettable moment.",details:"Birthday photography that captures the joy of the day, from heartfelt speeches and candid laughter to portraits, family and friends.",photographs:birthdayPhotos,photographsLabel:"Birthday celebrations"},
     {title:"Graduations & celebrations",image:graduationPortraits[3].image,description:"Give milestones the memories they deserve.",details:"Graduations, celebrations and special occasions, from candid interactions to carefully composed portraits.",photographs:graduationPortraits,photographsLabel:"Graduation portraits"},
     {title:"Corporate events",image:"project-archive/corporate-moment.webp",description:"The energy, people and details of your event.",details:"Conference, seminar and business event photography that captures speakers, audiences, networking and atmosphere.",examples:["project-archive/corporate-events.webp"]},
-    {title:"Image editing",image:"photography-wedding-compare.webp",description:"Bring out what makes each photograph special.",details:"Colour correction, tonal adjustments, retouching and consistent finishing for a cohesive image collection."},
+    {title:"Weddings",image:weddingPhotos[0].image,description:"The moments that make your day yours.",details:"From the vows to the quiet in-between moments, explore a wedding photography style that celebrates the story of your day.",photographs:weddingPhotos,photographsLabel:"Wedding photography inspiration",photographsCredit:{label:"Stock photography: Magnific",url:"https://www.magnific.com/serie/34914720"}},
   ],
   "web-ui-ux": [
     {title:"Responsive websites",image:"who-we-serve-toolbox-web.webp",description:"A digital home that works on every screen.",details:"Responsive landing pages, portfolio sites and business websites, designed around your audience and brand."},

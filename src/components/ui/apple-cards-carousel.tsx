@@ -129,7 +129,7 @@ export function AppleCardsCarousel({ items, category, quoteHref }: {items:Projec
       <div className="vv-apple-detail-top"><span>{category}</span><button autoFocus type="button" aria-label="Close creative detail" onClick={()=>setActive(null)}><X size={22}/></button></div>
       <h3 id="vv-apple-detail-title">{active.title}</h3>
       <p className="vv-apple-detail-lead">{active.description}</p>
-      {active.artwork?<CampaignArtworkGallery items={active.artwork} title={active.title} collectionLabel={active.artworkLabel??"Selected work"}/>:active.photographs?<InfinitePhotoCards items={active.photographs} label={active.photographsLabel??active.title}/>:<img className="vv-apple-detail-photo" src={asset(active.image)} alt={`Visual reference for ${active.title.toLowerCase()}`} decoding="async"/>}
+      {active.artwork?<CampaignArtworkGallery items={active.artwork} title={active.title} collectionLabel={active.artworkLabel??"Selected work"}/>:active.photographs?<InfinitePhotoCards items={active.photographs} label={active.photographsLabel??active.title} credit={active.photographsCredit}/>:<img className="vv-apple-detail-photo" src={asset(active.image)} alt={`Visual reference for ${active.title.toLowerCase()}`} decoding="async"/>}
       <p>{active.details}</p>
       {active.examples&&<div className="vv-apple-detail-examples">{active.examples.map(image=><img key={image} src={asset(image)} alt={`Additional visual reference for ${active.title.toLowerCase()}`} loading="lazy" decoding="async"/>)}</div>}
       <a href={quoteHref} className="vv-apple-detail-link">Start a project <ArrowUpRight size={17}/></a>

@@ -9,4 +9,5 @@
 .vv-photo-card img{display:block;width:100%;height:100%;object-fit:contain}
 .vv-photo-controls{padding:7px 12px;min-height:44px}
 .vv-photo-controls button:focus-visible{outline:2px solid #23766e;outline-offset:2px}
+.vv-photo-credit{padding:0 14px 10px;font-size:11px;color:#23766e}.vv-photo-credit a{color:inherit;text-decoration:underline;text-underline-offset:2px}.vv-photo-credit a:focus-visible{outline:2px solid #23766e;outline-offset:2px}
 @media(max-width:600px){.vv-photo-card{height:clamp(200px,36dvh,340px)}.vv-photo-group{gap:8px;padding-right:8px}.vv-photo-gallery-heading{font-size:11px}.vv-photo-controls button{min-height:36px}}

@@ -553,6 +553,16 @@ try {
         assert.equal(await page.locator(".vv-photo-gallery").getAttribute("data-autoplay"),"paused","Reduced motion disables photo autoplay");
         await page.keyboard.press("Escape");
         await page.locator(".vv-apple-detail").waitFor({state:"detached"});
+        await page.getByRole("button",{name:"Explore Weddings",exact:true}).click();
+        await page.locator(".vv-apple-detail[open]").waitFor({state:"visible"});
+        assert.equal(await page.locator(".vv-photo-gallery-heading").textContent(),"Wedding photography inspiration10 photographs");
+        const weddingImages=page.locator(".vv-photo-group[data-copy='1'] img");
+        assert.equal(await weddingImages.count(),10,"Wedding gallery contains ten distinct supplied photos");
+        assert.ok(await weddingImages.evaluateAll(async images=>{await Promise.all(images.map(image=>{image.loading="eager";return image.decode();}));return new Set(images.map(image=>image.src)).size===10&&images.every(image=>image.naturalWidth>0&&image.alt&&image.src.includes("/wedding-photos/"));}),"All wedding photos load with descriptions");
+        assert.equal(await page.locator(".vv-photo-gallery").getAttribute("data-autoplay"),"paused","Reduced motion disables wedding autoplay");
+        assert.equal(await page.getByRole("link",{name:"Stock photography: Magnific"}).getAttribute("href"),"https://www.magnific.com/serie/34914720");
+        await page.keyboard.press("Escape");
+        await page.locator(".vv-apple-detail").waitFor({state:"detached"});
         await page.getByRole("button",{name:"Close collection",exact:true}).click();
         await page.locator(".vv-pj-collection-page").waitFor({state:"detached"});
         await page.locator(".vv-projects-filters").getByRole("button",{name:"All collections",exact:true}).click();

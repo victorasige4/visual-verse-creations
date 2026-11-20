@@ -4,7 +4,7 @@ import type { PortfolioArtwork } from "../../data/project-deliverables";
 import "./infinite-photo-cards.css";
 
 /** A continuous contact sheet: fixed-height cards retain each photo's ratio. */
-export function InfinitePhotoCards({items,label}:{items:PortfolioArtwork[];label:string}) {
+export function InfinitePhotoCards({items,label,credit}:{items:PortfolioArtwork[];label:string;credit?:{label:string;url:string}}) {
   const rail=useRef<HTMLDivElement>(null), first=useRef<HTMLDivElement>(null), middle=useRef<HTMLDivElement>(null);
   const width=useRef(0), settle=useRef(0), running=useRef(false);
   const [paused,setPaused]=useState(false), [hovered,setHovered]=useState(false), [focused,setFocused]=useState(false), [touching,setTouching]=useState(false);
@@ -45,5 +45,6 @@ export function InfinitePhotoCards({items,label}:{items:PortfolioArtwork[];label
       </div>
     </div>
     <div className="vv-apple-controls vv-photo-controls"><span>{reduced?"Swipe or scroll to explore":"Moving gallery · hover or swipe to explore"}</span>{!reduced&&<button type="button" onClick={()=>setPaused(value=>!value)}>{paused?<Play size={15}/>:<Pause size={15}/>} {paused?"Play":"Pause"}</button>}</div>
+    {credit&&<div className="vv-photo-credit"><a href={credit.url} target="_blank" rel="noreferrer">{credit.label}</a></div>}
   </section>;
 }
