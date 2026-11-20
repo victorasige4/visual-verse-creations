@@ -1,10 +1,15 @@
 /** Creative directions, not claims of completed commissions. Existing portfolio
  * images are incorporated into their corresponding deliverables. */
-export type ProjectDeliverable = { title: string; image: string; description: string; details: string; position?: string; examples?: string[] };
+export type CampaignArtwork = { title: string; image: string };
+export type ProjectDeliverable = { title: string; image: string; description: string; details: string; position?: string; examples?: string[]; artwork?: CampaignArtwork[] };
+
+const xobriqCampaign: CampaignArtwork[] = [
+  "Identify high-value AI opportunities", "Build your AI roadmap", "Detect synthetic identity", "How long should KYC take?", "Africa’s AI economy", "Verify before lending", "Your fleet moves fast", "KYC is more than an ID", "Seven days to smarter verification", "Verify the business behind the business", "Three days to Xobriq KYC", "KYC is about to get smarter", "For businesses that need to verify", "Score the risk with Xobriq Guard",
+].map((title,index)=>({title,image:`project-archive/campaign-graphics/xobriq-${String(index+8).padStart(2,"0")}.webp`}));
 
 export const projectDeliverables: Record<string, ProjectDeliverable[]> = {
   "graphic-design": [
-    {title:"Campaign graphics",image:"service-cover-graphic-design.webp",description:"Visuals that make a campaign impossible to overlook.",details:"Campaign key visuals, promotional banners and adaptable artwork for digital and print touchpoints."},
+    {title:"Campaign graphics",image:"service-cover-graphic-design.webp",description:"Visuals that make a campaign impossible to overlook.",details:"Campaign key visuals, promotional banners and adaptable artwork for digital and print touchpoints.",artwork:xobriqCampaign},
     {title:"Editorial & poster design",image:"project-archive/social-design.webp",description:"Bold compositions with a message that lands.",details:"Posters, publication layouts, event announcements and editorial artwork with thoughtfully balanced typography and imagery.",position:"center"},
     {title:"Print collateral",image:"who-we-serve-toolbox-design.webp",description:"Thoughtful design you can hold in your hands.",details:"Brochures, flyers, stationery and other print-ready materials, prepared with production requirements in mind."},
     {title:"Illustration",image:"selected-directions/graphic-design.webp",description:"Original visual ideas with their own personality.",details:"Custom illustrations, graphic elements and expressive visual concepts that support your story."},
