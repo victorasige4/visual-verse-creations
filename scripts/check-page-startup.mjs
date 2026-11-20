@@ -224,6 +224,16 @@ try {
   assert.equal(await creativeDetail.locator(".vv-draggable-card[aria-pressed='true']").getAttribute("aria-label"),"Select artwork: Next Dimension — Hillside Church");
   await creativeDetail.getByRole("button",{name:"Close creative detail"}).click();
   console.log("Projects: all eight editorial posters load at their original proportions, preview and reset");
+  await collection.getByRole("button",{name:"Explore Print collateral",exact:true}).click();
+  await creativeDetail.getByRole("heading",{name:"Print collateral"}).waitFor();
+  assert.equal(await creativeDetail.locator(".vv-draggable-card").count(),2);
+  await motionPage.waitForFunction(()=>[...document.querySelectorAll(".vv-draggable-card img")].every(image=>image.complete&&image.naturalWidth===1800&&image.naturalHeight===1272));
+  await creativeDetail.getByRole("combobox",{name:"Choose print artwork"}).selectOption("0");
+  await creativeDetail.locator(".vv-campaign-preview img").waitFor({state:"visible"});
+  assert.equal(await creativeDetail.locator(".vv-campaign-preview img").getAttribute("alt"),"Xobriq Verify brochure — outside");
+  await creativeDetail.getByRole("button",{name:"Reset",exact:true}).click();
+  await creativeDetail.getByRole("button",{name:"Close creative detail"}).click();
+  console.log("Projects: both brochure sides load, preview and reset");
   await collection.getByRole("button",{name:"Close collection",exact:true}).click();
   await motionPage.locator("#vv-cursor-root > .vv-cursor-layer").waitFor({state:"attached"});
   console.log("Projects: precision cursor follows collection and nested creative card dialogs");

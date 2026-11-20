@@ -27,3 +27,5 @@
 .vv-campaign-actions :is(button,select):focus-visible{outline:2px solid #23766e;outline-offset:2px}
 @media(max-width:600px){.vv-campaign-board{height:clamp(250px,43dvh,390px)}.vv-draggable-card{--campaign-card-width:min(31cqw,35cqh)}.vv-campaign-actions label{flex-basis:100%}.vv-campaign-toolbar{padding:8px 10px}.vv-campaign-count{font-size:10px}.vv-campaign-drag{font-size:13px}.vv-apple-detail.vv-apple-detail--campaign{padding:12px}}
 @media(max-width:600px){.vv-campaign-board--compact .vv-draggable-card{--campaign-card-width:min(35cqw,36cqh)}}
+.vv-campaign-board--spreads .vv-draggable-card{--campaign-card-width:min(50cqw,80cqh)}
+@media(max-width:600px){.vv-campaign-board--spreads .vv-draggable-card{--campaign-card-width:min(68cqw,72cqh)}}
