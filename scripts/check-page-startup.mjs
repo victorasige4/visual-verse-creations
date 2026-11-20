@@ -237,6 +237,24 @@ try {
   await collection.getByRole("button",{name:"Close collection",exact:true}).click();
   await motionPage.locator("#vv-cursor-root > .vv-cursor-layer").waitFor({state:"attached"});
   console.log("Projects: precision cursor follows collection and nested creative card dialogs");
+  await motionPage.locator("#photography .vv-pj-detail-button").click();
+  await collection.getByRole("button",{name:"Explore Graduations & celebrations",exact:true}).click();
+  const photoGallery=creativeDetail.locator(".vv-photo-gallery");
+  const photoRail=photoGallery.locator(".vv-photo-rail");
+  await photoGallery.waitFor({state:"visible"});
+  assert.equal(await photoGallery.locator(".vv-photo-group[data-copy='1'] img").count(),10);
+  await motionPage.mouse.move(8,110);
+  await motionPage.waitForFunction(()=>document.querySelector(".vv-photo-gallery")?.getAttribute("data-autoplay")==="playing");
+  const photoStart=await photoRail.evaluate(el=>el.scrollLeft);
+  await motionPage.waitForFunction(start=>document.querySelector(".vv-photo-rail").scrollLeft>start+8,photoStart);
+  const photoPeriod=await photoRail.evaluate(el=>el.querySelector(".vv-photo-group[data-copy='1']").offsetLeft);
+  await photoRail.evaluate((el,period)=>{el.scrollLeft=period*2-4;},photoPeriod);
+  await motionPage.waitForFunction(period=>document.querySelector(".vv-photo-rail").scrollLeft<period+100,photoPeriod);
+  await photoGallery.getByRole("button",{name:"Pause",exact:true}).click();
+  assert.equal(await photoGallery.getAttribute("data-autoplay"),"paused");
+  await creativeDetail.getByRole("button",{name:"Close creative detail"}).click();
+  await collection.getByRole("button",{name:"Close collection",exact:true}).click();
+  console.log("Projects: graduation photo gallery contains ten portraits, auto-scrolls, loops and pauses");
   // Simulate a stale/missing deployment entry and verify a single fresh
   // request restores the page, leaving the canonical URL clean.
   const retryContext = await browser.newContext({viewport:{width:1280,height:800},reducedMotion:"reduce"});

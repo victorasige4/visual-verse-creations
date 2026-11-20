@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ArrowUpRight, Pause, Play, Plus, X } from "lucide-react";
 import type { ProjectDeliverable } from "../../data/project-deliverables";
 import { CampaignArtworkGallery } from "./campaign-artwork-gallery";
+import { InfinitePhotoCards } from "./infinite-photo-cards";
 import "./apple-cards-carousel.css";
 
 /** Apple Cards + Aceternity Infinite Moving Cards: repeated tracks, continuous
@@ -124,11 +125,11 @@ export function AppleCardsCarousel({ items, category, quoteHref }: {items:Projec
       </div>
     </div>
     <div className="vv-apple-controls"><span>{reduced?"Swipe or scroll to explore":"Moving gallery · hover or swipe to explore"}</span>{!reduced&&<button type="button" onClick={()=>setPaused(value=>!value)} aria-label={paused?"Play automatic cards":"Pause automatic cards"}>{paused?<Play size={15}/>:<Pause size={15}/>}<span>{paused?"Play":"Pause"}</span></button>}</div>
-    {active&&<dialog ref={detail} className={`vv-apple-detail${active.artwork?" vv-apple-detail--campaign":""}`} aria-labelledby="vv-apple-detail-title" onCancel={event=>{event.preventDefault();event.stopPropagation();setActive(null);}} onClick={event=>{if(event.target===event.currentTarget){const rect=event.currentTarget.getBoundingClientRect();if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)setActive(null);}}}>
+    {active&&<dialog ref={detail} className={`vv-apple-detail${active.artwork||active.photographs?" vv-apple-detail--campaign":""}`} aria-labelledby="vv-apple-detail-title" onCancel={event=>{event.preventDefault();event.stopPropagation();setActive(null);}} onClick={event=>{if(event.target===event.currentTarget){const rect=event.currentTarget.getBoundingClientRect();if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)setActive(null);}}}>
       <div className="vv-apple-detail-top"><span>{category}</span><button autoFocus type="button" aria-label="Close creative detail" onClick={()=>setActive(null)}><X size={22}/></button></div>
       <h3 id="vv-apple-detail-title">{active.title}</h3>
       <p className="vv-apple-detail-lead">{active.description}</p>
-      {active.artwork?<CampaignArtworkGallery items={active.artwork} title={active.title} collectionLabel={active.artworkLabel??"Selected work"}/>:<img className="vv-apple-detail-photo" src={asset(active.image)} alt={`Visual reference for ${active.title.toLowerCase()}`} decoding="async"/>}
+      {active.artwork?<CampaignArtworkGallery items={active.artwork} title={active.title} collectionLabel={active.artworkLabel??"Selected work"}/>:active.photographs?<InfinitePhotoCards items={active.photographs}/>:<img className="vv-apple-detail-photo" src={asset(active.image)} alt={`Visual reference for ${active.title.toLowerCase()}`} decoding="async"/>}
       <p>{active.details}</p>
       {active.examples&&<div className="vv-apple-detail-examples">{active.examples.map(image=><img key={image} src={asset(image)} alt={`Additional visual reference for ${active.title.toLowerCase()}`} loading="lazy" decoding="async"/>)}</div>}
       <a href={quoteHref} className="vv-apple-detail-link">Start a project <ArrowUpRight size={17}/></a>

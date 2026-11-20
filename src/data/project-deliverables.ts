@@ -1,7 +1,7 @@
 /** Creative directions, not claims of completed commissions. Existing portfolio
  * images are incorporated into their corresponding deliverables. */
 export type PortfolioArtwork = { title: string; image: string; width: number; height: number };
-export type ProjectDeliverable = { title: string; image: string; description: string; details: string; position?: string; examples?: string[]; artwork?: PortfolioArtwork[]; artworkLabel?: string };
+export type ProjectDeliverable = { title: string; image: string; description: string; details: string; position?: string; examples?: string[]; artwork?: PortfolioArtwork[]; artworkLabel?: string; photographs?: PortfolioArtwork[] };
 
 const xobriqCampaign: PortfolioArtwork[] = [
   "Identify high-value AI opportunities", "Build your AI roadmap", "Detect synthetic identity", "How long should KYC take?", "Africa’s AI economy", "Verify before lending", "Your fleet moves fast", "KYC is more than an ID", "Seven days to smarter verification", "Verify the business behind the business", "Three days to Xobriq KYC", "KYC is about to get smarter", "For businesses that need to verify", "Score the risk with Xobriq Guard",
@@ -18,6 +18,19 @@ const editorialPosters: PortfolioArtwork[] = [
   {title:"Next Dimension — Hillside Church",image:"next-dimension",width:1200,height:1200},
 ].map(item=>({...item,image:`project-archive/editorial-posters/${item.image}.webp`}));
 
+const graduationPortraits: PortfolioArtwork[] = [
+  {title:"Full-length portrait in a red outfit and graduation cap",image:"top07106",width:933,height:1400},
+  {title:"Red outfit graduation portrait, looking sideways",image:"top07077",width:880,height:1400},
+  {title:"Front-facing red outfit graduation portrait",image:"top07072",width:877,height:1400},
+  {title:"Graduation gown portrait with hands at waist",image:"top07048",width:933,height:1400},
+  {title:"Seated portrait in graduation gown",image:"top07004",width:933,height:1400},
+  {title:"Playful portrait holding a mortarboard",image:"top06802",width:950,height:1400},
+  {title:"Smiling graduation portrait in academic regalia",image:"top06780",width:1092,height:1400},
+  {title:"Full-length portrait in graduation gown",image:"top06766",width:933,height:1400},
+  {title:"Wide studio portrait in graduation gown",image:"top06765",width:1400,height:1054},
+  {title:"Landscape close-up graduation portrait",image:"top06750",width:1400,height:933},
+].map(item=>({...item,image:`project-archive/graduation-portraits/${item.image}.webp`}));
+
 export const projectDeliverables: Record<string, ProjectDeliverable[]> = {
   "graphic-design": [
     {title:"Campaign graphics",image:"service-cover-graphic-design.webp",description:"Visuals that make a campaign impossible to overlook.",details:"Campaign key visuals, promotional banners and adaptable artwork for digital and print touchpoints.",artwork:xobriqCampaign,artworkLabel:"Xobriq"},
@@ -27,7 +40,7 @@ export const projectDeliverables: Record<string, ProjectDeliverable[]> = {
   ],
   photography: [
     {title:"Portraits & lifestyle",image:"selected-directions/photography.webp",description:"Authentic portraits with a sense of character.",details:"Individual, team and lifestyle photography, with considered lighting, composition and direction."},
-    {title:"Graduations & celebrations",image:"project-archive/graduations.webp",description:"Give milestones the memories they deserve.",details:"Graduations, celebrations and special occasions, from candid interactions to carefully composed portraits.",examples:["project-archive/event-detail.webp"]},
+    {title:"Graduations & celebrations",image:graduationPortraits[3].image,description:"Give milestones the memories they deserve.",details:"Graduations, celebrations and special occasions, from candid interactions to carefully composed portraits.",photographs:graduationPortraits},
     {title:"Corporate events",image:"project-archive/corporate-moment.webp",description:"The energy, people and details of your event.",details:"Conference, seminar and business event photography that captures speakers, audiences, networking and atmosphere.",examples:["project-archive/corporate-events.webp"]},
     {title:"Image editing",image:"photography-wedding-compare.webp",description:"Bring out what makes each photograph special.",details:"Colour correction, tonal adjustments, retouching and consistent finishing for a cohesive image collection."},
   ],
