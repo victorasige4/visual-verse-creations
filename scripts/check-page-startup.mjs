@@ -553,6 +553,15 @@ try {
         assert.equal(await page.locator(".vv-photo-gallery").getAttribute("data-autoplay"),"paused","Reduced motion disables photo autoplay");
         await page.keyboard.press("Escape");
         await page.locator(".vv-apple-detail").waitFor({state:"detached"});
+        await page.getByRole("button",{name:"Explore Corporate events",exact:true}).click();
+        await page.locator(".vv-apple-detail[open]").waitFor({state:"visible"});
+        assert.equal(await page.locator(".vv-photo-gallery-heading").textContent(),"Corporate event photography12 photographs");
+        const corporateImages=page.locator(".vv-photo-group[data-copy='1'] img");
+        assert.equal(await corporateImages.count(),12,"Every photograph from the original corporate events portfolio is included");
+        assert.ok(await corporateImages.evaluateAll(async images=>{await Promise.all(images.map(image=>{image.loading="eager";return image.decode();}));return new Set(images.map(image=>image.src)).size===12&&images.every(image=>image.naturalWidth>0&&image.alt&&image.src.includes("/corporate-event-photos/"));}),"Original corporate event photographs load with descriptions");
+        assert.equal(await page.locator(".vv-photo-gallery").getAttribute("data-autoplay"),"paused","Reduced motion disables corporate event gallery autoplay");
+        await page.keyboard.press("Escape");
+        await page.locator(".vv-apple-detail").waitFor({state:"detached"});
         await page.getByRole("button",{name:"Explore Weddings",exact:true}).click();
         await page.locator(".vv-apple-detail[open]").waitFor({state:"visible"});
         assert.equal(await page.locator(".vv-photo-gallery-heading").textContent(),"Wedding photography inspiration10 photographs");

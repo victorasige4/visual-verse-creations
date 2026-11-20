@@ -54,6 +54,22 @@ const birthdayPhotos: PortfolioArtwork[] = [
   {title:"Guests playfully taking photos",image:"amg_9255"},
 ].map(({title,image,portrait})=>({title,image:`project-archive/birthday-photos/${image}.webp`,width:portrait?934:1400,height:portrait?1400:934}));
 
+// Preserve the original Visual Verse Studio Corporate Events portfolio sequence.
+const corporateEventPhotos: PortfolioArtwork[] = [
+  {title:"A guest receiving a floral welcome",image:"DAV_7792"},
+  {title:"Guests posing together with a bouquet",image:"DAV_7794"},
+  {title:"A speaker addressing attendees from the lectern",image:"DAV_7857"},
+  {title:"Guests seated together during the event",image:"DAV_7865"},
+  {title:"A speaker holding a microphone at the lectern",image:"DAV_7880"},
+  {title:"Candid portrait of an attendee listening",image:"DAV_7887",portrait:true},
+  {title:"A speaker addressing the gathering",image:"DAV_7897"},
+  {title:"Attendees listening from the front row",image:"DAV_7921"},
+  {title:"A performer on stage with outstretched arms",image:"IMG_9607"},
+  {title:"Vocalists performing together on stage",image:"IMG_9646"},
+  {title:"Wide view of the venue and seated audience",image:"IMG_9786"},
+  {title:"Attendees walking through the gathering",image:"IMG_9887"},
+].map(({title,image,portrait})=>({title,image:`project-archive/corporate-event-photos/${image}.webp`,width:portrait?933:1400,height:portrait?1400:933}));
+
 const weddingPhotos: PortfolioArtwork[] = [
   {title:"The newlyweds sharing a kiss as guests applaud",image:"side-view-romantic-couple-kissing",width:1400,height:933},
   {title:"The bride smiling with her autumn bouquet",image:"full-shot-smiley-bride-with-flowers",width:933,height:1400},
@@ -77,7 +93,7 @@ export const projectDeliverables: Record<string, ProjectDeliverable[]> = {
   photography: [
     {title:"Birthdays",image:birthdayPhotos[0].image,description:"Every year. Every smile. Every unforgettable moment.",details:"Birthday photography that captures the joy of the day, from heartfelt speeches and candid laughter to portraits, family and friends.",photographs:birthdayPhotos,photographsLabel:"Birthday celebrations"},
     {title:"Graduations & celebrations",image:graduationPortraits[3].image,description:"Give milestones the memories they deserve.",details:"Graduations, celebrations and special occasions, from candid interactions to carefully composed portraits.",photographs:graduationPortraits,photographsLabel:"Graduation portraits"},
-    {title:"Corporate events",image:"project-archive/corporate-moment.webp",description:"The energy, people and details of your event.",details:"Conference, seminar and business event photography that captures speakers, audiences, networking and atmosphere.",examples:["project-archive/corporate-events.webp"]},
+    {title:"Corporate events",image:corporateEventPhotos[6].image,description:"The energy, people and details of your event.",details:"Conference, seminar and business event photography that captures speakers, audiences, networking and atmosphere.",photographs:corporateEventPhotos,photographsLabel:"Corporate event photography"},
     {title:"Weddings",image:weddingPhotos[0].image,description:"The moments that make your day yours.",details:"From the vows to the quiet in-between moments, explore a wedding photography style that celebrates the story of your day.",photographs:weddingPhotos,photographsLabel:"Wedding photography inspiration",photographsCredit:{label:"Stock photography: Magnific",url:"https://www.magnific.com/serie/34914720"}},
   ],
   "web-ui-ux": [
