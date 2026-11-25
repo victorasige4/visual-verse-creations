@@ -6,7 +6,7 @@ import { lazy, useState, type ComponentType, type FormEvent } from "react";
 import {
   ArrowUpRight, ArrowRight, Camera, Clapperboard, Palette, PenTool,
   MonitorSmartphone, Share2, Phone, Mail, MapPin, MessageCircle,
-  Film, FileText, Send
+  Film, FileText, Send, Radio, Sparkles, Check, ChevronDown
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { VisualVerseNavbar } from "./VisualVerseNavbar";
@@ -70,6 +70,44 @@ function PageHero({kind}:{kind:Kind}){
       <div className="vv-inner-hero-bottom"><span>NAIROBI, KENYA · CREATIVE MEDIA COMPANY</span><span>SCROLL TO EXPLORE <ArrowRight size={14} style={{transform:"rotate(90deg)"}} aria-hidden="true"/></span></div>
     </section>
   );
+}
+
+
+function ContactSignalHero({topic,onTopicChange}:{topic:string;onTopicChange:(topic:string)=>void}){
+  const active=services.find(s=>s.title===topic);
+  const ActiveIcon=active?.Icon??Radio;
+  return <section className="vv-inner-hero vv-inner-hero-v2 vv-contact-signal-hero">
+    <div className="vv-inner-hero-inner">
+      <div className="vv-inner-hero-copy">
+        <span className="vv-inner-eyebrow"><i aria-hidden="true"/> FIRST CONTACT / VISUAL VERSE</span>
+        <h1>Let's start a<br/><em>conversation.</em></h1>
+        <p>Somewhere between your imagination and our creativity, something extraordinary is waiting to happen. Let's find your frequency.</p>
+        <div className="vv-inner-hero-actions">
+          <a className="vv-motion-action vv-action-primary" href="#send-a-message"><VisualVerseActionContent Icon={ArrowRight}>Send a signal</VisualVerseActionContent></a>
+          <a className="vv-motion-action vv-action-secondary" href={WHATSAPP} target="_blank" rel="noopener noreferrer"><VisualVerseActionContent Icon={MessageCircle}>Chat on WhatsApp</VisualVerseActionContent></a>
+        </div>
+        <div className="vv-signal-caption"><span aria-hidden="true"/><small>IMAGINE</small><span aria-hidden="true"/><small>CREATE</small><span aria-hidden="true"/><small>CONNECT</small></div>
+      </div>
+      <div className="vv-signal-console">
+        <div className="vv-signal-console-head"><span><Radio size={15} aria-hidden="true"/> CREATIVE FREQUENCY</span><span>NAIROBI / KE</span></div>
+        <div className="vv-signal-dial">
+          <div className="vv-contact-orbits" aria-hidden="true"><div className="vv-contact-orbit"><i/></div><div className="vv-contact-orbit"><i/></div><div className="vv-contact-orbit"><i/></div></div>
+          <div className="vv-signal-core"><img src="/logo-mark.png" alt="" decoding="async"/><span><ActiveIcon size={20} aria-hidden="true"/></span></div>
+          {services.map((service,i)=>{
+            const angle=-Math.PI/2+i*Math.PI/3;
+            const Icon=service.Icon;
+            return <button key={service.id} type="button" className="vv-signal-node" style={{left:(50+38*Math.cos(angle))+"%",top:(50+38*Math.sin(angle))+"%"}} aria-label={service.title} aria-pressed={topic===service.title} onClick={()=>onTopicChange(topic===service.title?"":service.title)} title={service.title}><Icon size={20} aria-hidden="true"/></button>;
+          })}
+        </div>
+        <div className="vv-signal-readout" aria-live="polite">
+          <div><small>{active?"FREQUENCY SELECTED":"TUNE INTO YOUR IDEA"}</small><strong>{active?.title??"Six creative directions"}</strong><p>{active?.summary??"Choose a service on the dial or explore your options below."}</p></div>
+          <a href="#send-a-message" aria-label={active?"Continue with "+active.title:"Continue to the contact form"}><ArrowUpRight size={22}/></a>
+        </div>
+        <div className="vv-signal-console-foot"><span>{active?active.label.toUpperCase():"SELECT AN ICON TO EXPLORE"}</span><span aria-hidden="true">● ━━━ ○</span></div>
+      </div>
+    </div>
+    <div className="vv-inner-hero-bottom"><span>NAIROBI, KENYA · CREATIVE MEDIA COMPANY</span><a href="#send-a-message">SCROLL TO CONNECT <ChevronDown size={14} aria-hidden="true"/></a></div>
+  </section>;
 }
 
 function SectionTitle({eyebrow,children,description}:{eyebrow:string;children:React.ReactNode;description?:string}){
@@ -141,21 +179,83 @@ const contactStyles = `
 @media(max-width:780px){.vv-contact-experience .vv-inner-contact-main{grid-template-columns:1fr}.vv-contact-experience .vv-inner-hero-art{min-height:280px}.vv-contact-experience .vv-inner-social-links{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:540px){.vv-contact-experience .vv-inner-hero-art{min-height:245px}.vv-contact-experience .vv-inner-contact-links>a,.vv-contact-experience .vv-inner-contact-links>div{padding:13px;min-height:120px}.vv-contact-experience .vv-inner-social-links{grid-template-columns:repeat(2,minmax(0,1fr))}.vv-contact-experience .vv-inner-social-links a{min-height:100px;padding:15px}.vv-contact-experience .vv-inner-hero-art img{width:105px}.vv-contact-orbit{max-width:205px}.vv-contact-orbit:nth-child(2){max-width:150px}.vv-contact-orbit:nth-child(3){max-width:240px}}
 @media(prefers-reduced-motion:reduce){.vv-contact-orbit{animation:none}.vv-contact-experience .vv-inner-contact-links>a,.vv-contact-experience .vv-inner-social-links a,.vv-contact-experience .vv-contact-topic-list button{transition:none;transform:none!important}}
+
+/* Interactive creative-frequency console, scoped to Contact. */
+.vv-contact-experience .vv-contact-signal-hero{position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 76% 35%,#136d73 0%,transparent 54%),linear-gradient(125deg,#002c44,#003f5c 65%,#064c60);min-height:min(810px,94svh)}
+.vv-contact-signal-hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:radial-gradient(#a9ede75c 1px,transparent 1px);background-size:28px 28px;mask-image:linear-gradient(110deg,transparent 15%,#000 70%,transparent)}
+.vv-contact-signal-hero .vv-inner-hero-inner{grid-template-columns:minmax(0,1fr) minmax(0,.86fr);gap:clamp(24px,6vw,95px)}
+.vv-contact-signal-hero .vv-inner-hero-copy{position:relative}
+.vv-contact-signal-hero .vv-inner-hero-bottom a{color:inherit;text-decoration:none;display:flex;align-items:center;gap:8px}
+.vv-signal-caption{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin-top:32px;color:#b0dbd9;font-size:10px;letter-spacing:.13em;font-weight:700}
+.vv-signal-caption>span{height:1px;width:19px;background:#2ec4b6}
+.vv-signal-console{position:relative;min-width:0;border:1px solid #a5e8e345;border-radius:24px;background:linear-gradient(155deg,#ffffff10,#00253d55);padding:clamp(15px,2vw,26px);box-shadow:0 28px 64px #001c2c45;overflow:hidden}
+.vv-signal-console-head,.vv-signal-console-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#b7e6df;font-size:9px;font-weight:750;letter-spacing:.12em}
+.vv-signal-console-head>span:first-child{display:flex;align-items:center;gap:7px}
+.vv-signal-console-head svg{color:#8cf0dc}
+.vv-signal-dial{position:relative;width:min(100%,350px);aspect-ratio:1;margin:8px auto;isolation:isolate;background:radial-gradient(circle,#2ec4b630,transparent 69%)}
+.vv-signal-dial .vv-contact-orbit{width:76%;border-color:#a9f9ed70}
+.vv-signal-dial .vv-contact-orbit:nth-child(2){width:52%}
+.vv-signal-dial .vv-contact-orbit:nth-child(3){width:94%}
+.vv-signal-core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:33%;aspect-ratio:1;border-radius:50%;border:1px solid #98f5e755;background:#003f5c;box-shadow:0 0 40px #2ec4b640;z-index:2}
+.vv-signal-core img{width:63%;height:63%;object-fit:contain;filter:grayscale(1) brightness(0) invert(1)}
+.vv-signal-core>span{position:absolute;right:-5px;bottom:-3px;display:grid;place-items:center;background:#9df6e8;color:#003f5c;border:3px solid #003f5c;border-radius:50%;width:36px;height:36px}
+.vv-signal-node{position:absolute;z-index:3;transform:translate(-50%,-50%);width:clamp(42px,5vw,55px);height:clamp(42px,5vw,55px);display:grid;place-items:center;border:1px solid #a5e8e388;border-radius:50%;background:#06485f;color:#c5f7ee;cursor:pointer;transition:background .2s,box-shadow .2s,color .2s}
+.vv-signal-node:hover,.vv-signal-node[aria-pressed=true]{background:#2ec4b6;color:#003f5c;box-shadow:0 0 0 5px #2ec4b628,0 0 22px #2ec4b65e}
+.vv-contact-experience .vv-signal-node:focus-visible{outline-color:#fff}
+.vv-signal-readout{display:flex;justify-content:space-between;gap:12px;align-items:center;border:1px solid #9ce8dc45;background:#002c44a6;border-radius:14px;padding:15px;min-height:123px}
+.vv-signal-readout>div{min-width:0}
+.vv-signal-readout small{display:block;color:#8ef1dd;font-size:9px;font-weight:800;letter-spacing:.12em;margin-bottom:6px}
+.vv-signal-readout strong{display:block;color:white;font-size:clamp(14px,1.6vw,20px);line-height:1.2}
+.vv-contact-experience .vv-signal-readout p{color:#c2e5e3;font-size:11px;line-height:1.55;margin:7px 0 0}
+.vv-signal-readout>a{flex:0 0 auto;display:grid;place-items:center;width:43px;height:43px;border-radius:50%;color:#003f5c;background:#2ec4b6}
+.vv-signal-console-foot{margin-top:13px;font-size:8px}
+.vv-contact-experience .vv-contact-topic-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.vv-contact-experience .vv-contact-topic-list button{border-radius:11px;text-align:left;justify-content:flex-start;gap:8px;padding:11px;min-height:48px;width:100%;overflow-wrap:anywhere}
+.vv-contact-topic-list button svg{flex:0 0 auto}
+.vv-contact-meter{display:grid;gap:7px;padding:13px 15px;border-radius:12px;background:#eff8f3;border:1px solid #d9e9e1}
+.vv-contact-meter>div:first-child{display:flex;justify-content:space-between;gap:8px;color:#285b61;font-size:10px;font-weight:750}
+.vv-contact-meter-track{height:5px;border-radius:6px;background:#d4e7df;overflow:hidden}
+.vv-contact-meter-track>span{display:block;height:100%;border-radius:6px;background:#168f84;transition:width .25s}
+.vv-contact-meter>small{color:#4b7475;font-size:10px}
+.vv-contact-experience .vv-contact-send-actions{display:flex;flex-wrap:wrap;gap:9px}
+.vv-contact-experience .vv-contact-send-actions button{max-width:100%;font-size:11px}
+.vv-contact-experience .vv-contact-send-actions .vv-contact-whatsapp{background:#fff;border:1px solid #a3d8cb;color:#003f5c}
+.vv-contact-experience .vv-contact-send-actions .vv-contact-whatsapp:hover{background:#e2f7ee}
+.vv-contact-experience .vv-contact-preview{border:1px solid #d4e7df;border-radius:12px;background:#f9fcfa;padding:13px}
+.vv-contact-preview summary{cursor:pointer;font-size:12px;font-weight:750;color:#285b61}
+.vv-contact-preview pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:12px 0 0;font:inherit;font-size:12px;line-height:1.65;color:#285b61}
+.vv-contact-path{margin-top:20px;border:1px solid #d4e8e0;border-radius:16px;padding:19px;background:white}
+.vv-contact-path>strong{font-size:13px;color:#003f5c}
+.vv-contact-path ol{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:14px}
+.vv-contact-path li{display:flex;gap:11px;align-items:flex-start}
+.vv-contact-path li>span{flex:0 0 auto;width:29px;height:29px;display:grid;place-items:center;border-radius:50%;background:#e4f6ee;color:#167a71}
+.vv-contact-path li strong{display:block;font-size:12px;color:#003f5c}
+.vv-contact-path li p{font-size:11px;line-height:1.55;margin:3px 0 0}
+@media(max-width:780px){.vv-contact-experience .vv-contact-signal-hero{min-height:auto}.vv-contact-signal-hero .vv-inner-hero-inner{grid-template-columns:1fr}.vv-signal-console{width:100%;max-width:520px;margin:auto}.vv-signal-caption{margin-top:22px}}
+@media(max-width:540px){.vv-signal-console{padding:14px}.vv-signal-dial{max-width:280px}.vv-signal-dial .vv-contact-orbit{max-width:none}.vv-signal-readout{min-height:112px}.vv-contact-experience .vv-contact-topic-list button{font-size:10px;padding:8px;min-height:48px}.vv-contact-experience .vv-contact-send-actions button{width:100%}}
+@media(prefers-reduced-motion:reduce){.vv-signal-node,.vv-contact-meter-track>span{transition:none}}
+
 `;
 
-function ContactPage(){
-  const [name,setName]=useState(""),[email,setEmail]=useState(""),[subject,setSubject]=useState(""),[message,setMessage]=useState("");
-  const [topic,setTopic]=useState("");
-  const topics=[...services.map(s=>s.title),"Collaboration","General enquiry"];
+function ContactPage({topic,onTopicChange}:{topic:string;onTopicChange:(topic:string)=>void}){
+  const [name,setName]=useState(""),[email,setEmail]=useState(""),[subjectOverride,setSubjectOverride]=useState<string|null>(null),[message,setMessage]=useState("");
+  const subject=subjectOverride??topic;
+  const topics=[...services.map(s=>({title:s.title,Icon:s.Icon})),{title:"Collaboration",Icon:Sparkles},{title:"General enquiry",Icon:MessageCircle}];
+  const validEmail=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const completed=[name.trim().length>=2,validEmail,subject.trim().length>=3,message.trim().length>=10].filter(Boolean).length;
+  const draft=["Hello Visual Verse,","",...(topic?["Interested in: "+topic,""]:[]),message.trim()||"[Your message]","","Name: "+(name.trim()||"[Your name]"),"Reply to: "+(email.trim()||"[Your email]")].join("\n");
   function submit(event:FormEvent<HTMLFormElement>){
     event.preventDefault();
     if(message.trim().length<10||subject.trim().length<3||name.trim().length<2)return;
-    openMailDraft(subject.trim(),["Hello Visual Verse,","",...(topic?["Interested in: "+topic,""]:[]),message.trim(),"","Name: "+name.trim(),"Reply to: "+email.trim()].join("\n"));
+    const submitter=(event.nativeEvent as SubmitEvent).submitter;
+    if(submitter instanceof HTMLButtonElement&&submitter.value==="whatsapp"){
+      window.location.href="https://wa.me/"+PHONE.replace(/\D/g,"")+"?text="+encodeURIComponent("Subject: "+subject.trim()+"\n\n"+draft);
+    }else openMailDraft(subject.trim(),draft);
   }
   function selectTopic(value:string){
     const next=topic===value?"":value;
-    setTopic(next);
-    if(!subject||subject===topic)setSubject(next);
+    if(subjectOverride===topic||subjectOverride==="")setSubjectOverride(null);
+    onTopicChange(next);
   }
   return <>
     <style>{contactStyles}</style>
@@ -170,22 +270,25 @@ function ContactPage(){
             <a href="/request-quote.html"><FileText size={24} aria-hidden="true"/><span><small>PROJECT BRIEF</small><strong>Request a quote</strong></span><ArrowUpRight size={16} aria-hidden="true"/></a>
           </div>
           <div className="vv-contact-location"><MapPin size={30} aria-hidden="true"/><div><strong>Nairobi, Kenya</strong><p>Rooted in Kenya. Open to creative collaborations wherever your story takes us.</p></div></div>
+          <div className="vv-contact-path"><strong>What happens after hello?</strong><ol><li><span><MessageCircle size={15}/></span><div><strong>We connect.</strong><p>Tell us your idea in your own words.</p></div></li><li><span><Sparkles size={15}/></span><div><strong>We explore.</strong><p>We discuss the possibilities, scope and direction.</p></div></li><li><span><Check size={15}/></span><div><strong>We align.</strong><p>Agree on a plan before the creative work begins.</p></div></li></ol></div>
         </div>
         <form className="vv-inner-form vv-inner-contact-form" onSubmit={submit}>
           <span className="vv-inner-eyebrow">SEND A SIGNAL / YOUR INQUIRY</span>
           <h3><EditorialText text="What can we create together?"/></h3>
           <fieldset className="vv-contact-topics">
             <legend>What are you interested in? (optional)</legend>
-            <div className="vv-contact-topic-list">{topics.map(value=><button key={value} type="button" aria-pressed={topic===value} onClick={()=>selectTopic(value)}>{value}</button>)}</div>
+            <div className="vv-contact-topic-list">{topics.map(({title,Icon})=><button key={title} type="button" aria-pressed={topic===title} onClick={()=>selectTopic(title)}><Icon size={17} aria-hidden="true"/>{title}</button>)}</div>
           </fieldset>
           <div className="vv-inner-form-row">
             <label>Your name <input required minLength={2} value={name} onChange={e=>setName(e.target.value)} placeholder="Full name" autoComplete="name"/></label>
             <label>Email address <input required type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email"/></label>
           </div>
-          <label>Subject <input required minLength={3} value={subject} onChange={e=>setSubject(e.target.value)} placeholder="What is this about?"/></label>
+          <label>Subject <input required minLength={3} value={subject} onChange={e=>setSubjectOverride(e.target.value)} placeholder="What is this about?"/></label>
           <label>Message <textarea required minLength={10} maxLength={2000} rows={5} value={message} onChange={e=>setMessage(e.target.value)} placeholder="Tell us a little about your idea…"/><span className="vv-contact-count">{message.length} / 2000</span></label>
-          <p>Submitting opens a prepared draft in your email application. Your message is not sent automatically.</p>
-          <button type="submit" className="vv-motion-action vv-action-primary"><VisualVerseActionContent Icon={Send}>Prepare my email</VisualVerseActionContent></button>
+          <div className="vv-contact-meter"><div><span>SIGNAL READINESS</span><span>{completed} / 4 fields</span></div><div className="vv-contact-meter-track" role="progressbar" aria-label="Inquiry fields completed" aria-valuemin={0} aria-valuemax={4} aria-valuenow={completed}><span style={{width:completed*25+"%"}}/></div><small>{completed===4?"Ready to prepare your message.":"Complete your details to prepare your signal."}</small></div>
+          <details className="vv-contact-preview"><summary>Preview your message</summary><pre>{"Subject: "+(subject||"[Your subject]")+"\n\n"+draft}</pre></details>
+          <p>Choose email or WhatsApp to open a prepared message. Nothing is sent automatically.</p>
+          <div className="vv-contact-send-actions"><button type="submit" name="channel" value="email" className="vv-motion-action vv-action-primary"><VisualVerseActionContent Icon={Send}>Prepare my email</VisualVerseActionContent></button><button type="submit" name="channel" value="whatsapp" className="vv-contact-whatsapp"><MessageCircle size={17} aria-hidden="true"/> Prepare WhatsApp</button></div>
         </form>
       </div>
     </section>
@@ -259,14 +362,15 @@ function QuotePage(){
 }
 
 export function VisualVerseInnerPage({kind, AudiencePage}:{kind:Kind;AudiencePage?:ComponentType}){
+  const [contactTopic,setContactTopic]=useState("");
   return <div className={kind==="contact"?"vv-inner-page vv-contact-experience":"vv-inner-page"}>
     <VisualVerseNavbar/>
     <main id="top">
-      {kind!=="about"&&kind!=="services"&&kind!=="audiences"&&<PageHero kind={kind}/>}
+      {kind==="contact"?<ContactSignalHero topic={contactTopic} onTopicChange={setContactTopic}/>:kind!=="about"&&kind!=="services"&&kind!=="audiences"&&<PageHero kind={kind}/>}
       {kind==="about"&&<VisualVerseAboutEditorial/>}
       {kind==="services"&&<ServicesPage/>}
       {kind==="audiences"&&AudiencePage&&<AudiencePage/>}
-      {kind==="contact"&&<ContactPage/>}
+      {kind==="contact"&&<ContactPage topic={contactTopic} onTopicChange={setContactTopic}/>}
       {kind==="quote"&&<QuotePage/>}
       {kind!=="about"&&kind!=="audiences"&&<VisualVerseAboutCta/>}
     </main>
