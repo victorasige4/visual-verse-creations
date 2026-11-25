@@ -73,9 +73,10 @@ function PageHero({kind}:{kind:Kind}){
 }
 
 
-function ContactSignalHero({topic,onTopicChange}:{topic:string;onTopicChange:(topic:string)=>void}){
-  const active=services.find(s=>s.title===topic);
-  const ActiveIcon=active?.Icon??Radio;
+function ContactSignalHero({selectedTopics,onToggleTopic}:{selectedTopics:string[];onToggleTopic:(topic:string)=>void}){
+  const selectedServices=services.filter(s=>selectedTopics.includes(s.title));
+  const active=selectedServices.length===1?selectedServices[0]:undefined;
+  const ActiveIcon=active?.Icon??(selectedServices.length>1?Sparkles:Radio);
   return <section className="vv-inner-hero vv-inner-hero-v2 vv-contact-signal-hero">
     <div className="vv-inner-hero-inner">
       <div className="vv-inner-hero-copy">
@@ -96,14 +97,14 @@ function ContactSignalHero({topic,onTopicChange}:{topic:string;onTopicChange:(to
           {services.map((service,i)=>{
             const angle=-Math.PI/2+i*Math.PI/3;
             const Icon=service.Icon;
-            return <button key={service.id} type="button" className="vv-signal-node" style={{left:(50+38*Math.cos(angle))+"%",top:(50+38*Math.sin(angle))+"%"}} aria-label={service.title} aria-pressed={topic===service.title} onClick={()=>onTopicChange(topic===service.title?"":service.title)} title={service.title}><Icon size={20} aria-hidden="true"/></button>;
+            return <button key={service.id} type="button" className="vv-signal-node" style={{left:(50+38*Math.cos(angle))+"%",top:(50+38*Math.sin(angle))+"%"}} aria-label={service.title} aria-pressed={selectedTopics.includes(service.title)} onClick={()=>onToggleTopic(service.title)} title={service.title}><Icon size={20} aria-hidden="true"/>{selectedTopics.includes(service.title)&&<span className="vv-signal-selected-mark"><Check size={11} aria-hidden="true"/></span>}</button>;
           })}
         </div>
         <div className="vv-signal-readout" aria-live="polite">
-          <div><small>{active?"FREQUENCY SELECTED":"TUNE INTO YOUR IDEA"}</small><strong>{active?.title??"Six creative directions"}</strong><p>{active?.summary??"Choose a service on the dial or explore your options below."}</p></div>
-          <a href="#send-a-message" aria-label={active?"Continue with "+active.title:"Continue to the contact form"}><ArrowUpRight size={22}/></a>
+          <div><small>{selectedServices.length?selectedServices.length+" OF "+services.length+" FREQUENCIES SELECTED":"TUNE INTO YOUR IDEA"}</small><strong>{active?.title??(selectedServices.length>1?"Your creative constellation":"Six creative directions")}</strong>{selectedServices.length>1?<ul className="vv-signal-selected-list">{selectedServices.map(service=><li key={service.id}><Check size={12} aria-hidden="true"/>{service.title}</li>)}</ul>:<p>{active?.summary??"Choose as many services as you need on the dial or explore your options below."}</p>}</div>
+          <a href="#send-a-message" aria-label={selectedServices.length?"Continue with selected services":"Continue to the contact form"}><ArrowUpRight size={22}/></a>
         </div>
-        <div className="vv-signal-console-foot"><span>{active?active.label.toUpperCase():"SELECT AN ICON TO EXPLORE"}</span><span aria-hidden="true">● ━━━ ○</span></div>
+        <div className="vv-signal-console-foot"><span>{selectedServices.length?"TAP SELECTED ICONS TO REMOVE":"SELECT ONE OR MORE ICONS"}</span><span aria-hidden="true">● ━━━ ○</span></div>
       </div>
     </div>
     <div className="vv-inner-hero-bottom"><span>NAIROBI, KENYA · CREATIVE MEDIA COMPANY</span><a href="#send-a-message">SCROLL TO CONNECT <ChevronDown size={14} aria-hidden="true"/></a></div>
@@ -235,15 +236,29 @@ const contactStyles = `
 @media(max-width:540px){.vv-signal-console{padding:14px}.vv-signal-dial{max-width:280px}.vv-signal-dial .vv-contact-orbit{max-width:none}.vv-signal-readout{min-height:112px}.vv-contact-experience .vv-contact-topic-list button{font-size:10px;padding:8px;min-height:48px}.vv-contact-experience .vv-contact-send-actions button{width:100%}}
 @media(prefers-reduced-motion:reduce){.vv-signal-node,.vv-contact-meter-track>span{transition:none}}
 
+
+/* Multi-selection feedback for the contact dial and inquiry form. */
+.vv-signal-selected-mark{position:absolute;right:-3px;top:-3px;display:grid;place-items:center;width:19px;height:19px;border:2px solid #003f5c;border-radius:50%;background:#b5ffeb;color:#003f5c;pointer-events:none}
+.vv-signal-selected-list{list-style:none;display:grid;gap:5px;margin:9px 0 0;padding:0;color:#c2e5e3;font-size:11px;line-height:1.4}
+.vv-signal-selected-list li{display:flex;align-items:flex-start;gap:6px;overflow-wrap:anywhere}
+.vv-signal-selected-list svg{flex:0 0 auto;color:#8ef1dd;margin-top:1px}
+.vv-contact-selection-meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px;color:#4b7475;font-size:11px;font-weight:600;margin-bottom:10px}
+.vv-contact-selection-meta>span:last-child{color:#167a71;font-weight:800}
+.vv-contact-topic-list button>span{flex:1;min-width:0}
+.vv-contact-topic-list .vv-contact-topic-check{color:#a5f5e7}
+.vv-contact-experience .vv-inner-contact-form .vv-contact-clear-topics{font:inherit;font-size:11px;font-weight:750;color:#166e66;background:transparent;border:0;padding:9px 0 0;border-radius:0;text-decoration:underline;box-shadow:none}
+.vv-contact-experience .vv-inner-contact-form .vv-contact-clear-topics:hover{background:transparent;transform:none;color:#003f5c}
+
 `;
 
-function ContactPage({topic,onTopicChange}:{topic:string;onTopicChange:(topic:string)=>void}){
+function ContactPage({selectedTopics,onToggleTopic,onClearTopics}:{selectedTopics:string[];onToggleTopic:(topic:string)=>void;onClearTopics:()=>void}){
   const [name,setName]=useState(""),[email,setEmail]=useState(""),[subjectOverride,setSubjectOverride]=useState<string|null>(null),[message,setMessage]=useState("");
-  const subject=subjectOverride??topic;
+  const autoSubject=selectedTopics.length>1?"Project inquiry — multiple services":selectedTopics[0]??"";
+  const subject=subjectOverride??autoSubject;
   const topics=[...services.map(s=>({title:s.title,Icon:s.Icon})),{title:"Collaboration",Icon:Sparkles},{title:"General enquiry",Icon:MessageCircle}];
   const validEmail=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   const completed=[name.trim().length>=2,validEmail,subject.trim().length>=3,message.trim().length>=10].filter(Boolean).length;
-  const draft=["Hello Visual Verse,","",...(topic?["Interested in: "+topic,""]:[]),message.trim()||"[Your message]","","Name: "+(name.trim()||"[Your name]"),"Reply to: "+(email.trim()||"[Your email]")].join("\n");
+  const draft=["Hello Visual Verse,","",...(selectedTopics.length?["Interested in:",...selectedTopics.map(title=>"- "+title),""]:[]),message.trim()||"[Your message]","","Name: "+(name.trim()||"[Your name]"),"Reply to: "+(email.trim()||"[Your email]")].join("\n");
   function submit(event:FormEvent<HTMLFormElement>){
     event.preventDefault();
     if(message.trim().length<10||subject.trim().length<3||name.trim().length<2)return;
@@ -251,11 +266,6 @@ function ContactPage({topic,onTopicChange}:{topic:string;onTopicChange:(topic:st
     if(submitter instanceof HTMLButtonElement&&submitter.value==="whatsapp"){
       window.location.href="https://wa.me/"+PHONE.replace(/\D/g,"")+"?text="+encodeURIComponent("Subject: "+subject.trim()+"\n\n"+draft);
     }else openMailDraft(subject.trim(),draft);
-  }
-  function selectTopic(value:string){
-    const next=topic===value?"":value;
-    if(subjectOverride===topic||subjectOverride==="")setSubjectOverride(null);
-    onTopicChange(next);
   }
   return <>
     <style>{contactStyles}</style>
@@ -277,13 +287,15 @@ function ContactPage({topic,onTopicChange}:{topic:string;onTopicChange:(topic:st
           <h3><EditorialText text="What can we create together?"/></h3>
           <fieldset className="vv-contact-topics">
             <legend>What are you interested in? (optional)</legend>
-            <div className="vv-contact-topic-list">{topics.map(({title,Icon})=><button key={title} type="button" aria-pressed={topic===title} onClick={()=>selectTopic(title)}><Icon size={17} aria-hidden="true"/>{title}</button>)}</div>
+            <div className="vv-contact-selection-meta"><span>Select as many services as you need.</span><span role="status">{selectedTopics.length} selected</span></div>
+            <div className="vv-contact-topic-list">{topics.map(({title,Icon})=><button key={title} type="button" aria-pressed={selectedTopics.includes(title)} onClick={()=>onToggleTopic(title)}><Icon size={17} aria-hidden="true"/><span>{title}</span>{selectedTopics.includes(title)&&<Check className="vv-contact-topic-check" size={15} aria-hidden="true"/>}</button>)}</div>
+            {selectedTopics.length>0&&<button type="button" className="vv-contact-clear-topics" onClick={onClearTopics}>Clear all selections</button>}
           </fieldset>
           <div className="vv-inner-form-row">
             <label>Your name <input required minLength={2} value={name} onChange={e=>setName(e.target.value)} placeholder="Full name" autoComplete="name"/></label>
             <label>Email address <input required type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email"/></label>
           </div>
-          <label>Subject <input required minLength={3} value={subject} onChange={e=>setSubjectOverride(e.target.value)} placeholder="What is this about?"/></label>
+          <label>Subject <input required minLength={3} value={subject} onChange={e=>setSubjectOverride(e.target.value===autoSubject?null:e.target.value)} placeholder="What is this about?"/></label>
           <label>Message <textarea required minLength={10} maxLength={2000} rows={5} value={message} onChange={e=>setMessage(e.target.value)} placeholder="Tell us a little about your idea…"/><span className="vv-contact-count">{message.length} / 2000</span></label>
           <div className="vv-contact-meter"><div><span>SIGNAL READINESS</span><span>{completed} / 4 fields</span></div><div className="vv-contact-meter-track" role="progressbar" aria-label="Inquiry fields completed" aria-valuemin={0} aria-valuemax={4} aria-valuenow={completed}><span style={{width:completed*25+"%"}}/></div><small>{completed===4?"Ready to prepare your message.":"Complete your details to prepare your signal."}</small></div>
           <details className="vv-contact-preview"><summary>Preview your message</summary><pre>{"Subject: "+(subject||"[Your subject]")+"\n\n"+draft}</pre></details>
@@ -362,15 +374,22 @@ function QuotePage(){
 }
 
 export function VisualVerseInnerPage({kind, AudiencePage}:{kind:Kind;AudiencePage?:ComponentType}){
-  const [contactTopic,setContactTopic]=useState("");
+  const [contactTopics,setContactTopics]=useState<string[]>([]);
+  function toggleContactTopic(topic:string){
+    setContactTopics(previous=>{
+      if(previous.includes(topic))return previous.filter(value=>value!==topic);
+      const order=[...services.map(s=>s.title),"Collaboration","General enquiry"];
+      return order.filter(value=>value===topic||previous.includes(value));
+    });
+  }
   return <div className={kind==="contact"?"vv-inner-page vv-contact-experience":"vv-inner-page"}>
     <VisualVerseNavbar/>
     <main id="top">
-      {kind==="contact"?<ContactSignalHero topic={contactTopic} onTopicChange={setContactTopic}/>:kind!=="about"&&kind!=="services"&&kind!=="audiences"&&<PageHero kind={kind}/>}
+      {kind==="contact"?<ContactSignalHero selectedTopics={contactTopics} onToggleTopic={toggleContactTopic}/>:kind!=="about"&&kind!=="services"&&kind!=="audiences"&&<PageHero kind={kind}/>}
       {kind==="about"&&<VisualVerseAboutEditorial/>}
       {kind==="services"&&<ServicesPage/>}
       {kind==="audiences"&&AudiencePage&&<AudiencePage/>}
-      {kind==="contact"&&<ContactPage topic={contactTopic} onTopicChange={setContactTopic}/>}
+      {kind==="contact"&&<ContactPage selectedTopics={contactTopics} onToggleTopic={toggleContactTopic} onClearTopics={()=>setContactTopics([])}/>}
       {kind==="quote"&&<QuotePage/>}
       {kind!=="about"&&kind!=="audiences"&&<VisualVerseAboutCta/>}
     </main>
