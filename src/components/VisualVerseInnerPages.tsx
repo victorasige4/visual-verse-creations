@@ -57,14 +57,14 @@ function PageHero({kind}:{kind:Kind}){
           <h1>{page.first}<br/><em>{page.accent}</em></h1>
           <p>{page.description}</p>
           <div className="vv-inner-hero-actions">
-            <a className="vv-motion-action vv-action-primary" href="/request-quote.html"><VisualVerseActionContent>Start a project</VisualVerseActionContent></a>
-            <a className="vv-motion-action vv-action-secondary" href="/projects.html"><VisualVerseActionContent Icon={ArrowRight}>Explore our work</VisualVerseActionContent></a>
+            <a className="vv-motion-action vv-action-primary" href={kind==="contact"?"#send-a-message":"/request-quote.html"}><VisualVerseActionContent>{kind==="contact"?"Send a message":"Start a project"}</VisualVerseActionContent></a>
+            <a className="vv-motion-action vv-action-secondary" href={kind==="contact"?WHATSAPP:"/projects.html"} target={kind==="contact"?"_blank":undefined} rel={kind==="contact"?"noopener noreferrer":undefined}><VisualVerseActionContent Icon={kind==="contact"?MessageCircle:ArrowRight}>{kind==="contact"?"Chat on WhatsApp":"Explore our work"}</VisualVerseActionContent></a>
           </div>
         </div>
         <div className="vv-inner-hero-art">
-          <div className="vv-inner-hero-circles" aria-hidden="true"><i/><i/></div>
+          <>{kind==="contact"?<div className="vv-contact-orbits" aria-hidden="true"><span className="vv-contact-orbit"><i/></span><span className="vv-contact-orbit"><i/></span><span className="vv-contact-orbit"><i/></span></div>:<div className="vv-inner-hero-circles" aria-hidden="true"><i/><i/></div>}</>
           <img src="/logo-mark.png" alt="Visual Verse logo mark"/>
-          <span>VISUAL VERSE / IMAGINE. CREATE. CONNECT.</span>
+          <span>{kind==="contact"?"FIRST CONTACT / IMAGINE. CREATE. CONNECT.":"VISUAL VERSE / IMAGINE. CREATE. CONNECT."}</span>
         </div>
       </div>
       <div className="vv-inner-hero-bottom"><span>NAIROBI, KENYA · CREATIVE MEDIA COMPANY</span><span>SCROLL TO EXPLORE <ArrowRight size={14} style={{transform:"rotate(90deg)"}} aria-hidden="true"/></span></div>
@@ -84,40 +84,114 @@ function openMailDraft(subject:string,body:string){
   window.location.href="mailto:"+EMAIL+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
 }
 
+/* Scoped to the contact experience; shared page styles remain unchanged. */
+const contactStyles = `
+.vv-contact-experience .vv-inner-hero-v2{background:radial-gradient(ellipse at 80% 40%,#0b6572 0%,transparent 55%),#003f5c;color:white;border-color:transparent}
+.vv-contact-experience .vv-inner-hero-v2 h1{color:#fff}
+.vv-contact-experience .vv-inner-hero-v2 h1 em,.vv-contact-experience .vv-inner-hero-v2 .vv-inner-eyebrow{color:#86eadd}
+.vv-contact-experience .vv-inner-hero-v2 p{color:#d2e9e9}
+.vv-contact-experience .vv-inner-hero-actions .vv-action-secondary{color:white;border-color:#85b9bd}
+.vv-contact-experience .vv-inner-hero-bottom{color:#b0d6d7;border-color:#ffffff26}
+.vv-contact-experience .vv-inner-hero-art{min-height:330px;isolation:isolate;overflow:hidden;background:radial-gradient(circle,#2ec4b62b,transparent 66%)}
+.vv-contact-experience .vv-inner-hero-art::before{content:"";position:absolute;inset:0;z-index:-1;background-image:radial-gradient(#c2f8ef75 1px,transparent 1px);background-size:25px 25px;mask-image:radial-gradient(ellipse,#000,transparent 75%)}
+.vv-contact-experience .vv-inner-hero-art img{width:clamp(100px,14vw,180px);filter:grayscale(1) brightness(0) invert(1) drop-shadow(0 0 22px #2ec4b67d)}
+.vv-contact-experience .vv-inner-hero-art>span{color:#b6e7df;text-align:center;letter-spacing:.11em}
+.vv-contact-orbits{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;z-index:1}
+.vv-contact-orbit{position:absolute;width:min(78%,330px);aspect-ratio:1;border:1px solid #85eadd75;border-radius:50%;animation:vv-contact-spin 22s linear infinite}
+.vv-contact-orbit:nth-child(2){width:min(57%,240px);border-style:dashed;animation-duration:16s;animation-direction:reverse}
+.vv-contact-orbit:nth-child(3){width:min(93%,390px);border-color:#a7eae82f;animation-duration:32s}
+.vv-contact-orbit i{position:absolute;left:50%;top:0;transform:translate(-50%,-50%);width:9px;height:9px;background:#a6ffef;border-radius:50%;box-shadow:0 0 16px #2ec4b6}
+.vv-contact-orbit:nth-child(2) i{width:6px;height:6px}
+.vv-contact-orbit:nth-child(3) i{width:5px;height:5px}
+@keyframes vv-contact-spin{to{transform:rotate(360deg)}}
+.vv-contact-experience .vv-inner-contact{background:#f5fbf7;scroll-margin-top:100px}
+.vv-contact-experience .vv-inner-contact-main{gap:clamp(26px,4vw,65px);grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr)}
+.vv-contact-experience .vv-inner-contact-copy .vv-inner-section-head{margin-bottom:22px}
+.vv-contact-experience .vv-inner-contact-links{grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
+.vv-contact-experience .vv-inner-contact-links>a,.vv-contact-experience .vv-inner-contact-links>div{position:relative;min-width:0;min-height:124px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:12px;padding:17px;border:1px solid #d2e8e0;border-radius:16px;background:#fff;transition:transform .2s,background .2s,border-color .2s,box-shadow .2s}
+.vv-contact-experience .vv-inner-contact-links>a:hover{transform:translateY(-3px);border-color:#159b90;background:#e6faf3;box-shadow:0 12px 24px #003f5c0d}
+.vv-contact-experience .vv-inner-contact-links>a>svg:last-child{position:absolute;top:18px;right:15px}
+.vv-contact-experience .vv-inner-contact-links>*>span{flex:none;align-items:flex-start;width:100%;gap:5px}
+.vv-contact-experience .vv-inner-contact-links small{color:#397773}
+.vv-contact-experience .vv-inner-contact-links strong{font-size:clamp(11px,1vw,14px)}
+.vv-contact-experience .vv-inner-contact-links>*>svg:first-child{width:24px;height:24px}
+.vv-contact-experience .vv-inner-contact-form{position:relative;overflow:hidden;border-top:4px solid #2ec4b6}
+.vv-contact-experience .vv-inner-contact-form h3{font-size:clamp(20px,2vw,29px);line-height:1.18}
+.vv-contact-topics{border:0;padding:0;margin:0;min-width:0}
+.vv-contact-topics legend{font-size:12px;font-weight:850;color:#285b61;margin-bottom:10px;padding:0}
+.vv-contact-topic-list{display:flex;flex-wrap:wrap;gap:7px}
+.vv-contact-experience .vv-contact-topic-list button{font:inherit;font-size:11px;font-weight:700;line-height:1.3;min-height:36px;max-width:100%;width:auto;padding:8px 12px;border:1px solid #ccdfd9;border-radius:50px;background:#f5fbf7;color:#285b61;transition:background .2s,border-color .2s}
+.vv-contact-experience .vv-contact-topic-list button[aria-pressed=true]{background:#003f5c;color:white;border-color:#003f5c}
+.vv-contact-experience .vv-contact-topic-list button:hover{transform:none;border-color:#159b90}
+.vv-contact-experience .vv-contact-topic-list button[aria-pressed=true]:hover{background:#005675;color:white}
+.vv-contact-experience .vv-inner-contact-form>p{color:#4b7475}
+.vv-contact-count{display:flex;justify-content:flex-end;font-size:10px;color:#4b7475;font-weight:600}
+.vv-contact-location{margin-top:15px;min-height:136px;border-radius:16px;overflow:hidden;padding:20px;color:white;display:flex;align-items:center;gap:15px;background:radial-gradient(circle at 90% 20%,#168b89,#003f5c 72%);position:relative;isolation:isolate}
+.vv-contact-location::after{content:"";position:absolute;inset:0;z-index:-1;background-image:radial-gradient(#b2f5e46b 1px,transparent 1px);background-size:13px 13px;mask-image:linear-gradient(90deg,transparent 25%,#000)}
+.vv-contact-location>svg{flex:0 0 auto;color:#91f4e1}
+.vv-contact-location strong{display:block;font-size:16px;margin-bottom:5px}
+.vv-contact-location p{color:#d4efeb;font-size:12px;margin:0;line-height:1.6}
+.vv-contact-experience .vv-inner-social-section{background:#fff}
+.vv-contact-experience .vv-inner-social-links{grid-template-columns:repeat(5,minmax(0,1fr));max-width:none;gap:12px}
+.vv-contact-experience .vv-inner-social-links a{min-height:125px;position:relative;align-items:flex-start;justify-content:space-between;flex-direction:column;gap:15px;padding:19px;font-size:13px;transition:background .2s,color .2s,transform .2s}
+.vv-contact-experience .vv-inner-social-links a>svg:last-child{position:absolute;right:16px;top:18px}
+.vv-contact-experience .vv-inner-social-links a:hover{background:#003f5c;color:white;transform:translateY(-4px)}
+.vv-contact-experience .vv-inner-social-links a:hover svg{color:#a5f5e7}
+.vv-contact-experience :is(a,button):focus-visible{outline:3px solid #159b90;outline-offset:4px}
+@media(max-width:780px){.vv-contact-experience .vv-inner-contact-main{grid-template-columns:1fr}.vv-contact-experience .vv-inner-hero-art{min-height:280px}.vv-contact-experience .vv-inner-social-links{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:540px){.vv-contact-experience .vv-inner-hero-art{min-height:245px}.vv-contact-experience .vv-inner-contact-links>a,.vv-contact-experience .vv-inner-contact-links>div{padding:13px;min-height:120px}.vv-contact-experience .vv-inner-social-links{grid-template-columns:repeat(2,minmax(0,1fr))}.vv-contact-experience .vv-inner-social-links a{min-height:100px;padding:15px}.vv-contact-experience .vv-inner-hero-art img{width:105px}.vv-contact-orbit{max-width:205px}.vv-contact-orbit:nth-child(2){max-width:150px}.vv-contact-orbit:nth-child(3){max-width:240px}}
+@media(prefers-reduced-motion:reduce){.vv-contact-orbit{animation:none}.vv-contact-experience .vv-inner-contact-links>a,.vv-contact-experience .vv-inner-social-links a,.vv-contact-experience .vv-contact-topic-list button{transition:none;transform:none!important}}
+`;
+
 function ContactPage(){
   const [name,setName]=useState(""),[email,setEmail]=useState(""),[subject,setSubject]=useState(""),[message,setMessage]=useState("");
+  const [topic,setTopic]=useState("");
+  const topics=[...services.map(s=>s.title),"Collaboration","General enquiry"];
   function submit(event:FormEvent<HTMLFormElement>){
     event.preventDefault();
-    if(message.trim().length<10)return;
-    openMailDraft(subject,["Hello Visual Verse,","",message,"","Name: "+name,"Reply to: "+email].join("\n"));
+    if(message.trim().length<10||subject.trim().length<3||name.trim().length<2)return;
+    openMailDraft(subject.trim(),["Hello Visual Verse,","",...(topic?["Interested in: "+topic,""]:[]),message.trim(),"","Name: "+name.trim(),"Reply to: "+email.trim()].join("\n"));
+  }
+  function selectTopic(value:string){
+    const next=topic===value?"":value;
+    setTopic(next);
+    if(!subject||subject===topic)setSubject(next);
   }
   return <>
+    <style>{contactStyles}</style>
     <section className="vv-inner-section vv-inner-contact" id="send-a-message">
       <div className="vv-inner-contact-main">
         <div className="vv-inner-contact-copy">
-          <SectionTitle eyebrow="LET'S CONNECT / FROM NAIROBI" description="Whether you're planning a campaign, an event or an entirely new brand, let's talk through it.">The first <br className="vv-break-wide"/>hello is<br/><em>the exciting <br className="vv-break-wide"/>part.</em></SectionTitle>
+          <SectionTitle eyebrow="LET'S CONNECT / FROM NAIROBI" description="A new idea, a big question or something still taking shape? Choose the channel that feels right for you.">Good things begin<br/><em>with a hello.</em></SectionTitle>
           <div className="vv-inner-contact-links">
-            <a href={"mailto:"+EMAIL}><Mail size={20}/><span><small>EMAIL US</small><strong>{EMAIL}</strong></span><ArrowUpRight size={16}/></a>
-            <a href={"tel:"+PHONE}><Phone size={20}/><span><small>CALL US</small><strong>+254 794 044 598</strong></span><ArrowUpRight size={16}/></a>
-            <a href={WHATSAPP} target="_blank" rel="noopener noreferrer"><MessageCircle size={20}/><span><small>WHATSAPP</small><strong>Start a chat</strong></span><ArrowUpRight size={16}/></a>
-            <div><MapPin size={20}/><span><small>BASED IN</small><strong>Nairobi, Kenya</strong></span></div>
+            <a href={"mailto:"+EMAIL}><Mail size={24} aria-hidden="true"/><span><small>EMAIL US</small><strong>{EMAIL}</strong></span><ArrowUpRight size={16} aria-hidden="true"/></a>
+            <a href={"tel:"+PHONE}><Phone size={24} aria-hidden="true"/><span><small>CALL US</small><strong>+254 794 044 598</strong></span><ArrowUpRight size={16} aria-hidden="true"/></a>
+            <a href={WHATSAPP} target="_blank" rel="noopener noreferrer"><MessageCircle size={24} aria-hidden="true"/><span><small>WHATSAPP</small><strong>Start a chat</strong></span><ArrowUpRight size={16} aria-hidden="true"/></a>
+            <a href="/request-quote.html"><FileText size={24} aria-hidden="true"/><span><small>PROJECT BRIEF</small><strong>Request a quote</strong></span><ArrowUpRight size={16} aria-hidden="true"/></a>
           </div>
+          <div className="vv-contact-location"><MapPin size={30} aria-hidden="true"/><div><strong>Nairobi, Kenya</strong><p>Rooted in Kenya. Open to creative collaborations wherever your story takes us.</p></div></div>
         </div>
         <form className="vv-inner-form vv-inner-contact-form" onSubmit={submit}>
-          <span className="vv-inner-eyebrow">SEND US A MESSAGE</span>
+          <span className="vv-inner-eyebrow">SEND A SIGNAL / YOUR INQUIRY</span>
           <h3><EditorialText text="What can we create together?"/></h3>
-          <label>Your name <input required minLength={2} value={name} onChange={e=>setName(e.target.value)} placeholder="Full name" autoComplete="name"/></label>
-          <label>Email address <input required type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email"/></label>
+          <fieldset className="vv-contact-topics">
+            <legend>What are you interested in? (optional)</legend>
+            <div className="vv-contact-topic-list">{topics.map(value=><button key={value} type="button" aria-pressed={topic===value} onClick={()=>selectTopic(value)}>{value}</button>)}</div>
+          </fieldset>
+          <div className="vv-inner-form-row">
+            <label>Your name <input required minLength={2} value={name} onChange={e=>setName(e.target.value)} placeholder="Full name" autoComplete="name"/></label>
+            <label>Email address <input required type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email"/></label>
+          </div>
           <label>Subject <input required minLength={3} value={subject} onChange={e=>setSubject(e.target.value)} placeholder="What is this about?"/></label>
-          <label>Message <textarea required minLength={10} rows={5} value={message} onChange={e=>setMessage(e.target.value)} placeholder="Tell us a little about your idea…"/></label>
+          <label>Message <textarea required minLength={10} maxLength={2000} rows={5} value={message} onChange={e=>setMessage(e.target.value)} placeholder="Tell us a little about your idea…"/><span className="vv-contact-count">{message.length} / 2000</span></label>
           <p>Submitting opens a prepared draft in your email application. Your message is not sent automatically.</p>
           <button type="submit" className="vv-motion-action vv-action-primary"><VisualVerseActionContent Icon={Send}>Prepare my email</VisualVerseActionContent></button>
         </form>
       </div>
     </section>
     <section className="vv-inner-section vv-inner-social-section">
-      <SectionTitle eyebrow="FIND US OUT THERE">Let's stay<br/><em>in the loop.</em></SectionTitle>
-      <div className="vv-inner-social-links">{SOCIAL_PROFILES.map(({name,url,Icon})=><a key={name} href={url} target="_blank" rel="noopener noreferrer" aria-label={name+" (opens in a new tab)"}><Icon size={23} aria-hidden="true"/>{name}<ArrowUpRight size={16} aria-hidden="true"/></a>)}</div>
+      <SectionTitle eyebrow="FIND US OUT THERE" description="Follow the things we make, the stories we tell and the ideas we're exploring.">Stay in our <em>orbit.</em></SectionTitle>
+      <div className="vv-inner-social-links">{SOCIAL_PROFILES.map(({name,url,Icon})=><a key={name} href={url} target="_blank" rel="noopener noreferrer" aria-label={name+" (opens in a new tab)"}><Icon size={26} aria-hidden="true"/>{name}<ArrowUpRight size={16} aria-hidden="true"/></a>)}</div>
       <p>For meetings, shoots and production sessions, let's agree on the time and location in advance.</p>
     </section>
   </>;
@@ -185,7 +259,7 @@ function QuotePage(){
 }
 
 export function VisualVerseInnerPage({kind, AudiencePage}:{kind:Kind;AudiencePage?:ComponentType}){
-  return <div className="vv-inner-page">
+  return <div className={kind==="contact"?"vv-inner-page vv-contact-experience":"vv-inner-page"}>
     <VisualVerseNavbar/>
     <main id="top">
       {kind!=="about"&&kind!=="services"&&kind!=="audiences"&&<PageHero kind={kind}/>}
