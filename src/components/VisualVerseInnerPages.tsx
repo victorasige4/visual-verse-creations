@@ -62,7 +62,7 @@ function PageHero({kind}:{kind:Kind}){
           </div>
         </div>
         <div className="vv-inner-hero-art">
-          <>{kind==="contact"?<div className="vv-contact-orbits" aria-hidden="true"><span className="vv-contact-orbit"><i/></span><span className="vv-contact-orbit"><i/></span><span className="vv-contact-orbit"><i/></span></div>:<div className="vv-inner-hero-circles" aria-hidden="true"><i/><i/></div>}</>
+          <>{kind==="contact"?<div className="vv-contact-orbits" aria-hidden="true"><div className="vv-contact-orbit"><i/></div><div className="vv-contact-orbit"><i/></div><div className="vv-contact-orbit"><i/></div></div>:<div className="vv-inner-hero-circles" aria-hidden="true"><i/><i/></div>}</>
           <img src="/logo-mark.png" alt="Visual Verse logo mark"/>
           <span>{kind==="contact"?"FIRST CONTACT / IMAGINE. CREATE. CONNECT.":"VISUAL VERSE / IMAGINE. CREATE. CONNECT."}</span>
         </div>
