@@ -24,6 +24,22 @@ const serviceIds = ["graphic-design","photography","web-ui-ux","videography","br
 const serviceNames = ["Graphic Design","Photography","Web & UI/UX Design","Videography","Branding & Identity","Social Media & Digital Marketing"];
 const labels = async (page,selector) => (await page.locator(selector).allTextContents()).map(text=>text.trim());
 async function checkProcess(page, viewport, path) {
+  const pacing=await page.locator(".vv-sp-process").evaluate(root=>{
+    const pin=root.querySelector(".vv-sp-pin"),count=root.querySelectorAll(".vv-sp-step-button").length;
+    return {distance:(root.offsetHeight-pin.offsetHeight)/count,viewport:pin.offsetHeight,count};
+  });
+  assert.ok(pacing.count===7&&Math.abs(pacing.distance-pacing.viewport)<=2,"Each process step must have a full viewport of reading space: "+path);
+  // Inspect both ends of every equal-duration chapter, including the first and last.
+  for(let i=0;i<pacing.count;i++){
+    for(const fraction of [.15,.85]){
+      await page.locator(".vv-sp-process").evaluate((root,{i,fraction})=>{
+        const pin=root.querySelector(".vv-sp-pin"),count=root.querySelectorAll(".vv-sp-step-button").length;
+        const distance=(root.offsetHeight-pin.offsetHeight)/count;
+        window.scrollTo({top:scrollY+root.getBoundingClientRect().top+(i+fraction)*distance,behavior:"instant"});
+      },{i,fraction});
+      await page.waitForFunction(n=>document.querySelector(".vv-sp-stage")?.getAttribute("data-active-step")===String(n),i+1);
+    }
+  }
   for (let i = 0; i < 7; i++) {
     await page.locator(".vv-sp-step-button").nth(i).evaluate(button=>button.click());
     await page.waitForFunction(n=>document.querySelector(".vv-sp-stage")?.getAttribute("data-active-step")===String(n) && document.querySelector(".vv-ps-card")?.getAttribute("data-chapter")===String(n),i+1);
