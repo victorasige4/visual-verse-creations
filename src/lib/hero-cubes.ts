@@ -6,7 +6,7 @@
  * this renderer. Dark heroes keep their existing contrast.
  */
 const heroSelector = [
-  ".vv-about-hero",
+  // About owns its canvas directly through React; never mount a duplicate.
   ".vv-sv-hero--impractical",
   ".vv-sv-hero--potadot",
   ".vv-detail-hero",
@@ -18,16 +18,16 @@ const heroSelector = [
 type Tile = {x:number;y:number;a:number;b:number};
 type Point = [number,number];
 
-function attachHeroCubes(hero:HTMLElement):()=>void {
+export function attachHeroCubes(hero:HTMLElement,ownedCanvas?:HTMLCanvasElement):()=>void {
   const dark=hero.matches(".vvx-hero,.vv-contact-signal-hero");
   hero.classList.add("vv-has-hero-cubes");
   hero.dataset.vvHeroCubes="ready";
-  const canvas=document.createElement("canvas");
+  const canvas=ownedCanvas??document.createElement("canvas");
   canvas.className="vv-shared-hero-cubes";
   canvas.setAttribute("aria-hidden","true");
-  hero.prepend(canvas);
+  if(!ownedCanvas)hero.prepend(canvas);
   const ctx=canvas.getContext("2d",{alpha:true});
-  const remove=()=>{canvas.remove();hero.classList.remove("vv-has-hero-cubes");delete hero.dataset.vvHeroCubes;};
+  const remove=()=>{if(!ownedCanvas)canvas.remove();else delete canvas.dataset.vvPainted;hero.classList.remove("vv-has-hero-cubes");delete hero.dataset.vvHeroCubes;};
   if(!ctx)return remove;
   const base=document.createElement("canvas");
   const baseCtx=base.getContext("2d",{alpha:true});
