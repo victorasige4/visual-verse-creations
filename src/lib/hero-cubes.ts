@@ -23,7 +23,8 @@ export function attachHeroCubes(hero:HTMLElement,ownedCanvas?:HTMLCanvasElement)
   hero.classList.add("vv-has-hero-cubes");
   hero.dataset.vvHeroCubes="ready";
   const canvas=ownedCanvas??document.createElement("canvas");
-  canvas.className="vv-shared-hero-cubes";
+  // Preserve the About-owned canvas class so its full-landing CSS stays active.
+  canvas.classList.add("vv-shared-hero-cubes");
   canvas.setAttribute("aria-hidden","true");
   if(!ownedCanvas)hero.prepend(canvas);
   const ctx=canvas.getContext("2d",{alpha:true});
