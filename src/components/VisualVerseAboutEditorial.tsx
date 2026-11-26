@@ -2,7 +2,7 @@ import { EditorialText } from "./EditorialText";
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { attachHeroCubes } from "../lib/hero-cubes";
-import { ArrowUpRight, CheckCircle2 } from "lucide-react";
+import { Aperture, ArrowUpRight, CheckCircle2, Compass, UsersRound } from "lucide-react";
 import { VisualVerseKenyaMap } from "./VisualVerseKenyaMap";
 import { VisualVerseFaq } from "./VisualVerseClosingSections";
 import { CardStackDemo } from "./ui/card-stack-demo";
@@ -100,6 +100,61 @@ function AboutHeading({label,title,description}:{label:string;title:React.ReactN
   </header>;
 }
 
+const storyChapters = [
+  {title:"Creative direction with purpose",label:"IMAGINE",detail:"Find the intention behind the idea.",Icon:Compass,position:"50% 45%"},
+  {title:"Personal collaboration",label:"CREATE",detail:"Shape the work together, with curiosity.",Icon:UsersRound,position:"50% 42%"},
+  {title:"Thoughtful final delivery",label:"CONNECT",detail:"Bring the finished work into the world.",Icon:CheckCircle2,position:"50% 48%"},
+] as const;
+
+function VisualVerseStory(){
+  const [active,setActive]=useState(0);
+  const chapter=storyChapters[active];
+  const Icon=chapter.Icon;
+  return <section className="vv-about-story vv-about-pad vv-story-editorial" id="our-story" aria-labelledby="vv-story-title">
+    <div className="vv-about-container vv-story-layout">
+      <header className="vv-story-heading">
+        <div>
+          <span className="vv-about-kicker"><span className="vv-about-dot"/> OUR STORY</span>
+          <h2 id="vv-story-title">A creative home<br/>for <em>big ideas.</em></h2>
+        </div>
+        <div className="vv-story-heading-note"><span aria-hidden="true"><Aperture size={22} strokeWidth={1.5}/></span><span>IMAGINATION IN MOTION<br/><small>THE VISUAL VERSE STORY</small></span></div>
+      </header>
+      <div className="vv-story-main">
+        <figure className="vv-story-visual" data-chapter={active}>
+          <div className="vv-story-viewfinder" aria-hidden="true"><i/><i/><i/><i/></div>
+          <div className="vv-story-image-meta" aria-hidden="true"><span><i/> BEHIND THE LENS</span><span>VV / NAIROBI</span></div>
+          <div className="vv-story-photo"><img src={import.meta.env.BASE_URL+"about-photographer.webp"} alt="Behind the lens at Visual Verse Creations" loading="lazy" decoding="async" style={{objectPosition:chapter.position}}/></div>
+          <div className="vv-story-reticle" aria-hidden="true"><span/><span/></div>
+          <figcaption className="vv-story-photo-caption"><span>A STORY WORTH TELLING</span><span>VISUAL VERSE / 0{active+1}</span></figcaption>
+          <div className="vv-story-visual-badge" aria-live="polite" aria-atomic="true"><Icon size={23} strokeWidth={1.5}/><div><small>THE CREATIVE JOURNEY</small><strong key={chapter.label}>{chapter.label}</strong></div></div>
+        </figure>
+        <div className="vv-story-narrative">
+          <div className="vv-story-copy">
+            <p>Visual Verse grew from a simple belief: compelling creative work should do more than fill a space. It should tell the truth of a brand, celebrate a moment or make an experience easier to use.</p>
+            <p>We approach each collaboration with curiosity, combining creative direction with practical execution. From the first rough sketch to the finished frame, we give ideas room to become something extraordinary.</p>
+          </div>
+          <blockquote className="vv-story-quote">
+            <span aria-hidden="true" className="vv-story-quote-mark">“</span>
+            <p>The strongest work happens when imagination and intention meet.</p>
+            <cite>VISUAL VERSE CREATIONS</cite>
+          </blockquote>
+          <a className="vv-motion-action vv-action-primary vv-story-action" href={import.meta.env.BASE_URL+"contact.html"}><VisualVerseActionContent Icon={ArrowUpRight}>Start a conversation</VisualVerseActionContent></a>
+        </div>
+      </div>
+      <div className="vv-story-chapters" role="group" aria-label="The creative journey">
+        {storyChapters.map((item,index)=>{
+          const ChapterIcon=item.Icon;
+          return <button key={item.label} type="button" className="vv-story-chapter" aria-pressed={index===active} onClick={()=>setActive(index)}>
+            <span className="vv-story-chapter-top"><ChapterIcon size={22} strokeWidth={1.6}/><span>{item.label}</span><ArrowUpRight className="vv-story-chapter-arrow" size={17} strokeWidth={1.7}/></span>
+            <strong>{item.title}</strong>
+            <span className="vv-story-chapter-detail">{item.detail}</span>
+          </button>;
+        })}
+      </div>
+    </div>
+  </section>;
+}
+
 export function VisualVerseAboutEditorial() {
   const heroRef=useRef<HTMLDivElement>(null);
   const cubeRef=useRef<HTMLCanvasElement>(null);
@@ -147,22 +202,7 @@ export function VisualVerseAboutEditorial() {
     </section>
     <VisualVersePurposeCompass/>
 
-    <section className="vv-about-story vv-about-pad" id="our-story">
-      <div className="vv-about-container vv-about-story-grid">
-        <div className="vv-about-story-image">
-          <img src="/about-photographer.webp" alt="Behind the lens at Visual Verse Creations" loading="lazy"/>
-          <span className="vv-about-image-label">A STORY WORTH TELLING / VISUAL VERSE</span>
-        </div>
-        <div className="vv-about-story-copy">
-          <AboutHeading label="OUR STORY" title={<>A creative <br/>home for <em>big <br/>ideas.</em></>}/>
-          <p>Visual Verse grew from a simple belief: compelling creative work should do more than fill a space. It should tell the truth of a brand, celebrate a moment or make an experience easier to use.</p>
-          <p>We approach each collaboration with curiosity, combining creative direction with practical execution. From the first rough sketch to the finished frame, we give ideas room to become something extraordinary.</p>
-          <div className="vv-about-story-points"><span><CheckCircle2 size={18}/> Creative direction with purpose</span><span><CheckCircle2 size={18}/> Personal collaboration</span><span><CheckCircle2 size={18}/> Thoughtful final delivery</span></div>
-          <blockquote>“The strongest work happens when imagination and intention meet.”<cite>— VISUAL VERSE CREATIONS</cite></blockquote>
-          <a className="vv-about-inline-link vv-motion-action vv-action-primary" href="/contact.html"><VisualVerseActionContent Icon={ArrowUpRight}>Start a conversation</VisualVerseActionContent></a>
-        </div>
-      </div>
-    </section>
+    <VisualVerseStory />
 
     <VisualVerseHowWeWork />
 
