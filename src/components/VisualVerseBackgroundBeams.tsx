@@ -9,7 +9,7 @@ const lightSurfaces = [
   ".vv-story-band", ".vv-preview-section:not(#about):not(#process)",
   ".vv-close-marquee-section", ".vv-close-location-section", ".vv-close-faq-section",
   ".vv-close-cta-section",
-  ".vv-about-stats", ".vv-about-vision", ".vv-about-editorial .vv-about-story",
+  ".vv-about-vision", ".vv-about-editorial .vv-about-story",
   ".vv-about-principles", ".vv-about-tools", ".vv-about-audiences", ".vv-about-partners",
   ".vv-about-faq", ".vv-about-facts", ".vv-cta-section",
   ".vv-service-overview", ".vv-sv-resources",
