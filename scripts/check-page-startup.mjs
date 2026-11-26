@@ -682,7 +682,19 @@ try {
         assert.ok((await page.locator(".vv-quote-review").innerText()).includes("Example Client"));
         assert.ok((await page.locator(".vv-quote-review").innerText()).includes(serviceNames[0]));
         assert.ok((await page.locator(".vv-quote-review").innerText()).includes(serviceNames[2]));
-        assert.ok((await page.getByRole("link",{name:"Open WhatsApp"}).getAttribute("href")).includes("wa.me/254794044598"),"WhatsApp handoff");
+        assert.ok(await page.getByRole("button",{name:"Save & open WhatsApp"}).isEnabled(),"WhatsApp handoff available");
+        let posted;
+        await page.route("**/functions/v1/website-enquiry",async route=>{
+          posted=route.request().postDataJSON();
+          await route.fulfill({status:503,contentType:"application/json",body:JSON.stringify({error:"Test unavailable"})});
+        });
+        await page.getByRole("button",{name:"Save & open email draft"}).click();
+        await page.locator(".vv-enquiry-feedback").waitFor({state:"visible"});
+        assert.equal(posted.source,"quote");
+        assert.equal(posted.channel,"email");
+        assert.ok(posted.brief.includes(serviceNames[0])&&posted.brief.includes(serviceNames[2]));
+        assert.ok((await page.locator(".vv-enquiry-feedback").innerText()).includes("Test unavailable"),"Failed capture must preserve form and report error");
+        await page.unroute("**/functions/v1/website-enquiry");
         await page.getByRole("button",{name:"Back",exact:false}).click();
         assert.equal(await page.getByLabel("Full name").inputValue(),"Example Client","Back navigation preserves details");
       }
