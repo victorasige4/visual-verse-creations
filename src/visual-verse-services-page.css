@@ -167,7 +167,7 @@
 .vv-sp-process{
   --vv-sp-progress:0;--vv-sp-active:0;
   position:relative;
-  height:calc(100svh + 2880px);
+  height:calc(100svh + var(--vv-sp-step-count,7) * 100svh);
   background:var(--sv-deep);color:#fff;
   isolation:isolate;
 }
@@ -355,7 +355,7 @@
  .vv-sv-service-bullets li{font-size:13px}
  .vv-sv-art-inner{height:390px;padding:23px;border-radius:24px}
  .vv-sv-art-inner>.vv-ui-preview{max-height:295px;height:292px;max-width:450px}
- .vv-sp-process{height:calc(100svh + 1760px)}
+ .vv-sp-process{height:calc(100svh + var(--vv-sp-step-count,7) * 100svh)}
  .vv-sp-pin{min-height:0;height:100svh}
  .vv-sp-grid{width:calc(100% - 32px);height:100%;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;padding:clamp(20px,5svh,44px) 0}
  .vv-sp-left,.vv-sp-right{transform:none}
@@ -1177,3 +1177,10 @@
   .vv-sp-right{gap:6px}
 }
 @media(max-width:350px){.vv-sp-step-number{width:30px;height:30px;flex-basis:30px}.vv-sp-steps:before{top:19px}}
+
+/* A shared reading pace: one stable small viewport of travel per chapter.
+   No wheel interception, timers, forced auto-scroll, or scroll snapping. */
+.vv-sp-process{height:calc((1 + var(--vv-sp-step-count,7)) * 100svh)}
+.vv-sp-stage-track span{width:100%;transform-origin:left;transform:scaleX(calc((1 + var(--vv-sp-progress,0) * (var(--vv-sp-step-count,7) - 1)) / var(--vv-sp-step-count,7)));transition:transform .12s linear}
+.vv-sp-step-number{transition:background .45s ease,border-color .45s ease,color .45s ease,box-shadow .45s ease,transform .45s cubic-bezier(.22,1,.36,1)}
+@media(prefers-reduced-motion:reduce){.vv-sp-stage-track span,.vv-sp-step-number{transition:none}}
