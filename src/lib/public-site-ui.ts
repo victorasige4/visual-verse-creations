@@ -10,29 +10,45 @@ mountPublicMotion();
 // one listener per button or running layout work for ordinary pointer movement.
 let magnetic: HTMLElement | null = null;
 let frame = 0;
-document.addEventListener("pointermove", event => {
-  if (event.pointerType !== "mouse") return;
-  const next = (event.target as Element | null)?.closest<HTMLElement>(".vv-motion-action") ?? null;
-  if (magnetic !== next) {
-    magnetic?.style.removeProperty("--vv-action-x");
-    magnetic?.style.removeProperty("--vv-action-y");
-    magnetic = next;
-  }
-  cancelAnimationFrame(frame);
-  if (!next || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  frame = requestAnimationFrame(() => {
-    const rect = next.getBoundingClientRect();
-    if (!rect.width || !rect.height) return;
-    next.style.setProperty("--vv-action-x", `${((event.clientX - rect.left) / rect.width - .5) * 11}px`);
-    next.style.setProperty("--vv-action-y", `${((event.clientY - rect.top) / rect.height - .5) * 9}px`);
-  });
-}, { passive: true });
-document.addEventListener("pointerleave", () => {
-  cancelAnimationFrame(frame);
+let hit: Element | null = null;
+let bounds: DOMRect | null = null;
+let pointerX = 0, pointerY = 0;
+const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+function resetMagnetic() {
   magnetic?.style.removeProperty("--vv-action-x");
   magnetic?.style.removeProperty("--vv-action-y");
-  magnetic = null;
-});
+  magnetic=null;bounds=null;hit=null;
+}
+function updateMagnetic() {
+  frame=0;
+  if(!magnetic||reduced.matches)return;
+  // Read only on target changes or viewport movement, not each pointer event.
+  const rect=bounds??(bounds=magnetic.getBoundingClientRect());
+  if(!rect.width||!rect.height)return;
+  magnetic.style.setProperty("--vv-action-x",((pointerX-rect.left)/rect.width-.5)*11+"px");
+  magnetic.style.setProperty("--vv-action-y",((pointerY-rect.top)/rect.height-.5)*9+"px");
+}
+document.addEventListener("pointermove",event=>{
+  if(event.pointerType!=="mouse"||reduced.matches)return;
+  pointerX=event.clientX;pointerY=event.clientY;
+  const target=event.target instanceof Element?event.target:null;
+  if(target!==hit){
+    hit=target;
+    const next=target?.closest<HTMLElement>(".vv-motion-action")??null;
+    if(next!==magnetic){
+      magnetic?.style.removeProperty("--vv-action-x");
+      magnetic?.style.removeProperty("--vv-action-y");
+      magnetic=next;bounds=null;
+    }
+  }
+  if(magnetic&&!frame)frame=requestAnimationFrame(updateMagnetic);
+},{passive:true});
+const invalidate=()=>{bounds=null;if(magnetic&&!frame)frame=requestAnimationFrame(updateMagnetic);};
+window.addEventListener("scroll",invalidate,{passive:true});
+window.addEventListener("resize",invalidate,{passive:true});
+document.addEventListener("pointerleave",()=>{cancelAnimationFrame(frame);frame=0;resetMagnetic();});
+window.addEventListener("blur",()=>{cancelAnimationFrame(frame);frame=0;resetMagnetic();});
+reduced.addEventListener("change",()=>{if(reduced.matches){cancelAnimationFrame(frame);frame=0;resetMagnetic();}});
 
 // The legacy homepage has a few server-rendered anchors outside React islands.
 export function enhanceStaticActions() {
