@@ -19,20 +19,22 @@ type Tile = {x:number;y:number;a:number;b:number};
 type Point = [number,number];
 
 function attachHeroCubes(hero:HTMLElement):()=>void {
+  const dark=hero.matches(".vvx-hero,.vv-contact-signal-hero");
+  hero.classList.add("vv-has-hero-cubes");
+  hero.dataset.vvHeroCubes="ready";
   const canvas=document.createElement("canvas");
   canvas.className="vv-shared-hero-cubes";
   canvas.setAttribute("aria-hidden","true");
+  hero.prepend(canvas);
   const ctx=canvas.getContext("2d",{alpha:true});
-  if(!ctx)return ()=>{};
+  const remove=()=>{canvas.remove();hero.classList.remove("vv-has-hero-cubes");delete hero.dataset.vvHeroCubes;};
+  if(!ctx)return remove;
   const base=document.createElement("canvas");
   const baseCtx=base.getContext("2d",{alpha:true});
-  if(!baseCtx)return ()=>{};
-  const dark=hero.matches(".vvx-hero,.vv-contact-signal-hero");
-  hero.classList.add("vv-has-hero-cubes");
-  hero.prepend(canvas);
+  if(!baseCtx)return remove;
   const color=dark
-    ? {top:"#06394c",topLit:"#2ec4b6",left:"#053346",right:"#042c40",edge:"rgba(137,224,211,.15)"}
-    : {top:"#ffffff",topLit:"#2ec4b6",left:"#ebf9f6",right:"#d8f2ef",edge:"rgba(0,63,92,.16)"};
+    ? {top:"#10495d",topLit:"#2ec4b6",left:"#0a3b51",right:"#062f46",edge:"rgba(137,224,211,.34)"}
+    : {top:"#ffffff",topLit:"#2ec4b6",left:"#ebf9f6",right:"#d8f2ef",edge:"rgba(0,63,92,.23)"};
   const reduced=window.matchMedia("(prefers-reduced-motion: reduce)");
   const coarse=window.matchMedia("(pointer: coarse)");
   let width=0,height=0,dpr=1,tiles:Tile[]=[],frame=0,visible=false,lastDraw=0;
@@ -88,6 +90,7 @@ function attachHeroCubes(hero:HTMLElement):()=>void {
     for(const t of tiles)tile(baseCtx!,t,0);
     pointer.dirty=true;
     restore();
+    canvas.dataset.vvPainted="true";
   }
   function draw(now:number){
     // Paint the cached static cube grid in one blit; only recalculate tiles
@@ -163,32 +166,48 @@ function attachHeroCubes(hero:HTMLElement):()=>void {
     hero.removeEventListener("pointerleave",leave);hero.removeEventListener("pointerup",leave);hero.removeEventListener("pointercancel",leave);
     window.removeEventListener("blur",hide);window.removeEventListener("scroll",onScroll);window.removeEventListener("resize",resize);
     document.removeEventListener("visibilitychange",onVisibility);reduced.removeEventListener("change",onPreference);
-    canvas.remove();hero.classList.remove("vv-has-hero-cubes");
+    remove();
   };
 }
 
+let rescanHero: (()=>void)|null=null;
+
 export function mountHeroCubes(){
   // The static homepage already owns exactly this effect. Do not double mount.
-  if(document.getElementById("vvHeroCubes")||document.getElementById("vv-shared-hero-cube-styles"))return;
+  if(document.getElementById("vvHeroCubes"))return;
+  if(rescanHero){rescanHero();return;}
   const style=document.createElement("style");
   style.id="vv-shared-hero-cube-styles";
+  // Explicit positive stacking for artwork and text. A visible repeating SVG
+  // fallback remains on the canvas even if the 2D context is unavailable.
+  function fallback(dark:boolean){
+    const top=dark?"#10495d":"#ffffff",left=dark?"#0a3b51":"#ebf9f6",right=dark?"#062f46":"#d8f2ef",edge=dark?"#3d8290":"#b8d5d4";
+    const cube=(x:number,y:number)=>`<g transform="translate(${x} ${y})"><path d="M-52 0 0 24.4 0 27.4 -52 3Z" fill="${left}"/><path d="M0 24.4 52 0 52 3 0 27.4Z" fill="${right}"/><path d="M-52 0 0 -24.4 52 0 0 24.4Z" fill="${top}"/><path d="M-52 0 0 -24.4 52 0" fill="none" stroke="${edge}" stroke-width=".65"/></g>`;
+    let shapes="";
+    for(let row=-2;row<5;row++)for(let col=-1;col<3;col++)shapes+=cube(col*104+(row%2?52:0),row*24.4);
+    return "url(\"data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="104" height="48.8" viewBox="0 0 104 48.8">'+shapes+"</svg>")+'\")';
+  }
   style.textContent=`
-    .vv-has-hero-cubes{position:relative;isolation:isolate;overflow:hidden}
-    .vv-has-hero-cubes>.vv-shared-hero-cubes{position:absolute;inset:0;width:100%;height:100%;z-index:-1;display:block;pointer-events:none;user-select:none;opacity:.88}
-    .vvx-hero.vv-has-hero-cubes>.vv-shared-hero-cubes,.vv-contact-signal-hero.vv-has-hero-cubes>.vv-shared-hero-cubes{opacity:.56}
-    .vv-sv-hero--impractical.vv-has-hero-cubes::before,.vv-contact-signal-hero.vv-has-hero-cubes::before,.vv-pj-hero.vv-has-hero-cubes::before{display:none}
-    @media(max-width:760px){.vv-has-hero-cubes>.vv-shared-hero-cubes{opacity:.76}.vvx-hero.vv-has-hero-cubes>.vv-shared-hero-cubes,.vv-contact-signal-hero.vv-has-hero-cubes>.vv-shared-hero-cubes{opacity:.48}}
+    .vv-has-hero-cubes{position:relative!important;isolation:isolate!important;overflow:hidden}
+    .vv-has-hero-cubes>canvas.vv-shared-hero-cubes{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;z-index:0!important;display:block!important;visibility:visible!important;pointer-events:none!important;user-select:none;opacity:.97!important;background-image:${fallback(false)};background-size:104px 48.8px;background-repeat:repeat}
+    .vv-has-hero-cubes>canvas[data-vv-painted="true"]{background-image:none}
+    .vv-has-hero-cubes>:is(.vv-about-container,.vv-sv-container,.vvx-hero-inner,.vvx-hero-footer,.vv-pj-hero-grid,.vv-pj-hero-foot,.vv-inner-hero-inner,.vv-inner-hero-bottom){position:relative;z-index:1}
+    .vvx-hero.vv-has-hero-cubes>canvas.vv-shared-hero-cubes,.vv-contact-signal-hero.vv-has-hero-cubes>canvas.vv-shared-hero-cubes{opacity:.84!important;background-image:${fallback(true)}}
+    .vvx-hero.vv-has-hero-cubes>canvas[data-vv-painted="true"],.vv-contact-signal-hero.vv-has-hero-cubes>canvas[data-vv-painted="true"]{background-image:none}
+    .vv-sv-hero--impractical.vv-has-hero-cubes::before,.vv-contact-signal-hero.vv-has-hero-cubes::before,.vv-pj-hero.vv-has-hero-cubes::before,.vvx-hero.vv-has-hero-cubes>.vvx-hero-grid{display:none}
+    @media(max-width:760px){.vv-has-hero-cubes>canvas.vv-shared-hero-cubes{opacity:.90!important}.vvx-hero.vv-has-hero-cubes>canvas.vv-shared-hero-cubes,.vv-contact-signal-hero.vv-has-hero-cubes>canvas.vv-shared-hero-cubes{opacity:.80!important}}
   `;
   document.head.appendChild(style);
   let attached:HTMLElement|null=null,cleanup:(()=>void)|null=null,scanFrame=0;
   const scan=()=>{
     scanFrame=0;
     const hero=document.querySelector<HTMLElement>(heroSelector);
-    if(hero===attached)return;
+    if(hero===attached&&(!hero||hero.querySelector(":scope > .vv-shared-hero-cubes")))return;
     cleanup?.();attached=hero;cleanup=hero?attachHeroCubes(hero):null;
   };
+  rescanHero=scan;
   const observer=new MutationObserver(records=>{
-    if(attached&&!attached.isConnected||records.some(record=>[...record.addedNodes].some(node=>node instanceof HTMLElement&&(node.matches(heroSelector)||node.querySelector(heroSelector))))){
+    if(attached&&(!attached.isConnected||!attached.querySelector(":scope > .vv-shared-hero-cubes"))||records.some(record=>[...record.addedNodes].some(node=>node instanceof HTMLElement&&(node.matches(heroSelector)||node.querySelector(heroSelector))))){
       if(!scanFrame)scanFrame=requestAnimationFrame(scan);
     }
   });
