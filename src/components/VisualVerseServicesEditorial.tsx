@@ -2,7 +2,7 @@ import { EditorialText } from "./EditorialText";
 import { orderedServices, serviceLabel, serviceNumber } from "../data/services";
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, Camera, Clapperboard, Palette, PenTool, MonitorSmartphone, Share2, Check, UsersRound, MessageCircle, FileText, Play, Pause, Smartphone, Monitor, Layers3, MousePointer2, Type, Globe } from "lucide-react";
+import { ArrowUpRight, ArrowLeft, ArrowRight, Sparkles, Camera, Clapperboard, Palette, PenTool, MonitorSmartphone, Share2, Check, UsersRound, MessageCircle, FileText, Play, Pause, Smartphone, Monitor, Layers3, MousePointer2, Type, Globe } from "lucide-react";
 import { VisualVerseProcessJourney } from "./VisualVerseProcessJourney";
 import { Compare } from "./ui/compare";
 import { VisualVerseServiceDetailSections } from "./VisualVerseServiceDetailSections";
@@ -168,45 +168,155 @@ function useRevealSections() {
   return rootRef;
 }
 
+
+/* Impractical-inspired landing composition, using Visual Verse's own copy,
+   service artwork, navigation and brand tokens. Scoped to overview only. */
+const serviceLandingStyles = `
+.vv-services-editorial .vv-sv-hero--impractical{display:block;position:relative;isolation:isolate;overflow:hidden;padding:clamp(138px,16svh,186px) 0 clamp(35px,5vw,66px);background:radial-gradient(ellipse at 50% 40%,#d4f5ee 0%,#edf9f6 40%,#f9fcfb 74%);min-height:0}
+.vv-sv-hero--impractical::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:radial-gradient(#168e8724 1px,transparent 1px);background-size:23px 23px;mask-image:radial-gradient(ellipse at 50% 35%,#000 0%,transparent 73%)}
+.vv-sv-hero--impractical::after{content:"";position:absolute;z-index:-1;inset:auto -12% -90px;height:190px;pointer-events:none;background:radial-gradient(ellipse,#a9e5d64d,transparent 65%)}
+.vv-sv-hero--impractical>.vv-sv-container{display:flex;flex-direction:column;align-items:center}
+.vv-sv-hero--impractical .vv-sv-breadcrumb{align-self:flex-start;margin:0 0 clamp(24px,3vw,40px)}
+.vv-services-editorial .vv-sv-hero--impractical .vv-sv-hero-main{display:flex;flex-direction:column;align-items:center;text-align:center;gap:0;width:100%;max-width:870px}
+.vv-sv-hero--impractical .vv-sv-landing-tag{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border:1px solid #c8e6df;border-radius:50px;background:#ffffffb5;color:#187c76;font-size:11px;font-weight:750;letter-spacing:.045em;box-shadow:0 3px 14px #003f5c08}
+.vv-services-editorial .vv-sv-hero--impractical h1{font-size:clamp(30px,4.1vw,59px);line-height:1.07;max-width:850px;margin:20px 0 0;font-weight:850;letter-spacing:var(--vv-tracking-readable,0em);color:var(--sv-deep)!important;text-wrap:balance}
+.vv-sv-hero--impractical h1 em{color:#118f87;font-style:normal}
+.vv-services-editorial .vv-sv-hero--impractical .vv-sv-hero-main>p{font-size:clamp(14px,1.35vw,18px);line-height:1.65;margin:16px auto 0;max-width:610px;color:#52737b}
+.vv-sv-brief-launcher{display:flex;flex-direction:column;align-items:stretch;gap:15px;width:min(100%,660px);padding:17px;margin:28px auto 0;background:#fff;border:1px solid #cde4de;border-radius:21px;text-decoration:none;color:var(--sv-deep);text-align:left;box-shadow:0 15px 42px #003f5c12;transition:box-shadow .25s,border-color .25s,transform .25s}
+.vv-sv-brief-launcher:hover{border-color:#2ec4b6;box-shadow:0 18px 48px #003f5c20;transform:translateY(-2px)}
+.vv-sv-brief-launcher>span:first-child{font-size:15px;font-weight:550;color:#59767e;padding:5px 3px}
+.vv-sv-brief-launcher-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.vv-sv-brief-launcher-bottom>small{font-size:10px;font-weight:750;color:#267a74;display:flex;gap:6px;align-items:center}
+.vv-sv-brief-launcher-bottom>strong{display:flex;align-items:center;gap:9px;border-radius:12px;padding:12px 16px;background:var(--sv-deep);color:#fff;font-size:12px}
+.vv-sv-brief-launcher-bottom>strong svg{color:#89efdd}
+.vv-sv-hero--impractical .vv-service-hero-nav{width:100%;max-width:920px}
+.vv-sv-hero--impractical .vv-service-switcher{margin:17px auto 0;justify-content:center;gap:7px}
+.vv-sv-hero--impractical .vv-service-switcher a{font-size:11px;background:#ffffffba}
+.vv-sv-hero--impractical .vv-service-switcher a:is(:hover,:focus-visible){background:var(--sv-deep);color:white}
+.vv-sv-hero--impractical .vv-sv-browse-link{display:inline-flex;align-items:center;gap:8px;margin-top:23px;color:#127d76;text-decoration:none;font-weight:800;font-size:12px}
+.vv-services-editorial .vv-service-overview--rail{background:linear-gradient(180deg,#f9fcfb,#fff);padding:clamp(25px,3vw,45px) 0 clamp(65px,8vw,112px)}
+.vv-service-overview--rail>.vv-sv-container{width:min(1168px,calc(100% - 48px))}
+.vv-services-editorial .vv-service-overview--rail .vv-service-overview-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:0 0 20px;border:0}
+.vv-service-overview--rail .vv-service-overview-heading h2{font-size:clamp(22px,2.8vw,36px);margin:8px 0 0}
+.vv-service-rail-controls{display:flex;align-items:center;gap:7px;flex:none}
+.vv-service-rail-controls button{display:grid;place-items:center;width:42px;height:42px;border:1px solid #cfe3de;border-radius:50%;background:white;color:var(--sv-deep);cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.vv-service-rail-controls button:hover{background:var(--sv-deep);color:white;border-color:var(--sv-deep)}
+.vv-service-rail-controls button:disabled{opacity:.4;cursor:default}
+.vv-service-rail-controls button:disabled:hover{background:white;color:var(--sv-deep);border-color:#cfe3de}
+.vv-service-rail{display:flex;gap:16px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:#8bc9bf #e8f3ef;overscroll-behavior-inline:contain;scroll-padding-inline:4px;padding:5px 4px 18px;align-items:stretch;min-width:0}
+.vv-service-rail-card{flex:0 0 clamp(275px,32%,370px);min-width:0;scroll-snap-align:start;border:1px solid #d9e8e4;border-radius:18px;background:#fff;overflow:hidden;transition:box-shadow .3s,border-color .3s}
+.vv-service-rail-card:hover,.vv-service-rail-card:focus-within{border-color:#2ec4b6;box-shadow:0 8px 18px #003f5c12}
+.vv-service-rail-card>a{display:flex;flex-direction:column;height:100%;text-decoration:none;color:var(--sv-deep)}
+.vv-service-rail-card .vv-service-rail-image{position:relative;isolation:isolate;aspect-ratio:16/10;overflow:hidden;background:#d4e9e4}
+.vv-service-rail-image img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.75,.2,1)}
+.vv-service-rail-image::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#002a4050,transparent 40%,#002a4040);pointer-events:none}
+.vv-service-rail-card:is(:hover,:focus-within) img{transform:scale(1.055)}
+.vv-service-rail-icon{position:absolute;z-index:1;left:12px;top:12px;display:grid;place-items:center;width:36px;height:36px;border:1px solid #ffffff80;border-radius:10px;background:#002a407a;color:#fff;backdrop-filter:blur(10px)}
+.vv-service-rail-cta{position:absolute;z-index:1;right:12px;bottom:12px;display:flex;align-items:center;gap:8px;padding:10px 13px;border-radius:10px;background:#fff;color:#003f5c;font-size:11px;font-weight:800;box-shadow:0 6px 22px #002a4040;transition:background .2s,color .2s,transform .2s}
+.vv-service-rail-card:is(:hover,:focus-within) .vv-service-rail-cta{background:#2ec4b6;transform:translateY(-3px)}
+.vv-service-rail-card .vv-service-row-copy{display:flex;flex-direction:column;flex:1;padding:15px 17px 18px;min-width:0}
+.vv-services-editorial .vv-service-rail-card .vv-service-row-copy h3{font-size:clamp(15px,1.4vw,19px);line-height:1.3;color:var(--sv-deep)!important;margin:0 0 7px;text-wrap:pretty}
+.vv-service-rail-card .vv-service-row-copy p{font-size:12px;line-height:1.55;margin:0;color:#58727a}
+.vv-service-rail-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:14px}
+.vv-service-rail-tags>span{padding:5px 9px;border-radius:30px;background:#eaf6f1;color:#246c65;font-size:10px;font-weight:650}
+.vv-service-rail-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;color:#55777d;font-size:11px;font-weight:650}
+.vv-service-rail-progress{flex:1;max-width:170px;height:4px;background:#dcece6;border-radius:8px;overflow:hidden}
+.vv-service-rail-progress>span{height:100%;display:block;border-radius:8px;background:#168f84;transition:width .2s}
+.vv-service-overview--rail .vv-service-overview-outro{margin:24px 0 0}
+.vv-sv-hero--impractical a:focus-visible,.vv-service-overview--rail :is(a,button,div[tabindex]):focus-visible{outline:3px solid #168f84;outline-offset:3px}
+@media(max-width:760px){.vv-services-editorial .vv-sv-hero--impractical{padding-top:clamp(128px,26vw,154px)}.vv-sv-hero--impractical .vv-sv-breadcrumb{margin-bottom:25px}.vv-services-editorial .vv-sv-hero--impractical h1{font-size:clamp(26px,6vw,39px)}.vv-sv-brief-launcher{margin-top:23px;padding:13px;border-radius:17px}.vv-sv-brief-launcher>span:first-child{font-size:13px}.vv-sv-brief-launcher-bottom>strong{padding:11px;font-size:11px}.vv-sv-hero--impractical .vv-service-switcher{gap:6px}.vv-sv-hero--impractical .vv-service-switcher a{font-size:10px;padding:8px 10px}.vv-service-overview--rail>.vv-sv-container{width:calc(100% - 32px)}.vv-service-rail-controls button{width:36px;height:36px}.vv-service-rail-controls{gap:5px}.vv-service-rail{gap:11px}.vv-service-rail-card{flex-basis:min(85%,320px)}}
+@media(max-width:390px){.vv-service-overview--rail .vv-service-overview-heading{flex-wrap:wrap;align-items:center;gap:9px}.vv-service-rail-controls button{width:34px;height:34px}.vv-sv-brief-launcher-bottom>small{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.vv-sv-brief-launcher,.vv-service-rail-image img,.vv-service-rail-card,.vv-service-rail-cta,.vv-service-rail-progress>span{transition:none!important;transform:none!important}}
+`;
+
+function ServicesRail(){
+  const rail=useRef<HTMLDivElement>(null);
+  const [progress,setProgress]=useState(0);
+  const [playing,setPlaying]=useState(()=>!window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const [visible,setVisible]=useState(false);
+  const [hovered,setHovered]=useState(false);
+  const [focused,setFocused]=useState(false);
+  function refresh(){
+    const el=rail.current;if(!el)return;
+    const max=el.scrollWidth-el.clientWidth;
+    setProgress(max>1?Math.min(1,Math.max(0,el.scrollLeft/max)):1);
+  }
+  function move(direction:number,wrap=false){
+    const el=rail.current;if(!el)return;
+    const cards=el.querySelectorAll<HTMLElement>(".vv-service-rail-card");
+    const step=cards.length>1?cards[1].offsetLeft-cards[0].offsetLeft:el.clientWidth;
+    const max=el.scrollWidth-el.clientWidth;
+    if(max<=1)return;
+    const behavior:ScrollBehavior=window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth";
+    if(wrap&&direction>0&&el.scrollLeft>=max-4)el.scrollTo({left:0,behavior});
+    else el.scrollBy({left:direction*step,behavior});
+  }
+  useEffect(()=>{
+    const el=rail.current;if(!el)return;
+    refresh();
+    const resize=()=>refresh();
+    window.addEventListener("resize",resize);
+    const observer=typeof IntersectionObserver!=="undefined"?new IntersectionObserver(([entry])=>setVisible(entry.isIntersecting),{threshold:.15}):null;
+    if(observer)observer.observe(el);else setVisible(true);
+    return ()=>{observer?.disconnect();window.removeEventListener("resize",resize)};
+  },[]);
+  useEffect(()=>{
+    if(!playing||!visible||hovered||focused)return;
+    const timer=window.setInterval(()=>move(1,true),4400);
+    return ()=>window.clearInterval(timer);
+  },[playing,visible,hovered,focused]);
+  return <section id="services" className="vv-service-overview vv-service-overview--rail" aria-labelledby="vv-sv-services-title">
+    <div className="vv-sv-container">
+      <header className="vv-service-overview-heading">
+        <div><span className="vv-sv-kicker"><i/><i/> THE CREATIVE DISCIPLINES</span><h2 id="vv-sv-services-title">What we <em>bring to life.</em></h2></div>
+        <div className="vv-service-rail-controls" aria-label="Service carousel controls">
+          <button type="button" aria-label={playing?"Pause automatic service scrolling":"Play automatic service scrolling"} onClick={()=>setPlaying(value=>!value)}>{playing?<Pause size={16}/>:<Play size={16}/>}</button>
+          <button type="button" aria-label="Previous services" disabled={progress<=.005} onClick={()=>{setPlaying(false);move(-1)}}><ArrowLeft size={18}/></button>
+          <button type="button" aria-label="Next services" disabled={progress>=.995} onClick={()=>{setPlaying(false);move(1)}}><ArrowRight size={18}/></button>
+        </div>
+      </header>
+      <div className="vv-service-rail" ref={rail} role="region" aria-label="Explore six creative services" tabIndex={0} onScroll={refresh} onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)} onFocus={()=>setFocused(true)} onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget))setFocused(false)}} onPointerDown={()=>setPlaying(false)} onWheel={()=>setPlaying(false)} onKeyDown={e=>{if(e.target===e.currentTarget&&(e.key==="ArrowLeft"||e.key==="ArrowRight")){e.preventDefault();setPlaying(false);move(e.key==="ArrowLeft"?-1:1)}}}>
+        {services.map((s,i)=>{
+          const Icon=s.Icon,image=covers[s.id];
+          return <article className="vv-service-rail-card" key={s.id} id={"details-"+s.id} aria-labelledby={"sv-"+s.id}>
+            <span id={"service-"+s.id} className="vv-service-anchor" aria-hidden="true"/>
+            <a href={serviceUrl(s.id)} aria-label={"Explore "+s.name}>
+              <div className="vv-service-rail-image"><img src={base+image.file} alt="" style={{objectPosition:image.position}} loading={i<3?"eager":"lazy"} decoding="async"/><span className="vv-service-rail-icon"><Icon size={18} strokeWidth={1.7}/></span><span className="vv-service-rail-cta">Explore service <ArrowUpRight size={15}/></span></div>
+              <div className="vv-service-row-copy"><h3 id={"sv-"+s.id}>{s.name}</h3><p>{detailCopy[s.id].headline}</p><div className="vv-service-rail-tags">{s.tags.slice(0,2).map(tag=><span key={tag}>{tag}</span>)}</div></div>
+            </a>
+          </article>;
+        })}
+      </div>
+      <div className="vv-service-rail-footer"><span>Swipe or scroll to explore all six services</span><div className="vv-service-rail-progress" aria-hidden="true"><span style={{width:Math.max(12,progress*100)+"%"}}/></div></div>
+      <p className="vv-service-overview-outro">One creative partner. Many disciplines. <a href={base+"request-quote.html"}>Let's shape yours <ArrowUpRight size={14}/></a></p>
+    </div>
+  </section>;
+}
+
 export function VisualVerseServicesEditorial() {
   const ref = useRevealSections();
   const selected=services.find(s=>s.id===new URLSearchParams(window.location.search).get("service"));
-  const [highlight,setHighlight]=useState<string>();
   if(selected)return <ServiceDetail service={selected}/>;
   return <div className="vv-services-editorial" ref={ref}>
-    <section className="vv-sv-hero vv-sv-hero--potadot" aria-labelledby="vv-sv-title" id="services-top">
+    <style>{serviceLandingStyles}</style>
+    <section className="vv-sv-hero vv-sv-hero--impractical" aria-labelledby="vv-sv-title" id="services-top">
       <div className="vv-sv-container">
-        <nav className="vv-sv-breadcrumb" aria-label="Breadcrumb">
-          <a href={import.meta.env.BASE_URL}>Home</a><span aria-hidden="true">·</span><span aria-current="page">Services</span>
-        </nav>
+        <nav className="vv-sv-breadcrumb" aria-label="Breadcrumb"><a href={base}>Home</a><span aria-hidden="true">·</span><span aria-current="page">Services</span></nav>
         <div className="vv-sv-hero-main">
-          <h1 id="vv-sv-title">Six ways we <br/>create, <br/><em>all of them <br/>yours.</em></h1>
-          <p>Every creative solution is shaped around your story, your audience and what you want to achieve. No one-size-fits-all ideas. Just thoughtful work made for you.</p>
+          <span className="vv-sv-landing-tag"><Sparkles size={15} aria-hidden="true"/> Your creative universe starts here</span>
+          <h1 id="vv-sv-title">Six ways we create,<br/><em>all of them yours.</em></h1>
+          <p>Every creative solution is shaped around your story, your audience and what you want to achieve. Let's bring your next idea to life.</p>
+          <a href={base+"request-quote.html"} className="vv-sv-brief-launcher" aria-label="Start a project brief">
+            <span>Tell us what you're imagining...</span>
+            <span className="vv-sv-brief-launcher-bottom"><small><Sparkles size={15} aria-hidden="true"/> YOUR IDEA. OUR CREATIVITY.</small><strong>Start a project <ArrowUpRight size={17} aria-hidden="true"/></strong></span>
+          </a>
         </div>
-        <div className="vv-service-hero-nav"><ServiceNav onPreview={setHighlight}/></div>
+        <div className="vv-service-hero-nav"><ServiceNav/></div>
+        <a className="vv-sv-browse-link" href="#services">Explore our services <ArrowRight size={15} style={{transform:"rotate(90deg)"}} aria-hidden="true"/></a>
       </div>
     </section>
 
-    <section id="services" className="vv-service-overview" aria-labelledby="vv-sv-services-title">
-      <div className="vv-sv-container">
-        <header className="vv-service-overview-heading vv-sv-reveal">
-          <span className="vv-sv-kicker"><i/><i/> THE CREATIVE DISCIPLINES</span>
-          <h2 id="vv-sv-services-title">What we <em>bring to <br className="vv-break-narrow"/>life.</em></h2>
-        </header>
-        <div className="vv-service-list">
-          {services.map((s)=>{
-            const Icon=s.Icon;
-            const image=covers[s.id];
-            return <article className={`vv-service-row vv-sv-reveal ${highlight===s.id?"is-highlighted":""}`} id={"details-"+s.id} key={s.id} aria-labelledby={"sv-"+s.id}>
-              <span id={"service-"+s.id} className="vv-service-anchor" aria-hidden="true"/>
-              <div className="vv-service-row-copy"><span className="vv-service-index"><Icon size={20} strokeWidth={1.6}/> {s.number} / 06</span><h3 id={"sv-"+s.id}><EditorialText text={s.name} variant="service-list"/></h3><h4>{detailCopy[s.id].headline}</h4><p>{s.description}</p><ul>{s.bullets.slice(0,3).map(b=><li key={b}><Check size={15}/>{b}</li>)}</ul><a className="vv-service-cta vv-motion-action vv-action-primary" href={serviceUrl(s.id)}><VisualVerseActionContent Icon={ArrowUpRight}>Explore {s.name}</VisualVerseActionContent></a></div>
-              <a className="vv-service-row-art" href={serviceUrl(s.id)} aria-label={`Explore ${s.name}`}><img src={base+image.file} alt="" style={{objectPosition:image.position}} loading="lazy" decoding="async"/><span className="vv-service-row-top"><Icon size={20} strokeWidth={1.6}/><span>STUDIO / {s.number}</span></span><span className="vv-service-row-badge"><span>{s.tags[0]} · {s.tags[1]}</span><ArrowUpRight size={19}/></span></a>
-            </article>;
-          })}
-        </div>
-        <p className="vv-service-overview-outro">One creative partner. Many disciplines. <a href={base+"request-quote.html"}>Let's shape yours <ArrowUpRight size={14}/></a></p>
-      </div>
-    </section>
+    <ServicesRail/>
 
     <VisualVerseProcessJourney/>
 
