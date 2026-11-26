@@ -172,7 +172,7 @@ export function VisualVerseAboutCta() {
           </div>
           <address className="vv-cta-contact">
             <a href="tel:+254794044598">+254 794 044 598</a>
-            <a href="mailto:hello@visualverse.com">hello@visualverse.com</a>
+            <a href="mailto:cvisualverse@gmail.com">cvisualverse@gmail.com</a>
             <span>Nairobi, Kenya</span>
           </address>
         </div>
