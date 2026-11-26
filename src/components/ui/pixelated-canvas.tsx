@@ -99,6 +99,8 @@ export function PixelatedCanvas({
     let frame = 0;
     let lastFrame = 0;
     let samples: Sample[] = [];
+    const staticCanvas=document.createElement("canvas");
+    const staticContext=staticCanvas.getContext("2d",{alpha:false});
     let w = 0;
     let h = 0;
     let ratio = 1;
@@ -120,45 +122,56 @@ export function PixelatedCanvas({
     const tint = parseHex(tintColor);
     const tintAmount = clamp(tintStrength, 0, 1);
 
+    function drawSample(ctx:CanvasRenderingContext2D,sample:Sample,x:number,y:number,size:number){
+      ctx.fillStyle=sample.fill;
+      if(shape==="circle"){ctx.beginPath();ctx.arc(x,y,size*.5,0,Math.PI*2);ctx.fill();}
+      else ctx.fillRect(x-size/2,y-size/2,size,size);
+    }
+    function cacheStatic(){
+      if(!staticContext)return;
+      staticCanvas.width=Math.round(w*ratio);staticCanvas.height=Math.round(h*ratio);
+      staticContext.setTransform(ratio,0,0,ratio,0,0);
+      staticContext.fillStyle=backgroundColor;staticContext.fillRect(0,0,w,h);
+      const size=step*clamp(dotScale,.1,1);
+      for(const sample of samples)drawSample(staticContext,sample,sample.x,sample.y,size);
+    }
     function draw(now: number) {
       if (!context) return;
-      context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      context.fillStyle = backgroundColor;
-      context.fillRect(0, 0, w, h);
-      const size = step * clamp(dotScale, 0.1, 1);
-      const radius = Math.max(1, distortionRadius);
-      for (const sample of samples) {
-        let dx = 0;
-        let dy = 0;
-        if (intensity > 0.002) {
-          const vx = sample.x - currentX;
-          const vy = sample.y - currentY;
-          const distance = Math.hypot(vx, vy);
-          if (distance < radius) {
-            const effect = (1 - distance / radius) ** 2 * intensity;
-            const angle = Math.atan2(vy, vx);
-            const direction = distortionMode === "attract" ? -1 : 1;
-            if (distortionMode === "swirl") {
-              dx = -Math.sin(angle) * distortionStrength * effect;
-              dy = Math.cos(angle) * distortionStrength * effect;
-            } else {
-              dx = Math.cos(angle) * distortionStrength * effect * direction;
-              dy = Math.sin(angle) * distortionStrength * effect * direction;
-            }
-            const jitter = jitterStrength * effect;
-            dx += Math.sin(sample.seed + now * 0.001 * jitterSpeed) * jitter;
-            dy += Math.cos(sample.seed * 1.7 + now * 0.001 * jitterSpeed) * jitter;
+      context.setTransform(ratio,0,0,ratio,0,0);
+      const size=step*clamp(dotScale,.1,1);
+      const radius=Math.max(1,distortionRadius);
+      if(staticContext&&staticCanvas.width){
+        context.drawImage(staticCanvas,0,0,w,h);
+        if(intensity<=.002)return;
+      }else{context.fillStyle=backgroundColor;context.fillRect(0,0,w,h);}
+      const extent=radius+Math.abs(distortionStrength)+Math.abs(jitterStrength)+step*2;
+      // Restore the cached portrait with one draw, then redraw only the
+      // affected cells around the pointer, never the whole pixel grid.
+      if(staticContext&&staticCanvas.width){
+        context.fillStyle=backgroundColor;
+        context.fillRect(currentX-extent,currentY-extent,extent*2,extent*2);
+        context.save();context.beginPath();context.rect(currentX-extent,currentY-extent,extent*2,extent*2);context.clip();
+      }
+      for(const sample of samples){
+        const vx=sample.x-currentX,vy=sample.y-currentY;
+        if(staticContext&&staticCanvas.width&&(Math.abs(vx)>extent+step||Math.abs(vy)>extent+step))continue;
+        let dx=0,dy=0;
+        if(intensity>.002&&Math.abs(vx)<radius&&Math.abs(vy)<radius){
+          const distance=Math.hypot(vx,vy);
+          if(distance<radius){
+            const effect=(1-distance/radius)**2*intensity;
+            const nx=distance>0?vx/distance:1,ny=distance>0?vy/distance:0;
+            const direction=distortionMode==="attract"?-1:1;
+            if(distortionMode==="swirl"){dx=-ny*distortionStrength*effect;dy=nx*distortionStrength*effect;}
+            else{dx=nx*distortionStrength*effect*direction;dy=ny*distortionStrength*effect*direction;}
+            const jitter=jitterStrength*effect;
+            dx+=Math.sin(sample.seed+now*.001*jitterSpeed)*jitter;
+            dy+=Math.cos(sample.seed*1.7+now*.001*jitterSpeed)*jitter;
           }
         }
-        context.fillStyle = sample.fill;
-        if (shape === "circle") {
-          context.beginPath();
-          context.arc(sample.x + dx, sample.y + dy, size * 0.5, 0, Math.PI * 2);
-          context.fill();
-        } else {
-          context.fillRect(sample.x + dx - size / 2, sample.y + dy - size / 2, size, size);
-        }
+        drawSample(context,sample,sample.x+dx,sample.y+dy,size);
       }
+      if(staticContext&&staticCanvas.width)context.restore();
     }
 
     function tick(now: number) {
@@ -167,8 +180,9 @@ export function PixelatedCanvas({
         return;
       }
       frame = requestAnimationFrame(tick);
-      if (now - lastFrame < 1000 / clamp(maxFps, 1, 60)) return;
-      lastFrame = now;
+      const interval=1000/clamp(maxFps,1,60);
+      if(now-lastFrame<interval-1)return;
+      lastFrame=now;
       if (canInteract()) {
         currentX += (targetX - currentX) * clamp(followSpeed, 0.01, 1);
         currentY += (targetY - currentY) * clamp(followSpeed, 0.01, 1);
@@ -262,6 +276,7 @@ export function PixelatedCanvas({
         }
       }
       samples = next;
+      cacheStatic();
       draw(performance.now());
       setReady(true);
       still = true;
