@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useEffect, useId, useRef, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 import "./background-beams.css";
 
@@ -60,28 +60,22 @@ export const BackgroundBeams = memo(function BackgroundBeams({ className }: { cl
           <mask id={`${id}-mask`} maskUnits="userSpaceOnUse" x="0" y="0" width="696" height="316">
             <rect width="696" height="316" fill={`url(#${id}-fade)`}/>
           </mask>
-          {moving && animatedPaths.map((_, i) => (
-            <motion.linearGradient key={i} id={`${id}-beam-${i}`}
-              initial={{ x1: "0%", x2: "0%", y1: "0%", y2: "0%" }}
-              animate={{ x1: ["0%", "100%"], x2: ["0%", "95%"], y1: ["0%", "100%"], y2: ["0%", "100%"] }}
-              transition={{ duration: 12 + (i % 5) * 2, ease: "easeInOut", repeat: Infinity, delay: i * .7 }}>
-              <stop stopColor="#2ec4b6" stopOpacity="0"/>
-              <stop offset=".18" stopColor="#2ec4b6"/>
-              <stop offset=".48" stopColor="#128b82"/>
-              <stop offset="1" stopColor="#003f5c" stopOpacity="0"/>
-            </motion.linearGradient>
-          ))}
+          <linearGradient id={`${id}-accent`} x1="0" x2="1" y1="0" y2="1">
+            <stop stopColor="#2ec4b6" stopOpacity="0"/>
+            <stop offset=".42" stopColor="#2ec4b6"/>
+            <stop offset=".65" stopColor="#128b82"/>
+            <stop offset="1" stopColor="#003f5c" stopOpacity="0"/>
+          </linearGradient>
           <pattern id={`${id}-tile`} width={tileWidth} height={tileHeight} patternUnits="userSpaceOnUse"
             viewBox="0 0 696 316" preserveAspectRatio="xMidYMid slice">
             <g mask={`url(#${id}-mask)`}>
               <path d={basePath} stroke="#128b82" strokeOpacity=".16" strokeWidth=".6"/>
-              {moving && animatedPaths.map((path, i) => (
-                <path key={i} d={path} stroke={`url(#${id}-beam-${i})`} strokeOpacity=".55" strokeWidth=".8"/>
-              ))}
             </g>
           </pattern>
+          <pattern id={`${id}-accent-tile`} width={tileWidth} height={tileHeight} patternUnits="userSpaceOnUse" viewBox="0 0 696 316" preserveAspectRatio="xMidYMid slice"><g mask={`url(#${id}-mask)`}><path d={animatedPaths.join("")} stroke={`url(#${id}-accent)`} strokeOpacity=".55" strokeWidth=".8"/></g></pattern>
         </defs>
         <rect width="100%" height="100%" fill={`url(#${id}-tile)`}/>
+        <rect className={moving?"vv-beam-accent is-moving":"vv-beam-accent"} width="100%" height="100%" fill={`url(#${id}-accent-tile)`}/>
       </svg>
     </div>
   );
