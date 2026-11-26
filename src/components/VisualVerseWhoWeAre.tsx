@@ -37,12 +37,15 @@ export function VisualVerseWhoWeAre() {
     const mainRGB=[0,63,92];
     const aquaRGB=[46,196,182];
     const clamp=(v:number)=>Math.max(0,Math.min(1,v));
+    let previousProgress=-1;
     const render=()=>{
       raf=0;
       const rect=title.getBoundingClientRect();
       const topTrigger=window.innerHeight*.84;
       const finish=window.innerHeight*.23;
       const progress=clamp((topTrigger-rect.top)/(topTrigger-finish));
+      if(Math.abs(progress-previousProgress)<.001)return;
+      previousProgress=progress;
       words.forEach((word,index)=>{
         const i=index/Math.max(1,words.length-1);
         const amount=clamp((progress*1.2-i*.95)/.25);
@@ -89,7 +92,7 @@ export function VisualVerseWhoWeAre() {
       tintStrength={0.02}
       tintColor="#2ec4b6"
       objectFit="cover"
-      maxFps={22}
+      maxFps={40}
     />
   );
 }
