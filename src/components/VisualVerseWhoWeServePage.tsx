@@ -1,3 +1,4 @@
+import { Boxes } from "./ui/background-boxes";
 import ImageGenerationLoaderDemo from "./image-generation-loader-demo";
 import { EditorialText } from "./EditorialText";
 import { VisualVerseActionContent } from "./VisualVerseAction";
@@ -306,6 +307,7 @@ function Wobble({children,className=""}:{children:React.ReactNode;className?:str
 
 function Collaboration() {
   return <section className="vvx-collab" id="possibilities" aria-labelledby="vvx-collab-heading">
+      <Boxes/>
     <div className="vvx-container">
       <Reveal className="vvx-collab-heading">
         <Eyebrow dark>THE GOOD STUFF HAPPENS TOGETHER</Eyebrow>
@@ -388,6 +390,7 @@ function FinalStatement() {
   const reduced=useReducedMotion();
   useAboutScrollWords(".vvx-page", ".vvx-finale-statement");
   return <section className="vvx-finale" aria-labelledby="vvx-finale-heading">
+      <Boxes/>
     <div className="vvx-container vvx-finale-inner">
       <Reveal className="vvx-finale-kicker"><Eyebrow dark>AT THE END OF THE DAY</Eyebrow></Reveal>
       <h2 id="vvx-finale-heading" className="vvx-finale-statement"><span>It's not <br className="vv-break-narrow"/>about </span><span>the <em>industry.</em> </span><span>It's about </span><span><em>your story.</em></span></h2>
