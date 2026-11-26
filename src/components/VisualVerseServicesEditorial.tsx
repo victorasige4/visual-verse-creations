@@ -250,12 +250,10 @@ const serviceLandingStyles = `
 .vv-sv-finder-results a>svg:last-child{margin-left:auto;flex:none}
 .vv-sv-finder-response .vv-sv-finder-fallback{font-size:12px;color:#168f84;font-weight:750}
 .vv-sv-finder :is(textarea,button):focus-visible,.vv-sv-finder-examples button:focus-visible,.vv-sv-finder-response a:focus-visible{outline:2px solid #168f84;outline-offset:3px}
-/* Curved, full-bleed moving gallery inspired by the supplied video. */
+/* Curved, full-bleed moving gallery on the clean section background. */
 .vv-services-editorial .vv-service-overview--rail{padding-bottom:clamp(55px,7vw,95px)}
 .vv-service-overview--rail .vv-service-overview-heading{padding-bottom:22px}
-.vv-service-gallery-stage{position:relative;isolation:isolate;overflow:hidden;width:100%;background:linear-gradient(180deg,#f9fcfb 0%,#d5f3ee 18%,#8ccfd2 55%,#e9f9f3 94%,#fff 100%)}
-.vv-service-gallery-landscape{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
-.vv-service-gallery-stage::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:3;background:linear-gradient(90deg,#dff7f02b,transparent 7%,transparent 93%,#dff7f02b)}
+.vv-service-gallery-stage{position:relative;isolation:isolate;overflow:hidden;width:100%;background:transparent}
 .vv-service-gallery-stage .vv-service-rail{padding:clamp(32px,5vw,80px) 0;gap:clamp(9px,1.1vw,19px);scroll-snap-type:none;scrollbar-width:none;scroll-padding:0;overscroll-behavior-x:contain;touch-action:pan-x pan-y;position:relative}
 .vv-service-gallery-stage .vv-service-rail::-webkit-scrollbar{display:none}
 .vv-service-gallery-stage .vv-service-rail-card{flex:0 0 clamp(270px,25.5vw,470px);border:0;background:transparent;border-radius:0;overflow:visible;position:relative;box-shadow:none;scroll-snap-align:none}
@@ -402,14 +400,7 @@ function ServicesRail(){
       </header>
     </div>
     <div className="vv-service-gallery-stage">
-      <svg className="vv-service-gallery-landscape" viewBox="0 0 1600 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <defs><linearGradient id="vv-gallery-ridge" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#2d9da8"/><stop offset="1" stopColor="#003f5c"/></linearGradient><linearGradient id="vv-gallery-fade" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#f9fcfb" stopOpacity=".9"/><stop offset=".35" stopColor="#f9fcfb" stopOpacity="0"/><stop offset=".74" stopColor="#f9fcfb" stopOpacity="0"/><stop offset="1" stopColor="#f9fcfb"/></linearGradient></defs>
-        <path fill="#91d4d4" opacity=".56" d="M0 220 140 35 230 140 345 18 478 205 610 76 760 210 925 16 1100 210 1270 44 1450 190 1600 70V500H0Z"/>
-        <path fill="#70bfc4" opacity=".65" d="M0 280 160 134 280 230 390 100 530 280 680 160 810 275 1000 115 1150 255 1310 140 1450 270 1600 170V500H0Z"/>
-        <path fill="url(#vv-gallery-ridge)" opacity=".46" d="M0 355 170 210 360 365 570 235 800 397 1020 240 1230 360 1450 220 1600 330V500H0Z"/>
-        <path fill="#e5f8f2" opacity=".66" d="M0 420Q260 330 480 425T900 405T1300 420T1600 395V500H0Z"/>
-        <rect width="1600" height="500" fill="url(#vv-gallery-fade)"/>
-      </svg>
+
       <div className="vv-service-rail" ref={rail} role="region" aria-label="Explore six creative services" tabIndex={0} onScroll={()=>{if(!focused)wrap();paint()}} onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)} onFocus={()=>setFocused(true)} onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget))setFocused(false)}} onPointerDown={()=>setPlaying(false)} onWheel={()=>setPlaying(false)} onKeyDown={e=>{if(e.target===e.currentTarget&&(e.key==="ArrowLeft"||e.key==="ArrowRight")){e.preventDefault();setPlaying(false);move(e.key==="ArrowLeft"?-1:1)}}}>
         {[0,1,2].flatMap(copy=>services.map((s,i)=>{
           const Icon=s.Icon,image=covers[s.id],primary=copy===1;
