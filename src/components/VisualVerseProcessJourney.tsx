@@ -1,6 +1,6 @@
 import { EditorialText } from "./EditorialText";
 import { VisualVerseActionContent } from "./VisualVerseAction";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode, type CSSProperties } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { ProcessStoryArt } from "./VisualVerseProcessStories";
@@ -38,38 +38,46 @@ export function VisualVerseProcessJourney({items=steps, heading, artwork, quoteH
   const activeRef = useRef(0);
   const [active, setActive] = useState(0);
   const reducedMotion = useReducedMotion();
-  const last = items.length-1;
+  const count = items.length;
+  const last = count-1;
 
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
     let frame = 0;
     let lastProgress = -1;
+    let lastCurrent = -1;
+    let pinHeight = 0, runway = 1;
     const pin = root.querySelector<HTMLElement>(".vv-sp-pin");
+    const measure = () => {
+      pinHeight = pin?.offsetHeight ?? window.innerHeight;
+      runway = Math.max(1, root.offsetHeight - pinHeight);
+    };
     const recalc = () => {
       frame = 0;
       const rect = root.getBoundingClientRect();
-      const pinHeight = pin?.offsetHeight ?? window.innerHeight;
-      const runway = Math.max(1, rect.height - pinHeight);
       const progress = Math.min(1, Math.max(0, -rect.top / runway));
-      const current = Math.min(last, Math.max(0, Math.round(progress * last)));
-      if(Math.abs(progress-lastProgress)<.0001)return;
-      lastProgress=progress;
+      // Equal scroll intervals, including the first and final chapter.
+      const current = Math.min(last, Math.max(0, Math.floor(progress * count)));
+      if(current===lastCurrent&&Math.abs(progress-lastProgress)<.0001)return;
+      lastProgress=progress;lastCurrent=current;
       root.style.setProperty("--vv-sp-progress", progress.toFixed(4));
       root.style.setProperty("--vv-sp-active", String(current));
-      root.style.setProperty("--vv-sp-phase", Math.max(0, Math.min(1, (progress * last + .5) % 1)).toFixed(4));
+      root.style.setProperty("--vv-sp-phase", Math.max(0, Math.min(1, progress * count-current)).toFixed(4));
       if (activeRef.current !== current) {
         activeRef.current = current;
         setActive(current);
       }
     };
     const onScroll = () => { if (!frame) frame = requestAnimationFrame(recalc); };
-    const onResize = () => { if (!frame) frame = requestAnimationFrame(recalc); };
-    recalc();
+    const onResize = () => { measure(); if (!frame) frame = requestAnimationFrame(recalc); };
+    const resizeObserver = typeof ResizeObserver!=="undefined" ? new ResizeObserver(onResize) : null;
+    resizeObserver?.observe(root);if(pin)resizeObserver?.observe(pin);
+    measure();recalc();
     window.addEventListener("scroll", onScroll, {passive:true});
     window.addEventListener("resize", onResize, {passive:true});
-    return () => { cancelAnimationFrame(frame);window.removeEventListener("scroll",onScroll);window.removeEventListener("resize",onResize); };
-  }, [last]);
+    return () => { resizeObserver?.disconnect();cancelAnimationFrame(frame);window.removeEventListener("scroll",onScroll);window.removeEventListener("resize",onResize); };
+  }, [count,last]);
 
   const goTo = (index:number) => {
     const section = rootRef.current;
@@ -78,10 +86,10 @@ export function VisualVerseProcessJourney({items=steps, heading, artwork, quoteH
     const pinHeight = section.querySelector(".vv-sp-pin")?.getBoundingClientRect().height ?? window.innerHeight;
     const runway = Math.max(1, section.getBoundingClientRect().height - pinHeight);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    window.scrollTo({top:sectionStart + runway * (index / Math.max(1,last)),behavior:reduce?"instant":"smooth"});
+    window.scrollTo({top:sectionStart + runway * ((index + .5) / Math.max(1,count)),behavior:reduce?"instant":"smooth"});
   };
 
-  return <section className="vv-sp-process" id="our-process" aria-labelledby="vv-sp-title" ref={rootRef}>
+  return <section className="vv-sp-process" id="our-process" aria-labelledby="vv-sp-title" ref={rootRef} style={{"--vv-sp-step-count":count} as CSSProperties}>
     <div className="vv-sp-pin">
       <Boxes/>
       <div className="vv-sp-grid">
@@ -98,9 +106,9 @@ export function VisualVerseProcessJourney({items=steps, heading, artwork, quoteH
             </div>
             <div className="vv-sp-scene-layer">
                 <motion.div key={active} className="vv-sp-scene"
-                  initial={reducedMotion ? false : {opacity:.68,y:7}}
+                  initial={reducedMotion ? false : {opacity:.55,y:8}}
                   animate={{opacity:1,y:0}}
-                  transition={reducedMotion ? {duration:0} : {duration:.22,ease:[.16,1,.3,1]}}>
+                  transition={reducedMotion ? {duration:0} : {duration:.48,ease:[.22,1,.36,1]}}>
                   {artwork ? artwork(active) : <ProcessStoryArt kind="overview" step={active}/>}
                 </motion.div>
             </div>
