@@ -1,4 +1,6 @@
 import { EditorialText } from "./EditorialText";
+import { Boxes } from "./ui/background-boxes";
+import "../quote-launchpad.css";
 import { orderedServices, serviceLabel } from "../data/services";
 import { SOCIAL_PROFILES } from "../data/socials";
 import { VisualVerseActionContent } from "./VisualVerseAction";
@@ -314,62 +316,134 @@ function ContactPage({selectedTopics,onToggleTopic,onClearTopics}:{selectedTopic
 
 const budgets=["Not decided yet","Below KSh 15,000","KSh 15,000–50,000","KSh 50,000–100,000","KSh 100,000–250,000","Above KSh 250,000"];
 
+const quoteStages = [
+  {label:"Your idea",title:"What are we creating?",note:"Choose the disciplines and tell us what you have in mind."},
+  {label:"Your details",title:"Who are we creating with?",note:"Give us a way to connect with you."},
+  {label:"Ready to launch",title:"Your brief is ready for review.",note:"Check the details, then send your brief using your preferred channel."},
+] as const;
+
 function QuotePage(){
-  const quoteParams=typeof window!=="undefined"?new URLSearchParams(window.location.search):new URLSearchParams();
-  const requestedService=quoteParams.get("service")??"";
-  const requestedAudience=quoteParams.get("audience")??"";
-  // Card headings can be more descriptive than the canonical quote options.
-  const serviceAliases:Record<string,string>={
-    "Branding":"Branding & Identity",
-    "Web & UI/UX":"Web & UI/UX Design",
-    "Social Media":"Social Media & Digital Marketing"
-  };
-  const normalizedService=serviceAliases[requestedService]??requestedService;
-  const initialService=services.some(item=>item.title===normalizedService)
-    ? normalizedService
-    : requestedService||requestedAudience ? "Several services / Other" : services[0].title;
-  const [name,setName]=useState(""),[email,setEmail]=useState(""),[company,setCompany]=useState(""),[phone,setPhone]=useState(""),[service,setService]=useState(initialService),[budget,setBudget]=useState("Not decided yet"),[timeline,setTimeline]=useState(""),[description,setDescription]=useState("");
+  const params=new URLSearchParams(window.location.search);
+  const requestedService=params.get("service")??"";
+  const requestedAudience=params.get("audience")??"";
+  const aliases:Record<string,string>={"Branding":"Branding & Identity","Web & UI/UX":"Web & UI/UX Design","Social Media":"Social Media & Digital Marketing"};
+  const initial=services.find(item=>item.id===requestedService||item.title===(aliases[requestedService]??requestedService));
+  const [selected,setSelected]=useState<string[]>(initial?[initial.id]:[]);
+  const [unsure,setUnsure]=useState(Boolean(requestedService&&!initial));
+  const [stage,setStage]=useState(0);
+  const [name,setName]=useState(""),[email,setEmail]=useState(""),[company,setCompany]=useState(""),[phone,setPhone]=useState("");
+  const [budget,setBudget]=useState("Not decided yet"),[timeline,setTimeline]=useState(""),[description,setDescription]=useState("");
+  const [error,setError]=useState("");
+  const [copied,setCopied]=useState("");
+  const chosen=services.filter(s=>selected.includes(s.id));
+  const service=unsure?"Several services / Other":chosen.map(s=>s.title).join(", ");
+  const hasService=chosen.length>0||unsure;
+  const ideaReady=hasService&&description.trim().length>=15;
+  const infoReady=name.trim().length>=2&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const ready=ideaReady&&infoReady;
+  const subject="Visual Verse quote request — "+(chosen.length===1&&!unsure?chosen[0].title:chosen.length>1?"Multiple services":"Creative project");
+  const body=["Hello Visual Verse,","I'd like to discuss a project quotation.","","YOUR INFORMATION","Name: "+name.trim(),"Email: "+email.trim(),"Phone: "+(phone.trim()||"Not provided"),"Company: "+(company.trim()||"Individual"),"","PROJECT DETAILS","Service: "+(service||"To be discussed"),"Audience: "+(requestedAudience||"Not specified"),"Budget range: "+budget,"Timeline: "+(timeline.trim()||"To be discussed"),"","Brief: "+description.trim(),"","I can share any relevant reference files separately."].join("\n");
+  function toggle(id:string){
+    setUnsure(false);setError("");
+    setSelected(old=>old.includes(id)?old.filter(s=>s!==id):[...old,id]);
+  }
+  function chooseUnsure(){setSelected([]);setUnsure(v=>!v);setError("");}
+  function changeStage(next:number){
+    setStage(next);setError("");setCopied("");
+    requestAnimationFrame(()=>document.getElementById("vv-quote-stage-title")?.focus());
+  }
   function submit(event:FormEvent<HTMLFormElement>){
     event.preventDefault();
-    const body=["Hello Visual Verse,","I'd like to discuss a project quotation.","","YOUR INFORMATION","Name: "+name,"Email: "+email,"Phone: "+(phone||"Not provided"),"Company: "+(company||"Individual"),"","PROJECT DETAILS","Service: "+service,"Audience: "+(requestedAudience||"Not specified"),"Budget range: "+budget,"Timeline: "+(timeline||"To be discussed"),"","Brief: "+description,"","I can attach any relevant reference files to this email."].join("\n");
-    openMailDraft("Visual Verse quote request — "+service,body);
+    if(stage===0){
+      if(!hasService){setError("Choose at least one creative discipline, or select Not sure yet.");return;}
+      if(!ideaReady){setError("Please describe your project in at least 15 characters.");return;}
+      changeStage(1);
+    }else if(stage===1){
+      if(!infoReady){setError("Please enter your name and a valid email address.");return;}
+      changeStage(2);
+    }else if(ready){openMailDraft(subject,body);}
   }
+  const whatsapp="https://wa.me/254794044598?text="+encodeURIComponent(body);
+  const ActiveIcon=chosen.length===1?chosen[0].Icon:Sparkles;
   return <>
-    <section className="vv-inner-section vv-inner-quote-section" id="brief">
-      <div className="vv-inner-contact-main vv-inner-quote-main">
-        <div className="vv-inner-quote-copy">
-          <SectionTitle eyebrow="LET'S PLAN IT / YOUR CREATIVE BRIEF" description="Every project has its own scope. Tell us enough to understand your idea, and we'll discuss a tailored proposal.">Good ideas <br/>begin<br/><em>with a <br className="vv-break-wide"/>brief.</em></SectionTitle>
-          <div className="vv-inner-quote-guide">
-            <div><span>01</span><strong>Tell us who you are</strong><p>A name and a way to reach you.</p></div>
-            <div><span>02</span><strong>Describe the project</strong><p>What you need, why and by when.</p></div>
-            <div><span>03</span><strong>Let's take it further</strong><p>We'll discuss the scope and next steps.</p></div>
+    <section className="vv-inner-hero vv-inner-hero-v2 vv-quote-hero">
+      <div className="vv-inner-hero-inner">
+        <div className="vv-inner-hero-copy">
+          <span className="vv-inner-eyebrow"><i/> LET'S TALK / CREATIVE LAUNCHPAD</span>
+          <h1>Tell us about<br/><em>your big idea.</em></h1>
+          <p>Big ideas, tiny sparks, wild possibilities. Let's turn what's in your head into something we can make together.</p>
+          <div className="vv-inner-hero-actions">
+            <a className="vv-motion-action vv-action-primary" href="#brief"><VisualVerseActionContent Icon={ArrowRight}>Build my creative brief</VisualVerseActionContent></a>
+            <a className="vv-motion-action vv-action-secondary" href={WHATSAPP} target="_blank" rel="noopener noreferrer"><VisualVerseActionContent Icon={MessageCircle}>Chat with us</VisualVerseActionContent></a>
           </div>
-          <a className="vv-inner-text-link" href={"tel:"+PHONE}>Prefer to talk first? +254 794 044 598 <ArrowUpRight size={16}/></a>
         </div>
-        <form className="vv-inner-form vv-inner-quote-form" onSubmit={submit}>
-          <div className="vv-inner-form-section-title"><span>YOUR INFORMATION</span><h3>Who are we creating with?</h3></div>
-          <div className="vv-inner-form-row">
-            <label>Full name * <input required minLength={2} value={name} onChange={e=>setName(e.target.value)} placeholder="Your name" autoComplete="name"/></label>
-            <label>Email * <input required type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email"/></label>
+        <div className="vv-quote-hero-board">
+          <div className="vv-quote-board-top"><span><i/> MISSION CONTROL / LIVE</span><span>VISUAL VERSE</span></div>
+          <div className="vv-quote-orbit-art" aria-hidden="true">
+            <div className="vv-quote-orbit-ring ring-one"/><div className="vv-quote-orbit-ring ring-two"/>
+            <div className="vv-quote-orbit-core"><ActiveIcon size={44} strokeWidth={1.4}/></div>
+            {services.map((s,i)=><div key={s.id} className={"vv-quote-orbit-node"+(selected.includes(s.id)?" is-chosen":"")} style={{"--orbit-angle":i*60+"deg"} as React.CSSProperties}><s.Icon size={20} strokeWidth={1.6}/></div>)}
           </div>
-          <div className="vv-inner-form-row">
-            <label>Company / organisation <input value={company} onChange={e=>setCompany(e.target.value)} placeholder="Optional"/></label>
-            <label>Phone / WhatsApp <input value={phone} onChange={e=>setPhone(e.target.value)} type="tel" placeholder="+254..." autoComplete="tel"/></label>
-          </div>
-          <div className="vv-inner-form-section-title"><span>PROJECT DETAILS</span><h3>What are you imagining?</h3></div>
-          <label>Service needed * <select required value={service} onChange={e=>setService(e.target.value)}>{services.map(s=><option key={s.id} value={s.title}>{s.title}</option>)}<option>Several services / Other</option></select></label>
-          <div className="vv-inner-form-row">
-            <label>Budget range <select value={budget} onChange={e=>setBudget(e.target.value)}>{budgets.map(b=><option key={b}>{b}</option>)}</select></label>
-            <label>Preferred timeline <input value={timeline} onChange={e=>setTimeline(e.target.value)} placeholder="e.g. next month"/></label>
-          </div>
-          {requestedAudience&&<p className="vv-inner-audience-context">Enquiring as: <strong>{requestedAudience}</strong></p>}
-          <label>Tell us about the project * <textarea required minLength={15} rows={6} value={description} onChange={e=>setDescription(e.target.value)} placeholder="What are you working on, who is it for, and what would success look like?"/></label>
-          <div className="vv-inner-file-note"><FileText size={20}/><span><strong>Need to share references?</strong> You can attach logos, moodboards or briefs to the email draft after opening it. Files can't be attached automatically from this form.</span></div>
-          <p>Submitting opens your email application with the project brief filled in. No form submission is claimed until you send the email yourself.</p>
-          <button type="submit" className="vv-motion-action vv-action-primary"><VisualVerseActionContent>Prepare my quote request</VisualVerseActionContent></button>
-        </form>
+          <div className="vv-quote-board-bottom"><div><small>YOUR CREATIVE FREQUENCY</small><strong>{unsure?"Let's figure it out":chosen.length?chosen.length+" discipline"+(chosen.length===1?"":"s")+" selected":"Every idea starts somewhere"}</strong></div><span className="vv-quote-board-status"><Radio size={16}/> OPEN</span></div>
+        </div>
+      </div>
+      <div className="vv-inner-hero-bottom"><span>IMAGINE. CREATE. CONNECT.</span><span>YOUR NEXT CREATIVE ADVENTURE <ArrowRight size={14} aria-hidden="true"/></span></div>
+    </section>
+    <section className="vv-inner-section vv-inner-quote-section vv-quote-launchpad" id="brief" aria-labelledby="vv-quote-brief-heading">
+      <div className="vv-quote-shell">
+        <header className="vv-quote-intro">
+          <div><span className="vv-inner-eyebrow"><i/> BUILD YOUR BRIEF</span><h2 id="vv-quote-brief-heading">Let's make <em>it happen.</em></h2></div>
+          <p>Three little steps towards something extraordinary. No pressure, no commitment — just a starting point for our conversation.</p>
+        </header>
+        <div className="vv-quote-workspace">
+          <aside className="vv-quote-sidebar">
+            <div className="vv-quote-sidebar-head"><Sparkles size={20}/><span>YOUR MISSION</span></div>
+            <ol className="vv-quote-steps" aria-label="Creative brief progress">
+              {quoteStages.map((s,i)=><li key={s.label}><button type="button" disabled={i>stage} aria-current={i===stage?"step":undefined} onClick={()=>changeStage(i)}><span className="vv-quote-step-index">{i<stage?<Check size={17}/>:String(i+1).padStart(2,"0")}</span><span><strong>{s.label}</strong><small>{i===stage?"In progress":i<stage?"Completed":"Up next"}</small></span></button></li>)}
+            </ol>
+            <div className="vv-quote-sidebar-progress"><span>STEP {stage+1} OF 3</span><div><i style={{width:((stage+1)/3*100)+"%"}}/></div></div>
+            <div className="vv-quote-side-brief">
+              <span>YOUR PROJECT AT A GLANCE</span>
+              <div className="vv-quote-side-icons">{chosen.length?chosen.map(s=><span key={s.id} title={s.title}><s.Icon size={17}/></span>):<span><Sparkles size={18}/></span>}</div>
+              <strong>{service||"Awaiting your idea"}</strong>
+              <p>{budget==="Not decided yet"?"Budget to be discussed":budget}</p>
+              {requestedAudience&&<p>Enquiring as: {requestedAudience}</p>}
+            </div>
+            <a className="vv-quote-help" href={"tel:"+PHONE}><Phone size={17}/><span>Prefer a real conversation?<strong>+254 794 044 598</strong></span></a>
+          </aside>
+          <form className="vv-inner-form vv-inner-quote-form vv-quote-wizard" onSubmit={submit}>
+            <header className="vv-quote-stage-header"><span>CREATIVE BRIEF / 0{stage+1}</span><h3 id="vv-quote-stage-title" tabIndex={-1}>{quoteStages[stage].title}</h3><p>{quoteStages[stage].note}</p></header>
+            {stage===0&&<div className="vv-quote-stage" key="idea">
+              <fieldset className="vv-quote-fieldset"><legend>What do you need? <small>Choose one or more</small></legend>
+                <div className="vv-quote-services">{services.map(s=><button key={s.id} type="button" className="vv-quote-service" aria-pressed={selected.includes(s.id)} onClick={()=>toggle(s.id)}><span className="vv-quote-service-icon"><s.Icon size={22} strokeWidth={1.7}/></span><span><strong>{s.title}</strong><small>{s.label}</small></span><span className="vv-quote-service-check">{selected.includes(s.id)&&<Check size={13}/>}</span></button>)}</div>
+                <button type="button" className="vv-quote-unsure" aria-pressed={unsure} onClick={chooseUnsure}><Sparkles size={17}/> Not sure yet — help me find the right fit. {unsure&&<Check size={16}/>}</button>
+              </fieldset>
+              <label>Tell us about the project *<textarea required minLength={15} maxLength={3000} rows={5} value={description} onChange={e=>{setDescription(e.target.value);setError("");}} placeholder="I'm imagining… Tell us the idea, who it's for, and what you'd love to achieve."/><span className="vv-quote-character-count">{description.length} / 3000 characters</span></label>
+              <div className="vv-inner-form-row"><label>Budget range<select value={budget} onChange={e=>setBudget(e.target.value)}>{budgets.map(b=><option key={b}>{b}</option>)}</select></label><label>Preferred timeline<input value={timeline} onChange={e=>setTimeline(e.target.value)} placeholder="e.g. next month" maxLength={100}/></label></div>
+              <div className="vv-quote-timings" aria-label="Quick timeline choices">{["As soon as possible","Within 2 weeks","Within a month","Flexible"].map(t=><button type="button" key={t} aria-pressed={timeline===t} onClick={()=>setTimeline(t)}>{t}</button>)}</div>
+            </div>}
+            {stage===1&&<div className="vv-quote-stage" key="details">
+              <div className="vv-quote-friendly"><span><MessageCircle size={25}/></span><p>Every great collaboration begins with a hello. We'll use these details to respond to your enquiry.</p></div>
+              <div className="vv-inner-form-row"><label>Full name *<input required minLength={2} maxLength={100} value={name} onChange={e=>setName(e.target.value)} placeholder="Your name" autoComplete="name"/></label><label>Email *<input required type="email" maxLength={200} value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email"/></label></div>
+              <div className="vv-inner-form-row"><label>Company / organisation<input value={company} onChange={e=>setCompany(e.target.value)} placeholder="Optional" autoComplete="organization" maxLength={100}/></label><label>Phone / WhatsApp<input type="tel" value={phone} onChange={e=>setPhone(e.target.value)} placeholder="+254..." autoComplete="tel" maxLength={40}/></label></div>
+              <div className="vv-inner-file-note"><FileText size={20}/><span><strong>Have a moodboard or reference files?</strong> Attach them to your email draft or share them in WhatsApp after opening the conversation.</span></div>
+            </div>}
+            {stage===2&&<div className="vv-quote-stage" key="review">
+              <div className="vv-quote-review"><div className="vv-quote-review-top"><div><span>YOUR CREATIVE BRIEF</span><strong>{name.trim()}'s next big idea</strong></div><span><Check size={24}/></span></div>
+                <dl><div><dt>Creative disciplines</dt><dd>{service}</dd></div><div><dt>Budget</dt><dd>{budget}</dd></div><div><dt>Timeline</dt><dd>{timeline||"To be discussed"}</dd></div><div><dt>Contact</dt><dd>{email}</dd></div>{company&&<div><dt>Company</dt><dd>{company}</dd></div>}{phone&&<div><dt>Phone</dt><dd>{phone}</dd></div>}{requestedAudience&&<div><dt>Audience</dt><dd>{requestedAudience}</dd></div>}</dl>
+                <div className="vv-quote-review-description"><span>THE IDEA</span><p>{description}</p></div>
+              </div>
+              <div className="vv-quote-send-options"><button type="submit" disabled={!ready} className="vv-motion-action vv-action-primary"><VisualVerseActionContent Icon={Mail}>Open email draft</VisualVerseActionContent></button>{ready&&<a className="vv-motion-action vv-action-secondary" href={whatsapp} target="_blank" rel="noopener noreferrer"><VisualVerseActionContent Icon={MessageCircle}>Open WhatsApp</VisualVerseActionContent></a>}</div>
+              <button type="button" className="vv-quote-copy" onClick={async()=>{try{await navigator.clipboard.writeText(body);setCopied("Brief copied.");}catch{setCopied("Could not copy automatically. Use email or WhatsApp instead.");}}}><FileText size={15}/> Copy project brief</button><span role="status" className="vv-quote-copy-status">{copied}</span>
+              <p className="vv-quote-privacy">Your brief stays in this page until you choose to send it. Opening email or WhatsApp prepares a draft; you must send it yourself.</p>
+            </div>}
+            {error&&<p role="alert" className="vv-quote-error">{error}</p>}
+            <div className="vv-quote-nav">{stage>0?<button type="button" className="vv-quote-back" onClick={()=>changeStage(stage-1)}>← Back</button>:<span className="vv-quote-no-commitment"><Check size={14}/> No commitment</span>}{stage<2&&<button type="submit" className="vv-motion-action vv-action-primary"><VisualVerseActionContent Icon={ArrowRight}>{stage===0?"Continue to details":"Review my brief"}</VisualVerseActionContent></button>}</div>
+          </form>
+        </div>
       </div>
     </section>
+    <section className="vv-quote-next" aria-labelledby="vv-quote-next-title"><Boxes/><div className="vv-quote-shell"><span className="vv-inner-eyebrow"><i/> WHAT HAPPENS NEXT?</span><h2 id="vv-quote-next-title">From a spark <em>to a story.</em></h2><div className="vv-quote-next-grid">{[{Icon:MessageCircle,title:"We listen",line:"We'll review your brief and clarify what you want to achieve."},{Icon:Palette,title:"We shape a direction",line:"Together, we'll explore the right scope, approach and creative possibilities."},{Icon:FileText,title:"We prepare a proposal",line:"You'll receive a tailored proposal with the agreed scope and pricing to consider."}].map((s,i)=><article key={s.title}><span><s.Icon size={25}/><small>0{i+1}</small></span><h3>{s.title}</h3><p>{s.line}</p></article>)}</div></div></section>
   </>;
 }
 
@@ -385,7 +459,7 @@ export function VisualVerseInnerPage({kind, AudiencePage}:{kind:Kind;AudiencePag
   return <div className={kind==="contact"?"vv-inner-page vv-contact-experience":"vv-inner-page"}>
     <VisualVerseNavbar/>
     <main id="top">
-      {kind==="contact"?<ContactSignalHero selectedTopics={contactTopics} onToggleTopic={toggleContactTopic}/>:kind!=="about"&&kind!=="services"&&kind!=="audiences"&&<PageHero kind={kind}/>}
+      {kind==="contact"?<ContactSignalHero selectedTopics={contactTopics} onToggleTopic={toggleContactTopic}/>:kind!=="about"&&kind!=="services"&&kind!=="audiences"&&kind!=="quote"&&<PageHero kind={kind}/>}
       {kind==="about"&&<VisualVerseAboutEditorial/>}
       {kind==="services"&&<ServicesPage/>}
       {kind==="audiences"&&AudiencePage&&<AudiencePage/>}
