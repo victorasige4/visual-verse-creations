@@ -101,7 +101,7 @@ function AboutHeading({label,title,description}:{label:string;title:React.ReactN
 }
 
 export function VisualVerseAboutEditorial() {
-  const heroRef=useRef<HTMLElement>(null);
+  const heroRef=useRef<HTMLDivElement>(null);
   const cubeRef=useRef<HTMLCanvasElement>(null);
   useLayoutEffect(()=>{
     const hero=heroRef.current,canvas=cubeRef.current;
@@ -112,8 +112,9 @@ export function VisualVerseAboutEditorial() {
   useAboutScrollWords();
 
   return <div className="vv-about-editorial">
-    <section className="vv-about-hero" id="about-hero" ref={heroRef}>
+    <div className="vv-about-landing" ref={heroRef}>
       <canvas className="vv-shared-hero-cubes vv-about-cube-canvas" ref={cubeRef} aria-hidden="true"/>
+    <section className="vv-about-hero" id="about-hero">
       <div className="vv-about-container">
         <div className="vv-about-breadcrumb"><a href="/#top">HOME</a><span>/</span><span>ABOUT VISUAL VERSE</span></div>
         <div className="vv-about-hero-grid">
@@ -135,6 +136,8 @@ export function VisualVerseAboutEditorial() {
         {strengths.map((s,i)=><article key={s.label}><StudioNumber value={s.value}/><h2>{s.label}</h2><p>{s.detail}</p></article>)}
       </div>
     </section>
+
+    </div>
 
     <section className="vv-about-belief vv-about-pad" id="our-belief">
       <div className="vv-about-container">
