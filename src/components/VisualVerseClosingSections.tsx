@@ -37,7 +37,7 @@ export function VisualVerseMarquee() {
 
 export { VisualVerseKenyaMap as VisualVerseWhereWeServe } from "./VisualVerseKenyaMap";
 
-const CONTACT_EMAIL = "hello@visualverse.com";
+const CONTACT_EMAIL = "cvisualverse@gmail.com";
 const CONTACT_PHONE = "+254794044598";
 
 function FooterSocials(){
