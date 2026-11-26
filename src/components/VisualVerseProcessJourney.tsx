@@ -44,13 +44,17 @@ export function VisualVerseProcessJourney({items=steps, heading, artwork, quoteH
     const root = rootRef.current;
     if (!root) return;
     let frame = 0;
+    let lastProgress = -1;
+    const pin = root.querySelector<HTMLElement>(".vv-sp-pin");
     const recalc = () => {
       frame = 0;
       const rect = root.getBoundingClientRect();
-      const pinHeight = root.querySelector(".vv-sp-pin")?.getBoundingClientRect().height ?? window.innerHeight;
+      const pinHeight = pin?.offsetHeight ?? window.innerHeight;
       const runway = Math.max(1, rect.height - pinHeight);
       const progress = Math.min(1, Math.max(0, -rect.top / runway));
       const current = Math.min(last, Math.max(0, Math.round(progress * last)));
+      if(Math.abs(progress-lastProgress)<.0001)return;
+      lastProgress=progress;
       root.style.setProperty("--vv-sp-progress", progress.toFixed(4));
       root.style.setProperty("--vv-sp-active", String(current));
       root.style.setProperty("--vv-sp-phase", Math.max(0, Math.min(1, (progress * last + .5) % 1)).toFixed(4));
