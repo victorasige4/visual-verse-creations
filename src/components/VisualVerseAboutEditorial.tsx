@@ -1,6 +1,7 @@
 import { EditorialText } from "./EditorialText";
 import { VisualVerseActionContent } from "./VisualVerseAction";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { attachHeroCubes } from "../lib/hero-cubes";
 import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { VisualVerseKenyaMap } from "./VisualVerseKenyaMap";
 import { VisualVerseFaq } from "./VisualVerseClosingSections";
@@ -100,11 +101,19 @@ function AboutHeading({label,title,description}:{label:string;title:React.ReactN
 }
 
 export function VisualVerseAboutEditorial() {
+  const heroRef=useRef<HTMLElement>(null);
+  const cubeRef=useRef<HTMLCanvasElement>(null);
+  useLayoutEffect(()=>{
+    const hero=heroRef.current,canvas=cubeRef.current;
+    if(!hero||!canvas)return;
+    return attachHeroCubes(hero,canvas);
+  },[]);
   useAboutReveal();
   useAboutScrollWords();
 
   return <div className="vv-about-editorial">
-    <section className="vv-about-hero" id="about-hero">
+    <section className="vv-about-hero" id="about-hero" ref={heroRef}>
+      <canvas className="vv-shared-hero-cubes vv-about-cube-canvas" ref={cubeRef} aria-hidden="true"/>
       <div className="vv-about-container">
         <div className="vv-about-breadcrumb"><a href="/#top">HOME</a><span>/</span><span>ABOUT VISUAL VERSE</span></div>
         <div className="vv-about-hero-grid">
