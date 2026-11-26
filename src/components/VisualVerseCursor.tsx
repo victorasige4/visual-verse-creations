@@ -38,52 +38,53 @@ export function VisualVerseCursor() {
     if(!fine.matches||reduced.matches)return;
 
     const html=document.documentElement;
-    let px=-100,py=-100,ox=-100,oy=-100;
-    let frame=0,enabled=false,lastTarget:Element|null=null;
+    let px=-100,py=-100,ox=-100,oy=-100,lastTime=0;
+    let frame=0,enabled=false,shown=false,lastTarget:Element|null=null,lastHit:Element|null=null;
     const interactiveSelector="a,button,[role='button'],summary,[data-cursor],input[type='submit'],input[type='button']";
     const textSelector="input:not([type='submit']):not([type='button']),textarea,select,[contenteditable='true'],[role='textbox']";
     const setVisible=(show:boolean)=>{
-      core.classList.toggle("is-visible",show);
-      orbit.classList.toggle("is-visible",show);
+      if(shown===show)return;
+      shown=show;core.classList.toggle("is-visible",show);orbit.classList.toggle("is-visible",show);
+    };
+    const tick=(time:number)=>{
+      frame=0;if(!shown||document.hidden){lastTime=0;return;}
+      const dt=lastTime?Math.min(40,time-lastTime):16.67;lastTime=time;
+      const blend=1-Math.exp(-dt/48);
+      ox+=(px-ox)*blend;oy+=(py-oy)*blend;
+      if(Math.abs(px-ox)+Math.abs(py-oy)<.3){ox=px;oy=py;}
+      core.style.transform="translate3d("+px+"px,"+py+"px,0) translate(-50%,-50%)";
+      orbit.style.transform="translate3d("+ox+"px,"+oy+"px,0) translate(-50%,-50%)";
+      if(ox!==px||oy!==py)frame=requestAnimationFrame(tick);else lastTime=0;
     };
     const onMove=(event:PointerEvent)=>{
       if(event.pointerType!=="mouse")return;
       px=event.clientX;py=event.clientY;
       if(!enabled){enabled=true;html.classList.add("vv-custom-cursor-enabled")}
       const target=event.target instanceof Element?event.target:null;
-      if(target&&target.closest(textSelector)){
-        setVisible(false);
-        orbit.classList.remove("is-interactive");
-        return;
-      }
-      setVisible(true);
-      if(!frame)frame=window.requestAnimationFrame(tick);
-      core.style.transform="translate3d("+px+"px,"+py+"px,0) translate(-50%,-50%)";
-      const interactive=target?.closest(interactiveSelector)||null;
-      if(interactive!==lastTarget){
-        lastTarget=interactive;
-        orbit.classList.toggle("is-interactive",!!interactive);
-        const custom=interactive?.getAttribute("data-cursor");
-        label.textContent=custom||((interactive?.tagName==="A")?"OPEN":"VIEW");
-      }
+      if(target!==lastHit){
+        lastHit=target;
+        if(target?.closest(textSelector)){
+          setVisible(false);orbit.classList.remove("is-interactive");lastTarget=null;cancelAnimationFrame(frame);frame=0;lastTime=0;return;
+        }
+        const interactive=target?.closest(interactiveSelector)||null;
+        if(interactive!==lastTarget){
+          lastTarget=interactive;orbit.classList.toggle("is-interactive",!!interactive);
+          label.textContent=interactive?.getAttribute("data-cursor")||((interactive?.tagName==="A")?"OPEN":"VIEW");
+        }
+      }else if(!shown&&target?.closest(textSelector))return;
+      if(!shown){ox=px;oy=py;lastTime=0;setVisible(true);}
+      if(!frame)frame=requestAnimationFrame(tick);
     };
-    const onDown=()=>{orbit.classList.add("is-pressed")};
+    const onDown=()=>{if(shown)orbit.classList.add("is-pressed")};
     const onUp=()=>{orbit.classList.remove("is-pressed")};
-    const onLeave=()=>setVisible(false);
-    const onEnter=()=>{if(enabled)setVisible(true)};
-    const tick=()=>{
-      frame=0;
-      ox+=(px-ox)*.19;
-      oy+=(py-oy)*.19;
-      orbit.style.transform="translate3d("+ox+"px,"+oy+"px,0) translate(-50%,-50%)";
-      if(Math.abs(px-ox)+Math.abs(py-oy)>.3 && !document.hidden)frame=window.requestAnimationFrame(tick);
-    };
+    const onLeave=()=>{setVisible(false);cancelAnimationFrame(frame);frame=0;lastTime=0;lastHit=null;orbit.classList.remove("is-pressed");};
+    const onEnter=()=>{lastHit=null;};
     window.addEventListener("pointermove",onMove,{passive:true});
     window.addEventListener("pointerdown",onDown,{passive:true});
     window.addEventListener("pointerup",onUp,{passive:true});
     document.addEventListener("mouseleave",onLeave);
     document.addEventListener("mouseenter",onEnter);
-    const onBlur=()=>setVisible(false);
+    const onBlur=onLeave;
     window.addEventListener("blur",onBlur);
     return ()=>{
       window.cancelAnimationFrame(frame);
