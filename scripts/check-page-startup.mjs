@@ -431,7 +431,7 @@ try {
       await hero.waitFor({state:"visible"});
       const headingSize=await hero.evaluate(node=>parseFloat(getComputedStyle(node).fontSize));
       assert.ok(headingSize>=23 && headingSize<=(viewport.width===390?48:70),"Unexpected public heading size: "+path+" ("+headingSize+"px)");
-      const editorialHeroLines={"about.html":[["We turn","your ideas","into experiences."],["We turn","your ideas","into experiences."]],"services.html":[["Six ways we","create,","all of them","yours."],["Six ways we","create,","all of them","yours."]],"who-we-serve.html":[["No two","stories","alike."],["No two","stories","alike."]],"projects.html":[["Every story,","a different","canvas."],["Every story,","a different","canvas."]],"contact.html":[["Let's start a","conversation."],["Let's start a","conversation."]],"request-quote.html":[["Tell us about","your big idea."],["Tell us about","your big idea."]],"services.html?service=graphic-design":[["Ideas that","deserve to","be seen."],["Ideas that","deserve to","be seen."]],"services.html?service=photography":[["Frames that","make the","moment","last."],["Frames that","make the","moment last."]],"services.html?service=web-ui-ux":[["Digital","experiences","built for","real people."],["Digital","experiences","built for","real people."]],"services.html?service=videography":[["Stories","that move","people."],["Stories that","move people."]],"services.html?service=branding":[["An identity","that feels","unmistakably","yours."],["An identity","that feels","unmistakably","yours."]],"services.html?service=social-media":[["Good stories","deserve","a bigger","stage."],["Good stories","deserve a","bigger stage."]]};
+      const editorialHeroLines={"about.html":[["We turn","your ideas","into experiences."],["We turn","your ideas","into experiences."]],"services.html":[["Six ways we create,","all of them yours."],["Six ways we create,","all of them yours."]],"who-we-serve.html":[["No two","stories","alike."],["No two","stories","alike."]],"projects.html":[["Every story,","a different","canvas."],["Every story,","a different","canvas."]],"contact.html":[["Let's start a","conversation."],["Let's start a","conversation."]],"request-quote.html":[["Tell us about","your big idea."],["Tell us about","your big idea."]],"services.html?service=graphic-design":[["Ideas that","deserve to","be seen."],["Ideas that","deserve to","be seen."]],"services.html?service=photography":[["Frames that","make the","moment","last."],["Frames that","make the","moment last."]],"services.html?service=web-ui-ux":[["Digital","experiences","built for","real people."],["Digital","experiences","built for","real people."]],"services.html?service=videography":[["Stories","that move","people."],["Stories that","move people."]],"services.html?service=branding":[["An identity","that feels","unmistakably","yours."],["An identity","that feels","unmistakably","yours."]],"services.html?service=social-media":[["Good stories","deserve","a bigger","stage."],["Good stories","deserve a","bigger stage."]]};
       if(editorialHeroLines[path]){
         const lines=await hero.evaluate(el=>{
           const rows=[];
@@ -593,7 +593,22 @@ try {
       if(path==="request-quote.html") assert.deepEqual((await page.locator(".vv-inner-quote-form select").first().locator("option").allTextContents()).slice(0,6),serviceNames,"Quote service order");
       if(path.startsWith("services.html")){
         assert.deepEqual(await page.locator(".vv-service-switcher a").evaluateAll(links=>links.map(link=>new URL(link.href).searchParams.get("service"))),serviceIds,"Service nav links");
-        if(path==="services.html") assert.deepEqual(await labels(page,".vv-service-row-copy h3"),serviceNames,"Service listing");
+        if(path==="services.html"){
+          assert.deepEqual(await labels(page,".vv-service-row-copy h3"),serviceNames,"Service listing");
+          const rail=page.locator(".vv-service-rail");
+          assert.equal(await rail.locator(".vv-service-rail-card").count(),6,"All service cards present");
+          assert.deepEqual(await rail.locator(".vv-service-rail-card > a").evaluateAll(links=>links.map(link=>new URL(link.href).searchParams.get("service"))),serviceIds,"All carousel cards open their service pages");
+          assert.ok(await rail.evaluate(el=>el.scrollWidth>el.clientWidth),"Services scroll horizontally");
+          const pause=page.getByRole("button",{name:"Pause automatic service scrolling"});
+          if(await pause.count())await pause.click();
+          await rail.evaluate(el=>el.scrollLeft=0);
+          const next=page.getByRole("button",{name:"Next services",exact:true});
+          await next.click();
+          await page.waitForFunction(()=>document.querySelector(".vv-service-rail").scrollLeft>10);
+          assert.ok(await rail.evaluate(el=>el.scrollLeft>0),"Next control scrolls the service rail");
+          const brief=page.getByRole("link",{name:"Start a project brief",exact:true});
+          assert.ok((await brief.getAttribute("href")).endsWith("request-quote.html"),"Hero launches real quotation page");
+        }
         await checkProcess(page,viewport,path);
       }
       await page.evaluate(()=>window.scrollTo({top:document.body.scrollHeight,behavior:"instant"}));
