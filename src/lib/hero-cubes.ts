@@ -31,7 +31,7 @@ export function attachHeroCubes(hero:HTMLElement,ownedCanvas?:HTMLCanvasElement)
   const remove=()=>{if(!ownedCanvas)canvas.remove();else delete canvas.dataset.vvPainted;hero.classList.remove("vv-has-hero-cubes");delete hero.dataset.vvHeroCubes;};
   if(!ctx)return remove;
   const base=document.createElement("canvas");
-  const baseCtx=base.getContext("2d",{alpha:true});
+  const baseCtx=base.getContext("2d",{alpha:false});
   if(!baseCtx)return remove;
   const color=dark
     ? {top:"#10495d",topLit:"#2ec4b6",left:"#0a3b51",right:"#062f46",edge:"rgba(137,224,211,.34)"}
@@ -39,7 +39,10 @@ export function attachHeroCubes(hero:HTMLElement,ownedCanvas?:HTMLCanvasElement)
   const reduced=window.matchMedia("(prefers-reduced-motion: reduce)");
   const coarse=window.matchMedia("(pointer: coarse)");
   let width=0,height=0,dpr=1,tiles:Tile[]=[],frame=0,visible=false,lastDraw=0;
-  let pointer={x:0,y:0,clientX:0,clientY:0,active:false,energy:0,dirty:false};
+  const ground=dark?"#06394c":"#f8fbf9";
+  let pointer={x:0,y:0,targetX:0,targetY:0,clientX:0,clientY:0,active:false,energy:0,dirty:false,initialized:false};
+  type Patch={x:number;y:number;w:number;h:number};
+  let previousPatch:Patch|null=null;
   // Cache colours so the moving wave does not repeatedly parse hex strings.
   function palette(a:string,b:string,multiplier:number){
     const x=parseInt(a.slice(1),16),y=parseInt(b.slice(1),16);
@@ -67,19 +70,24 @@ export function attachHeroCubes(hero:HTMLElement,ownedCanvas?:HTMLCanvasElement)
     context.beginPath();context.moveTo(L[0],L[1]);context.lineTo(T[0],T[1]);context.lineTo(R[0],R[1]);
     context.strokeStyle=color.edge;context.lineWidth=.55;context.stroke();
   }
-  function restore(){
+  function restore(patch:Patch|null=null){
+    // Work in physical pixels to keep the cached image perfectly aligned.
+    ctx!.setTransform(1,0,0,1,0,0);
+    if(patch)ctx!.drawImage(base,patch.x,patch.y,patch.w,patch.h,patch.x,patch.y,patch.w,patch.h);
+    else ctx!.drawImage(base,0,0);
     ctx!.setTransform(dpr,0,0,dpr,0,0);
-    ctx!.clearRect(0,0,width,height);
-    ctx!.drawImage(base,0,0,width,height);
   }
   function resize(){
-    const w=Math.max(1,Math.round(hero.clientWidth)),h=Math.max(1,Math.round(hero.clientHeight));
-    const ratio=Math.min(window.devicePixelRatio||1,coarse.matches?1:1.4);
+    const w=Math.round(hero.clientWidth),h=Math.round(hero.clientHeight);
+    if(w<2||h<2)return;
+    // Bound the backing buffers on taller About landings and high-DPI phones.
+    const ratio=Math.min(window.devicePixelRatio||1,coarse.matches?1:1.4,Math.sqrt(3200000/(w*h)));
     if(w===width&&h===height&&ratio===dpr&&tiles.length)return;
     width=w;height=h;dpr=ratio;
-    canvas.width=base.width=Math.round(width*dpr);
-    canvas.height=base.height=Math.round(height*dpr);
+    const bw=Math.max(1,Math.round(width*dpr)),bh=Math.max(1,Math.round(height*dpr));
+    base.width=bw;base.height=bh;
     baseCtx!.setTransform(dpr,0,0,dpr,0,0);
+    baseCtx!.fillStyle=ground;baseCtx!.fillRect(0,0,width,height);
     const half=Math.max(32,Math.min(58,Math.floor(width/21)));
     const halfH=half*.47;
     tiles=[];
@@ -89,46 +97,57 @@ export function attachHeroCubes(hero:HTMLElement,ownedCanvas?:HTMLCanvasElement)
       }
     }
     for(const t of tiles)tile(baseCtx!,t,0);
-    pointer.dirty=true;
+    // Prepare the cache before resizing the visible canvas. No blank frame.
+    canvas.width=bw;canvas.height=bh;
+    previousPatch=null;pointer.dirty=true;
     restore();
     canvas.dataset.vvPainted="true";
   }
   function draw(now:number){
-    // Paint the cached static cube grid in one blit; only recalculate tiles
-    // within the visible pointer wave and a small surrounding overlap margin.
-    restore();
+    if(previousPatch)restore(previousPatch);
+    previousPatch=null;
     if(pointer.energy<.005)return;
-    const radius=560;
+    const radius=500,margin=105;
+    const leftPx=Math.max(0,Math.floor((pointer.x-radius)*dpr));
+    const topPx=Math.max(0,Math.floor((pointer.y-radius)*dpr));
+    const rightPx=Math.min(canvas.width,Math.ceil((pointer.x+radius)*dpr));
+    const bottomPx=Math.min(canvas.height,Math.ceil((pointer.y+radius)*dpr));
+    if(rightPx<=leftPx||bottomPx<=topPx)return;
+    const patch={x:leftPx,y:topPx,w:rightPx-leftPx,h:bottomPx-topPx};
+    const x=patch.x/dpr,y=patch.y/dpr,w=patch.w/dpr,h=patch.h/dpr;
     ctx!.save();
-    ctx!.beginPath();
-    ctx!.rect(pointer.x-radius,pointer.y-radius,radius*2,radius*2);
-    ctx!.clip();
-    ctx!.clearRect(pointer.x-radius,pointer.y-radius,radius*2,radius*2);
+    ctx!.beginPath();ctx!.rect(x,y,w,h);ctx!.clip();
+    // An opaque base avoids transparent gaps between lifted cube faces.
+    ctx!.fillStyle=ground;ctx!.fillRect(x,y,w,h);
     for(const t of tiles){
       const dx=t.x-pointer.x,dy=t.y-pointer.y;
-      if(Math.abs(dx)>radius+t.a+25||Math.abs(dy)>radius+t.b+40)continue;
+      if(t.x+t.a<x-margin||t.x-t.a>x+w+margin||t.y+t.b<y-margin||t.y-t.b>y+h+margin)continue;
       const distance=Math.hypot(dx,dy);
-      const wave=Math.max(0,Math.min(1,pointer.energy*Math.exp(-distance/230)*(.45+.55*Math.cos(distance*.026-now*.007))));
-      // Fade the effect to zero before the edge of the cached region.
-      const fade=Math.max(0,Math.min(1,(radius-75-Math.max(Math.abs(dx),Math.abs(dy)))/100));
-      tile(ctx!,t,wave*fade);
+      const edge=Math.max(0,Math.min(1,(radius-margin-distance)/90));
+      const fade=edge*edge*(3-2*edge);
+      const wave=Math.max(0,Math.min(1,pointer.energy*Math.exp(-distance/230)*(.45+.55*Math.cos(distance*.026-now*.007))*fade));
+      tile(ctx!,t,wave);
     }
     ctx!.restore();
+    previousPatch=patch;
   }
   function stop(){if(frame)cancelAnimationFrame(frame);frame=0;lastDraw=0;}
   function tick(now:number){
     frame=0;
     if(!visible||reduced.matches||document.hidden)return;
-    const interval=coarse.matches?50:33;
+    const interval=coarse.matches?40:1000/40;
     if(lastDraw&&now-lastDraw<interval-1){frame=requestAnimationFrame(tick);return;}
     const dt=lastDraw?Math.min(80,now-lastDraw):interval;lastDraw=now;
     if(pointer.dirty){
       const rect=hero.getBoundingClientRect();
-      pointer.x=pointer.clientX-rect.left;pointer.y=pointer.clientY-rect.top;
+      pointer.targetX=pointer.clientX-rect.left;pointer.targetY=pointer.clientY-rect.top;
+      if(pointer.targetX<0||pointer.targetY<0||pointer.targetX>rect.width||pointer.targetY>rect.height)pointer.active=false;
+      if(!pointer.initialized){pointer.x=pointer.targetX;pointer.y=pointer.targetY;pointer.initialized=true;}
       pointer.dirty=false;
     }
-    pointer.energy+=(Number(pointer.active)-pointer.energy)*(1-Math.exp(-dt/450));
-    if(!pointer.active&&pointer.energy<.005){pointer.energy=0;restore();lastDraw=0;return;}
+    if(pointer.active){const blend=1-Math.exp(-dt/55);pointer.x+=(pointer.targetX-pointer.x)*blend;pointer.y+=(pointer.targetY-pointer.y)*blend;}
+    pointer.energy+=(Number(pointer.active)-pointer.energy)*(1-Math.exp(-dt/(pointer.active?150:180)));
+    if(!pointer.active&&pointer.energy<.005){pointer.energy=0;if(previousPatch)restore(previousPatch);previousPatch=null;pointer.initialized=false;lastDraw=0;return;}
     draw(now);
     frame=requestAnimationFrame(tick);
   }
@@ -140,14 +159,15 @@ export function attachHeroCubes(hero:HTMLElement,ownedCanvas?:HTMLCanvasElement)
     pointer.clientX=event.clientX;pointer.clientY=event.clientY;pointer.dirty=true;pointer.active=true;start();
   }
   function leave(){pointer.active=false;start();}
-  function hide(){pointer.active=false;pointer.energy=0;stop();restore();}
+  function up(event:PointerEvent){if(event.pointerType!=="mouse")leave();}
+  function hide(){pointer.active=false;pointer.energy=0;pointer.initialized=false;stop();if(previousPatch)restore(previousPatch);previousPatch=null;}
   function onVisibility(){if(document.hidden)hide();else start();}
   function onPreference(){if(reduced.matches)hide();}
   function onScroll(){if(pointer.active){pointer.dirty=true;start();}}
   hero.addEventListener("pointermove",move,{passive:true});
   hero.addEventListener("pointerdown",move,{passive:true});
   hero.addEventListener("pointerleave",leave,{passive:true});
-  hero.addEventListener("pointerup",leave,{passive:true});
+  hero.addEventListener("pointerup",up,{passive:true});
   hero.addEventListener("pointercancel",leave,{passive:true});
   window.addEventListener("blur",hide);
   window.addEventListener("scroll",onScroll,{passive:true});
@@ -164,7 +184,7 @@ export function attachHeroCubes(hero:HTMLElement,ownedCanvas?:HTMLCanvasElement)
   return ()=>{
     stop();observer?.disconnect();resizeObserver?.disconnect();
     hero.removeEventListener("pointermove",move);hero.removeEventListener("pointerdown",move);
-    hero.removeEventListener("pointerleave",leave);hero.removeEventListener("pointerup",leave);hero.removeEventListener("pointercancel",leave);
+    hero.removeEventListener("pointerleave",leave);hero.removeEventListener("pointerup",up);hero.removeEventListener("pointercancel",leave);
     window.removeEventListener("blur",hide);window.removeEventListener("scroll",onScroll);window.removeEventListener("resize",resize);
     document.removeEventListener("visibilitychange",onVisibility);reduced.removeEventListener("change",onPreference);
     remove();
