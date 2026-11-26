@@ -594,20 +594,25 @@ try {
       if(path.startsWith("services.html")){
         assert.deepEqual(await page.locator(".vv-service-switcher a").evaluateAll(links=>links.map(link=>new URL(link.href).searchParams.get("service"))),serviceIds,"Service nav links");
         if(path==="services.html"){
-          assert.deepEqual(await labels(page,".vv-service-row-copy h3"),serviceNames,"Service listing");
           const rail=page.locator(".vv-service-rail");
-          assert.equal(await rail.locator(".vv-service-rail-card").count(),6,"All service cards present");
-          assert.deepEqual(await rail.locator(".vv-service-rail-card > a").evaluateAll(links=>links.map(link=>new URL(link.href).searchParams.get("service"))),serviceIds,"All carousel cards open their service pages");
+          const originals=rail.locator(".vv-service-rail-card:not([aria-hidden=true])");
+          assert.equal(await originals.count(),6,"Six distinct service cards present");
+          assert.deepEqual(await originals.locator("h3").allTextContents(),serviceNames,"Service listing");
+          assert.deepEqual(await originals.locator(":scope > a").evaluateAll(links=>links.map(link=>new URL(link.href).searchParams.get("service"))),serviceIds,"All carousel cards open their service pages");
           assert.ok(await rail.evaluate(el=>el.scrollWidth>el.clientWidth),"Services scroll horizontally");
           const pause=page.getByRole("button",{name:"Pause automatic service scrolling"});
           if(await pause.count())await pause.click();
-          await rail.evaluate(el=>el.scrollLeft=0);
-          const next=page.getByRole("button",{name:"Next services",exact:true});
-          await next.click();
-          await page.waitForFunction(()=>document.querySelector(".vv-service-rail").scrollLeft>10);
-          assert.ok(await rail.evaluate(el=>el.scrollLeft>0),"Next control scrolls the service rail");
-          const brief=page.getByRole("link",{name:"Start a project brief",exact:true});
-          assert.ok((await brief.getAttribute("href")).endsWith("request-quote.html"),"Hero launches real quotation page");
+          const before=await rail.evaluate(el=>el.scrollLeft);
+          await page.getByRole("button",{name:"Next services",exact:true}).click();
+          await page.waitForFunction(previous=>Math.abs(document.querySelector(".vv-service-rail").scrollLeft-previous)>10,before);
+          const input=page.getByRole("textbox",{name:"Describe your creative project"});
+          const find=page.getByRole("button",{name:"Find my service"});
+          for(const [query,expected] of [["I need a poster for an event",["graphic-design"]],["I want photos of my graduation",["photography"]],["I need an online store",["web-ui-ux"]],["I need a video for my brand",["videography"]],["I need a logo and website",["web-ui-ux","branding"]],["Manage my Instagram and grow my audience",["social-media"]],["Hello there",[]]]){
+            await input.fill(query);await find.click();
+            await page.locator(".vv-sv-finder-response").waitFor({state:"visible"});
+            const actual=await page.locator(".vv-sv-finder-results a").evaluateAll(links=>links.map(link=>new URL(link.href).searchParams.get("service")));
+            assert.deepEqual(actual.sort(),expected.sort(),"Local creative service match: "+query);
+          }
         }
         await checkProcess(page,viewport,path);
       }
