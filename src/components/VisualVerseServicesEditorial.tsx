@@ -2,6 +2,7 @@ import { EditorialText } from "./EditorialText";
 import { orderedServices, serviceLabel, serviceNumber } from "../data/services";
 import { VisualVerseActionContent } from "./VisualVerseAction";
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowUpRight, ArrowLeft, ArrowRight, Sparkles, Camera, Clapperboard, Palette, PenTool, MonitorSmartphone, Share2, Check, UsersRound, MessageCircle, FileText, Play, Pause, Smartphone, Monitor, Layers3, MousePointer2, Type, Globe } from "lucide-react";
 import { VisualVerseProcessJourney } from "./VisualVerseProcessJourney";
 import { Compare } from "./ui/compare";
@@ -275,6 +276,25 @@ const serviceLandingStyles = `
 @media(max-width:760px){.vv-service-gallery-stage .vv-service-rail-card{flex-basis:min(76vw,330px)}.vv-service-gallery-stage .vv-service-rail{padding:40px 0}.vv-service-gallery-stage .vv-service-rail-card>a{transform:perspective(850px) rotateY(var(--vv-gallery-angle,0deg)) scale(var(--vv-gallery-scale,1))}.vv-sv-finder textarea{font-size:13px}.vv-sv-finder-submit{font-size:11px;padding:11px}.vv-sv-finder-examples button{font-size:10px}.vv-service-gallery-footer .vv-service-switcher a{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.vv-service-gallery-stage .vv-service-rail-card>a{transform:none}.vv-service-gallery-stage .vv-service-rail-card:hover img{transform:none}}
 
+
+/* Aceternity-style cycling placeholders and submit vanish. */
+.vv-sv-vanish-form{width:min(100%,660px);margin:28px auto 0;text-align:left}
+.vv-sv-vanish-shell{display:flex;align-items:center;min-height:62px;gap:8px;padding:7px 8px 7px 19px;border:1px solid #cde4de;background:#fff;border-radius:999px;box-shadow:0 15px 42px #003f5c12;transition:border-color .25s,box-shadow .25s}
+.vv-sv-vanish-shell:focus-within{border-color:#2ec4b6;box-shadow:0 0 0 3px #2ec4b625,0 15px 42px #003f5c12}
+.vv-sv-vanish-field{position:relative;flex:1;min-width:0;height:44px;overflow:hidden;display:flex;align-items:center}
+.vv-sv-vanish-input{position:relative;z-index:2;width:100%;min-width:0;border:0;outline:none;background:transparent;color:#003f5c;font:inherit;font-size:14px;line-height:1.5;padding:9px 0}
+.vv-sv-vanish-placeholder{position:absolute;inset:0;display:flex;align-items:center;pointer-events:none;overflow:hidden;color:#58767b;font-size:14px;line-height:1.4}
+.vv-sv-vanish-placeholder>span{display:block;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vv-sv-vanish-canvas{position:absolute;inset:0;pointer-events:none;width:100%;height:100%;z-index:3}
+.vv-sv-vanish-submit{display:grid;place-items:center;flex:0 0 46px;width:46px;height:46px;border:0;border-radius:50%;background:#003f5c;color:#fff;cursor:pointer;transition:background .2s,opacity .2s,transform .2s}
+.vv-sv-vanish-submit:not(:disabled):hover{background:#168f84;transform:scale(1.04)}
+.vv-sv-vanish-submit:disabled{opacity:.35;cursor:default}
+.vv-sv-vanish-submit:focus-visible{outline:3px solid #168f84;outline-offset:3px}
+.vv-sv-vanish-hint{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:10px;color:#267a74;font-size:10px;font-weight:750;letter-spacing:.06em}
+.vv-sv-finder-response .vv-sv-submitted-request{overflow-wrap:anywhere;color:#46676d;font-size:12px;line-height:1.5;border-left:2px solid #2ec4b6;padding-left:10px;margin:9px 0}
+@media(max-width:760px){.vv-sv-vanish-form{margin-top:23px}.vv-sv-vanish-shell{min-height:56px;padding:6px 7px 6px 14px}.vv-sv-vanish-input,.vv-sv-vanish-placeholder{font-size:13px}.vv-sv-vanish-submit{width:42px;height:42px;flex-basis:42px}}
+@media(prefers-reduced-motion:reduce){.vv-sv-vanish-shell,.vv-sv-vanish-submit{transition:none!important;transform:none!important}}
+
 `;
 
 
@@ -301,21 +321,98 @@ function matchCreativeRequest(input:string){
   const best=scored[0]?.score??0;
   return {matches:best>0?scored.filter(item=>item.score>=Math.max(1,best-1)).slice(0,3):[],uncertain:true};
 }
-const finderExamples=["I need a poster for an event","I want photos of my graduation","I need an online store"];
+
+const finderExamples=[
+  "I need a poster for an upcoming event",
+  "I'd love photos of my graduation",
+  "I want to build an online store",
+  "I need a promotional video for my business",
+  "Help me create a logo and brand identity",
+  "I want to grow my social media audience"
+];
+
+/** Local adaptation of Aceternity's rotating placeholder and vanish input.
+ * The canvas is decorative; the real input remains accessible. */
+function PlaceholdersAndVanishInput({placeholders,onSubmit,onEdit}:{placeholders:readonly string[];onSubmit:(value:string)=>void;onEdit:()=>void}){
+  const [value,setValue]=useState("");
+  const [index,setIndex]=useState(0);
+  const [vanishing,setVanishing]=useState(false);
+  const reducedMotion=useReducedMotion();
+  const inputRef=useRef<HTMLInputElement>(null);
+  const canvasRef=useRef<HTMLCanvasElement>(null);
+  const frameRef=useRef(0);
+  const busy=useRef(false);
+  useEffect(()=>{
+    if(value||vanishing||reducedMotion||placeholders.length<2)return;
+    const timer=window.setInterval(()=>{if(!document.hidden)setIndex(i=>(i+1)%placeholders.length)},3000);
+    return ()=>window.clearInterval(timer);
+  },[value,vanishing,reducedMotion,placeholders.length]);
+  useEffect(()=>()=>cancelAnimationFrame(frameRef.current),[]);
+  function submit(){
+    const text=value.trim();
+    if(text.length<3||busy.current)return;
+    const input=inputRef.current,canvas=canvasRef.current;
+    const context=canvas?.getContext("2d");
+    if(reducedMotion||!input||!canvas||!context){onSubmit(text);setValue("");return;}
+    const width=Math.max(1,Math.round(input.clientWidth)),height=Math.max(1,Math.round(input.clientHeight));
+    canvas.width=width;canvas.height=height;
+    const style=getComputedStyle(input);
+    context.font=style.fontWeight+" "+style.fontSize+" "+style.fontFamily;
+    context.textBaseline="middle";context.fillStyle="#003f5c";
+    context.fillText(value,-input.scrollLeft,height/2);
+    const pixels=context.getImageData(0,0,width,height).data;
+    const particles:{x:number;y:number;dx:number;dy:number;size:number}[]=[];
+    for(let y=0;y<height;y+=2)for(let x=0;x<width;x+=2){
+      if(pixels[(y*width+x)*4+3]>100&&particles.length<1800)particles.push({x,y,dx:7+Math.random()*29,dy:(Math.random()-.5)*29,size:1+Math.random()*1.25});
+    }
+    if(!particles.length){context.clearRect(0,0,width,height);onSubmit(text);setValue("");return;}
+    busy.current=true;setVanishing(true);onSubmit(text);
+    let start=0;
+    const animate=(time:number)=>{
+      if(!start)start=time;
+      const progress=Math.min(1,(time-start)/460);
+      context.clearRect(0,0,width,height);
+      for(const particle of particles){
+        const delay=(1-particle.x/width)*.24;
+        const t=Math.max(0,Math.min(1,(progress-delay)/.76));
+        context.globalAlpha=1-t;
+        context.fillStyle="#003f5c";
+        context.fillRect(particle.x+particle.dx*t,particle.y+particle.dy*t,particle.size*(1-t*.65),particle.size*(1-t*.65));
+      }
+      context.globalAlpha=1;
+      if(progress<1){frameRef.current=requestAnimationFrame(animate);return;}
+      context.clearRect(0,0,width,height);setValue("");setVanishing(false);busy.current=false;
+    };
+    frameRef.current=requestAnimationFrame(animate);
+  }
+  return <form className="vv-sv-vanish-form" onSubmit={e=>{e.preventDefault();submit()}}>
+    <div className="vv-sv-vanish-shell">
+      <div className="vv-sv-vanish-field">
+        <input ref={inputRef} className="vv-sv-vanish-input" aria-label="Describe your creative project" autoComplete="off" type="text" value={value} maxLength={800} readOnly={vanishing} style={{color:vanishing?"transparent":undefined}} onChange={e=>{setValue(e.target.value);onEdit()}}/>
+        <div className="vv-sv-vanish-placeholder" aria-hidden="true">
+          <AnimatePresence mode="wait" initial={false}>
+            {!value&&!vanishing&&<motion.span key={index} initial={reducedMotion?false:{y:12,opacity:0}} animate={{y:0,opacity:1}} exit={reducedMotion?{opacity:0}:{y:-12,opacity:0}} transition={{duration:reducedMotion?0:.22}}>{placeholders[index%placeholders.length]}</motion.span>}
+          </AnimatePresence>
+        </div>
+        <canvas ref={canvasRef} className="vv-sv-vanish-canvas" aria-hidden="true"/>
+      </div>
+      <button className="vv-sv-vanish-submit" type="submit" aria-label="Find my service" title="Find my service" disabled={value.trim().length<3||vanishing}>
+        <ArrowRight size={21} aria-hidden="true"/>
+      </button>
+    </div>
+    <div className="vv-sv-vanish-hint"><Sparkles size={13} aria-hidden="true"/> VISUAL VERSE / CREATIVE GUIDE</div>
+  </form>;
+}
+
 function CreativeServiceFinder(){
-  const [query,setQuery]=useState("");
   const [submitted,setSubmitted]=useState("");
   const result=submitted?matchCreativeRequest(submitted):null;
-  function find(value:string){const clean=value.trim();if(clean.length>=3){setQuery(value);setSubmitted(clean);}}
   return <>
-    <form className="vv-sv-brief-launcher vv-sv-finder" onSubmit={e=>{e.preventDefault();find(query)}}>
-      <textarea aria-label="Describe your creative project" placeholder="I have an idea for a project… I want to create something that…" rows={3} maxLength={800} value={query} onChange={e=>{setQuery(e.target.value);setSubmitted("")}} required minLength={3}/>
-      <span className="vv-sv-brief-launcher-bottom"><small><Sparkles size={15} aria-hidden="true"/> VISUAL VERSE / CREATIVE GUIDE</small><button className="vv-sv-finder-submit" type="submit" disabled={query.trim().length<3}>Find my service <ArrowUpRight size={17} aria-hidden="true"/></button></span>
-    </form>
-    <div className="vv-sv-finder-examples" aria-label="Example creative requests">{finderExamples.map(example=><button key={example} type="button" onClick={()=>find(example)}>{example}</button>)}</div>
+    <PlaceholdersAndVanishInput placeholders={finderExamples} onSubmit={setSubmitted} onEdit={()=>setSubmitted("")}/>
     <div className="vv-sv-finder-live" aria-live="polite">
       {result&&<div className="vv-sv-finder-response">
         <strong><Sparkles size={16} aria-hidden="true"/> Your creative guide</strong>
+        <div className="vv-sv-submitted-request">{submitted}</div>
         <p>{result.matches.length?(result.uncertain?"Your idea could fit a few of our services. Here are some possibilities — tell us more if you are not sure.":result.matches.length===1?result.matches[0].reason:"Your request sounds like it could benefit from these creative services."):"I need a little more detail to find the right service. Are you looking for visuals, photos, a website, video, a brand identity or social media support?"}</p>
         <div className="vv-sv-finder-results">{result.matches.map(({service})=><a key={service.id} href={serviceUrl(service.id)}><service.Icon size={19} aria-hidden="true"/> Explore {service.name}<ArrowUpRight size={16} aria-hidden="true"/></a>)}</div>
         {result.uncertain&&<p><a className="vv-sv-finder-fallback" href={base+"contact.html"}>Talk to us about your idea <ArrowUpRight size={12} aria-hidden="true"/></a></p>}
