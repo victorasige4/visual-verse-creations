@@ -1,3 +1,4 @@
+import { Boxes } from "./ui/background-boxes";
 import { useEffect, useLayoutEffect, useRef, useState, type MouseEvent } from "react";
 import { ArrowDown, ArrowLeft, ArrowUpRight, Aperture, Camera, Clapperboard, Layers3, LayoutGrid, Pause, Play, X } from "lucide-react";
 import { orderedServices, serviceLabel, serviceNumber } from "../data/services";
@@ -256,6 +257,7 @@ export function VisualVerseProjectsPage(){
       </section>
 
       <section className="vv-pj-finale" aria-labelledby="vv-pj-finale-heading">
+      <Boxes/>
         <img className="vv-pj-watermark" src={BASE+"logo-mark.png"} alt="" aria-hidden="true"/>
         <div className="vv-pj-finale-inner">
           <span className="vv-pj-eyebrow"><Camera size={16} aria-hidden="true"/> MORE THAN A PRETTY PICTURE</span>
