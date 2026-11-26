@@ -22,3 +22,9 @@
 @media print, (forced-colors: active) {
   .vv-background-beams { display: none; }
 }
+
+/* Static geometry with a subtle compositor-friendly light pulse. */
+.vv-beam-accent{opacity:.24}
+.vv-beam-accent.is-moving{animation:vv-beam-light 7s ease-in-out infinite alternate;will-change:opacity}
+@keyframes vv-beam-light{from{opacity:.24}to{opacity:.85}}
+@media(prefers-reduced-motion:reduce){.vv-beam-accent.is-moving{animation:none;will-change:auto}}
