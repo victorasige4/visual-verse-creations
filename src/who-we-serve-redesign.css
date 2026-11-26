@@ -459,3 +459,8 @@
   margin:8px 0 3px;color:#004153;font-weight:850}
 .vvx-world-stage-summary p{font-size:12px;font-weight:500;color:#668389;line-height:1.6;margin:0}
 .vvx-world-stage-promise{display:block;font-size:11px;font-weight:800;color:#129386;margin-top:10px;line-height:1.5}
+
+/* Same background treatment as the pinned Our Process section. */
+.vvx-page .vvx-collab,.vvx-page .vvx-finale{position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 42% 45%,#104950 0%,#002a40 74%)}
+.vvx-collab>.vvx-container,.vvx-finale>.vvx-container{position:relative;z-index:1}
+.vvx-collab>.vv-background-boxes,.vvx-finale>.vv-background-boxes{z-index:0}
