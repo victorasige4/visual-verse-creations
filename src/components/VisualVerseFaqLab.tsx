@@ -73,7 +73,7 @@ const questions = [
   },
 ];
 
-const CONTACT_EMAIL = "hello@visualverse.com";
+const CONTACT_EMAIL = "cvisualverse@gmail.com";
 const focusableSelector = ".vv-faq-lab-note";
 
 export function VisualVerseFaqLab() {
