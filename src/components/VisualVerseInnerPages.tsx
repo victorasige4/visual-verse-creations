@@ -1,5 +1,6 @@
 import { EditorialText } from "./EditorialText";
 import { Boxes } from "./ui/background-boxes";
+import { useWebsiteEnquiry } from "../lib/website-enquiry";
 import "../quote-launchpad.css";
 import { orderedServices, serviceLabel } from "../data/services";
 import { SOCIAL_PROFILES } from "../data/socials";
@@ -255,19 +256,24 @@ const contactStyles = `
 
 function ContactPage({selectedTopics,onToggleTopic,onClearTopics}:{selectedTopics:string[];onToggleTopic:(topic:string)=>void;onClearTopics:()=>void}){
   const [name,setName]=useState(""),[email,setEmail]=useState(""),[subjectOverride,setSubjectOverride]=useState<string|null>(null),[message,setMessage]=useState("");
+  const enquiry=useWebsiteEnquiry();
+  const [website,setWebsite]=useState("");
   const autoSubject=selectedTopics.length>1?"Project inquiry — multiple services":selectedTopics[0]??"";
   const subject=subjectOverride??autoSubject;
   const topics=[...services.map(s=>({title:s.title,Icon:s.Icon})),{title:"Collaboration",Icon:Sparkles},{title:"General enquiry",Icon:MessageCircle}];
   const validEmail=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   const completed=[name.trim().length>=2,validEmail,subject.trim().length>=3,message.trim().length>=10].filter(Boolean).length;
   const draft=["Hello Visual Verse,","",...(selectedTopics.length?["Interested in:",...selectedTopics.map(title=>"- "+title),""]:[]),message.trim()||"[Your message]","","Name: "+(name.trim()||"[Your name]"),"Reply to: "+(email.trim()||"[Your email]")].join("\n");
-  function submit(event:FormEvent<HTMLFormElement>){
+  async function submit(event:FormEvent<HTMLFormElement>){
     event.preventDefault();
-    if(message.trim().length<10||subject.trim().length<3||name.trim().length<2)return;
+    if(completed!==4||enquiry.saving)return;
     const submitter=(event.nativeEvent as SubmitEvent).submitter;
-    if(submitter instanceof HTMLButtonElement&&submitter.value==="whatsapp"){
-      window.location.href="https://wa.me/"+PHONE.replace(/\D/g,"")+"?text="+encodeURIComponent("Subject: "+subject.trim()+"\n\n"+draft);
-    }else openMailDraft(subject.trim(),draft);
+    const channel=submitter instanceof HTMLButtonElement&&submitter.value==="whatsapp"?"whatsapp":"email";
+    const ref=await enquiry.save({source:"contact",channel,name:name.trim(),email:email.trim(),subject:subject.trim(),brief:draft},website);
+    if(!ref)return;
+    const title="[VV-"+ref+"] "+subject.trim(),body=draft+"\n\nRequest reference: VV-"+ref;
+    if(channel==="whatsapp")window.location.href="https://wa.me/"+PHONE.replace(/\D/g,"")+"?text="+encodeURIComponent("Subject: "+title+"\n\n"+body);
+    else openMailDraft(title,body);
   }
   return <>
     <style>{contactStyles}</style>
@@ -294,15 +300,15 @@ function ContactPage({selectedTopics,onToggleTopic,onClearTopics}:{selectedTopic
             {selectedTopics.length>0&&<button type="button" className="vv-contact-clear-topics" onClick={onClearTopics}>Clear all selections</button>}
           </fieldset>
           <div className="vv-inner-form-row">
-            <label>Your name <input required minLength={2} value={name} onChange={e=>setName(e.target.value)} placeholder="Full name" autoComplete="name"/></label>
-            <label>Email address <input required type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email"/></label>
+            <label>Your name <input required minLength={2} maxLength={100} value={name} onChange={e=>setName(e.target.value)} placeholder="Full name" autoComplete="name"/></label>
+            <label>Email address <input required type="email" maxLength={200} value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email"/></label>
           </div>
-          <label>Subject <input required minLength={3} value={subject} onChange={e=>setSubjectOverride(e.target.value===autoSubject?null:e.target.value)} placeholder="What is this about?"/></label>
+          <label>Subject <input required minLength={3} maxLength={240} value={subject} onChange={e=>setSubjectOverride(e.target.value===autoSubject?null:e.target.value)} placeholder="What is this about?"/></label>
           <label>Message <textarea required minLength={10} maxLength={2000} rows={5} value={message} onChange={e=>setMessage(e.target.value)} placeholder="Tell us a little about your idea…"/><span className="vv-contact-count">{message.length} / 2000</span></label>
           <div className="vv-contact-meter"><div><span>SIGNAL READINESS</span><span>{completed} / 4 fields</span></div><div className="vv-contact-meter-track" role="progressbar" aria-label="Inquiry fields completed" aria-valuemin={0} aria-valuemax={4} aria-valuenow={completed}><span style={{width:completed*25+"%"}}/></div><small>{completed===4?"Ready to prepare your message.":"Complete your details to prepare your signal."}</small></div>
           <details className="vv-contact-preview"><summary>Preview your message</summary><pre>{"Subject: "+(subject||"[Your subject]")+"\n\n"+draft}</pre></details>
-          <p>Choose email or WhatsApp to open a prepared message. Nothing is sent automatically.</p>
-          <div className="vv-contact-send-actions"><button type="submit" name="channel" value="email" className="vv-motion-action vv-action-primary"><VisualVerseActionContent Icon={Send}>Prepare my email</VisualVerseActionContent></button><button type="submit" name="channel" value="whatsapp" className="vv-contact-whatsapp"><MessageCircle size={17} aria-hidden="true"/> Prepare WhatsApp</button></div>
+          <div hidden aria-hidden="true"><label>Website<input tabIndex={-1} autoComplete="off" value={website} onChange={e=>setWebsite(e.target.value)}/></label></div><p>Submitting saves your enquiry securely in our workspace. Then send the prepared email or WhatsApp message yourself. <a href={import.meta.env.BASE_URL+"privacy.html"}>Privacy information</a>.</p>{enquiry.feedback&&<p role="status" className="vv-enquiry-feedback">{enquiry.feedback}</p>}
+          <div className="vv-contact-send-actions"><button type="submit" name="channel" value="email" disabled={enquiry.saving} className="vv-motion-action vv-action-primary"><VisualVerseActionContent Icon={Send}>{enquiry.saving?"Saving enquiry…":"Save & prepare email"}</VisualVerseActionContent></button><button type="submit" name="channel" value="whatsapp" disabled={enquiry.saving} className="vv-contact-whatsapp"><MessageCircle size={17} aria-hidden="true"/> Save & prepare WhatsApp</button></div>
         </form>
       </div>
     </section>
@@ -363,6 +369,8 @@ function QuotePage(){
   const [budget,setBudget]=useState("Not decided yet"),[timeline,setTimeline]=useState(""),[description,setDescription]=useState("");
   const [error,setError]=useState("");
   const [copied,setCopied]=useState("");
+  const enquiry=useWebsiteEnquiry();
+  const [website,setWebsite]=useState("");
   const chosen=services.filter(s=>selected.includes(s.id));
   const service=unsure?"Several services / Other":chosen.map(s=>s.title).join(", ");
   const hasService=chosen.length>0||unsure;
@@ -380,7 +388,7 @@ function QuotePage(){
     setStage(next);setError("");setCopied("");
     requestAnimationFrame(()=>document.getElementById("vv-quote-stage-title")?.focus());
   }
-  function submit(event:FormEvent<HTMLFormElement>){
+  async function submit(event:FormEvent<HTMLFormElement>){
     event.preventDefault();
     if(stage===0){
       if(!hasService){setError("Choose at least one creative discipline, or select Not sure yet.");return;}
@@ -389,9 +397,16 @@ function QuotePage(){
     }else if(stage===1){
       if(!infoReady){setError("Please enter your name and a valid email address.");return;}
       changeStage(2);
-    }else if(ready){openMailDraft(subject,body);}
+    }else if(ready&&!enquiry.saving){
+      const sender=(event.nativeEvent as SubmitEvent).submitter;
+      const channel=sender instanceof HTMLButtonElement&&sender.value==="whatsapp"?"whatsapp":"email";
+      const ref=await enquiry.save({source:"quote",channel,name:name.trim(),email:email.trim(),subject,brief:body},website);
+      if(!ref)return;
+      const text=body+"\n\nRequest reference: VV-"+ref;
+      if(channel==="whatsapp")window.location.href="https://wa.me/254794044598?text="+encodeURIComponent(text);
+      else openMailDraft("[VV-"+ref+"] "+subject,text);
+    }
   }
-  const whatsapp="https://wa.me/254794044598?text="+encodeURIComponent(body);
   return <>
     <section className="vv-inner-hero vv-inner-hero-v2 vv-quote-hero">
       <div className="vv-inner-hero-inner">
@@ -452,9 +467,9 @@ function QuotePage(){
                 <dl><div><dt>Creative disciplines</dt><dd>{service}</dd></div><div><dt>Budget</dt><dd>{budget}</dd></div><div><dt>Timeline</dt><dd>{timeline||"To be discussed"}</dd></div><div><dt>Contact</dt><dd>{email}</dd></div>{company&&<div><dt>Company</dt><dd>{company}</dd></div>}{phone&&<div><dt>Phone</dt><dd>{phone}</dd></div>}{requestedAudience&&<div><dt>Audience</dt><dd>{requestedAudience}</dd></div>}</dl>
                 <div className="vv-quote-review-description"><span>THE IDEA</span><p>{description}</p></div>
               </div>
-              <div className="vv-quote-send-options"><button type="submit" disabled={!ready} className="vv-motion-action vv-action-primary"><VisualVerseActionContent Icon={Mail}>Open email draft</VisualVerseActionContent></button>{ready&&<a className="vv-motion-action vv-action-secondary" href={whatsapp} target="_blank" rel="noopener noreferrer"><VisualVerseActionContent Icon={MessageCircle}>Open WhatsApp</VisualVerseActionContent></a>}</div>
+              <div hidden aria-hidden="true"><label>Website<input tabIndex={-1} autoComplete="off" value={website} onChange={e=>setWebsite(e.target.value)}/></label></div><div className="vv-quote-send-options"><button type="submit" name="channel" value="email" disabled={!ready||enquiry.saving} className="vv-motion-action vv-action-primary"><VisualVerseActionContent Icon={Mail}>{enquiry.saving?"Saving request…":"Save & open email draft"}</VisualVerseActionContent></button><button type="submit" name="channel" value="whatsapp" disabled={!ready||enquiry.saving} className="vv-motion-action vv-action-secondary"><VisualVerseActionContent Icon={MessageCircle}>Save & open WhatsApp</VisualVerseActionContent></button></div>{enquiry.feedback&&<p role="status" className="vv-enquiry-feedback">{enquiry.feedback}</p>
               <button type="button" className="vv-quote-copy" onClick={async()=>{try{await navigator.clipboard.writeText(body);setCopied("Brief copied.");}catch{setCopied("Could not copy automatically. Use email or WhatsApp instead.");}}}><FileText size={15}/> Copy project brief</button><span role="status" className="vv-quote-copy-status">{copied}</span>
-              <p className="vv-quote-privacy">Your brief stays in this page until you choose to send it. Opening email or WhatsApp prepares a draft; you must send it yourself.</p>
+              <p className="vv-quote-privacy">When you choose a sending option, your brief is saved securely to our workspace. Opening email or WhatsApp prepares a draft; you must send it yourself.</p>
             </div>}
             {error&&<p role="alert" className="vv-quote-error">{error}</p>}
             <div className="vv-quote-nav">{stage>0?<button type="button" className="vv-quote-back" onClick={()=>changeStage(stage-1)}>← Back</button>:<span className="vv-quote-no-commitment"><Check size={14}/> No commitment</span>}{stage<2&&<button type="submit" className="vv-motion-action vv-action-primary"><VisualVerseActionContent Icon={ArrowRight}>{stage===0?"Continue to details":"Review my brief"}</VisualVerseActionContent></button>}</div>
