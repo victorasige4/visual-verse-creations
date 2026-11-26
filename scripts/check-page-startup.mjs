@@ -433,7 +433,7 @@ try {
       const cube=page.locator("#vvHeroCubes, .vv-shared-hero-cubes");
       await cube.waitFor({state:"attached"});
       assert.equal(await cube.count(),1,"One hero cube background: "+path);
-      assert.ok(await cube.evaluate(el=>el.parentElement?.matches(".vv-hero,.vv-about-hero,.vv-sv-hero--impractical,.vv-sv-hero--potadot,.vv-detail-hero,.vvx-hero,.vv-pj-hero,.vv-inner-hero")&&getComputedStyle(el).pointerEvents==="none"),"Hero-only non-blocking canvas: "+path);
+      assert.ok(await cube.evaluate(el=>el.parentElement?.matches(".vv-hero,.vv-about-hero,.vv-about-landing,.vv-sv-hero--impractical,.vv-sv-hero--potadot,.vv-detail-hero,.vvx-hero,.vv-pj-hero,.vv-inner-hero")&&getComputedStyle(el).pointerEvents==="none"),"Hero-only non-blocking canvas: "+path);
       if(await cube.evaluate(el=>el.classList.contains("vv-shared-hero-cubes"))){
         await cube.waitFor({state:"visible"});
         assert.ok(await cube.evaluate(el=>{
@@ -442,6 +442,14 @@ try {
           const painted=!!context&&el.dataset.vvPainted==="true"&&el.width>1&&el.height>1&&context.getImageData(Math.floor(el.width/2),Math.floor(el.height/2),1,1).data[3]>0;
           return rect.width>200&&rect.height>150&&style.zIndex==="0"&&Number(style.opacity)>=.8&&(painted||style.backgroundImage!=="none");
         }),"Hero grid must actually paint or have a visible fallback: "+path);
+      }
+      if(path==="about.html"){
+        assert.ok(await cube.evaluate(el=>{
+          const landing=el.parentElement,stats=landing?.querySelector("#our-impact"),belief=landing?.nextElementSibling;
+          if(!stats||belief?.id!=="our-belief")return false;
+          const grid=el.getBoundingClientRect(),end=belief.getBoundingClientRect();
+          return Math.abs(grid.bottom-end.top)<=2&&getComputedStyle(stats).backgroundColor==="rgba(0, 0, 0, 0)";
+        }),"About cube grid reaches the What We Believe section");
       }
       const headingSize=await hero.evaluate(node=>parseFloat(getComputedStyle(node).fontSize));
       assert.ok(headingSize>=23 && headingSize<=(viewport.width===390?48:70),"Unexpected public heading size: "+path+" ("+headingSize+"px)");
