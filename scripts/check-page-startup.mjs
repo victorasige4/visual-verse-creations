@@ -659,7 +659,24 @@ try {
         await page.locator(".vv-pj-collection-page").waitFor({state:"detached"});
         assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),"Projects must not overflow horizontally");
       }
-      if(path==="request-quote.html") assert.deepEqual((await page.locator(".vv-inner-quote-form select").first().locator("option").allTextContents()).slice(0,6),serviceNames,"Quote service order");
+      if(path==="request-quote.html"){
+        const picker=page.locator(".vv-quote-services .vv-quote-service");
+        assert.deepEqual(await labels(page,".vv-quote-service strong"),serviceNames,"Quote service order");
+        await picker.nth(0).click();
+        await picker.nth(2).click();
+        assert.equal(await page.locator('.vv-quote-service[aria-pressed="true"]').count(),2,"Multiple disciplines can be selected");
+        await page.getByLabel("Tell us about the project").fill("We need a brand campaign and a responsive website.");
+        await page.getByRole("button",{name:"Continue to details"}).click();
+        await page.getByLabel("Full name").fill("Example Client");
+        await page.getByLabel("Email",{exact:false}).fill("client@example.com");
+        await page.getByRole("button",{name:"Review my brief"}).click();
+        assert.ok((await page.locator(".vv-quote-review").innerText()).includes("Example Client"));
+        assert.ok((await page.locator(".vv-quote-review").innerText()).includes(serviceNames[0]));
+        assert.ok((await page.locator(".vv-quote-review").innerText()).includes(serviceNames[2]));
+        assert.ok((await page.getByRole("link",{name:"Open WhatsApp"}).getAttribute("href")).includes("wa.me/254794044598"),"WhatsApp handoff");
+        await page.getByRole("button",{name:"Back",exact:false}).click();
+        assert.equal(await page.getByLabel("Full name").inputValue(),"Example Client","Back navigation preserves details");
+      }
       if(path.startsWith("services.html")){
         assert.deepEqual(await page.locator(".vv-service-switcher a").evaluateAll(links=>links.map(link=>new URL(link.href).searchParams.get("service"))),serviceIds,"Service nav links");
         if(path==="services.html"){
