@@ -82,6 +82,37 @@ try {
     assert.equal(await motionPage.locator("html").getAttribute("data-vv-page-ready"),"true");
     assert.equal(await motionPage.locator("html").getAttribute("data-vv-decrypted"),"true");
     assert.ok(await motionPage.evaluate(()=>scrollY<2),"Hero must be first after decoding");
+    if(path==="about.html"){
+      const landing=motionPage.locator(".vv-about-landing");
+      const canvas=landing.locator(":scope > .vv-about-cube-canvas");
+      await canvas.waitFor({state:"visible"});
+      await landing.dispatchEvent("pointerleave",{pointerType:"mouse"});
+      await motionPage.waitForTimeout(1400);
+      // Sample the static grid and verify that an actual pointer wave changes
+      // it, mouse-up does not reset it, and leaving restores the same pixels.
+      const signature=()=>canvas.evaluate(el=>{
+        const ctx=el.getContext("2d");
+        const size=Math.min(160,el.width,el.height),x=Math.round(el.width*.25),y=Math.round(el.height*.25);
+        const data=ctx.getImageData(x,y,size,size).data;
+        let hash=2166136261;
+        for(let i=0;i<data.length;i++)hash=Math.imul(hash^data[i],16777619);
+        return hash>>>0;
+      });
+      const initial=await signature();
+      const rect=await landing.boundingBox();
+      assert.ok(rect);
+      const x=rect.x+rect.width*.28,y=rect.y+rect.height*.28;
+      await landing.dispatchEvent("pointermove",{clientX:x,clientY:y,pointerType:"mouse"});
+      await motionPage.waitForTimeout(450);
+      assert.notEqual(await signature(),initial,"About cursor wave must visibly animate");
+      await landing.dispatchEvent("pointerup",{clientX:x,clientY:y,pointerType:"mouse"});
+      await motionPage.waitForTimeout(450);
+      assert.notEqual(await signature(),initial,"Mouse release must not extinguish the wave");
+      await landing.dispatchEvent("pointerleave",{pointerType:"mouse"});
+      await motionPage.waitForTimeout(1500);
+      assert.equal(await signature(),initial,"Pointer exit must restore the unchanged grid without residual pixels");
+      console.log("About landing: pointer wave, click continuity and clean restoration passed");
+    }
     console.log("Animated transmission: "+(path||"home")+" passed");
   }
   // Verify the new hero photo, real canvas animation, and preserved side-to-side pointer tilt.
