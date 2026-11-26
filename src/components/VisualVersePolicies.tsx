@@ -84,7 +84,7 @@ export function PolicyLinks({className=""}:{className?:string}) {
           <p className="vv-policy-updated">Last updated: 11 November 2026 · Visual Verse Creations, Nairobi, Kenya</p>
           <div className="vv-policy-body">
             {policies[active].sections.map(section=><section key={section.heading}><h3>{section.heading}</h3>{section.paragraphs.map((paragraph,i)=><p key={i}>{paragraph}</p>)}</section>)}
-            <div className="vv-policy-contact"><strong>Questions or requests?</strong><a href="tel:+254794044598">+254 794 044 598</a><a href="mailto:hello@visualverse.com">hello@visualverse.com <ArrowUpRight size={14}/></a></div>
+            <div className="vv-policy-contact"><strong>Questions or requests?</strong><a href="tel:+254794044598">+254 794 044 598</a><a href="mailto:cvisualverse@gmail.com">cvisualverse@gmail.com <ArrowUpRight size={14}/></a></div>
             <p className="vv-policy-disclaimer">This is a general website policy summary adapted from Visual Verse's earlier draft terms. Service-specific signed agreements and applicable laws govern individual engagements.</p>
           </div>
         </section>
