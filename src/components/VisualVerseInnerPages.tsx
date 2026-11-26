@@ -322,6 +322,34 @@ const quoteStages = [
   {label:"Ready to launch",title:"Your brief is ready for review.",note:"Check the details, then send your brief using your preferred channel."},
 ] as const;
 
+const ideaSlots=[
+  {x:18,y:26,angle:-10},{x:50,y:23,angle:5},{x:82,y:29,angle:11},
+  {x:19,y:70,angle:7},{x:51,y:67,angle:-8},{x:82,y:73,angle:4},
+] as const;
+const ideaNames=["Design","Photography","Web & UI/UX","Film","Branding","Social media"];
+const ideaWords=["MAKE IT SEEN","FREEZE THE MOMENT","MAKE IT CLICK","MAKE IT MOVE","MAKE IT YOURS","MAKE IT TRAVEL"];
+
+/** A playful visual service picker; the brief uses the same selected state. */
+function QuoteIdeaPlayground({selected,unsure,onToggle,onReset}:{selected:string[];unsure:boolean;onToggle:(id:string)=>void;onReset:()=>void}){
+  const [shuffle,setShuffle]=useState(0);
+  return <div className="vv-quote-playground">
+    <div className="vv-quote-playground-top"><span><Sparkles size={17}/> THE IDEA PLAYGROUND</span><span>01 / 06 CREATIVE SPARKS</span></div>
+    <div className="vv-quote-collage" role="group" aria-label="Pick creative sparks for your project">
+      <svg className="vv-quote-collage-lines" viewBox="0 0 500 360" preserveAspectRatio="none" aria-hidden="true"><path d="M20 180C120 40 325 345 480 105M50 305C180 40 350 30 460 280" fill="none" stroke="currentColor" strokeDasharray="5 8" strokeWidth="1.25"/><circle cx="250" cy="180" r="118" fill="none" stroke="currentColor" strokeDasharray="3 11" strokeWidth="1"/></svg>
+      <span className="vv-quote-collage-spark spark-a" aria-hidden="true"><Sparkles size={24}/></span><span className="vv-quote-collage-spark spark-b" aria-hidden="true"><Sparkles size={17}/></span>
+      {services.map((s,i)=>{
+        const slot=ideaSlots[(i+shuffle)%ideaSlots.length],isSelected=selected.includes(s.id);
+        return <button key={s.id} type="button" className="vv-quote-idea-card" aria-label={"Select "+s.title} aria-pressed={isSelected} onClick={()=>onToggle(s.id)}
+          style={{"--idea-x":slot.x+"%","--idea-y":slot.y+"%","--idea-angle":slot.angle+"deg","--idea-delay":i*70+"ms"} as React.CSSProperties}>
+          <span className="vv-quote-idea-photo"><img src={import.meta.env.BASE_URL+"service-cover-"+s.id+".webp"} alt="" width={1200} height={800} decoding="async" draggable={false}/><span className="vv-quote-idea-mark">{isSelected?<Check size={15} strokeWidth={2.5}/>:<s.Icon size={15} strokeWidth={1.8}/>}</span></span>
+          <span className="vv-quote-idea-caption"><strong>{ideaNames[i]}</strong><small>{ideaWords[i]}</small></span>
+        </button>;
+      })}
+    </div>
+    <div className="vv-quote-playground-controls"><div className="vv-quote-playground-status" aria-live="polite"><span><i/> {selected.length?selected.length+" creative spark"+(selected.length===1?"":"s")+" selected":unsure?"Let's explore together":"Pick a few creative sparks"}</span><small>Tap a card to add it to your brief.</small></div><button type="button" className="vv-quote-shuffle" onClick={()=>setShuffle(v=>(v+1)%6)}><Sparkles size={16}/> Remix</button>{(selected.length>0||unsure)&&<button type="button" className="vv-quote-clear" onClick={onReset}>Clear</button>}</div>
+  </div>;
+}
+
 function QuotePage(){
   const params=new URLSearchParams(window.location.search);
   const requestedService=params.get("service")??"";
@@ -364,7 +392,6 @@ function QuotePage(){
     }else if(ready){openMailDraft(subject,body);}
   }
   const whatsapp="https://wa.me/254794044598?text="+encodeURIComponent(body);
-  const ActiveIcon=chosen.length===1?chosen[0].Icon:Sparkles;
   return <>
     <section className="vv-inner-hero vv-inner-hero-v2 vv-quote-hero">
       <div className="vv-inner-hero-inner">
@@ -377,15 +404,7 @@ function QuotePage(){
             <a className="vv-motion-action vv-action-secondary" href={WHATSAPP} target="_blank" rel="noopener noreferrer"><VisualVerseActionContent Icon={MessageCircle}>Chat with us</VisualVerseActionContent></a>
           </div>
         </div>
-        <div className="vv-quote-hero-board">
-          <div className="vv-quote-board-top"><span><i/> MISSION CONTROL / LIVE</span><span>VISUAL VERSE</span></div>
-          <div className="vv-quote-orbit-art" aria-hidden="true">
-            <div className="vv-quote-orbit-ring ring-one"/><div className="vv-quote-orbit-ring ring-two"/>
-            <div className="vv-quote-orbit-core"><ActiveIcon size={44} strokeWidth={1.4}/></div>
-            {services.map((s,i)=><div key={s.id} className={"vv-quote-orbit-node"+(selected.includes(s.id)?" is-chosen":"")} style={{"--orbit-angle":i*60+"deg"} as React.CSSProperties}><s.Icon size={20} strokeWidth={1.6}/></div>)}
-          </div>
-          <div className="vv-quote-board-bottom"><div><small>YOUR CREATIVE FREQUENCY</small><strong>{unsure?"Let's figure it out":chosen.length?chosen.length+" discipline"+(chosen.length===1?"":"s")+" selected":"Every idea starts somewhere"}</strong></div><span className="vv-quote-board-status"><Radio size={16}/> OPEN</span></div>
-        </div>
+        <QuoteIdeaPlayground selected={selected} unsure={unsure} onToggle={id=>{toggle(id);setStage(0);}} onReset={()=>{setSelected([]);setUnsure(false);setStage(0);setError("");}}/>
       </div>
       <div className="vv-inner-hero-bottom"><span>IMAGINE. CREATE. CONNECT.</span><span>YOUR NEXT CREATIVE ADVENTURE <ArrowRight size={14} aria-hidden="true"/></span></div>
     </section>
