@@ -247,3 +247,16 @@
 @media(prefers-reduced-motion:reduce){
  .vv-inner-values article,.vv-inner-service-card,.vv-inner-form button{transition:none}
 }
+
+/* Saved enquiries: Gmail first, with native device and Outlook alternatives. */
+.vv-inner-form .vv-email-choices{display:grid;gap:12px;padding:18px;border:1px solid #b7ded5;border-radius:15px;background:#f2faf7;min-width:0}
+.vv-inner-form .vv-email-choices h3{font-size:17px;margin:0;color:#003f5c}
+.vv-email-choices p{margin:0;color:#456d78;font-size:12px;line-height:1.6}
+.vv-email-choice-links{display:grid;gap:8px}
+.vv-email-choice{display:grid;grid-template-columns:22px minmax(0,1fr) 16px;gap:10px;align-items:center;padding:13px;border:1px solid #c6e1da;border-radius:10px;color:#003f5c;background:#fff;text-decoration:none;min-height:54px;transition:border-color .2s,background .2s}
+.vv-email-choice-primary{background:#003f5c;color:white;border-color:#003f5c}
+.vv-email-choice strong,.vv-email-choice small{display:block;line-height:1.45}
+.vv-email-choice strong{font-size:13px}.vv-email-choice small{font-size:10px;color:#527580;margin-top:2px}
+.vv-email-choice-primary small{color:#b4ece4}
+.vv-email-choice:hover,.vv-email-choice:focus-visible{border-color:#2ec4b6;outline:2px solid #2ec4b6;outline-offset:2px}
+@media(prefers-reduced-motion:reduce){.vv-email-choice{transition:none}}
