@@ -238,3 +238,9 @@
  .vv-pj-frame-scene{animation:none}
  .vv-pj-card-media>img,.vv-pj-card-media>.vv-pf-art,.vv-pj-open,.vv-pj-thumbs button,.vv-projects-v3 .vv-projects-category{transition:none!important;transform:none!important}
 }
+
+/* Reuse Our Process background while keeping the portfolio watermark visible. */
+.vv-pj-finale{background:radial-gradient(ellipse at 42% 45%,#104950 0%,#002a40 74%)}
+.vv-pj-finale>.vv-background-boxes{z-index:0}
+.vv-pj-finale>.vv-pj-watermark{z-index:1}
+.vv-pj-finale>.vv-pj-finale-inner{z-index:2}
