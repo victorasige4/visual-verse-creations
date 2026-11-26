@@ -122,8 +122,23 @@ function ServicesPage(){
   return <VisualVerseServicesEditorial/>;
 }
 
-function openMailDraft(subject:string,body:string){
-  window.location.href="mailto:"+EMAIL+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
+type PreparedEmail = {subject:string;body:string};
+
+/** A fresh click after saving avoids popup blocking and lets visitors choose an app. */
+function EmailDraftChoices({draft}:{draft:PreparedEmail}){
+  const gmail="https://mail.google.com/mail/?view=cm&fs=1&to="+encodeURIComponent(EMAIL)+"&su="+encodeURIComponent(draft.subject)+"&body="+encodeURIComponent(draft.body);
+  const outlook="https://outlook.live.com/mail/0/deeplink/compose?to="+encodeURIComponent(EMAIL)+"&subject="+encodeURIComponent(draft.subject)+"&body="+encodeURIComponent(draft.body);
+  const device="mailto:"+EMAIL+"?subject="+encodeURIComponent(draft.subject)+"&body="+encodeURIComponent(draft.body);
+  return <section className="vv-email-choices" aria-labelledby="vv-email-choice-heading">
+    <h3 id="vv-email-choice-heading">Choose your email app</h3>
+    <p>Your request is saved. Open your prepared draft using whichever email app works for you.</p>
+    <div className="vv-email-choice-links">
+      <a className="vv-email-choice vv-email-choice-primary" href={gmail} target="_blank" rel="noopener noreferrer"><Mail size={19} aria-hidden="true"/><span><strong>Gmail</strong><small>Recommended · open Gmail compose</small></span><ArrowUpRight size={16} aria-hidden="true"/></a>
+      <a className="vv-email-choice" href={device}><MonitorSmartphone size={19} aria-hidden="true"/><span><strong>Email app on this device</strong><small>Gmail, Outlook, Apple Mail or another configured app</small></span><ArrowUpRight size={16} aria-hidden="true"/></a>
+      <a className="vv-email-choice" href={outlook} target="_blank" rel="noopener noreferrer"><Mail size={19} aria-hidden="true"/><span><strong>Outlook.com</strong><small>Open Outlook on the web</small></span><ArrowUpRight size={16} aria-hidden="true"/></a>
+    </div>
+    <p>On mobile, your device may show an app chooser or open its default mail app. Send the draft yourself to complete the email.</p>
+  </section>;
 }
 
 /* Scoped to the contact experience; shared page styles remain unchanged. */
@@ -258,6 +273,7 @@ function ContactPage({selectedTopics,onToggleTopic,onClearTopics}:{selectedTopic
   const [name,setName]=useState(""),[email,setEmail]=useState(""),[subjectOverride,setSubjectOverride]=useState<string|null>(null),[message,setMessage]=useState("");
   const enquiry=useWebsiteEnquiry();
   const [website,setWebsite]=useState("");
+  const [preparedEmail,setPreparedEmail]=useState<PreparedEmail|null>(null);
   const autoSubject=selectedTopics.length>1?"Project inquiry — multiple services":selectedTopics[0]??"";
   const subject=subjectOverride??autoSubject;
   const topics=[...services.map(s=>({title:s.title,Icon:s.Icon})),{title:"Collaboration",Icon:Sparkles},{title:"General enquiry",Icon:MessageCircle}];
@@ -269,11 +285,12 @@ function ContactPage({selectedTopics,onToggleTopic,onClearTopics}:{selectedTopic
     if(completed!==4||enquiry.saving)return;
     const submitter=(event.nativeEvent as SubmitEvent).submitter;
     const channel=submitter instanceof HTMLButtonElement&&submitter.value==="whatsapp"?"whatsapp":"email";
+    setPreparedEmail(null);
     const ref=await enquiry.save({source:"contact",channel,name:name.trim(),email:email.trim(),subject:subject.trim(),brief:draft},website);
     if(!ref)return;
     const title="[VV-"+ref+"] "+subject.trim(),body=draft+"\n\nRequest reference: VV-"+ref;
     if(channel==="whatsapp")window.location.href="https://wa.me/"+PHONE.replace(/\D/g,"")+"?text="+encodeURIComponent("Subject: "+title+"\n\n"+body);
-    else openMailDraft(title,body);
+    else setPreparedEmail({subject:title,body});
   }
   return <>
     <style>{contactStyles}</style>
@@ -307,8 +324,9 @@ function ContactPage({selectedTopics,onToggleTopic,onClearTopics}:{selectedTopic
           <label>Message <textarea required minLength={10} maxLength={2000} rows={5} value={message} onChange={e=>setMessage(e.target.value)} placeholder="Tell us a little about your idea…"/><span className="vv-contact-count">{message.length} / 2000</span></label>
           <div className="vv-contact-meter"><div><span>SIGNAL READINESS</span><span>{completed} / 4 fields</span></div><div className="vv-contact-meter-track" role="progressbar" aria-label="Inquiry fields completed" aria-valuemin={0} aria-valuemax={4} aria-valuenow={completed}><span style={{width:completed*25+"%"}}/></div><small>{completed===4?"Ready to prepare your message.":"Complete your details to prepare your signal."}</small></div>
           <details className="vv-contact-preview"><summary>Preview your message</summary><pre>{"Subject: "+(subject||"[Your subject]")+"\n\n"+draft}</pre></details>
-          <div hidden aria-hidden="true"><label>Website<input tabIndex={-1} autoComplete="off" value={website} onChange={e=>setWebsite(e.target.value)}/></label></div><p>Submitting saves your enquiry securely in our workspace. Then send the prepared email or WhatsApp message yourself. See Privacy &amp; Cookies in the footer.</p>{enquiry.feedback&&<p role="status" className="vv-enquiry-feedback">{enquiry.feedback}</p>}
-          <div className="vv-contact-send-actions"><button type="submit" name="channel" value="email" disabled={enquiry.saving} className="vv-motion-action vv-action-primary"><VisualVerseActionContent Icon={Send}>{enquiry.saving?"Saving enquiry…":"Save & prepare email"}</VisualVerseActionContent></button><button type="submit" name="channel" value="whatsapp" disabled={enquiry.saving} className="vv-contact-whatsapp"><MessageCircle size={17} aria-hidden="true"/> Save & prepare WhatsApp</button></div>
+          <div hidden aria-hidden="true"><label>Website<input tabIndex={-1} autoComplete="off" value={website} onChange={e=>setWebsite(e.target.value)}/></label></div><p>Submitting saves your enquiry securely in our workspace. Choose Gmail or another email app, or send the prepared WhatsApp message yourself. See Privacy &amp; Cookies in the footer.</p>{enquiry.feedback&&<p role="status" className="vv-enquiry-feedback">{enquiry.feedback}</p>}
+          <div className="vv-contact-send-actions"><button type="submit" name="channel" value="email" disabled={enquiry.saving} className="vv-motion-action vv-action-primary"><VisualVerseActionContent Icon={Send}>{enquiry.saving?"Saving enquiry…":"Save & choose email app"}</VisualVerseActionContent></button><button type="submit" name="channel" value="whatsapp" disabled={enquiry.saving} className="vv-contact-whatsapp"><MessageCircle size={17} aria-hidden="true"/> Save & prepare WhatsApp</button></div>
+          {preparedEmail&&preparedEmail.subject.endsWith("] "+subject.trim())&&preparedEmail.body.startsWith(draft+"\n\nRequest reference: ")&&<EmailDraftChoices draft={preparedEmail}/>}
         </form>
       </div>
     </section>
@@ -371,6 +389,7 @@ function QuotePage(){
   const [copied,setCopied]=useState("");
   const enquiry=useWebsiteEnquiry();
   const [website,setWebsite]=useState("");
+  const [preparedEmail,setPreparedEmail]=useState<PreparedEmail|null>(null);
   const chosen=services.filter(s=>selected.includes(s.id));
   const service=unsure?"Several services / Other":chosen.map(s=>s.title).join(", ");
   const hasService=chosen.length>0||unsure;
@@ -385,7 +404,7 @@ function QuotePage(){
   }
   function chooseUnsure(){setSelected([]);setUnsure(v=>!v);setError("");}
   function changeStage(next:number){
-    setStage(next);setError("");setCopied("");
+    setStage(next);setError("");setCopied("");setPreparedEmail(null);
     requestAnimationFrame(()=>document.getElementById("vv-quote-stage-title")?.focus());
   }
   async function submit(event:FormEvent<HTMLFormElement>){
@@ -400,11 +419,12 @@ function QuotePage(){
     }else if(ready&&!enquiry.saving){
       const sender=(event.nativeEvent as SubmitEvent).submitter;
       const channel=sender instanceof HTMLButtonElement&&sender.value==="whatsapp"?"whatsapp":"email";
+      setPreparedEmail(null);
       const ref=await enquiry.save({source:"quote",channel,name:name.trim(),email:email.trim(),subject,brief:body},website);
       if(!ref)return;
       const text=body+"\n\nRequest reference: VV-"+ref;
       if(channel==="whatsapp")window.location.href="https://wa.me/254794044598?text="+encodeURIComponent(text);
-      else openMailDraft("[VV-"+ref+"] "+subject,text);
+      else setPreparedEmail({subject:"[VV-"+ref+"] "+subject,body:text});
     }
   }
   return <>
@@ -419,7 +439,7 @@ function QuotePage(){
             <a className="vv-motion-action vv-action-secondary" href={WHATSAPP} target="_blank" rel="noopener noreferrer"><VisualVerseActionContent Icon={MessageCircle}>Chat with us</VisualVerseActionContent></a>
           </div>
         </div>
-        <QuoteIdeaPlayground selected={selected} unsure={unsure} onToggle={id=>{toggle(id);setStage(0);}} onReset={()=>{setSelected([]);setUnsure(false);setStage(0);setError("");}}/>
+        <QuoteIdeaPlayground selected={selected} unsure={unsure} onToggle={id=>{toggle(id);setStage(0);setPreparedEmail(null);}} onReset={()=>{setSelected([]);setUnsure(false);setStage(0);setError("");setPreparedEmail(null);}}/>
       </div>
       <div className="vv-inner-hero-bottom"><span>IMAGINE. CREATE. CONNECT.</span><span>YOUR NEXT CREATIVE ADVENTURE <ArrowRight size={14} aria-hidden="true"/></span></div>
     </section>
@@ -467,9 +487,10 @@ function QuotePage(){
                 <dl><div><dt>Creative disciplines</dt><dd>{service}</dd></div><div><dt>Budget</dt><dd>{budget}</dd></div><div><dt>Timeline</dt><dd>{timeline||"To be discussed"}</dd></div><div><dt>Contact</dt><dd>{email}</dd></div>{company&&<div><dt>Company</dt><dd>{company}</dd></div>}{phone&&<div><dt>Phone</dt><dd>{phone}</dd></div>}{requestedAudience&&<div><dt>Audience</dt><dd>{requestedAudience}</dd></div>}</dl>
                 <div className="vv-quote-review-description"><span>THE IDEA</span><p>{description}</p></div>
               </div>
-              <div hidden aria-hidden="true"><label>Website<input tabIndex={-1} autoComplete="off" value={website} onChange={e=>setWebsite(e.target.value)}/></label></div><div className="vv-quote-send-options"><button type="submit" name="channel" value="email" disabled={!ready||enquiry.saving} className="vv-motion-action vv-action-primary"><VisualVerseActionContent Icon={Mail}>{enquiry.saving?"Saving request…":"Save & open email draft"}</VisualVerseActionContent></button><button type="submit" name="channel" value="whatsapp" disabled={!ready||enquiry.saving} className="vv-motion-action vv-action-secondary"><VisualVerseActionContent Icon={MessageCircle}>Save & open WhatsApp</VisualVerseActionContent></button></div>{enquiry.feedback&&<p role="status" className="vv-enquiry-feedback">{enquiry.feedback}</p>
+              <div hidden aria-hidden="true"><label>Website<input tabIndex={-1} autoComplete="off" value={website} onChange={e=>setWebsite(e.target.value)}/></label></div><div className="vv-quote-send-options"><button type="submit" name="channel" value="email" disabled={!ready||enquiry.saving} className="vv-motion-action vv-action-primary"><VisualVerseActionContent Icon={Mail}>{enquiry.saving?"Saving request…":"Save & choose email app"}</VisualVerseActionContent></button><button type="submit" name="channel" value="whatsapp" disabled={!ready||enquiry.saving} className="vv-motion-action vv-action-secondary"><VisualVerseActionContent Icon={MessageCircle}>Save & open WhatsApp</VisualVerseActionContent></button></div>{enquiry.feedback&&<p role="status" className="vv-enquiry-feedback">{enquiry.feedback}</p>}
+              {preparedEmail&&<EmailDraftChoices draft={preparedEmail}/>}
               <button type="button" className="vv-quote-copy" onClick={async()=>{try{await navigator.clipboard.writeText(body);setCopied("Brief copied.");}catch{setCopied("Could not copy automatically. Use email or WhatsApp instead.");}}}><FileText size={15}/> Copy project brief</button><span role="status" className="vv-quote-copy-status">{copied}</span>
-              <p className="vv-quote-privacy">When you choose a sending option, your brief is saved securely to our workspace. Opening email or WhatsApp prepares a draft; you must send it yourself. See Privacy &amp; Cookies in the footer.</p>
+              <p className="vv-quote-privacy">When you choose a sending option, your brief is saved securely to our workspace. Choose Gmail, your device’s email app or Outlook, or send the prepared WhatsApp message yourself. See Privacy &amp; Cookies in the footer.</p>
             </div>}
             {error&&<p role="alert" className="vv-quote-error">{error}</p>}
             <div className="vv-quote-nav">{stage>0?<button type="button" className="vv-quote-back" onClick={()=>changeStage(stage-1)}>← Back</button>:<span className="vv-quote-no-commitment"><Check size={14}/> No commitment</span>}{stage<2&&<button type="submit" className="vv-motion-action vv-action-primary"><VisualVerseActionContent Icon={ArrowRight}>{stage===0?"Continue to details":"Review my brief"}</VisualVerseActionContent></button>}</div>
