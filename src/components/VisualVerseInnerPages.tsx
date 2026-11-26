@@ -28,7 +28,7 @@ const VisualVerseServicesEditorial = lazy(async () => ({
 
 
 type Kind = "about" | "services" | "audiences" | "contact" | "quote";
-const EMAIL = "hello@visualverse.com";
+const EMAIL = "cvisualverse@gmail.com";
 const PHONE = "+254794044598";
 const WHATSAPP = "https://wa.me/254794044598?text=Hello%20Visual%20Verse%2C%20I'd%20like%20to%20discuss%20a%20project.";
 
