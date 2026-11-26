@@ -101,9 +101,9 @@ function AboutHeading({label,title,description}:{label:string;title:React.ReactN
 }
 
 const storyChapters = [
-  {title:"Creative direction with purpose",label:"IMAGINE",detail:"Find the intention behind the idea.",Icon:Compass,position:"50% 45%"},
-  {title:"Personal collaboration",label:"CREATE",detail:"Shape the work together, with curiosity.",Icon:UsersRound,position:"50% 42%"},
-  {title:"Thoughtful final delivery",label:"CONNECT",detail:"Bring the finished work into the world.",Icon:CheckCircle2,position:"50% 48%"},
+  {title:"Creative direction with purpose",label:"IMAGINE",detail:"Find the intention behind the idea.",Icon:Compass},
+  {title:"Personal collaboration",label:"CREATE",detail:"Shape the work together, with curiosity.",Icon:UsersRound},
+  {title:"Thoughtful final delivery",label:"CONNECT",detail:"Bring the finished work into the world.",Icon:CheckCircle2},
 ] as const;
 
 function VisualVerseStory(){
@@ -122,8 +122,8 @@ function VisualVerseStory(){
       <div className="vv-story-main">
         <figure className="vv-story-visual" data-chapter={active}>
           <div className="vv-story-viewfinder" aria-hidden="true"><i/><i/><i/><i/></div>
-          <div className="vv-story-image-meta" aria-hidden="true"><span><i/> BEHIND THE LENS</span><span>VV / NAIROBI</span></div>
-          <div className="vv-story-photo"><img src={import.meta.env.BASE_URL+"about-photographer.webp"} alt="Behind the lens at Visual Verse Creations" loading="lazy" decoding="async" style={{objectPosition:chapter.position}}/></div>
+          <div className="vv-story-image-meta" aria-hidden="true"><span><i/> BEHIND THE IDEAS</span><span>VV / NAIROBI</span></div>
+          <div className="vv-story-photo"><img src={import.meta.env.BASE_URL+"audience-founders-creative.webp"} alt="Two creative collaborators reviewing designs on a tablet and comparing colour samples" width={1200} height={800} loading="lazy" decoding="async"/></div>
           <div className="vv-story-reticle" aria-hidden="true"><span/><span/></div>
           <figcaption className="vv-story-photo-caption"><span>A STORY WORTH TELLING</span><span>VISUAL VERSE / 0{active+1}</span></figcaption>
           <div className="vv-story-visual-badge" aria-live="polite" aria-atomic="true"><Icon size={23} strokeWidth={1.5}/><div><small>THE CREATIVE JOURNEY</small><strong key={chapter.label}>{chapter.label}</strong></div></div>
