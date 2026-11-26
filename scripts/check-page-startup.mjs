@@ -660,6 +660,15 @@ try {
         assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),"Projects must not overflow horizontally");
       }
       if(path==="request-quote.html"){
+        const sparks=page.locator(".vv-quote-idea-card");
+        assert.equal(await sparks.count(),6,"Six interactive hero photographs");
+        const firstSlot=await sparks.first().getAttribute("style");
+        await page.getByRole("button",{name:"Remix",exact:true}).click();
+        assert.notEqual(await sparks.first().getAttribute("style"),firstSlot,"Remix moves the creative cards");
+        await sparks.first().click();
+        assert.equal(await sparks.first().getAttribute("aria-pressed"),"true","Hero card selects a service");
+        assert.equal(await page.locator(".vv-quote-services .vv-quote-service").first().getAttribute("aria-pressed"),"true","Hero and form share selection");
+        await page.getByRole("button",{name:"Clear",exact:true}).click();
         const picker=page.locator(".vv-quote-services .vv-quote-service");
         assert.deepEqual(await labels(page,".vv-quote-service strong"),serviceNames,"Quote service order");
         await picker.nth(0).click();
