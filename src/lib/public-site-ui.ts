@@ -2,7 +2,9 @@ import "../visual-verse-actions.css";
 import { mountSiteBackgroundBeams } from "../components/VisualVerseBackgroundBeams";
 
 import { mountPublicMotion } from "./public-motion";
+import { mountHeroCubes } from "./hero-cubes";
 
+mountHeroCubes();
 mountSiteBackgroundBeams();
 mountPublicMotion();
 
