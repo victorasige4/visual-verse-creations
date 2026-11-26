@@ -86,8 +86,9 @@ export function attachHeroCubes(hero:HTMLElement,ownedCanvas?:HTMLCanvasElement)
     width=w;height=h;dpr=ratio;
     const bw=Math.max(1,Math.round(width*dpr)),bh=Math.max(1,Math.round(height*dpr));
     base.width=bw;base.height=bh;
+    baseCtx!.setTransform(1,0,0,1,0,0);
+    baseCtx!.fillStyle=ground;baseCtx!.fillRect(0,0,bw,bh);
     baseCtx!.setTransform(dpr,0,0,dpr,0,0);
-    baseCtx!.fillStyle=ground;baseCtx!.fillRect(0,0,width,height);
     const half=Math.max(32,Math.min(58,Math.floor(width/21)));
     const halfH=half*.47;
     tiles=[];
@@ -137,7 +138,8 @@ export function attachHeroCubes(hero:HTMLElement,ownedCanvas?:HTMLCanvasElement)
     if(!visible||reduced.matches||document.hidden)return;
     const interval=coarse.matches?40:1000/40;
     if(lastDraw&&now-lastDraw<interval-1){frame=requestAnimationFrame(tick);return;}
-    const dt=lastDraw?Math.min(80,now-lastDraw):interval;lastDraw=now;
+    const elapsed=lastDraw?now-lastDraw:interval;
+    const dt=Math.min(80,elapsed);lastDraw=now;
     if(pointer.dirty){
       const rect=hero.getBoundingClientRect();
       pointer.targetX=pointer.clientX-rect.left;pointer.targetY=pointer.clientY-rect.top;
