@@ -227,67 +227,204 @@ const serviceLandingStyles = `
 @media(max-width:760px){.vv-services-editorial .vv-sv-hero--impractical{padding-top:clamp(128px,26vw,154px)}.vv-sv-hero--impractical .vv-sv-breadcrumb{margin-bottom:25px}.vv-services-editorial .vv-sv-hero--impractical h1{font-size:clamp(26px,6vw,39px)}.vv-sv-brief-launcher{margin-top:23px;padding:13px;border-radius:17px}.vv-sv-brief-launcher>span:first-child{font-size:13px}.vv-sv-brief-launcher-bottom>strong{padding:11px;font-size:11px}.vv-sv-hero--impractical .vv-service-switcher{gap:6px}.vv-sv-hero--impractical .vv-service-switcher a{font-size:10px;padding:8px 10px}.vv-service-overview--rail>.vv-sv-container{width:calc(100% - 32px)}.vv-service-rail-controls button{width:36px;height:36px}.vv-service-rail-controls{gap:5px}.vv-service-rail{gap:11px}.vv-service-rail-card{flex-basis:min(85%,320px)}}
 @media(max-width:390px){.vv-service-overview--rail .vv-service-overview-heading{flex-wrap:wrap;align-items:center;gap:9px}.vv-service-rail-controls button{width:34px;height:34px}.vv-sv-brief-launcher-bottom>small{font-size:9px}}
 @media(prefers-reduced-motion:reduce){.vv-sv-brief-launcher,.vv-service-rail-image img,.vv-service-rail-card,.vv-service-rail-cta,.vv-service-rail-progress>span{transition:none!important;transform:none!important}}
+
+/* Editable, local service finder. */
+.vv-sv-brief-launcher.vv-sv-finder{transform:none;cursor:auto;gap:12px}
+.vv-sv-finder textarea{display:block;width:100%;min-height:82px;resize:vertical;max-height:200px;border:0;background:transparent;padding:7px 5px;color:#003f5c;font:inherit;font-size:15px;line-height:1.55;outline:none}
+.vv-sv-finder:focus-within{border-color:#2ec4b6;box-shadow:0 0 0 3px #2ec4b625,0 15px 42px #003f5c12}
+.vv-sv-finder textarea::placeholder{color:#59767e;opacity:1}
+.vv-sv-finder-submit{display:flex;align-items:center;justify-content:center;gap:8px;border:0;cursor:pointer;border-radius:12px;padding:12px 16px;background:var(--sv-deep);color:white;font:inherit;font-size:12px;font-weight:750}
+.vv-sv-finder-submit:disabled{opacity:.45;cursor:not-allowed}
+.vv-sv-finder-submit svg{color:#89efdd}
+.vv-sv-finder-examples{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;width:100%;margin:12px auto 0}
+.vv-sv-finder-examples button{border:1px solid #cde4de;background:#ffffffb5;color:#226d66;border-radius:50px;padding:8px 11px;font:inherit;font-size:11px;font-weight:650;cursor:pointer}
+.vv-sv-finder-examples button:hover{border-color:#168f84;background:white}
+.vv-sv-finder-live{width:100%}
+.vv-sv-finder-response{width:min(100%,660px);margin:12px auto 0;text-align:left;border:1px solid #cde4de;border-radius:16px;background:white;padding:16px;color:#003f5c;box-shadow:0 8px 24px #003f5c0b}
+.vv-sv-finder-response>strong{display:flex;align-items:center;gap:7px;font-size:13px;color:#168f84}
+.vv-services-editorial .vv-sv-finder-response>p{font-size:13px;line-height:1.6;margin:8px 0 12px;color:#46676d}
+.vv-sv-finder-results{display:grid;gap:7px}
+.vv-sv-finder-results a{display:flex;align-items:center;gap:10px;min-height:48px;border:1px solid #d4e7df;border-radius:10px;padding:10px;background:#f4fbf7;color:#003f5c;text-decoration:none;font-size:12px;font-weight:750}
+.vv-sv-finder-results a:hover{border-color:#2ec4b6;background:#e3f8ef}
+.vv-sv-finder-results a>svg:first-child{flex:none;color:#168f84}
+.vv-sv-finder-results a>svg:last-child{margin-left:auto;flex:none}
+.vv-sv-finder-response .vv-sv-finder-fallback{font-size:12px;color:#168f84;font-weight:750}
+.vv-sv-finder :is(textarea,button):focus-visible,.vv-sv-finder-examples button:focus-visible,.vv-sv-finder-response a:focus-visible{outline:2px solid #168f84;outline-offset:3px}
+/* Curved, full-bleed moving gallery inspired by the supplied video. */
+.vv-services-editorial .vv-service-overview--rail{padding-bottom:clamp(55px,7vw,95px)}
+.vv-service-overview--rail .vv-service-overview-heading{padding-bottom:22px}
+.vv-service-gallery-stage{position:relative;isolation:isolate;overflow:hidden;width:100%;background:linear-gradient(180deg,#f9fcfb 0%,#d5f3ee 18%,#8ccfd2 55%,#e9f9f3 94%,#fff 100%)}
+.vv-service-gallery-landscape{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.vv-service-gallery-stage::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:3;background:linear-gradient(90deg,#dff7f02b,transparent 7%,transparent 93%,#dff7f02b)}
+.vv-service-gallery-stage .vv-service-rail{padding:clamp(32px,5vw,80px) 0;gap:clamp(9px,1.1vw,19px);scroll-snap-type:none;scrollbar-width:none;scroll-padding:0;overscroll-behavior-x:contain;touch-action:pan-x pan-y;position:relative}
+.vv-service-gallery-stage .vv-service-rail::-webkit-scrollbar{display:none}
+.vv-service-gallery-stage .vv-service-rail-card{flex:0 0 clamp(270px,25.5vw,470px);border:0;background:transparent;border-radius:0;overflow:visible;position:relative;box-shadow:none;scroll-snap-align:none}
+.vv-service-gallery-stage .vv-service-rail-card>a{position:relative;display:block;aspect-ratio:16/9;height:auto;border-radius:clamp(10px,1vw,17px);overflow:hidden;transform:perspective(850px) rotateY(var(--vv-gallery-angle,0deg)) scale(var(--vv-gallery-scale,1));transform-origin:center;box-shadow:0 13px 30px #003f5c32;isolation:isolate}
+.vv-service-gallery-stage .vv-service-rail-card:hover,.vv-service-gallery-stage .vv-service-rail-card:focus-within{border:0;box-shadow:none;z-index:2}
+.vv-service-gallery-stage .vv-service-rail-image{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto}
+.vv-service-gallery-stage .vv-service-rail-image::after{background:linear-gradient(180deg,#002a4055,transparent 35%,#002a4030 48%,#001c2de0 100%)}
+.vv-service-gallery-stage .vv-service-row-copy{position:absolute;z-index:2;bottom:0;left:0;right:0;padding:clamp(13px,1.5vw,24px);color:#fff;display:flex;flex-direction:column;gap:5px;pointer-events:none}
+.vv-services-editorial .vv-service-gallery-stage .vv-service-row-copy h3{color:#fff!important;font-size:clamp(17px,1.55vw,24px);line-height:1.18;margin:0;text-shadow:0 2px 8px #001a2d70}
+.vv-service-gallery-stage .vv-service-row-copy p{color:#d9f5ef;font-size:clamp(10px,1vw,13px);line-height:1.4;margin:0}
+.vv-service-gallery-stage .vv-service-rail-cta{top:12px;right:12px;bottom:auto;width:37px;height:37px;padding:0;display:grid;place-items:center;border-radius:50%;background:#fff;color:#003f5c}
+.vv-service-gallery-stage .vv-service-rail-cta>svg{width:18px;height:18px}
+.vv-service-gallery-stage .vv-service-rail-card:is(:hover,:focus-within) .vv-service-rail-cta{transform:rotate(10deg);background:#2ec4b6}
+.vv-service-gallery-stage .vv-service-rail-icon{border-radius:50%}
+.vv-service-gallery-stage .vv-service-rail-card>a:focus-visible{outline:3px solid #003f5c;outline-offset:4px}
+.vv-service-gallery-stage .vv-service-rail:focus-visible{outline-offset:-3px}
+.vv-service-gallery-footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:14px;color:#55777d;font-size:11px;font-weight:650}
+.vv-service-gallery-footer .vv-service-switcher{margin:0;gap:7px}
+@media(max-width:760px){.vv-service-gallery-stage .vv-service-rail-card{flex-basis:min(76vw,330px)}.vv-service-gallery-stage .vv-service-rail{padding:40px 0}.vv-service-gallery-stage .vv-service-rail-card>a{transform:perspective(850px) rotateY(var(--vv-gallery-angle,0deg)) scale(var(--vv-gallery-scale,1))}.vv-sv-finder textarea{font-size:13px}.vv-sv-finder-submit{font-size:11px;padding:11px}.vv-sv-finder-examples button{font-size:10px}.vv-service-gallery-footer .vv-service-switcher a{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.vv-service-gallery-stage .vv-service-rail-card>a{transform:none}.vv-service-gallery-stage .vv-service-rail-card:hover img{transform:none}}
+
 `;
+
+
+/* Local weighted phrase matching; never sends a client's text anywhere. */
+const serviceRules:Record<Service["id"],{strong:RegExp;related:RegExp;reason:string}>={
+  "graphic-design":{strong:/\b(graphic(s| design)?|poster(s)?|flyer(s)?|brochure(s)?|banner(s)?|business card(s)?|invitation(s)?|packaging|print design|editorial|menu design|social media graphics|social media (post|posts|design|designs)|design (a |an )?(post|posts|flyer|poster|banner)|infographic(s)?|presentation(s)?)\b/g,related:/\b(artwork|visuals|layout|print|signage|collateral|design|cards|stationery)\b/g,reason:"We can create the visuals, artwork and communication materials for your idea."},
+  photography:{strong:/\b(photo(s|graphy|grapher|graphs|shoot)?|photo shoot(s)?|photograph(s|er|y)?|portrait(s)?|headshot(s)?|pictures|product shoot(s)?|family shoot(s)?|take pictures|take photos|still images)\b/g,related:/\b(wedding(s)?|graduation(s)?|birthday(s)?|event(s)?|capture|memories|shoot)\b/g,reason:"Our photography service can capture your people, products and important moments."},
+  "web-ui-ux":{strong:/\b(web site(s)?|website(s)?|web design|web development|web app(s|lication|lications)?|landing page(s)?|online store(s)?|e commerce|ecommerce|mobile app(s|lication|lications)?|app design|ui|ux|user interface|user experience|figma|interface(s)?|booking site|portfolio site)\b/g,related:/\b(digital platform|online presence|prototype|wireframe(s)?|responsive|booking system)\b/g,reason:"We can design and build a website or user-friendly digital experience."},
+  videography:{strong:/\b(video(s|graphy|grapher)?|film(s|maker|making)?|documentar(y|ies)|motion graphics|animation(s)?|cinematic|reel(s)?|video edit(ing)?|commercial(s)?|music video|recording|footage|short film|event coverage video)\b/g,related:/\b(wedding(s)?|event(s)?|shoot|capture|interview(s)?|storytelling|record|edit)\b/g,reason:"Our film and video team can shape your idea into moving visual content."},
+  branding:{strong:/\b(brand(ing| identity| strategy| guidelines| design)?|rebrand(ing)?|logo(s)?|visual identity|brand identity|brand name|naming|brand colours|brand colors|identity system|corporate identity|new business identity)\b/g,related:/\b(new business|start up|startup|company identity|colour palette|color palette|brand launch|business launch)\b/g,reason:"We can help develop a consistent visual identity and direction for your brand."},
+  "social-media":{strong:/\b(social media( management| marketing| strategy)?|digital marketing|content strategy|content calendar|content plan(ning)?|manage (my |our )?(instagram|facebook|tiktok|linkedin|accounts|socials)|marketing campaign(s)?|advertising|seo|online marketing|grow (my |our )?(audience|following|followers|business)|grow on social media|social media growth|promote (my |our )?(business|brand)|online ads)\b/g,related:/\b(instagram|facebook|linkedin|tiktok|youtube|followers|engagement|audience|campaign(s)?|marketing|promotion|content)\b/g,reason:"We can help you plan content, communicate consistently and reach your audience online."}
+};
+function matchCreativeRequest(input:string){
+  const normalized=input.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
+  const clean=normalized.replace(/\b(?:no|not|without|don t need|do not need)\s+(?:a |an |any )?(?:website|web design|photography|photos|videos|videography|branding|logo|graphic design|social media)\b/g," ");
+  const scored=services.map(service=>{
+    const rule=serviceRules[service.id];
+    const strong=Array.from(clean.matchAll(rule.strong)).length;
+    const related=Array.from(clean.matchAll(rule.related)).length;
+    return {service,score:strong*5+related,reason:rule.reason,strong};
+  }).sort((a,b)=>b.score-a.score);
+  const explicit=scored.filter(item=>item.strong>0);
+  if(explicit.length)return {matches:explicit.slice(0,4),uncertain:false};
+  const best=scored[0]?.score??0;
+  return {matches:best>0?scored.filter(item=>item.score>=Math.max(1,best-1)).slice(0,3):[],uncertain:true};
+}
+const finderExamples=["I need a poster for an event","I want photos of my graduation","I need an online store"];
+function CreativeServiceFinder(){
+  const [query,setQuery]=useState("");
+  const [submitted,setSubmitted]=useState("");
+  const result=submitted?matchCreativeRequest(submitted):null;
+  function find(value:string){const clean=value.trim();if(clean.length>=3){setQuery(value);setSubmitted(clean);}}
+  return <>
+    <form className="vv-sv-brief-launcher vv-sv-finder" onSubmit={e=>{e.preventDefault();find(query)}}>
+      <textarea aria-label="Describe your creative project" placeholder="I have an idea for a project… I want to create something that…" rows={3} maxLength={800} value={query} onChange={e=>{setQuery(e.target.value);setSubmitted("")}} required minLength={3}/>
+      <span className="vv-sv-brief-launcher-bottom"><small><Sparkles size={15} aria-hidden="true"/> VISUAL VERSE / CREATIVE GUIDE</small><button className="vv-sv-finder-submit" type="submit" disabled={query.trim().length<3}>Find my service <ArrowUpRight size={17} aria-hidden="true"/></button></span>
+    </form>
+    <div className="vv-sv-finder-examples" aria-label="Example creative requests">{finderExamples.map(example=><button key={example} type="button" onClick={()=>find(example)}>{example}</button>)}</div>
+    <div className="vv-sv-finder-live" aria-live="polite">
+      {result&&<div className="vv-sv-finder-response">
+        <strong><Sparkles size={16} aria-hidden="true"/> Your creative guide</strong>
+        <p>{result.matches.length?(result.uncertain?"Your idea could fit a few of our services. Here are some possibilities — tell us more if you are not sure.":result.matches.length===1?result.matches[0].reason:"Your request sounds like it could benefit from these creative services."):"I need a little more detail to find the right service. Are you looking for visuals, photos, a website, video, a brand identity or social media support?"}</p>
+        <div className="vv-sv-finder-results">{result.matches.map(({service})=><a key={service.id} href={serviceUrl(service.id)}><service.Icon size={19} aria-hidden="true"/> Explore {service.name}<ArrowUpRight size={16} aria-hidden="true"/></a>)}</div>
+        {result.uncertain&&<p><a className="vv-sv-finder-fallback" href={base+"contact.html"}>Talk to us about your idea <ArrowUpRight size={12} aria-hidden="true"/></a></p>}
+      </div>}
+    </div>
+  </>;
+}
 
 function ServicesRail(){
   const rail=useRef<HTMLDivElement>(null);
-  const [progress,setProgress]=useState(0);
   const [playing,setPlaying]=useState(()=>!window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   const [visible,setVisible]=useState(false);
   const [hovered,setHovered]=useState(false);
   const [focused,setFocused]=useState(false);
-  function refresh(){
+  const metrics=useRef({cycle:0,start:0});
+  function measure(){
     const el=rail.current;if(!el)return;
-    const max=el.scrollWidth-el.clientWidth;
-    setProgress(max>1?Math.min(1,Math.max(0,el.scrollLeft/max)):1);
+    const cards=el.querySelectorAll<HTMLElement>(".vv-service-rail-card");
+    if(cards.length<services.length*3)return;
+    const cycle=cards[services.length].offsetLeft-cards[0].offsetLeft;
+    if(cycle<=0)return;
+    const old=metrics.current;const phase=old.cycle?((el.scrollLeft-old.start)%old.cycle+old.cycle)%old.cycle:0;
+    metrics.current={cycle,start:cards[services.length].offsetLeft};
+    el.scrollLeft=metrics.current.start+(old.cycle?phase/old.cycle*cycle:0);
+    paint();
   }
-  function move(direction:number,wrap=false){
+  function paint(){
+    const el=rail.current;if(!el)return;
+    const center=el.scrollLeft+el.clientWidth/2;
+    const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.querySelectorAll<HTMLElement>(".vv-service-rail-card").forEach(card=>{
+      const offset=Math.max(-1,Math.min(1,(card.offsetLeft+card.offsetWidth/2-center)/(el.clientWidth/2||1)));
+      card.style.setProperty("--vv-gallery-angle",reduced?"0deg":(-offset*30).toFixed(2)+"deg");
+      card.style.setProperty("--vv-gallery-scale",reduced?"1":(1+Math.abs(offset)*.12).toFixed(3));
+    });
+  }
+  function wrap(){
+    const el=rail.current;const {cycle,start}=metrics.current;if(!el||!cycle)return;
+    if(el.scrollLeft>=start+cycle)el.scrollLeft-=cycle;
+    else if(el.scrollLeft<start-cycle*.3)el.scrollLeft+=cycle;
+  }
+  function move(direction:number){
     const el=rail.current;if(!el)return;
     const cards=el.querySelectorAll<HTMLElement>(".vv-service-rail-card");
     const step=cards.length>1?cards[1].offsetLeft-cards[0].offsetLeft:el.clientWidth;
-    const max=el.scrollWidth-el.clientWidth;
-    if(max<=1)return;
-    const behavior:ScrollBehavior=window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth";
-    if(wrap&&direction>0&&el.scrollLeft>=max-4)el.scrollTo({left:0,behavior});
-    else el.scrollBy({left:direction*step,behavior});
+    el.scrollBy({left:direction*step,behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
   }
   useEffect(()=>{
     const el=rail.current;if(!el)return;
-    refresh();
-    const resize=()=>refresh();
-    window.addEventListener("resize",resize);
+    measure();
+    const resize=()=>measure();
     const observer=typeof IntersectionObserver!=="undefined"?new IntersectionObserver(([entry])=>setVisible(entry.isIntersecting),{threshold:.15}):null;
     if(observer)observer.observe(el);else setVisible(true);
+    window.addEventListener("resize",resize);
     return ()=>{observer?.disconnect();window.removeEventListener("resize",resize)};
   },[]);
   useEffect(()=>{
     if(!playing||!visible||hovered||focused)return;
-    const timer=window.setInterval(()=>move(1,true),4400);
-    return ()=>window.clearInterval(timer);
+    let frame=0,last=0,remainder=0;
+    const animate=(now:number)=>{
+      const el=rail.current;
+      if(!el)return;
+      if(last){
+        remainder+=Math.min(now-last,50)*.033;
+        const pixels=Math.floor(remainder);
+        if(pixels){el.scrollLeft+=pixels;remainder-=pixels;wrap();paint();}
+      }
+      last=now;frame=requestAnimationFrame(animate);
+    };
+    frame=requestAnimationFrame(animate);
+    return ()=>cancelAnimationFrame(frame);
   },[playing,visible,hovered,focused]);
   return <section id="services" className="vv-service-overview vv-service-overview--rail" aria-labelledby="vv-sv-services-title">
     <div className="vv-sv-container">
       <header className="vv-service-overview-heading">
         <div><span className="vv-sv-kicker"><i/><i/> THE CREATIVE DISCIPLINES</span><h2 id="vv-sv-services-title">What we <em>bring to life.</em></h2></div>
-        <div className="vv-service-rail-controls" aria-label="Service carousel controls">
+        <div className="vv-service-rail-controls" aria-label="Service gallery controls">
           <button type="button" aria-label={playing?"Pause automatic service scrolling":"Play automatic service scrolling"} onClick={()=>setPlaying(value=>!value)}>{playing?<Pause size={16}/>:<Play size={16}/>}</button>
-          <button type="button" aria-label="Previous services" disabled={progress<=.005} onClick={()=>{setPlaying(false);move(-1)}}><ArrowLeft size={18}/></button>
-          <button type="button" aria-label="Next services" disabled={progress>=.995} onClick={()=>{setPlaying(false);move(1)}}><ArrowRight size={18}/></button>
+          <button type="button" aria-label="Previous services" onClick={()=>{setPlaying(false);move(-1)}}><ArrowLeft size={18}/></button>
+          <button type="button" aria-label="Next services" onClick={()=>{setPlaying(false);move(1)}}><ArrowRight size={18}/></button>
         </div>
       </header>
-      <div className="vv-service-rail" ref={rail} role="region" aria-label="Explore six creative services" tabIndex={0} onScroll={refresh} onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)} onFocus={()=>setFocused(true)} onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget))setFocused(false)}} onPointerDown={()=>setPlaying(false)} onWheel={()=>setPlaying(false)} onKeyDown={e=>{if(e.target===e.currentTarget&&(e.key==="ArrowLeft"||e.key==="ArrowRight")){e.preventDefault();setPlaying(false);move(e.key==="ArrowLeft"?-1:1)}}}>
-        {services.map((s,i)=>{
-          const Icon=s.Icon,image=covers[s.id];
-          return <article className="vv-service-rail-card" key={s.id} id={"details-"+s.id} aria-labelledby={"sv-"+s.id}>
-            <span id={"service-"+s.id} className="vv-service-anchor" aria-hidden="true"/>
-            <a href={serviceUrl(s.id)} aria-label={"Explore "+s.name}>
-              <div className="vv-service-rail-image"><img src={base+image.file} alt="" style={{objectPosition:image.position}} loading={i<3?"eager":"lazy"} decoding="async"/><span className="vv-service-rail-icon"><Icon size={18} strokeWidth={1.7}/></span><span className="vv-service-rail-cta">Explore service <ArrowUpRight size={15}/></span></div>
-              <div className="vv-service-row-copy"><h3 id={"sv-"+s.id}>{s.name}</h3><p>{detailCopy[s.id].headline}</p><div className="vv-service-rail-tags">{s.tags.slice(0,2).map(tag=><span key={tag}>{tag}</span>)}</div></div>
+    </div>
+    <div className="vv-service-gallery-stage">
+      <svg className="vv-service-gallery-landscape" viewBox="0 0 1600 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs><linearGradient id="vv-gallery-ridge" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#2d9da8"/><stop offset="1" stopColor="#003f5c"/></linearGradient><linearGradient id="vv-gallery-fade" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#f9fcfb" stopOpacity=".9"/><stop offset=".35" stopColor="#f9fcfb" stopOpacity="0"/><stop offset=".74" stopColor="#f9fcfb" stopOpacity="0"/><stop offset="1" stopColor="#f9fcfb"/></linearGradient></defs>
+        <path fill="#91d4d4" opacity=".56" d="M0 220 140 35 230 140 345 18 478 205 610 76 760 210 925 16 1100 210 1270 44 1450 190 1600 70V500H0Z"/>
+        <path fill="#70bfc4" opacity=".65" d="M0 280 160 134 280 230 390 100 530 280 680 160 810 275 1000 115 1150 255 1310 140 1450 270 1600 170V500H0Z"/>
+        <path fill="url(#vv-gallery-ridge)" opacity=".46" d="M0 355 170 210 360 365 570 235 800 397 1020 240 1230 360 1450 220 1600 330V500H0Z"/>
+        <path fill="#e5f8f2" opacity=".66" d="M0 420Q260 330 480 425T900 405T1300 420T1600 395V500H0Z"/>
+        <rect width="1600" height="500" fill="url(#vv-gallery-fade)"/>
+      </svg>
+      <div className="vv-service-rail" ref={rail} role="region" aria-label="Explore six creative services" tabIndex={0} onScroll={()=>{if(!focused)wrap();paint()}} onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)} onFocus={()=>setFocused(true)} onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget))setFocused(false)}} onPointerDown={()=>setPlaying(false)} onWheel={()=>setPlaying(false)} onKeyDown={e=>{if(e.target===e.currentTarget&&(e.key==="ArrowLeft"||e.key==="ArrowRight")){e.preventDefault();setPlaying(false);move(e.key==="ArrowLeft"?-1:1)}}}>
+        {[0,1,2].flatMap(copy=>services.map((s,i)=>{
+          const Icon=s.Icon,image=covers[s.id],primary=copy===1;
+          return <article className="vv-service-rail-card" key={copy+"-"+s.id} id={primary?"details-"+s.id:undefined} aria-hidden={primary?undefined:true} aria-labelledby={primary?"sv-"+s.id:undefined}>
+            {primary&&<span id={"service-"+s.id} className="vv-service-anchor" aria-hidden="true"/>}
+            <a href={serviceUrl(s.id)} aria-label={"Explore "+s.name} tabIndex={primary?0:-1}>
+              <div className="vv-service-rail-image"><img src={base+image.file} alt="" style={{objectPosition:image.position}} loading={copy===1||i<4?"eager":"lazy"} decoding="async"/><span className="vv-service-rail-icon"><Icon size={18} strokeWidth={1.7}/></span><span className="vv-service-rail-cta"><ArrowUpRight size={18} aria-hidden="true"/></span></div>
+              <div className="vv-service-row-copy"><h3 id={primary?"sv-"+s.id:undefined}>{s.name}</h3><p>{detailCopy[s.id].headline}</p></div>
             </a>
           </article>;
-        })}
+        }))}
       </div>
-      <div className="vv-service-rail-footer"><span>Swipe or scroll to explore all six services</span><div className="vv-service-rail-progress" aria-hidden="true"><span style={{width:Math.max(12,progress*100)+"%"}}/></div></div>
+    </div>
+    <div className="vv-sv-container">
+      <div className="vv-service-gallery-footer"><span>Explore the creative universe · Swipe or use the arrows</span><ServiceNav/></div>
       <p className="vv-service-overview-outro">One creative partner. Many disciplines. <a href={base+"request-quote.html"}>Let's shape yours <ArrowUpRight size={14}/></a></p>
     </div>
   </section>;
@@ -306,12 +443,8 @@ export function VisualVerseServicesEditorial() {
           <span className="vv-sv-landing-tag"><Sparkles size={15} aria-hidden="true"/> Your creative universe starts here</span>
           <h1 id="vv-sv-title">Six ways we create,<br/><em>all of them yours.</em></h1>
           <p>Every creative solution is shaped around your story, your audience and what you want to achieve. Let's bring your next idea to life.</p>
-          <a href={base+"request-quote.html"} className="vv-sv-brief-launcher" aria-label="Start a project brief">
-            <span>Tell us what you're imagining...</span>
-            <span className="vv-sv-brief-launcher-bottom"><small><Sparkles size={15} aria-hidden="true"/> YOUR IDEA. OUR CREATIVITY.</small><strong>Start a project <ArrowUpRight size={17} aria-hidden="true"/></strong></span>
-          </a>
+          <CreativeServiceFinder/>
         </div>
-        <div className="vv-service-hero-nav"><ServiceNav/></div>
         <a className="vv-sv-browse-link" href="#services">Explore our services <ArrowRight size={15} style={{transform:"rotate(90deg)"}} aria-hidden="true"/></a>
       </div>
     </section>
