@@ -434,6 +434,15 @@ try {
       await cube.waitFor({state:"attached"});
       assert.equal(await cube.count(),1,"One hero cube background: "+path);
       assert.ok(await cube.evaluate(el=>el.parentElement?.matches(".vv-hero,.vv-about-hero,.vv-sv-hero--impractical,.vv-sv-hero--potadot,.vv-detail-hero,.vvx-hero,.vv-pj-hero,.vv-inner-hero")&&getComputedStyle(el).pointerEvents==="none"),"Hero-only non-blocking canvas: "+path);
+      if(await cube.evaluate(el=>el.classList.contains("vv-shared-hero-cubes"))){
+        await cube.waitFor({state:"visible"});
+        assert.ok(await cube.evaluate(el=>{
+          const style=getComputedStyle(el),rect=el.getBoundingClientRect();
+          const context=el.getContext("2d");
+          const painted=!!context&&el.dataset.vvPainted==="true"&&el.width>1&&el.height>1&&context.getImageData(Math.floor(el.width/2),Math.floor(el.height/2),1,1).data[3]>0;
+          return rect.width>200&&rect.height>150&&style.zIndex==="0"&&Number(style.opacity)>=.8&&(painted||style.backgroundImage!=="none");
+        }),"Hero grid must actually paint or have a visible fallback: "+path);
+      }
       const headingSize=await hero.evaluate(node=>parseFloat(getComputedStyle(node).fontSize));
       assert.ok(headingSize>=23 && headingSize<=(viewport.width===390?48:70),"Unexpected public heading size: "+path+" ("+headingSize+"px)");
       const editorialHeroLines={"about.html":[["We turn","your ideas","into experiences."],["We turn","your ideas","into experiences."]],"services.html":[["Six ways we create,","all of them yours."],["Six ways we create,","all of them yours."]],"who-we-serve.html":[["No two","stories","alike."],["No two","stories","alike."]],"projects.html":[["Every story,","a different","canvas."],["Every story,","a different","canvas."]],"contact.html":[["Let's start a","conversation."],["Let's start a","conversation."]],"request-quote.html":[["Tell us about","your big idea."],["Tell us about","your big idea."]],"services.html?service=graphic-design":[["Ideas that","deserve to","be seen."],["Ideas that","deserve to","be seen."]],"services.html?service=photography":[["Frames that","make the","moment","last."],["Frames that","make the","moment last."]],"services.html?service=web-ui-ux":[["Digital","experiences","built for","real people."],["Digital","experiences","built for","real people."]],"services.html?service=videography":[["Stories","that move","people."],["Stories that","move people."]],"services.html?service=branding":[["An identity","that feels","unmistakably","yours."],["An identity","that feels","unmistakably","yours."]],"services.html?service=social-media":[["Good stories","deserve","a bigger","stage."],["Good stories","deserve a","bigger stage."]]};
