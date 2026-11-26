@@ -28,7 +28,7 @@ document.querySelectorAll(".console-theme-toggle").forEach(button=>{
 applyConsoleTheme(document.documentElement.dataset.consoleTheme,false);
 
 const esc=(value)=>String(value??"").replace(/[&<>"']/g,(c)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const state={user:null,membership:null,view:"overview",clients:[],projects:[],tasks:[],documents:[],members:[]};
+const state={user:null,membership:null,view:"overview",clients:[],projects:[],tasks:[],documents:[],members:[],requests:[],requestsError:""};
 const nice=(s)=>String(s??"").replaceAll("_"," ").replace(/\b\w/g,(c)=>c.toUpperCase());
 const isAdmin=()=>["super_admin","admin"].includes(state.membership?.role);
 const canEdit=()=>["super_admin","admin","project_manager"].includes(state.membership?.role);
@@ -60,7 +60,7 @@ async function enforceIdleLogout(){
   if(idleSigningOut||!idleTracking)return;
   idleSigningOut=true;
   clearIdleTracking();
-  state.user=null;state.membership=null;state.clients=[];state.projects=[];state.tasks=[];state.documents=[];state.members=[];
+  state.user=null;state.membership=null;state.clients=[];state.projects=[];state.tasks=[];state.documents=[];state.members=[];state.requests=[];state.requestsError="";
   $("login-password").value="";
   document.dispatchEvent(new Event("vv:unmount-upload"));
   state.uploadFiles=[];
@@ -166,7 +166,10 @@ async function refresh(){
   ]);
   for(const [name,result] of [["Clients",clients],["Projects",projects],["Tasks",tasks],["Documents",documents]])if(result.error)notify(name+": "+result.error.message);
   state.clients=clients.data??[];state.projects=projects.data??[];state.tasks=tasks.data??[];state.documents=documents.data??[];
+  state.requests=[];state.requestsError="";
   if(isAdmin()){
+    const inbox=await supabase.from("website_requests").select("id,created_at,source,channel,name,email,subject,brief,status").order("created_at",{ascending:false}).limit(200);
+    if(inbox.error){state.requestsError="Could not load website requests. Please refresh.";notify(state.requestsError);}else state.requests=inbox.data??[];
     const result=await supabase.functions.invoke("studio-team",{body:{action:"members"}});
     state.members=(!result.error&&result.data?.ok)?result.data.members:[];
   }
@@ -199,6 +202,7 @@ function renderOverview(){
     '<article class="kpi"><span class="kpi-mark" aria-hidden="true"><svg class="kpi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span class="name">Client relationships</span><strong>'+state.clients.length+'</strong><small>TOTAL CLIENTS</small></article>'+
     '<article class="kpi"><span class="kpi-mark" aria-hidden="true"><svg class="kpi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18l6-6 4 3 6-8M15 7h5v5"/></svg></span><span class="name">Projects in motion</span><strong>'+active+'</strong><small>ACTIVE PROJECTS</small></article>'+
     '<article class="kpi"><span class="kpi-mark" aria-hidden="true"><svg class="kpi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><span class="name">On your to-do list</span><strong>'+todo.length+'</strong><small>'+esc(overdue?overdue+" OVERDUE · REVIEW":"OPEN TASKS")+'</small></article></div>'+
+    (isAdmin()?renderRequests(true):"")+
     '<div class="content-grid">'+
     '<section class="panel"><div class="panel-head"><h3>Recent projects</h3><button class="panel-link" type="button" data-nav="projects">View all</button></div>'+
     '<p class="panel-subtitle">The creative work on your radar</p><div class="item-list">'+
@@ -221,8 +225,15 @@ function renderClients(){
     '<div class="table-card"><div class="table-row heading"><span>Client</span><span>Email</span><span>Phone</span><span></span></div>'+
     (state.clients.length?state.clients.map(c=>'<div class="table-row"><strong>'+esc(c.name)+'</strong><span>'+esc(c.email??"—")+'</span><span>'+esc(c.phone??"—")+'</span><span>'+tag("Active")+'</span></div>').join(""):empty("No clients yet.","Add a client to start planning work together."))+'</div>';
 }
+function renderRequests(compact=false){
+  const pending=state.requests.filter(r=>r.status==="new").length;
+  const rows=compact?state.requests.filter(r=>r.status==="new").slice(0,4):state.requests;
+  const refreshButton='<button class="panel-link" type="button" data-refresh-requests>Refresh requests</button>';
+  return '<section class="panel" style="margin:16px 0"><div class="panel-head"><h3>Website requests · '+pending+' new</h3><div class="page-actions">'+(compact?'<button class="panel-link" type="button" data-nav="projects">View inbox</button>':"")+refreshButton+'</div></div><p class="panel-subtitle">Contact and Let’s Talk enquiries · Pending review, not confirmed projects</p>'+(state.requestsError?empty("Inbox unavailable",state.requestsError):rows.length?rows.map(r=>'<details style="padding:14px 0;border-bottom:1px solid var(--line,#b5c6c655)"><summary style="cursor:pointer;overflow-wrap:anywhere"><strong>'+esc(r.subject)+'</strong> · '+esc(r.name)+' · '+tag(r.status)+'</summary><div style="padding:12px 0;overflow-wrap:anywhere"><p class="page-copy">'+esc(r.source==="quote"?"Let’s Talk / Quote":"Contact")+' · '+esc(nice(r.channel))+' · '+esc(new Date(r.created_at).toLocaleString("en-KE",{timeZone:"Africa/Nairobi"}))+' · VV-'+esc(r.id.slice(0,8).toUpperCase())+'</p><p class="page-copy">Reply to: '+esc(r.email)+'</p><pre style="font:inherit;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.65;padding:12px 0">'+esc(r.brief)+'</pre><div class="page-actions"><button class="btn secondary" type="button" data-request-id="'+esc(r.id)+'" data-request-status="reviewed">Mark reviewed</button><button class="btn secondary" type="button" data-request-id="'+esc(r.id)+'" data-request-status="closed">Close request</button><button class="btn minimal" type="button" data-request-id="'+esc(r.id)+'" data-request-status="new">Reopen</button><a class="btn secondary" href="mailto:'+esc(encodeURIComponent(r.email))+'?subject='+esc(encodeURIComponent("Re: "+r.subject))+'">Reply by email</a></div></div></details>').join(""):empty("No "+(compact?"new ":"")+"website requests","New enquiries submitted through the website will appear here."))+'</section>';
+}
 function renderProjects(){
   return heading("THE WORK IN MOTION","Projects","Your creative work, organized from first idea to delivery.",isAdmin()?'<div class="page-actions">'+addButton("New project","project")+addButton("Assign teammate","assign")+"</div>":"")+
+  (isAdmin()?renderRequests():"")+
   '<div class="table-card"><div class="table-row heading"><span>Project</span><span>Client</span><span>Status</span><span>Deadline</span></div>'+
   (state.projects.length?state.projects.map(p=>'<div class="table-row"><strong>'+esc(p.name)+'</strong><span>'+esc(findClient(p.client_id))+'</span><span>'+tag(p.status)+'</span><span>'+esc(p.due_date??"Not set")+'</span></div>').join(""):empty("No projects yet.","Create your first project to track its work."))+'</div>';
 }
@@ -489,6 +500,15 @@ document.addEventListener("vv:console-navigate",(event)=>{
 $("screen-content").addEventListener("click",async(e)=>{
   const jump=e.target.closest("[data-nav]");
   if(jump){const page=jump.dataset.nav;if(["overview","clients","projects","tasks","documents","security","team"].includes(page)&&(page!=="team"||isAdmin())){state.view=page;render();window.scrollTo({top:0,behavior:"instant"});}return;}
+  if(e.target.closest("[data-refresh-requests]")&&isAdmin()){await refresh();return;}
+  const request=e.target.closest("[data-request-id]");
+  if(request&&isAdmin()){
+    const row=state.requests.find(r=>r.id===request.dataset.requestId),status=request.dataset.requestStatus;
+    if(!row||!["new","reviewed","closed"].includes(status))return;
+    request.disabled=true;
+    const result=await supabase.from("website_requests").update({status}).eq("id",row.id).select("id").maybeSingle();
+    if(result.error||!result.data){notify("Unable to update request.");request.disabled=false;}else{notify("Request "+nice(status)+".");await refresh();}return;
+  }
   const create=e.target.closest("[data-create]");
   if(create){
     if(create.dataset.create==="mfa"){
