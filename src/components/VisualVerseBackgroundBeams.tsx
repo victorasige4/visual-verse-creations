@@ -4,20 +4,20 @@ import { createRoot } from "react-dom/client";
 import { BackgroundBeams } from "./ui/background-beams";
 
 // Explicitly scope the component to light editorial surfaces. Dark sections,
-// media, sticky process scenes and the home cube hero keep their own treatment.
+// media, sticky process scenes and all landing heroes keep their own treatment.
 const lightSurfaces = [
   ".vv-story-band", ".vv-preview-section:not(#about):not(#process)",
   ".vv-close-marquee-section", ".vv-close-location-section", ".vv-close-faq-section",
   ".vv-close-cta-section",
-  ".vv-about-hero", ".vv-about-stats", ".vv-about-vision", ".vv-about-editorial .vv-about-story",
+  ".vv-about-stats", ".vv-about-vision", ".vv-about-editorial .vv-about-story",
   ".vv-about-principles", ".vv-about-tools", ".vv-about-audiences", ".vv-about-partners",
   ".vv-about-faq", ".vv-about-facts", ".vv-cta-section",
-  ".vv-sv-hero--potadot", ".vv-service-overview", ".vv-sv-resources", ".vv-detail-hero",
+  ".vv-service-overview", ".vv-sv-resources",
   ".vv-ds-deliver", ".vv-ds-details", ".vv-ds-faq", ".vv-ds-related",
   ".vvx-atlas", ".vvx-match", ".vvx-questions",
-  ".vv-projects-hero", ".vv-projects-gallery-section", ".vv-projects-archive",
+  ".vv-projects-gallery-section", ".vv-projects-archive",
   ".vv-projects-collections",
-  ".vv-inner-hero", ".vv-inner-contact", ".vv-inner-social-section", ".vv-inner-quote-section",
+  ".vv-inner-contact", ".vv-inner-social-section", ".vv-inner-quote-section",
 ].join(",");
 
 function SiteBackgroundBeams() {
