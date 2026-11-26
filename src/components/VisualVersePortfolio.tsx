@@ -144,7 +144,21 @@ export const selectedDirectionPhotos: Record<PortfolioCollection["id"], { src: s
   "campaigns": { src: "selected-directions/campaigns.webp", alt: "A creator filming social content with a smartphone and gimbal" },
 };
 
+// New homepage-only assets are bundled by Vite when present. Until the six
+// replacement files are uploaded, existing photos remain available without broken URLs.
+const glimpseAssets = import.meta.glob<string>("../assets/home-glimpse/*.webp", { eager: true, query: "?url", import: "default" });
+const glimpseAlt: Record<PortfolioCollection["id"], string> = {
+  "graphic-design":"Illustrative creative workspace with vivid printed designs and colour swatches",
+  "photography":"Illustrative studio photoshoot with a photographer directing a portrait",
+  "digital":"Illustrative web design workstation with responsive mockups and interface sketches",
+  "videography":"Illustrative filmmaker adjusting a cinema camera and stabiliser",
+  "branding":"Illustrative brand packaging design with botanical stationery and logo sketches",
+  "campaigns":"Illustrative creative team planning a social media campaign",
+};
+
 function PortfolioPreviewCard({ collection }: { collection: PortfolioCollection }) {
+  const replacement=glimpseAssets["../assets/home-glimpse/"+collection.id+".webp"];
+  const original=selectedDirectionPhotos[collection.id];
   return (
     <CardContainer containerClassName="vv-pf-card-outer" className="vv-pf-card">
       <CardBody className="vv-pf-card-content">
@@ -153,7 +167,7 @@ function PortfolioPreviewCard({ collection }: { collection: PortfolioCollection 
           <span>PORTFOLIO COLLECTION</span>
         </CardItem>
         <CardItem translateZ={52} className="vv-pf-card-media">
-          <img className="vv-pf-selected-photo" src={import.meta.env.BASE_URL + selectedDirectionPhotos[collection.id].src + "?v=full-frame"} alt={selectedDirectionPhotos[collection.id].alt} width={720} height={1280} loading="lazy" decoding="async"/>
+          <img className="vv-pf-selected-photo" src={replacement || (import.meta.env.BASE_URL + original.src + "?v=landscape-cover")} alt={replacement ? glimpseAlt[collection.id] : original.alt} width={1200} height={900} loading="lazy" decoding="async"/>
           <span className="vv-pf-media-corner" aria-hidden="true"><ArrowUpRight size={16}/></span>
         </CardItem>
         <CardItem translateZ={32} className="vv-pf-card-details">
@@ -190,7 +204,7 @@ export function VisualVersePortfolio() {
       </div>
       <div className="vv-pf-footnote">
         <span><Check size={14} aria-hidden="true"/> SAMPLE CREATIVE DIRECTIONS</span>
-        <p>Stock imagery illustrating our services, not commissioned client projects. Individual client case studies will be added as projects are approved for publication.</p>
+        <p>Illustrative stock or AI-generated imagery representing our services, not commissioned client projects. Individual client case studies will be added as projects are approved for publication.</p>
       </div>
     </div>
   );
