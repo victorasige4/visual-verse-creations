@@ -1,21 +1,6 @@
 /* Visual Verse creative launchpad — scoped to the quote route. */
 .vv-inner-page .vv-quote-hero{background:#f8fbf9;min-height:min(760px,90svh)}
 .vv-quote-hero .vv-inner-hero-inner{grid-template-columns:minmax(0,1fr) minmax(300px,.86fr);gap:clamp(24px,5vw,80px)}
-.vv-quote-hero-board{position:relative;isolation:isolate;min-width:0;display:grid;grid-template-rows:auto 1fr auto;gap:12px;border:1px solid #1b6779;border-radius:24px;padding:clamp(16px,2.4vw,28px);background:radial-gradient(ellipse at 50% 45%,#0b6572,#002a40 76%);color:white;box-shadow:0 20px 48px #003f5c25;overflow:hidden}
-.vv-quote-board-top,.vv-quote-board-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.vv-quote-board-top{font-size:9px;letter-spacing:.1em;font-weight:800;color:#afe8df;border-bottom:1px solid #78d6cd33;padding-bottom:14px}
-.vv-quote-board-top>span:first-child{display:flex;align-items:center;gap:8px}
-.vv-quote-board-top i{width:7px;height:7px;border-radius:50%;background:#2ec4b6;box-shadow:0 0 12px #2ec4b6}
-.vv-quote-orbit-art{position:relative;width:min(100%,320px);aspect-ratio:1;margin:auto;display:grid;place-items:center;--orbit-radius:clamp(82px,11vw,125px)}
-.vv-quote-orbit-ring{position:absolute;inset:calc(50% - var(--orbit-radius));border:1px dashed #85dbd785;border-radius:50%;pointer-events:none}
-.vv-quote-orbit-ring.ring-two{inset:25%;border-style:solid;opacity:.5}
-.vv-quote-orbit-core{display:grid;place-items:center;width:86px;height:86px;border-radius:26px;background:#2ec4b6;color:#003f5c;box-shadow:0 0 0 12px #2ec4b61a,0 0 45px #2ec4b642}
-.vv-quote-orbit-node{position:absolute;left:50%;top:50%;width:43px;height:43px;border:1px solid #73d3c986;border-radius:13px;display:grid;place-items:center;background:#10495d;color:#a5e9df;transform:translate(-50%,-50%) rotate(var(--orbit-angle)) translateX(var(--orbit-radius)) rotate(calc(-1 * var(--orbit-angle)));transition:background .3s,color .3s,box-shadow .3s}
-.vv-quote-orbit-node.is-chosen{background:#2ec4b6;color:#003f5c;box-shadow:0 0 24px #2ec4b66b}
-.vv-quote-board-bottom{border-top:1px solid #78d6cd33;padding-top:15px}
-.vv-quote-board-bottom small{display:block;font-size:8px;color:#9bdbd4;letter-spacing:.1em;font-weight:800;margin-bottom:6px}
-.vv-quote-board-bottom strong{display:block;color:white;font-size:clamp(12px,1.25vw,16px)}
-.vv-quote-board-status{display:flex;align-items:center;gap:6px;font-size:9px;font-weight:800;color:#a5e9df}
 .vv-inner-page .vv-quote-launchpad{background:#f6faf8;padding:clamp(65px,8vw,115px) 0;scroll-margin-top:90px}
 .vv-quote-shell{position:relative;width:min(1180px,calc(100% - 48px));margin:0 auto}
 .vv-quote-intro{display:grid;grid-template-columns:1.1fr .9fr;align-items:end;gap:30px;margin-bottom:32px}
@@ -95,6 +80,39 @@
 .vv-quote-next-grid article{padding:24px;border-radius:17px;border:1px solid #6dc9c240;background:#003f5c85;min-width:0}
 .vv-quote-next-grid article>span{display:flex;align-items:center;justify-content:space-between;color:#2ec4b6}
 .vv-quote-next-grid article small{font-size:10px;color:#a7d9d3;font-weight:750}.vv-quote-next-grid article h3{font-size:17px;color:white;margin:22px 0 10px}.vv-quote-next-grid article p{font-size:13px;line-height:1.65;color:#b9ddda;margin:0}
-@media(max-width:780px){.vv-quote-hero .vv-inner-hero-inner,.vv-quote-intro,.vv-quote-workspace{grid-template-columns:1fr}.vv-quote-hero-board{max-width:540px;width:100%;justify-self:center}.vv-quote-orbit-art{--orbit-radius:100px;width:min(100%,260px)}.vv-quote-shell{width:calc(100% - 32px)}.vv-quote-sidebar{position:relative;top:auto;padding:16px;gap:12px;border-radius:18px}.vv-quote-steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}.vv-quote-steps button{flex-direction:column;align-items:flex-start;padding:9px 6px;gap:6px}.vv-quote-steps strong{font-size:10px}.vv-quote-steps small{font-size:9px}.vv-quote-step-index{width:29px;height:29px}.vv-quote-side-brief,.vv-quote-help{display:none}.vv-quote-intro{gap:14px}.vv-quote-next-grid{grid-template-columns:1fr;gap:10px}.vv-quote-next-grid article{padding:19px}}
-@media(max-width:480px){.vv-quote-services{grid-template-columns:1fr}.vv-inner-form .vv-quote-service{min-height:65px}.vv-quote-board-top{font-size:8px}.vv-quote-orbit-art{--orbit-radius:82px;width:min(100%,220px)}.vv-quote-orbit-core{width:70px;height:70px}.vv-quote-orbit-node{width:36px;height:36px}.vv-quote-nav>.vv-motion-action,.vv-quote-send-options>.vv-motion-action{width:100%;justify-content:center}.vv-quote-review dl>div{grid-template-columns:1fr;gap:4px}}
-@media(prefers-reduced-motion:reduce){.vv-quote-stage{animation:none}.vv-quote-orbit-node,.vv-quote-sidebar-progress i{transition:none}}
+@media(max-width:780px){.vv-quote-hero .vv-inner-hero-inner,.vv-quote-intro,.vv-quote-workspace{grid-template-columns:1fr}.vv-quote-shell{width:calc(100% - 32px)}.vv-quote-sidebar{position:relative;top:auto;padding:16px;gap:12px;border-radius:18px}.vv-quote-steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}.vv-quote-steps button{flex-direction:column;align-items:flex-start;padding:9px 6px;gap:6px}.vv-quote-steps strong{font-size:10px}.vv-quote-steps small{font-size:9px}.vv-quote-step-index{width:29px;height:29px}.vv-quote-side-brief,.vv-quote-help{display:none}.vv-quote-intro{gap:14px}.vv-quote-next-grid{grid-template-columns:1fr;gap:10px}.vv-quote-next-grid article{padding:19px}}
+@media(max-width:480px){.vv-quote-services{grid-template-columns:1fr}.vv-inner-form .vv-quote-service{min-height:65px}.vv-quote-nav>.vv-motion-action,.vv-quote-send-options>.vv-motion-action{width:100%;justify-content:center}.vv-quote-review dl>div{grid-template-columns:1fr;gap:4px}}
+@media(prefers-reduced-motion:reduce){.vv-quote-stage{animation:none}.vv-quote-sidebar-progress i{transition:none}}
+
+/* The open collage belongs to the hero canvas — no enclosing card or solid box. */
+.vv-quote-playground{position:relative;min-width:0;width:100%;max-width:580px;justify-self:center;padding:8px 2px;isolation:isolate}
+.vv-quote-playground-top{display:flex;justify-content:space-between;align-items:center;gap:8px;color:#003f5c;font-size:9px;font-weight:850;letter-spacing:.1em}
+.vv-quote-playground-top>span:first-child{display:flex;align-items:center;gap:7px}
+.vv-quote-playground-top svg{color:#168f84}
+.vv-quote-collage{position:relative;isolation:isolate;aspect-ratio:1.38;min-height:305px;margin:8px 0 5px}
+.vv-quote-collage-lines{position:absolute;inset:0;width:100%;height:100%;color:#2ec4b695;pointer-events:none;z-index:-1}
+.vv-quote-collage-spark{position:absolute;color:#168f84;pointer-events:none;filter:drop-shadow(0 2px 8px #2ec4b63b)}
+.vv-quote-collage-spark.spark-a{top:45%;left:36%;transform:rotate(15deg)}
+.vv-quote-collage-spark.spark-b{top:4%;left:66%;transform:rotate(-15deg)}
+.vv-quote-idea-card{position:absolute;left:var(--idea-x);top:var(--idea-y);width:30%;min-width:0;transform:translate(-50%,-50%) rotate(var(--idea-angle));display:block;padding:5px;text-align:left;border:1px solid #c4e2db;border-radius:12px;background:#fff;color:#003f5c;box-shadow:0 7px 18px #003f5c22;cursor:pointer;touch-action:manipulation;transition:left .65s cubic-bezier(.22,1,.36,1),top .65s cubic-bezier(.22,1,.36,1),transform .4s cubic-bezier(.22,1,.36,1),box-shadow .25s,border-color .25s,background .25s;z-index:1}
+.vv-quote-idea-photo{display:block;position:relative;aspect-ratio:3/2;overflow:hidden;border-radius:8px;background:#d8efea}
+.vv-quote-idea-photo img{display:block;width:100%;height:100%;object-fit:cover;pointer-events:none;transition:transform .5s cubic-bezier(.22,1,.36,1)}
+.vv-quote-idea-mark{position:absolute;right:5px;top:5px;display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:#fff;color:#003f5c;box-shadow:0 2px 7px #003f5c30}
+.vv-quote-idea-caption{display:block;padding:7px 3px 4px;min-width:0}
+.vv-quote-idea-caption strong{display:block;font-size:clamp(10px,1.05vw,14px);line-height:1.15;font-weight:850;overflow-wrap:anywhere}
+.vv-quote-idea-caption small{display:block;margin-top:5px;color:#587c83;font-size:clamp(6px,.58vw,8px);font-weight:800;letter-spacing:.055em;line-height:1.2}
+.vv-quote-idea-card[aria-pressed="true"]{background:#003f5c;border:2px solid #2ec4b6;color:white;box-shadow:0 0 0 3px #2ec4b633,0 12px 24px #003f5c30;z-index:2}
+.vv-quote-idea-card[aria-pressed="true"] .vv-quote-idea-caption small{color:#b1e7df}
+.vv-quote-idea-card[aria-pressed="true"] .vv-quote-idea-mark{background:#2ec4b6;color:#003f5c}
+@media(hover:hover){.vv-quote-idea-card:hover{transform:translate(-50%,-56%) rotate(0) scale(1.13);z-index:5;box-shadow:0 13px 30px #003f5c33;border-color:#2ec4b6}.vv-quote-idea-card:hover img{transform:scale(1.08)}}
+.vv-quote-idea-card:focus-visible{outline:3px solid #168f84;outline-offset:4px;z-index:6;transform:translate(-50%,-50%) rotate(0) scale(1.07)}
+.vv-quote-playground-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.vv-quote-playground-status{display:grid;gap:4px;flex:1;min-width:135px}
+.vv-quote-playground-status>span{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:800;color:#003f5c}
+.vv-quote-playground-status i{width:7px;height:7px;border-radius:50%;background:#2ec4b6;flex:none}
+.vv-quote-playground-status small{font-size:10px;color:#527580}
+.vv-quote-shuffle,.vv-quote-clear{display:inline-flex;align-items:center;gap:6px;border-radius:30px;border:1px solid #abd8d1;background:#fff;color:#003f5c;font:inherit;font-weight:750;font-size:11px;padding:10px 13px;cursor:pointer;transition:background .2s,border-color .2s}
+.vv-quote-shuffle:hover,.vv-quote-clear:hover{background:#d5f4ed;border-color:#2ec4b6}
+@media(max-width:780px){.vv-quote-playground{max-width:510px;padding:8px 3px}.vv-quote-collage{min-height:280px}.vv-quote-idea-caption strong{font-size:12px}.vv-quote-idea-caption small{font-size:7px}}
+@media(max-width:480px){.vv-quote-playground-top{font-size:8px;letter-spacing:.055em}.vv-quote-collage{aspect-ratio:1.12;min-height:254px}.vv-quote-idea-card{width:29.5%;padding:4px;border-radius:9px}.vv-quote-idea-photo{border-radius:5px}.vv-quote-idea-caption{padding:6px 2px 3px}.vv-quote-idea-caption strong{font-size:10px}.vv-quote-idea-caption small{font-size:6px;letter-spacing:0}.vv-quote-idea-mark{width:20px;height:20px;right:3px;top:3px}.vv-quote-idea-mark svg{width:12px;height:12px}.vv-quote-playground-controls{gap:6px}.vv-quote-shuffle,.vv-quote-clear{padding:9px 10px}}
+@media(prefers-reduced-motion:reduce){.vv-quote-idea-card,.vv-quote-idea-photo img{transition:none!important}}
