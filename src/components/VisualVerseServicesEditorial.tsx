@@ -295,6 +295,13 @@ const serviceLandingStyles = `
 @media(max-width:760px){.vv-sv-vanish-form{margin-top:23px}.vv-sv-vanish-shell{min-height:56px;padding:6px 7px 6px 14px}.vv-sv-vanish-input,.vv-sv-vanish-placeholder{font-size:13px}.vv-sv-vanish-submit{width:42px;height:42px;flex-basis:42px}}
 @media(prefers-reduced-motion:reduce){.vv-sv-vanish-shell,.vv-sv-vanish-submit{transition:none!important;transform:none!important}}
 
+/* Fractional compositor track; native swipe remains available while paused. */
+.vv-service-gallery-stage .vv-service-rail{display:block;gap:0;scroll-behavior:auto}
+.vv-service-gallery-track{display:flex;align-items:stretch;gap:clamp(9px,1.1vw,19px);width:100%;position:relative;will-change:transform}
+.vv-service-gallery-stage .vv-service-rail-card>a{will-change:transform;backface-visibility:hidden;box-shadow:0 8px 20px #003f5c24}
+.vv-service-gallery-stage .vv-service-rail-icon{backdrop-filter:none;background:#002a40bd}
+@media(prefers-reduced-motion:reduce){.vv-service-gallery-track{will-change:auto}.vv-service-gallery-stage .vv-service-rail-card>a{will-change:auto}}
+
 `;
 
 
@@ -423,67 +430,104 @@ function CreativeServiceFinder(){
 
 function ServicesRail(){
   const rail=useRef<HTMLDivElement>(null);
+  const track=useRef<HTMLDivElement>(null);
   const [playing,setPlaying]=useState(()=>!window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   const [visible,setVisible]=useState(false);
   const [hovered,setHovered]=useState(false);
   const [focused,setFocused]=useState(false);
-  const metrics=useRef({cycle:0,start:0});
+  const metrics=useRef({cycle:0,start:0,width:0,step:0,cards:[] as {node:HTMLElement;center:number;lastAngle:number;lastScale:number}[]});
+  const offset=useRef(0);
+  const automatic=useRef(false);
+  const scrollFrame=useRef(0);
+  const reduced=useRef(false);
+  function paint(position:number){
+    const {width,cards}=metrics.current;
+    const half=width/2||1,center=position+half;
+    for(const card of cards){
+      // Geometry is measured only on resize, not during motion.
+      if(Math.abs(card.center-center)>half+metrics.current.step)continue;
+      const ratio=Math.max(-1,Math.min(1,(card.center-center)/half));
+      const angle=reduced.current?0:Math.round(-ratio*300)/10;
+      const scale=reduced.current?1:Math.round((1+Math.abs(ratio)*.12)*1000)/1000;
+      if(angle!==card.lastAngle){card.node.style.setProperty("--vv-gallery-angle",angle+"deg");card.lastAngle=angle;}
+      if(scale!==card.lastScale){card.node.style.setProperty("--vv-gallery-scale",String(scale));card.lastScale=scale;}
+    }
+  }
+  function settle(){
+    const el=rail.current,node=track.current;if(!el||!node||!automatic.current)return;
+    automatic.current=false;
+    el.scrollLeft+=offset.current;
+    offset.current=0;
+    node.style.transform="";
+    paint(el.scrollLeft);
+  }
   function measure(){
-    const el=rail.current;if(!el)return;
-    const cards=el.querySelectorAll<HTMLElement>(".vv-service-rail-card");
+    const el=rail.current,node=track.current;if(!el||!node)return;
+    settle();
+    const cards=Array.from(node.querySelectorAll<HTMLElement>(".vv-service-rail-card"));
     if(cards.length<services.length*3)return;
     const cycle=cards[services.length].offsetLeft-cards[0].offsetLeft;
     if(cycle<=0)return;
-    const old=metrics.current;const phase=old.cycle?((el.scrollLeft-old.start)%old.cycle+old.cycle)%old.cycle:0;
-    metrics.current={cycle,start:cards[services.length].offsetLeft};
-    el.scrollLeft=metrics.current.start+(old.cycle?phase/old.cycle*cycle:0);
-    paint();
+    const old=metrics.current;
+    const phase=old.cycle?((el.scrollLeft-old.start)%old.cycle+old.cycle)%old.cycle/old.cycle:0;
+    metrics.current={cycle,start:cards[services.length].offsetLeft,width:el.clientWidth,step:cards[1].offsetLeft-cards[0].offsetLeft,cards:cards.map(node=>({node,center:node.offsetLeft+node.offsetWidth/2,lastAngle:NaN,lastScale:NaN}))};
+    el.scrollLeft=metrics.current.start+phase*cycle;
+    paint(el.scrollLeft);
   }
-  function paint(){
-    const el=rail.current;if(!el)return;
-    const center=el.scrollLeft+el.clientWidth/2;
-    const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    el.querySelectorAll<HTMLElement>(".vv-service-rail-card").forEach(card=>{
-      const offset=Math.max(-1,Math.min(1,(card.offsetLeft+card.offsetWidth/2-center)/(el.clientWidth/2||1)));
-      card.style.setProperty("--vv-gallery-angle",reduced?"0deg":(-offset*30).toFixed(2)+"deg");
-      card.style.setProperty("--vv-gallery-scale",reduced?"1":(1+Math.abs(offset)*.12).toFixed(3));
+  function onScroll(){
+    if(automatic.current||scrollFrame.current)return;
+    scrollFrame.current=requestAnimationFrame(()=>{
+      scrollFrame.current=0;
+      const el=rail.current,{cycle,start}=metrics.current;if(!el||!cycle)return;
+      if(!focused){
+        if(el.scrollLeft>=start+cycle)el.scrollLeft-=cycle;
+        else if(el.scrollLeft<start-cycle*.3)el.scrollLeft+=cycle;
+      }
+      paint(el.scrollLeft);
     });
   }
-  function wrap(){
-    const el=rail.current;const {cycle,start}=metrics.current;if(!el||!cycle)return;
-    if(el.scrollLeft>=start+cycle)el.scrollLeft-=cycle;
-    else if(el.scrollLeft<start-cycle*.3)el.scrollLeft+=cycle;
-  }
   function move(direction:number){
+    settle();
     const el=rail.current;if(!el)return;
-    const cards=el.querySelectorAll<HTMLElement>(".vv-service-rail-card");
-    const step=cards.length>1?cards[1].offsetLeft-cards[0].offsetLeft:el.clientWidth;
-    el.scrollBy({left:direction*step,behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    el.scrollBy({left:direction*(metrics.current.step||el.clientWidth),behavior:reduced.current?"auto":"smooth"});
   }
   useEffect(()=>{
     const el=rail.current;if(!el)return;
+    const preference=window.matchMedia("(prefers-reduced-motion: reduce)");
+    reduced.current=preference.matches;
+    const preferenceChanged=()=>{reduced.current=preference.matches;if(preference.matches){settle();setPlaying(false);}paint(el.scrollLeft);};
+    preference.addEventListener("change",preferenceChanged);
     measure();
-    const resize=()=>measure();
-    const observer=typeof IntersectionObserver!=="undefined"?new IntersectionObserver(([entry])=>setVisible(entry.isIntersecting),{threshold:.15}):null;
+    const resize=typeof ResizeObserver!=="undefined"?new ResizeObserver(measure):null;
+    if(resize)resize.observe(el);else window.addEventListener("resize",measure);
+    const observer=typeof IntersectionObserver!=="undefined"?new IntersectionObserver(([entry])=>setVisible(entry.isIntersecting),{threshold:.05}):null;
     if(observer)observer.observe(el);else setVisible(true);
-    window.addEventListener("resize",resize);
-    return ()=>{observer?.disconnect();window.removeEventListener("resize",resize)};
+    return ()=>{observer?.disconnect();resize?.disconnect();window.removeEventListener("resize",measure);preference.removeEventListener("change",preferenceChanged);cancelAnimationFrame(scrollFrame.current);settle();};
   },[]);
   useEffect(()=>{
-    if(!playing||!visible||hovered||focused)return;
-    let frame=0,last=0,remainder=0;
+    if(!playing||!visible||hovered||focused||reduced.current)return;
+    const el=rail.current,node=track.current;if(!el||!node)return;
+    let frame=0,last=0,basePosition=0;
+    function start(){
+      const {cycle,start}=metrics.current;if(!cycle)return false;
+      const phase=((el!.scrollLeft-start)%cycle+cycle)%cycle;
+      el!.scrollLeft=start;
+      basePosition=start;offset.current=phase;automatic.current=true;
+      node!.style.transform="translate3d("+(-phase)+"px,0,0)";
+      return true;
+    }
     const animate=(now:number)=>{
-      const el=rail.current;
-      if(!el)return;
+      if(document.hidden){last=0;frame=requestAnimationFrame(animate);return;}
+      if(!automatic.current&&!start()){frame=requestAnimationFrame(animate);return;}
       if(last){
-        remainder+=Math.min(now-last,50)*.033;
-        const pixels=Math.floor(remainder);
-        if(pixels){el.scrollLeft+=pixels;remainder-=pixels;wrap();paint();}
+        offset.current=(offset.current+Math.min(now-last,40)*.045)%metrics.current.cycle;
+        node!.style.transform="translate3d("+(-offset.current)+"px,0,0)";
+        paint(basePosition+offset.current);
       }
       last=now;frame=requestAnimationFrame(animate);
     };
     frame=requestAnimationFrame(animate);
-    return ()=>cancelAnimationFrame(frame);
+    return ()=>{cancelAnimationFrame(frame);settle();};
   },[playing,visible,hovered,focused]);
   return <section id="services" className="vv-service-overview vv-service-overview--rail" aria-labelledby="vv-sv-services-title">
     <div className="vv-sv-container">
@@ -498,7 +542,8 @@ function ServicesRail(){
     </div>
     <div className="vv-service-gallery-stage">
 
-      <div className="vv-service-rail" ref={rail} role="region" aria-label="Explore six creative services" tabIndex={0} onScroll={()=>{if(!focused)wrap();paint()}} onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)} onFocus={()=>setFocused(true)} onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget))setFocused(false)}} onPointerDown={()=>setPlaying(false)} onWheel={()=>setPlaying(false)} onKeyDown={e=>{if(e.target===e.currentTarget&&(e.key==="ArrowLeft"||e.key==="ArrowRight")){e.preventDefault();setPlaying(false);move(e.key==="ArrowLeft"?-1:1)}}}>
+      <div className="vv-service-rail" ref={rail} role="region" aria-label="Explore six creative services" tabIndex={0} onScroll={onScroll} onMouseEnter={()=>{settle();setHovered(true)}} onMouseLeave={()=>setHovered(false)} onFocus={()=>{settle();setFocused(true)}} onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget))setFocused(false)}} onPointerDown={()=>{settle();setPlaying(false)}} onWheel={()=>{settle();setPlaying(false)}} onKeyDown={e=>{if(e.target===e.currentTarget&&(e.key==="ArrowLeft"||e.key==="ArrowRight")){e.preventDefault();setPlaying(false);move(e.key==="ArrowLeft"?-1:1)}}}>
+        <div className="vv-service-gallery-track" ref={track}>
         {[0,1,2].flatMap(copy=>services.map((s,i)=>{
           const Icon=s.Icon,image=covers[s.id],primary=copy===1;
           return <article className="vv-service-rail-card" key={copy+"-"+s.id} id={primary?"details-"+s.id:undefined} aria-hidden={primary?undefined:true} aria-labelledby={primary?"sv-"+s.id:undefined}>
@@ -509,6 +554,7 @@ function ServicesRail(){
             </a>
           </article>;
         }))}
+        </div>
       </div>
     </div>
     <div className="vv-sv-container">
